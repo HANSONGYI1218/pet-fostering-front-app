@@ -1,17 +1,16 @@
 import CommentsContainer from '@/components/community/comments-container';
 import CommunityPost from '@/components/community/community-post';
-import { Card } from '@/components/ui/card';
 import { dummyComments, dummyPosts } from '@/lib/dummydata';
 
 export default async function CommunityPostPage({
   params,
 }: {
-  params: { id: string };
+  params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const post = dummyPosts.find((p) => p.id === parseInt(id));
+  const post = dummyPosts.find((p) => p.id === id);
   const comments = dummyComments
-    .filter((c) => c.post_id === parseInt(id) && c.parent_id === null)
+    .filter((c) => c.post_id === id && c.parent_id === null)
     .sort(
       (a, b) =>
         new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),

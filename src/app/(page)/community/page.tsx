@@ -2,12 +2,7 @@ import CommunityBanner from '@/components/community/community-banner';
 import CommunityContainer from '@/components/community/community-container';
 import { dummyPosts } from '@/lib/dummydata';
 
-export default async function CommunityPage({
-  params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+export default async function CommunityPage() {
   const posts = dummyPosts;
 
   return (

@@ -1,6 +1,12 @@
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
 import { FlatCompat } from '@eslint/eslintrc';
+// ES 모듈에서는 require 대신 import 사용
+import prettierPlugin from 'eslint-plugin-prettier';
+import typescriptPlugin from '@typescript-eslint/eslint-plugin';
+import importPlugin from 'eslint-plugin-import';
+import reactPlugin from 'eslint-plugin-react';
+import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -9,44 +15,41 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-const eslintConfig = [
+module.exports = [
+  // 기존 ESLint config 변환
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
-  {
-    parser: '@typescript-eslint/parser',
-    extends: [
-      'airbnb',
-      'airbnb-typescript',
-      'airbnb/hooks',
-      'plugin:@typescript-eslint/recommended',
-      'plugin:react/recommended',
-      'plugin:jsx-a11y/recommended',
-      'plugin:prettier/recommended',
-    ],
-    parserOptions: {
-      project: './tsconfig.json',
-    },
-    env: {
-      browser: true,
-      es2021: true,
-      node: true,
-    },
-    plugins: ['react', '@typescript-eslint', 'import', 'prettier'],
-    rules: {
-      // ✅ React 관련
-      'react/react-in-jsx-scope': 'off', // Next.js에선 필요 없음
-      'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }], // TSX만 허용
-      'react/require-default-props': 'off', // TypeScript에선 선택 props를 타입으로 표현함
-      'react/jsx-props-no-spreading': 'off', // props 확산 허용 (필요할 때 유용)
 
-      // ✅ TypeScript 관련
+  // Flat Config 형식에 맞춘 직접 설정
+  {
+    files: ['**/*.ts', '**/*.tsx'],
+    languageOptions: {
+      parserOptions: {
+        project: './tsconfig.json',
+      },
+      ecmaVersion: 2021,
+      sourceType: 'module',
+    },
+    plugins: {
+      prettier: prettierPlugin,
+      '@typescript-eslint': typescriptPlugin,
+      import: importPlugin,
+      react: reactPlugin,
+      'jsx-a11y': jsxA11yPlugin,
+    },
+    rules: {
+      'react/react-in-jsx-scope': 'off',
+      'react/jsx-filename-extension': [1, { extensions: ['.tsx'] }],
+      'react/require-default-props': 'off',
+      'react/jsx-props-no-spreading': 'off',
+
       '@typescript-eslint/no-unused-vars': [
         'warn',
         { argsIgnorePattern: '^_' },
       ],
-      '@typescript-eslint/explicit-module-boundary-types': 'off', // 함수 리턴 타입 강제 안 함
+      '@typescript-eslint/explicit-module-boundary-types': 'off',
       '@typescript-eslint/no-explicit-any': 'warn',
+      '@typescript-eslint/no-use-before-define': ['error'],
 
-      // ✅ Import 관련
       'import/prefer-default-export': 'off',
       'import/extensions': [
         'error',
@@ -73,21 +76,11 @@ const eslintConfig = [
           ],
         },
       ],
-      'prettier/prettier': [
-        'warn',
-        {
-          endOfLine: 'auto',
-        },
-      ],
-
-      // ✅ 일반 JS 규칙
+      'prettier/prettier': ['warn', { endOfLine: 'auto' }],
       'no-console': 'warn',
-      'no-underscore-dangle': 'off', // _id 같은 필드 허용
-      'no-use-before-define': 'off', // TypeScript가 알아서 체크
-      '@typescript-eslint/no-use-before-define': ['error'],
-
-      // ✅ 기타
-      'jsx-a11y/anchor-is-valid': 'off', // Next.js의 <Link> 내부 <a> 처리 관련
+      'no-underscore-dangle': 'off',
+      'no-use-before-define': 'off',
+      'jsx-a11y/anchor-is-valid': 'off',
     },
     settings: {
       react: {
@@ -96,5 +89,3 @@ const eslintConfig = [
     },
   },
 ];
-
-export default eslintConfig;
