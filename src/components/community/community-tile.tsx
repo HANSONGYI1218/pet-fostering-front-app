@@ -5,7 +5,11 @@ import Link from 'next/link';
 
 export default function CommunityTile({ post }: { post: any }) {
   return (
-    <Link href={`/community/${post?.id}`} target="_blank">
+    <Link
+      href={`/community/${post?.id}`}
+      target="_blank"
+      rel="noopener noreferrer"
+    >
       <Card className="transition-all duration-500 hover:shadow-lg">
         <div className="flex w-full flex-1 flex-col gap-3">
           <span className="line-clamp-1 text-lg font-semibold">

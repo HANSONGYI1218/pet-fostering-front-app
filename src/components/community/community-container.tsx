@@ -14,6 +14,18 @@ export default function CommunityContainer({ posts }: { posts: any }) {
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
 
+  const now = new Date();
+  const oneMonthAgo = new Date();
+  oneMonthAgo.setMonth(now.getMonth() - 1);
+
+  const recentPopularPosts = posts
+    .filter((post: { created_at: string | number | Date }) => {
+      const createdAt = new Date(post.created_at);
+      return createdAt >= oneMonthAgo && createdAt <= now;
+    })
+    .sort((a: { views: number }, b: { views: number }) => b.views - a.views)
+    .slice(0, 10);
+
   return (
     <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 py-32">
       <h1 className="text-3xl font-bold">놀이터</h1>
@@ -33,7 +45,7 @@ export default function CommunityContainer({ posts }: { posts: any }) {
           />
         </div>
 
-        <CommunityTopList />
+        <CommunityTopList recentPopularPosts={recentPopularPosts} />
       </div>
     </div>
   );

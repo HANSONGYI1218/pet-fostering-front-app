@@ -1,6 +1,12 @@
 import { Eye, MessageSquareText } from 'lucide-react';
 
-export default function TopListTile({ index }: { index: number }) {
+export default function TopListTile({
+  index,
+  recentPopularPost,
+}: {
+  index: number;
+  recentPopularPost: any;
+}) {
   return (
     <div className="group flex w-64 gap-3 rounded-2xl">
       <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#D0EFE0] group-hover:bg-[#00592D]">
@@ -10,17 +16,19 @@ export default function TopListTile({ index }: { index: number }) {
       </div>
       <div className="flex w-full flex-1 flex-col gap-2">
         <span className="line-clamp-1 font-semibold">
-          임보할 때 중요 물품 list! list list
+          {recentPopularPost?.title}
         </span>
         <div className="flex w-full gap-5">
-          <span className="text-[#525252]">아이틍</span>
+          <span className="text-[#525252]">
+            {recentPopularPost?.user?.nickname}
+          </span>
           <div className="flex items-center gap-1">
             <MessageSquareText className="h-4 w-4" stroke="#525252" />
             <span className="text-[#525252]">4</span>
           </div>
           <div className="flex items-center gap-1">
             <Eye className="h-4 w-4" stroke="#525252" />
-            <span className="text-[#525252]">20</span>
+            <span className="text-[#525252]">{recentPopularPost?.views}</span>
           </div>
         </div>{' '}
       </div>
