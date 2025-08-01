@@ -1,3 +1,4 @@
+import { PostItem } from '@/types/post/post-api';
 import { Eye, MessageSquareText } from 'lucide-react';
 
 export default function TopListTile({
@@ -5,7 +6,7 @@ export default function TopListTile({
   recentPopularPost,
 }: {
   index: number;
-  recentPopularPost: any;
+  recentPopularPost: PostItem;
 }) {
   return (
     <div className="group flex w-64 gap-3 rounded-2xl">

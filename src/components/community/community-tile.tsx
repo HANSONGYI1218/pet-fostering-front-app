@@ -1,9 +1,10 @@
+import { PostItem } from '@/types/post/post-api';
 import { Card } from '../ui/card';
 import { Eye, MessageSquareText, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
 
-export default function CommunityTile({ post }: { post: any }) {
+export default function CommunityTile({ post }: { post: PostItem }) {
   return (
     <Link
       href={`/community/${post?.id}`}
@@ -24,7 +25,7 @@ export default function CommunityTile({ post }: { post: any }) {
                 height={32}
                 alt="profile"
               />
-              <span className="text-[#525252]">By {post?.user?.nickanme}</span>
+              <span className="text-[#525252]">By {post?.user?.nickname}</span>
             </div>
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1">

@@ -1,6 +1,8 @@
 import CommentsContainer from '@/components/community/comments-container';
 import CommunityPost from '@/components/community/community-post';
 import { dummyComments, dummyPosts } from '@/lib/dummydata';
+import { CommentItem } from '@/types/comment/comment-api';
+import { PostItem } from '@/types/post/post-api';
 
 export default async function CommunityPostPage({
   params,
@@ -8,8 +10,8 @@ export default async function CommunityPostPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
-  const post = dummyPosts.find((p) => p.id === id);
-  const comments = dummyComments
+  const post: PostItem | undefined = dummyPosts.find((p) => p.id === id);
+  const comments: CommentItem[] = dummyComments
     .filter((c) => c.post_id === id && c.parent_id === null)
     .sort(
       (a, b) =>

@@ -13,8 +13,12 @@ const buttonVariants = cva(
         destructive: 'bg-[#00592D] text-white shadow-xs hover:bg-[#00592D]/90', //초록색
         outline:
           'border bg-white shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
+        outline_black:
+          'border border-black bg-white shadow-xs hover:bg-neutral-100',
         secondary:
-          'bg-transparent text-secondary-foreground hover:bg-neutral-100', //흰색, 호버: 그레이
+          'bg-transparent text-secondary-foreground hover:bg-neutral-100', //투명, 호버: 그레이
+        filter:
+          'bg-white text-black font-medium text-sm hover:bg-neutral-100 shadow-sm',
         ghost: 'text-neutral-800 hover:text-black',
         login:
           'hover:bg-accent hover:text-accent-foreground dark:hover:bg-accent/50',

@@ -10,8 +10,13 @@ import {
 import Image from 'next/image';
 import { ko } from 'date-fns/locale';
 import { Button } from '../ui/button';
+import { PostItem } from '@/types/post/post-api';
 
-export default function CommunityPost({ post }: { post: any }) {
+export default function CommunityPost({
+  post,
+}: {
+  post: PostItem | undefined;
+}) {
   return (
     <Card className="relative cursor-default">
       <Bookmark
@@ -58,7 +63,8 @@ export default function CommunityPost({ post }: { post: any }) {
       </div>
       <div className="flex w-full items-center justify-between">
         <span className="text-[#525252]">
-          {format(post?.created_at, 'yyyy.MM.dd a hh:mm', { locale: ko })}
+          {post?.created_at &&
+            format(post?.created_at, 'yyyy.MM.dd a hh:mm', { locale: ko })}
         </span>
         <Button variant={'destructive'} className="w-32 self-end">
           <Pencil />

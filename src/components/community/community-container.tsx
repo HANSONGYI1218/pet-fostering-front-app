@@ -6,8 +6,9 @@ import CommunityTile from './community-tile';
 import CommunityTopList from './community-top-list';
 import { PaginationDynamic } from '../common/papagination-dynamic';
 import { useState } from 'react';
+import { PostItem } from '@/types/post/post-api';
 
-export default function CommunityContainer({ posts }: { posts: any }) {
+export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
   const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수
   const [currentPage, setCurrentPage] = useState(1);
 
@@ -34,7 +35,7 @@ export default function CommunityContainer({ posts }: { posts: any }) {
       </Button>
       <div className="flex w-full items-start justify-center gap-6">
         <div className="flex w-full flex-1 flex-col justify-center gap-6">
-          {posts.slice(startIdx, endIdx).map((post: any, idx: number) => (
+          {posts.slice(startIdx, endIdx).map((post: PostItem, idx: number) => (
             <CommunityTile key={startIdx + idx} post={post} />
           ))}
           <PaginationDynamic

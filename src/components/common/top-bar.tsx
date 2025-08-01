@@ -24,9 +24,9 @@ export default function TopBar() {
       accessUserTypes: ['USER', 'ORGANIZATION', 'OWNER'],
     },
     {
-      href: '/history',
+      href: '/record',
       name: '돌봄 기록',
-      page: 'history',
+      page: 'record',
       accessUserTypes: ['USER', 'OWNER'],
     },
     {
@@ -103,7 +103,7 @@ export default function TopBar() {
             ))}
           </div>
           <Link href="/login">
-            <Button variant="destructive" className="px-2 py-1">
+            <Button variant="outline_black" className="px-2 py-1">
               로그인
             </Button>
           </Link>
