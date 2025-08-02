@@ -4,8 +4,10 @@ import React, { createContext, useContext, useState } from 'react';
 // Context의 타입 정의
 interface RecordContextType {
   records: FosterRecord[];
-  selectedRecord: FosterRecord;
-  setSelectedRecord: React.Dispatch<React.SetStateAction<FosterRecord>>;
+  selectedRecord: FosterRecord | null;
+  setSelectedRecord: React.Dispatch<React.SetStateAction<FosterRecord | null>>;
+  currentMonth: Date;
+  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
   isDog: boolean;
 }
 
@@ -18,9 +20,10 @@ export const RecordProvider: React.FC<{
   isDog: boolean;
   children: React.ReactNode;
 }> = ({ records, initalValue, isDog, children }) => {
-  const [selectedRecord, setSelectedRecord] = useState<FosterRecord>(
+  const [selectedRecord, setSelectedRecord] = useState<FosterRecord | null>(
     initalValue ?? null,
   );
+  const [currentMonth, setCurrentMonth] = useState(new Date());
 
   return (
     <RecordContext.Provider
@@ -28,6 +31,8 @@ export const RecordProvider: React.FC<{
         records,
         selectedRecord,
         setSelectedRecord,
+        currentMonth,
+        setCurrentMonth,
         isDog,
       }}
     >

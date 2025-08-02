@@ -503,8 +503,31 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
     created_at: new Date('2025-07-01T10:00:00Z'),
     foster_records: [
       {
-        id: '1',
+        id: '0_q',
         images: ['/images/animal01.jpg'],
+        content: '첫날부터 활발하게 잘 놀았어요!',
+        health_note: '식욕 좋고 대소변 문제 없음.',
+        created_at: '2025-08-02T10:00:00Z',
+        updated_at: new Date(),
+      },
+      {
+        id: '0',
+        images: ['/images/animal01.jpg'],
+        content: '첫날부터 활발하게 잘 놀았어요!',
+        health_note: '식욕 좋고 대소변 문제 없음.',
+        created_at: '2025-08-01T10:00:00Z',
+        updated_at: new Date(),
+      },
+      {
+        id: '1',
+        images: [
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+        ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
         created_at: '2025-07-01T10:00:00Z',
@@ -512,7 +535,13 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
       },
       {
         id: '2',
-        images: ['/images/animal01.jpg'],
+        images: [
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+        ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
         created_at: '2025-07-03T14:20:00Z',
@@ -520,7 +549,12 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
       },
       {
         id: '3',
-        images: ['/images/animal01.jpg'],
+        images: [
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+        ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
         created_at: '2025-07-05T08:30:00Z',
@@ -528,7 +562,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
       },
       {
         id: '4',
-        images: ['/images/animal01.jpg'],
+        images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
         created_at: '2025-07-07T19:10:00Z',
@@ -536,7 +570,11 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
       },
       {
         id: '5',
-        images: ['/images/animal01.jpg'],
+        images: [
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+          '/images/animal01.jpg',
+        ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
         created_at: '2025-07-09T11:00:00Z',

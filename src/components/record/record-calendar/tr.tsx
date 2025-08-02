@@ -16,7 +16,10 @@ export interface WholeDateArray {
   formattedDate: string;
 }
 
-const Tr = ({ currentMonth }: PropsWithChildren<CalendarProps>) => {
+const Tr = ({
+  currentMonth,
+  setCurrentMonth,
+}: PropsWithChildren<CalendarProps>) => {
   const monthStart = startOfMonth(currentMonth); //현재 보고 있는 달의 시작하는 날
   const monthEnd = endOfMonth(monthStart); //현재 보고 있는 달의 끝나는 날
   const startDate = startOfWeek(monthStart); //현재 보고 있는 달력에서 맨 앞칸
@@ -53,7 +56,11 @@ const Tr = ({ currentMonth }: PropsWithChildren<CalendarProps>) => {
         className="relative grid w-full grid-cols-7 gap-2"
         key={Math.random()}
       >
-        <Td weekDate={p} currentMonth={currentMonth} />
+        <Td
+          weekDate={p}
+          currentMonth={currentMonth}
+          setCurrentMonth={setCurrentMonth}
+        />
       </tr>
     );
   });

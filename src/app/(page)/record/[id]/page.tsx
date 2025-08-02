@@ -5,6 +5,8 @@ import { AnimalType } from '@/types/animal/animal';
 import { FosterRecord } from '@/types/foster-record/foster-record';
 import { FosterMatchInfo } from '@/types/foster-record/foster-record-api';
 
+// 해당 월 이전 달 말과 이후 달 초의 기록도 포함해서 가져오기 (즉, 6주 분량)
+// 월이 바뀔 때마다 해당 기록 데이터 api 호출
 export default async function RecordDetailPage({
   params,
 }: {

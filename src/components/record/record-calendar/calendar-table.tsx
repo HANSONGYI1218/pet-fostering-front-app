@@ -19,12 +19,20 @@ const DayoftheWeek = () => {
   );
 };
 
-const CalendarTable = ({ currentMonth, selectedDate }: CalendarProps) => {
+const CalendarTable = ({
+  currentMonth,
+  selectedDate,
+  setCurrentMonth,
+}: CalendarProps) => {
   return (
     <table className="flex flex-col gap-6 rounded-xl bg-white py-4 text-[16px]">
       <DayoftheWeek />
       <tbody className="flex w-full flex-col gap-2">
-        <Tr currentMonth={currentMonth} selectedDate={selectedDate} />
+        <Tr
+          currentMonth={currentMonth}
+          selectedDate={selectedDate}
+          setCurrentMonth={setCurrentMonth}
+        />
       </tbody>
     </table>
   );
