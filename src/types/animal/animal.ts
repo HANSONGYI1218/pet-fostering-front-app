@@ -8,6 +8,12 @@ export enum AnimalGender {
   FEMALE = 'FEMALE',
 }
 
+export enum AnimalSize {
+  SMALL = 'SMALL',
+  MEDIUM = 'MEDIUM',
+  LARGE = 'LARGE',
+}
+
 export enum FosterState {
   IN_PROGRESS = 'IN_PROGRESS',
   FOSTERED = 'FOSTERED',

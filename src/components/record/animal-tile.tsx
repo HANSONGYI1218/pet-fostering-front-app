@@ -63,7 +63,7 @@ export default function AnimalTile({
                 활동기록 보기
               </span>
               <ChevronRight className="z-10 h-5 w-5" strokeWidth={2.5} />
-            </div>{' '}
+            </div>
           </Link>
         </div>
       </div>
