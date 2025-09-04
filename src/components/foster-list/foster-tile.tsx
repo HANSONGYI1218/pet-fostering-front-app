@@ -66,7 +66,7 @@ export default function FosterTile({
           <div className="flex h-[60px] flex-wrap gap-2 overflow-hidden">
             {animal?.animal_personalitys?.map((personality, index) => {
               return (
-                <Badge key={index} variant={'default'}>
+                <Badge key={index} variant={'default'} className="font-normal">
                   {personality}
                 </Badge>
               );
@@ -81,7 +81,11 @@ export default function FosterTile({
           <div className="flex h-[60px] flex-wrap gap-2 overflow-hidden">
             {animal?.foster_environments?.map((environment, index) => {
               return (
-                <Badge key={index} variant={'secondary'}>
+                <Badge
+                  key={index}
+                  variant={'secondary'}
+                  className="font-normal"
+                >
                   {environment}
                 </Badge>
               );
@@ -100,7 +104,11 @@ export default function FosterTile({
             </span>
           </div>
           <Link href={`/foster-list/${animal?.id}`}>
-            <MoveRight className="h-5 w-5" />
+            <div className="group relative flex h-8 w-32 cursor-pointer items-center justify-center gap-2 hover:text-white">
+              <div className="absolute top-0 right-0 z-0 h-full w-0 rounded-full bg-black opacity-0 transition-all duration-500 group-hover:w-full group-hover:opacity-100" />
+              <span className="z-10 font-semibold text-white">자세히 보기</span>
+              <MoveRight className="z-10 h-5 w-5" strokeWidth={2.5} />
+            </div>
           </Link>
         </div>
       </div>

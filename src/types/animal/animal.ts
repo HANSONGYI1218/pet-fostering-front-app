@@ -28,7 +28,7 @@ export type Animal = {
   age: number;
   gender: AnimalGender;
   images: string[];
-  introduction: number;
+  introduction: string;
   remark: string;
   created_at: Date;
   updated_at: Date;

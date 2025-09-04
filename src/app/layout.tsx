@@ -1,9 +1,16 @@
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
+import Script from 'next/script';
 import { Toaster } from '@/components/ui/sonner';
 import TopBar from '@/components/common/top-bar';
 import BottomBar from '@/components/common/bottom-bar';
+
+declare global {
+  interface Window {
+    kakao: any;
+  }
+}
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -24,6 +31,14 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
+      <head>
+        <Script src="https://cdn.iamport.kr/v1/iamport.js" />
+        <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
+        <Script
+          strategy="beforeInteractive"
+          src={`//dapi.kakao.com/v2/maps/sdk.js?appkey=${process.env.NEXT_PUBLIC_MAP_KEY}&autoload=false&libraries=services,clusterer,drawing`}
+        />
+      </head>
       <body className={`${pretendard.className}`}>
         <TopBar />
         <main>{children}</main>

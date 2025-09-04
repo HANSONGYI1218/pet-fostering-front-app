@@ -10,11 +10,11 @@ const badgeVariants = cva(
     variants: {
       variant: {
         default:
-          'border-transparent bg-[#E9FAF1] text-black [a&]:hover:bg-[#E9FAF1]/90',
+          'border-transparent bg-[#E9FAF1] text-black [a&]:hover:bg-[#E9FAF1]/90', //연한 초록
         secondary:
-          'border-transparent bg-[#FFF2C9] text-black [a&]:hover:bg-[#FFF2C9]/90',
+          'border-transparent bg-[#FFF2C9] text-black [a&]:hover:bg-[#FFF2C9]/90', // 연한 노랑
         destructive:
-          'border-transparent bg-destructive text-white [a&]:hover:bg-destructive/90 focus-visible:ring-destructive/20 dark:focus-visible:ring-destructive/40 dark:bg-destructive/60',
+          'border-transparent bg-[#FDE8E8] text-black [a&]:hover:bg-[#FDE8E8]/90', // 연한 핑크
         outline: 'text-black border border-black bg-white',
       },
     },
