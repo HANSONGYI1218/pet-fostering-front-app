@@ -7,7 +7,7 @@ import { ReactQueryDevtools } from '@tanstack/react-query-devtools';
 
 const queryClient = new QueryClient();
 
-export default async function AnimalListPage() {
+export default function AnimalListPage() {
   return (
     <main className="bg-neutral-50">
       <div className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-12 pt-20 pb-40">

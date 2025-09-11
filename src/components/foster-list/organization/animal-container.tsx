@@ -16,6 +16,7 @@ import { AnimalCreateDialog } from './animal-create-dialog';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FosterState } from '@/types/animal/animal';
 import { socket } from '@/lib/socket';
+import { dummyOgrainzationAnimals } from '@/lib/dummydata';
 
 const statusOrder = {
   [FosterState.IN_PROGRESS]: 0,
@@ -23,9 +24,15 @@ const statusOrder = {
   [FosterState.ADOPTED]: 2,
 };
 
-async function fetchAnimals() {
-  const res = await fetch('/api/animals');
-  return res.json();
+// async function fetchAnimals() {
+//   const res = await fetch('/api/animals');
+//   return res.json();
+// }
+async function fetchAnimals(): Promise<OgrainzationAnimalListItem[]> {
+  // 실제 fetch 대신 delay를 주고 더미 반환 가능
+  return new Promise((resolve) => {
+    setTimeout(() => resolve(dummyOgrainzationAnimals), 300); // 300ms 딜레이
+  });
 }
 
 export default function AnimalContainer() {
@@ -70,10 +77,6 @@ export default function AnimalContainer() {
     };
   }, [queryClient]);
 
-  // 3️⃣ 로딩 / 에러 처리
-  if (isLoading) return <div>로딩중...</div>;
-  if (isError) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
-
   const [animalEmergency, setEmergency] = useState(false);
   const [animalType, setAnimalType] = useState('전체');
   const [animalSize, setAnimalSize] = useState('전체');
@@ -83,12 +86,6 @@ export default function AnimalContainer() {
   const [filteredAnimals, setFilteredAnimals] = useState<
     OgrainzationAnimalListItem[] | null
   >(null);
-
-  useEffect(() => {
-    setFilteredAnimals(animals);
-
-    console.log('filteredAnimals:', filteredAnimals);
-  }, [animals]);
 
   useEffect(() => {
     if (animals && animals?.length > 0) {
@@ -145,6 +142,10 @@ export default function AnimalContainer() {
     animalStatus,
     search,
   ]);
+
+  // 3️⃣ 로딩 / 에러 처리
+  if (isLoading) return <div>로딩중...</div>;
+  if (isError) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
 
   return (
     <div className="flex flex-col gap-10">
