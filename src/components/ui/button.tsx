@@ -10,7 +10,8 @@ const buttonVariants = cva(
     variants: {
       variant: {
         default: 'bg-black text-white shadow-xs hover:bg-primary/90', //검은색
-        destructive: 'bg-[#00592D] text-white shadow-xs hover:bg-[#00592D]/90', //초록색
+        destructive:
+          'bg-[#00592D] text-white shadow-xs hover:bg-[#00592D]/90 border border-[#00592D]', //초록색
         outline:
           'border bg-white shadow-xs hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50',
         outline_black:

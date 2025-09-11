@@ -1,11 +1,18 @@
+import {
+  ANIMAL_ENVIRONMENT,
+  ANIMAL_HEALTH,
+  ANIMAL_PERSONALITYS,
+  ANIMAL_SPECIAL_NOTES,
+} from '../animal-condition/animal-condition';
+import { FosterApplicent } from '../foster-apply/foster-apply-api';
 import { AnimalType, AnimalGender, FosterState, AnimalSize } from './animal';
 
 export type FosterRecordAnimalItem = {
-  id: number;
+  id: string;
   name: string;
   type: AnimalType;
   breed: string;
-  age: number;
+  birth_date: Date;
   gender: AnimalGender;
   images: string[];
   foster_duration: number;
@@ -19,14 +26,13 @@ export type FosterListAnimalItem = {
   type: AnimalType;
   size: AnimalSize;
   breed: string;
-  age: number;
+  birth_date: Date;
   gender: AnimalGender;
   image: string;
-  foster_duration: number;
   isBookmarked: boolean;
-  animal_healths: string[];
-  animal_personalitys: string[];
-  foster_environments: string[];
+  animal_healths: ANIMAL_HEALTH[];
+  animal_personalitys: ANIMAL_PERSONALITYS[];
+  foster_environments: ANIMAL_ENVIRONMENT[];
   isEmergency: boolean;
   organization: {
     id: string;
@@ -43,17 +49,17 @@ export type FosterAnimalDetailItem = {
   type: AnimalType;
   size: AnimalSize;
   breed: string;
-  age: number;
+  birth_date: Date;
   gender: AnimalGender;
   images: string[];
   foster_duration: number;
   introduction: string;
   remark: string;
   isBookmarked: boolean;
-  animal_healths: string[];
-  animal_personalitys: string[];
-  foster_environments: string[];
-  special_notes_animal: string[];
+  animal_healths: ANIMAL_HEALTH[];
+  animal_personalitys: ANIMAL_PERSONALITYS[];
+  foster_environments: ANIMAL_ENVIRONMENT[];
+  special_notes_animals: ANIMAL_SPECIAL_NOTES[];
   isEmergency: boolean;
   organization: {
     id: string;
@@ -65,4 +71,22 @@ export type FosterAnimalDetailItem = {
     donation_account_number: string;
     donation_account_holder: string;
   };
+};
+
+export type OgrainzationAnimalListItem = {
+  id: string;
+  name: string;
+  type: AnimalType;
+  size: AnimalSize;
+  breed: string;
+  birth_date: Date;
+  gender: AnimalGender;
+  animalStatus: FosterState;
+  image: string;
+  applicants: FosterApplicent[];
+  animal_healths: ANIMAL_HEALTH[];
+  animal_personalitys: ANIMAL_PERSONALITYS[];
+  foster_environments: ANIMAL_ENVIRONMENT[];
+  isEmergency: boolean;
+  foster_apply_number: number;
 };

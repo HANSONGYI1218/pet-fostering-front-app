@@ -22,7 +22,7 @@ import KakaoMapLoader from '@/components/common/kakaomap-loader';
 import { formatAnimalAge } from '@/lib/utils';
 import { ANIMAL_HEALTH } from '@/types/animal-condition/animal-condition';
 
-export default async function FosterListDetailPage({
+export default async function AnimalListDetailPage({
   params,
 }: {
   params: Promise<{ id: string }>;

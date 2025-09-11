@@ -1,10 +1,17 @@
 import { FosterListAnimalItem } from '@/types/animal/animal-api';
 import { Card } from '../ui/card';
-import { ANIMAL_GENDER_LABEL_KO, ANIMAL_TYPE_LABEL_KO } from '@/constants/enum';
+import {
+  ANIMAL_GENDER_LABEL_KO,
+  ANIMAL_HEALTH_LABEL_KO,
+  ANIMAL_PERSONALITYS_LABEL_KO,
+  ANIMAL_TYPE_LABEL_KO,
+  FOSTER_ENVIRONMENT_LABEL_KO,
+} from '@/constants/enum';
 import { Check, MapPin, MoveRight } from 'lucide-react';
 import { Badge } from '../ui/badge';
 import AnimalBookmark from './animal-bookmark';
 import Link from 'next/link';
+import { formatAnimalAge } from '@/lib/utils';
 
 export default function FosterTile({
   animal,
@@ -40,10 +47,10 @@ export default function FosterTile({
         <div className="flex items-center justify-between">
           <h1 className="text-xl font-semibold">{animal?.name}</h1>
           <div className="flex items-center gap-2">
-            {animal?.animal_healths?.map((health, index) => {
+            {animal?.animal_healths?.slice(0, 3)?.map((health, index) => {
               return (
                 <span key={index} className="text-sm font-semibold">
-                  #{health}
+                  #{ANIMAL_HEALTH_LABEL_KO[health]}
                 </span>
               );
             })}
@@ -52,7 +59,9 @@ export default function FosterTile({
         <div className="flex gap-1 text-neutral-500">
           <span className="">{ANIMAL_TYPE_LABEL_KO[animal?.type]}</span>
           <span>·</span>
-          <span className="">{animal?.age}살</span>
+          <span className="">
+            {animal?.birth_date ? formatAnimalAge(animal?.birth_date) : ''}
+          </span>
           <span>·</span>
           <span className="">
             {animal?.gender && ANIMAL_GENDER_LABEL_KO[animal.gender]}
@@ -67,7 +76,7 @@ export default function FosterTile({
             {animal?.animal_personalitys?.map((personality, index) => {
               return (
                 <Badge key={index} variant={'default'} className="font-normal">
-                  {personality}
+                  {ANIMAL_PERSONALITYS_LABEL_KO[personality]}
                 </Badge>
               );
             })}
@@ -86,7 +95,7 @@ export default function FosterTile({
                   variant={'secondary'}
                   className="font-normal"
                 >
-                  {environment}
+                  {FOSTER_ENVIRONMENT_LABEL_KO[environment]}
                 </Badge>
               );
             })}

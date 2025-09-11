@@ -3,8 +3,14 @@ import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
+  FOSTER_STATE_LABEL_KO,
 } from '@/constants/enum';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+import {
+  AnimalGender,
+  AnimalSize,
+  AnimalType,
+  FosterState,
+} from '@/types/animal/animal';
 import ConditionItem from '../common/condition-types';
 
 /**
@@ -17,16 +23,20 @@ export default function FosterConditionCard({
   animalType,
   animalSize,
   animalGender,
+  animalStatus,
   setAnimalType,
   setAnimalSize,
   setAnimalGender,
+  setAnimalStatus,
 }: {
   animalType: string;
   animalSize: string;
   animalGender: string;
+  animalStatus?: string;
   setAnimalType: (value: string) => void;
   setAnimalSize: (value: string) => void;
   setAnimalGender: (value: string) => void;
+  setAnimalStatus?: (value: string) => void;
 }) {
   const [isSelected, setIsSelected] = useState(false);
 
@@ -92,6 +102,31 @@ export default function FosterConditionCard({
       default: animalGender,
       onchange: setAnimalGender,
     },
+    // animalStatus가 존재할 때만 포함
+    ...(animalStatus && setAnimalStatus
+      ? [
+          {
+            title: '상태',
+            checkboxItems: [
+              { key: '전체', value: 'status_all' },
+              {
+                key: FOSTER_STATE_LABEL_KO[FosterState.IN_PROGRESS],
+                value: 'in_progress',
+              },
+              {
+                key: FOSTER_STATE_LABEL_KO[FosterState.FOSTERED],
+                value: 'fostered',
+              },
+              {
+                key: FOSTER_STATE_LABEL_KO[FosterState.ADOPTED],
+                value: 'adopted',
+              },
+            ],
+            default: animalStatus,
+            onchange: setAnimalStatus,
+          },
+        ]
+      : []),
   ];
 
   return (

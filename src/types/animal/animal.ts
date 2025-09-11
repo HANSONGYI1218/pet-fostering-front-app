@@ -21,11 +21,12 @@ export enum FosterState {
 }
 
 export type Animal = {
-  id: number;
+  id: string;
   name: string;
+  size: AnimalSize;
   type: AnimalType;
   breed: string;
-  age: number;
+  birth_date: Date;
   gender: AnimalGender;
   images: string[];
   introduction: string;

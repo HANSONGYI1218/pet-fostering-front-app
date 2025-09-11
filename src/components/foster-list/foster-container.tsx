@@ -33,27 +33,27 @@ export default function FosterContainer({
 
   useEffect(() => {
     if (animals && animals?.length > 0) {
-      const sortedAnimals = animals.filter((aniaml: FosterListAnimalItem) => {
+      const sortedAnimals = animals.filter((animal: FosterListAnimalItem) => {
         const matcheAnimalGender =
           !animalGender ||
           animalGender === '전체' ||
-          ANIMAL_GENDER_LABEL_KO[aniaml.gender] === animalGender;
+          ANIMAL_GENDER_LABEL_KO[animal.gender] === animalGender;
 
         const matchesAimalTypes =
           !animalType || animalType === '전체'
             ? true
-            : animalType === ANIMAL_TYPE_LABEL_KO[aniaml?.type];
+            : animalType === ANIMAL_TYPE_LABEL_KO[animal?.type];
 
         const matchesAnimalSize =
           !animalSize || animalSize === '전체'
             ? true
-            : animalSize === ANIMAL_SIZE_LABEL_KO[aniaml?.size];
+            : animalSize === ANIMAL_SIZE_LABEL_KO[animal?.size];
 
         const matchesSearch =
           search.length === 0 ||
-          aniaml?.breed.includes(search) ||
-          aniaml?.name.includes(search) ||
-          aniaml?.organization?.name.includes(search);
+          animal?.breed.includes(search) ||
+          animal?.name.includes(search) ||
+          animal?.organization?.name.includes(search);
 
         return (
           matcheAnimalGender &&

@@ -6,6 +6,7 @@ import { ChevronRight, Ellipsis, Pencil, Share2 } from 'lucide-react';
 import { Popover } from '../ui/popover';
 import { PopoverContent, PopoverTrigger } from '../ui/popover';
 import Link from 'next/link';
+import { formatAnimalAge } from '@/lib/utils';
 
 export default function AnimalTile({
   animal,
@@ -45,7 +46,9 @@ export default function AnimalTile({
         <div className="flex gap-1 text-sm text-neutral-500">
           <span className="">{animal?.type}</span>
           <span>·</span>
-          <span className="">{animal?.age}</span>
+          <span className="">
+            {animal?.birth_date ? formatAnimalAge(animal?.birth_date) : ''}
+          </span>
           <span>·</span>
           <span className="">
             {animal?.gender && ANIMAL_GENDER_LABEL_KO[animal.gender]}

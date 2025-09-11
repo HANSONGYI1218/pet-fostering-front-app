@@ -17,7 +17,7 @@ export type FosterMatchInfo = {
     name: string;
     type: AnimalType;
     breed: string;
-    age: number;
+    birth_date: Date;
     gender: AnimalGender;
     remark: string;
     images: string[];
@@ -41,7 +41,7 @@ export type FosterRecordItem = {
     name: string;
     type: AnimalType;
     breed: string;
-    age: number;
+    birth_date: Date;
     gender: AnimalGender;
     remark: string;
     images: string[];

@@ -1,7 +1,7 @@
 import { FosterMatchInfo } from '@/types/foster-record/foster-record-api';
 import { Card } from '../ui/card';
 import { ANIMAL_GENDER_LABEL_KO } from '@/constants/enum';
-import { getDDay } from '@/lib/utils';
+import { formatAnimalAge, getDDay } from '@/lib/utils';
 
 export default function FosterInfoCard({
   fosterInfo,
@@ -26,7 +26,11 @@ export default function FosterInfoCard({
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-700">나이</span>
-            <span className="font-medium">{fosterInfo?.animal?.age}살</span>
+            <span className="font-medium">
+              {fosterInfo?.animal?.birth_date
+                ? formatAnimalAge(fosterInfo?.animal?.birth_date)
+                : ''}
+            </span>
           </div>
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-700">성별</span>

@@ -16,3 +16,25 @@ export function getDDay(createdAt: Date): string {
 
   return diffDays.toString();
 }
+
+export function formatAnimalAge(birthDate: Date): string {
+  const now = new Date();
+
+  // 년, 월 계산
+  let years = now.getFullYear() - birthDate.getFullYear();
+  let months = now.getMonth() - birthDate.getMonth();
+
+  // 월이 음수면 연에서 차감하고, 월 계산 보정
+  if (months < 0) {
+    years -= 1;
+    months += 12;
+  }
+
+  if (years <= 0 && months > 0) {
+    return `${months}개월`;
+  } else if (months === 0) {
+    return `${years}년`;
+  } else {
+    return `${years}년 ${months}개월`;
+  }
+}
