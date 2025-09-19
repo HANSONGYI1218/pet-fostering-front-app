@@ -1,6 +1,6 @@
 'use client';
 
-import AnimalContainer from '@/components/foster-list/organization/animal-container';
+import AnimalContainer from '@/components/organization/animal-list/animal-container';
 import FosterApplyProviders from '@/providers/foster-apply-provider';
 import { QueryClient } from '@tanstack/react-query';
 import { ReactQueryDevtools } from '@tanstack/react-query-devtools';

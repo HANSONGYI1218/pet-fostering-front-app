@@ -17,7 +17,7 @@ const buttonVariants = cva(
         outline_black:
           'border border-black bg-white shadow-xs hover:bg-neutral-100',
         outline_green:
-          'border border-[#00592D]  bg-white shadow-xs hover:bg-neutral-100',
+          'border border-[#00592D]  bg-white shadow-xs hover:bg-neutral-100 text-[#00592d] hover:text-[#00592d]',
         secondary:
           'bg-transparent text-secondary-foreground hover:bg-neutral-100', //투명, 호버: 그레이
         filter: 'bg-white text-black text-sm hover:bg-neutral-100 shadow-sm',

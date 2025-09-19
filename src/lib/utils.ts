@@ -38,3 +38,22 @@ export function formatAnimalAge(birthDate: Date): string {
     return `${years}년 ${months}개월`;
   }
 }
+
+// 1️⃣ 임보 전체 기간 (일 단위)
+export function fosterTotalDuration(start_date: Date, end_date: Date): number {
+  const totalDays = Math.ceil(
+    (end_date.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24),
+  );
+  return totalDays;
+}
+
+// 1️⃣ 임보 남은 기간 (일 단위)
+export function fosterRemaingDuration(end_date: Date): number {
+  const today = new Date();
+
+  const remainingDays = Math.max(
+    0,
+    Math.ceil((end_date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)),
+  );
+  return remainingDays;
+}

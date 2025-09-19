@@ -158,7 +158,7 @@ export default function FosterTile({
             apply_number={animal?.foster_apply_number}
           />
           <Link
-            href={`/organization/foster-list/${animal?.id}`}
+            href={`/organization/animal-list/${animal?.id}`}
             className="w-full"
           >
             <Button variant={'destructive'} className="h-10 w-full">

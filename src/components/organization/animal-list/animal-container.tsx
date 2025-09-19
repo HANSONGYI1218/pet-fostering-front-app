@@ -10,7 +10,7 @@ import {
   FOSTER_STATE_LABEL_KO,
 } from '@/constants/enum';
 import { Button } from '@/components/ui/button';
-import FosterConditionCard from '../foster-condition-card';
+import FosterConditionCard from '../../foster-list/foster-condition-card';
 import SearchBox from '@/components/common/search-box';
 import { AnimalCreateDialog } from './animal-create-dialog';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
