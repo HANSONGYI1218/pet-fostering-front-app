@@ -17,11 +17,11 @@ export default function FosterInfoCard({
         <img
           src={fosterInfo?.animal?.images[0]}
           alt="animal_img"
-          className="h-40 w-full rounded-lg border object-cover"
+          className="h-64 w-full rounded-lg border object-cover"
         />
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
-            <span className="text-sm text-neutral-700">견종/묘종</span>
+            <span className="text-sm text-neutral-700">종</span>
             <span className="font-medium">{fosterInfo?.animal?.breed}</span>
           </div>
           <div className="flex items-center justify-between">

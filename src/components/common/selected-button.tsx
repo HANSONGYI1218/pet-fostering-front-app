@@ -8,7 +8,7 @@ export default function SelectedButton({
   first: { key: any; word: string };
   second?: { key: any; word: string };
   third: { key: any; word: string };
-  value: string;
+  value: any;
   onChange: any;
 }) {
   return (

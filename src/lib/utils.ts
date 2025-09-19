@@ -57,3 +57,14 @@ export function fosterRemaingDuration(end_date: Date): number {
   );
   return remainingDays;
 }
+
+// 1️⃣ 임보 진행된 기간 (일 단위)
+export function fosterDuration(start_date: Date): number {
+  const today = new Date();
+
+  const preceedingDays = Math.max(
+    0,
+    Math.ceil((today.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24)),
+  );
+  return preceedingDays;
+}

@@ -1,6 +1,5 @@
 'use client';
 
-import { TrendingUp } from 'lucide-react';
 import { Label, PolarRadiusAxis, RadialBar, RadialBarChart } from 'recharts';
 
 import {
@@ -17,41 +16,53 @@ import {
   ChartTooltip,
   ChartTooltipContent,
 } from '@/components/ui/chart';
-
-export const description = 'A radial chart with stacked sections';
-
-const chartData = [{ month: 'january', desktop: 1260, mobile: 570 }];
+import { format } from 'date-fns';
 
 const chartConfig = {
-  desktop: {
-    label: 'Desktop',
-    color: 'var(--chart-1)',
+  value: {
+    label: 'Value',
+    color: '#007AFF',
   },
-  mobile: {
-    label: 'Mobile',
-    color: 'var(--chart-2)',
+  remaining: {
+    label: 'Remaining',
+    color: '#C2DFFF',
   },
 } satisfies ChartConfig;
 
-export function ChartRadialStacked() {
-  const totalVisitors = chartData[0].desktop + chartData[0].mobile;
+export function ChartRadialStacked({
+  start_date,
+  end_date,
+  totalDay,
+  value,
+}: {
+  start_date: Date;
+  end_date: Date;
+  totalDay: number;
+  value: number;
+}) {
+  const chartData = [
+    { month: 'total', value: value, remaining: totalDay - value }, // 실제 기록
+  ];
 
   return (
-    <Card className="flex flex-col">
-      <CardHeader className="items-center pb-0">
-        <CardTitle>Radial Chart - Stacked</CardTitle>
-        <CardDescription>January - June 2024</CardDescription>
+    <Card className="relative flex w-full flex-1 flex-col gap-0">
+      <CardHeader>
+        <CardTitle>전체 돌봄기록</CardTitle>
+        <CardDescription>
+          {format(start_date, 'yyyy.MM.dd')} - {format(end_date, 'yyyy.MM.dd')}
+        </CardDescription>
       </CardHeader>
-      <CardContent className="flex flex-1 items-center pb-0">
+      <CardContent className="flex items-center p-0">
         <ChartContainer
           config={chartConfig}
-          className="mx-auto aspect-square w-full max-w-[250px]"
+          className="mx-auto mt-6 h-48 w-full max-w-[230px]"
         >
           <RadialBarChart
             data={chartData}
-            endAngle={180}
-            innerRadius={80}
-            outerRadius={130}
+            startAngle={180} // 왼쪽 끝
+            endAngle={0} // 오른쪽 끝
+            innerRadius={76}
+            outerRadius={120}
           >
             <ChartTooltip
               cursor={false}
@@ -66,16 +77,9 @@ export function ChartRadialStacked() {
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) - 16}
-                          className="fill-foreground text-2xl font-bold"
+                          className={`fill-foreground text-2xl font-bold text-[#007AFF]`}
                         >
-                          {totalVisitors.toLocaleString()}
-                        </tspan>
-                        <tspan
-                          x={viewBox.cx}
-                          y={(viewBox.cy || 0) + 4}
-                          className="fill-muted-foreground"
-                        >
-                          Visitors
+                          {value}개
                         </tspan>
                       </text>
                     );
@@ -84,28 +88,28 @@ export function ChartRadialStacked() {
               />
             </PolarRadiusAxis>
             <RadialBar
-              dataKey="desktop"
+              dataKey="value"
               stackId="a"
-              cornerRadius={5}
-              fill="var(--color-desktop)"
-              className="stroke-transparent stroke-2"
+              cornerRadius={1}
+              fill="#007AFF"
             />
             <RadialBar
-              dataKey="mobile"
-              fill="var(--color-mobile)"
+              dataKey="remaining"
               stackId="a"
-              cornerRadius={5}
-              className="stroke-transparent stroke-2"
+              cornerRadius={1}
+              fill="#C2DFFF"
             />
           </RadialBarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center gap-2 leading-none font-medium">
-          Trending up by 5.2% this month <TrendingUp className="h-4 w-4" />
+      <CardFooter className="absolute inset-x-0 bottom-6 flex w-full flex-col gap-2 text-sm">
+        <div className="flex items-center leading-none font-medium">
+          총 {totalDay}개 중{' '}
+          <span className="ml-1 text-base font-bold">{value}</span>
+          개를 작성했어요.
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          조금 더 열심히 임보 기록을 해야해요.
         </div>
       </CardFooter>
     </Card>

@@ -61,7 +61,7 @@ export default function RecordDetail() {
           )}
         >
           {recordContext?.records?.map((record, indx) => (
-            <AccordionItem value={`item-${indx}`} key={record.created_at}>
+            <AccordionItem value={`item-${indx}`} key={indx}>
               <AccordionTrigger className="flex h-16 items-center justify-start gap-1 text-lg font-semibold [&>svg]:h-5 [&>svg]:w-5 [&>svg]:text-neutral-800">
                 <div className="flex w-56 items-center gap-2">
                   <svg

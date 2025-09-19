@@ -13,7 +13,7 @@ import {
   ANIMAL_TYPE_LABEL_KO,
   FOSTER_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
-import { Check, ChevronRight, Pencil } from 'lucide-react';
+import { Check, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
 import KakaoMapLoader from '@/components/common/kakaomap-loader';
 import {
@@ -24,8 +24,9 @@ import {
 import { ANIMAL_HEALTH } from '@/types/animal-condition/animal-condition';
 import { OgrainzationAnimalDetailItem } from '@/types/animal/animal-api';
 import { useState } from 'react';
-import { ChartBarLabel } from '@/components/record/record-chart/bar-chart';
-import { ChartRadialStacked } from '@/components/record/record-chart/radial-chart';
+import ChartContainer from '@/components/record/record-chart/chart-container';
+import { format } from 'date-fns';
+import RecordFiltered from './record-filtered';
 
 export default function AnimalDetailContainer({
   animal,
@@ -108,73 +109,6 @@ export default function AnimalDetailContainer({
   return (
     <div className="flex w-full flex-col gap-6">
       <div className="flex w-full items-center justify-between">
-        <div className="flex w-full items-center gap-6">
-          <div className="flex items-center gap-2 text-xl font-semibold">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M7.1882 9.45898C6.07455 9.45898 5.00338 9.88639 4.1956 10.653C3.79448 11.0339 3.47488 11.4927 3.25662 12.001C3.03834 12.5093 2.92578 13.0567 2.92578 13.6098C2.92578 14.163 3.03834 14.7104 3.25662 15.2187C3.4742 15.7254 3.79228 16.1827 4.19163 16.5629L11.4043 23.5732C11.737 23.8966 12.2665 23.8966 12.5991 23.5732L19.8119 16.5629C20.2111 16.1827 20.5293 15.7254 20.7468 15.2187C20.9651 14.7104 21.0777 14.163 21.0777 13.6098C21.0777 13.0567 20.9651 12.5093 20.7468 12.001C20.5286 11.4927 20.2091 11.0341 19.8079 10.6532C19.0001 9.88656 17.9289 9.45898 16.8152 9.45898C15.7016 9.45898 14.6304 9.88639 13.8226 10.653L13.8066 10.6687L12.0017 12.4735L10.1968 10.6687L10.1808 10.653C9.37304 9.88639 8.30187 9.45898 7.1882 9.45898Z"
-                fill="#60B88D"
-              />
-              <path
-                fillRule="evenodd"
-                clipRule="evenodd"
-                d="M12.0001 0.183594C9.80814 0.183594 8.03125 1.9605 8.03125 4.15242C8.03125 6.34434 9.80814 8.12125 12.0001 8.12125C14.192 8.12125 15.9689 6.34434 15.9689 4.15242C15.9689 1.9605 14.192 0.183594 12.0001 0.183594Z"
-                fill="#00592D"
-              />
-            </svg>
-            임보기간 :{' '}
-            {animal?.current_foster_start_date &&
-              animal?.current_foster_end_date &&
-              fosterTotalDuration(
-                animal?.current_foster_start_date,
-                animal?.current_foster_end_date,
-              )}
-            일
-          </div>
-          <div className="flex items-center gap-2 text-xl font-semibold">
-            <svg
-              width="24"
-              height="24"
-              viewBox="0 0 24 24"
-              fill="none"
-              xmlns="http://www.w3.org/2000/svg"
-            >
-              <g clip-path="url(#clip0_2365_2148)">
-                <path
-                  d="M0 2.57143C0 1.15127 1.15127 0 2.57143 0H21.4286C22.8487 0 24 1.15127 24 2.57143V21.4286C24 22.8487 22.8487 24 21.4286 24H2.57143C1.15127 24 0 22.8487 0 21.4286V2.57143Z"
-                  fill="#F69D9D"
-                />
-                <path
-                  d="M11.9994 19.7142C16.2599 19.7142 19.7137 16.2604 19.7137 11.9999C19.7137 7.73945 16.2599 4.28564 11.9994 4.28564C7.73896 4.28564 4.28516 7.73945 4.28516 11.9999C4.28516 16.2604 7.73896 19.7142 11.9994 19.7142Z"
-                  fill="#C71717"
-                />
-                <path
-                  fillRule="evenodd"
-                  clipRule="evenodd"
-                  d="M12.0011 7.5C12.5929 7.5 13.0725 7.97969 13.0725 8.57143V10.9286H15.4297C16.0214 10.9286 16.5011 11.4083 16.5011 12C16.5011 12.5917 16.0214 13.0714 15.4297 13.0714H12.0011C11.4094 13.0714 10.9297 12.5917 10.9297 12V8.57143C10.9297 7.97969 11.4094 7.5 12.0011 7.5Z"
-                  fill="#F69D9D"
-                />
-              </g>
-              <defs>
-                <clipPath id="clip0_2365_2148">
-                  <rect width="24" height="24" fill="white" />
-                </clipPath>
-              </defs>
-            </svg>
-            남은기간 :{' '}
-            {animal?.current_foster_end_date &&
-              fosterRemaingDuration(animal?.current_foster_end_date)}
-            일
-          </div>
-        </div>
         <div className="flex items-center rounded-full bg-white p-2">
           <Button
             variant={'secondary'}
@@ -196,19 +130,105 @@ export default function AnimalDetailContainer({
           >
             상세 정보
           </Button>
-        </div>
+        </div>{' '}
+        <Button
+          variant="outline_black"
+          className={`h-10 ${currentPage === 0 ? 'flex' : 'hidden'}`}
+        >
+          <Pencil />
+          정보 수정하기
+        </Button>
       </div>
       {currentPage === 0 ? (
         <>
+          <div className="flex w-full justify-between gap-6 rounded-lg bg-white p-10">
+            <div className="flex flex-1 flex-col gap-3">
+              <div className="flex w-full flex-col gap-6">
+                <div className="flex gap-6">
+                  <div className="flex items-center gap-2 text-xl font-semibold">
+                    <svg
+                      width="24"
+                      height="24"
+                      viewBox="0 0 24 24"
+                      fill="none"
+                      xmlns="http://www.w3.org/2000/svg"
+                    >
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M7.1882 9.45898C6.07455 9.45898 5.00338 9.88639 4.1956 10.653C3.79448 11.0339 3.47488 11.4927 3.25662 12.001C3.03834 12.5093 2.92578 13.0567 2.92578 13.6098C2.92578 14.163 3.03834 14.7104 3.25662 15.2187C3.4742 15.7254 3.79228 16.1827 4.19163 16.5629L11.4043 23.5732C11.737 23.8966 12.2665 23.8966 12.5991 23.5732L19.8119 16.5629C20.2111 16.1827 20.5293 15.7254 20.7468 15.2187C20.9651 14.7104 21.0777 14.163 21.0777 13.6098C21.0777 13.0567 20.9651 12.5093 20.7468 12.001C20.5286 11.4927 20.2091 11.0341 19.8079 10.6532C19.0001 9.88656 17.9289 9.45898 16.8152 9.45898C15.7016 9.45898 14.6304 9.88639 13.8226 10.653L13.8066 10.6687L12.0017 12.4735L10.1968 10.6687L10.1808 10.653C9.37304 9.88639 8.30187 9.45898 7.1882 9.45898Z"
+                        fill="#60B88D"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M12.0001 0.183594C9.80814 0.183594 8.03125 1.9605 8.03125 4.15242C8.03125 6.34434 9.80814 8.12125 12.0001 8.12125C14.192 8.12125 15.9689 6.34434 15.9689 4.15242C15.9689 1.9605 14.192 0.183594 12.0001 0.183594Z"
+                        fill="#00592D"
+                      />
+                    </svg>
+                    임보기간 :{' '}
+                    {animal?.current_foster_start_date &&
+                      format(
+                        animal?.current_foster_start_date,
+                        'yyyy.MM.dd',
+                      )}{' '}
+                    -{' '}
+                    {animal?.current_foster_end_date &&
+                      format(animal?.current_foster_end_date, 'yyyy.MM.dd')}
+                  </div>
+                  <Badge>
+                    총{' '}
+                    {animal?.current_foster_start_date &&
+                      animal?.current_foster_end_date &&
+                      fosterTotalDuration(
+                        animal?.current_foster_start_date,
+                        animal?.current_foster_end_date,
+                      )}
+                    일
+                  </Badge>
+                </div>
+                <div className="flex items-center gap-2 text-xl font-semibold">
+                  <svg
+                    width="24"
+                    height="24"
+                    viewBox="0 0 24 24"
+                    fill="none"
+                    xmlns="http://www.w3.org/2000/svg"
+                  >
+                    <g clipPath="url(#clip0_2365_3240)">
+                      <path
+                        d="M12 24C18.6274 24 24 18.6274 24 12C24 5.37258 18.6274 0 12 0C5.37258 0 0 5.37258 0 12C0 18.6274 5.37258 24 12 24Z"
+                        fill="#C71717"
+                      />
+                      <path
+                        fillRule="evenodd"
+                        clipRule="evenodd"
+                        d="M11.5385 5C12.3881 5 13.0769 5.68879 13.0769 6.53846V9.92308H16.4615C17.3112 9.92308 18 10.6119 18 11.4615C18 12.3112 17.3112 13 16.4615 13H11.5385C10.6888 13 10 12.3112 10 11.4615V6.53846C10 5.68879 10.6888 5 11.5385 5Z"
+                        fill="#F69D9D"
+                      />
+                    </g>
+                    <defs>
+                      <clipPath id="clip0_2365_3240">
+                        <rect width="24" height="24" fill="white" />
+                      </clipPath>
+                    </defs>
+                  </svg>
+                  남은기간 :{' '}
+                  {animal?.current_foster_end_date &&
+                    fosterRemaingDuration(animal?.current_foster_end_date)}
+                  일
+                </div>
+              </div>
+            </div>
+            <Badge variant={'destructive'} className="h-8 px-3 text-base">
+              입양중
+            </Badge>
+          </div>
           <div className="flex w-full gap-6 rounded-lg bg-white p-10">
             <div className="relative flex w-3/5 flex-col justify-between">
               {animal?.images && animal?.images?.length > 0 ? (
                 <div className="flex flex-col gap-2">
                   <AnimalCarousel images={animal?.images} />
-                  <Button variant="outline_black" className="h-10">
-                    <Pencil />
-                    정보 수정하기
-                  </Button>
                 </div>
               ) : (
                 <div>없어요~!</div>
@@ -440,29 +460,59 @@ export default function AnimalDetailContainer({
               </svg>
               통계
             </h1>
-            <div className="flex w-full justify-between">
-              <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-semibold">돌봄기록</h1>
-                <div>
-                  <ChartBarLabel
-                    start_date={animal?.current_foster_start_date}
-                    end_date={animal?.current_foster_end_date}
-                  />
+            <ChartContainer
+              start_date={animal?.current_foster_start_date}
+              end_date={animal?.current_foster_end_date}
+              foster_records={animal?.foster_records}
+            />
+          </div>
+          <div className="flex w-full gap-6">
+            <div className="flex h-fit w-96 flex-col gap-6 rounded-lg bg-white p-10">
+              <h1 className="text-xl font-bold">{animal?.name}</h1>
+              <img
+                src={animal?.images[0]}
+                alt="animal_img"
+                className="h-64 w-full rounded-lg border object-cover"
+              />
+              <div className="flex flex-col gap-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-neutral-700">종</span>
+                  <span className="font-medium">{animal?.breed}</span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-neutral-700">나이</span>
+                  <span className="font-medium">
+                    {animal?.birth_date
+                      ? formatAnimalAge(animal?.birth_date)
+                      : ''}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-neutral-700">성별</span>
+                  <span className="font-medium">
+                    {ANIMAL_GENDER_LABEL_KO[animal?.gender]}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between">
+                  <span className="text-sm text-neutral-700">임보 기간</span>
+                  <span className="font-medium">
+                    {animal?.current_foster_start_date &&
+                      animal?.current_foster_end_date &&
+                      fosterTotalDuration(
+                        animal?.current_foster_start_date,
+                        animal?.current_foster_end_date,
+                      )}
+                    일
+                  </span>
                 </div>
               </div>
-              <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-semibold">기록 작성률</h1>
-                <div>
-                  <ChartRadialStacked />
-                </div>
-              </div>
-              <div className="flex flex-col gap-2">
-                <h1 className="text-lg font-semibold">임보 진행률</h1>
-                <div>
-                  <ChartRadialStacked />
-                </div>
+              <hr className="w-full" />
+              <div className="flex flex-col gap-2 pb-4">
+                <span className="text-sm text-neutral-700">특이사항</span>
+                <span className="font-medium">{animal?.remark}</span>
               </div>
             </div>
+            <RecordFiltered records={animal?.foster_records} />
           </div>
         </>
       )}

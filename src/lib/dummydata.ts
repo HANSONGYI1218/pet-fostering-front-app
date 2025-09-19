@@ -524,7 +524,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -532,7 +532,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -547,7 +547,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -561,7 +561,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -574,7 +574,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -582,7 +582,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -594,7 +594,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -602,7 +602,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -610,7 +610,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -618,7 +618,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -626,7 +626,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -634,7 +634,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -2071,15 +2071,15 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     remark:
       '꼬리 만지는 걸 싫어하고, 나이가 좀 있어 각별한 관리가 필요함. 심장병으로인해 매일 약을 챙겨먹어야 함.',
     foster_duration: 5,
-    current_foster_start_date: new Date('2025-09-01'),
-    current_foster_end_date: new Date('2026-02-01'),
+    current_foster_start_date: new Date('2025-07-01'),
+    current_foster_end_date: new Date('2025-10-01'),
     foster_records: [
       {
         id: '0_q',
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2087,7 +2087,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2102,7 +2102,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2116,7 +2116,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2129,7 +2129,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2137,7 +2137,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2149,7 +2149,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2157,7 +2157,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2165,7 +2165,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2173,7 +2173,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2181,7 +2181,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2189,7 +2189,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -2229,15 +2229,15 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     remark: '활동적인 가정이 필요하며, 분리불안이 조금 있음.',
     foster_duration: 3,
     isBookmarked: false,
-    current_foster_start_date: new Date('2025-09-01'),
-    current_foster_end_date: new Date('2026-02-01'),
+    current_foster_start_date: new Date('2025-07-01'),
+    current_foster_end_date: new Date('2025-10-01'),
     foster_records: [
       {
         id: '0_q',
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2245,7 +2245,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2260,7 +2260,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2274,7 +2274,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2287,7 +2287,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2295,7 +2295,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2307,7 +2307,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2315,7 +2315,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2323,7 +2323,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2331,7 +2331,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2339,7 +2339,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2347,7 +2347,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -2384,15 +2384,15 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       '/images/animal03.jpg',
     ],
     breed: 'Persian',
-    current_foster_start_date: new Date('2025-09-01'),
-    current_foster_end_date: new Date('2026-02-01'),
+    current_foster_start_date: new Date('2025-07-01'),
+    current_foster_end_date: new Date('2025-10-01'),
     foster_records: [
       {
         id: '0_q',
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2400,7 +2400,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2415,7 +2415,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2429,7 +2429,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2442,7 +2442,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2450,7 +2450,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2462,7 +2462,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2470,7 +2470,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2478,7 +2478,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2486,7 +2486,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2494,7 +2494,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2502,7 +2502,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -2554,7 +2554,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2562,7 +2562,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2577,7 +2577,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2591,7 +2591,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2604,7 +2604,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2612,7 +2612,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2624,7 +2624,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2632,7 +2632,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2640,7 +2640,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2648,7 +2648,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2656,7 +2656,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2664,7 +2664,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -2704,7 +2704,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2712,7 +2712,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2727,7 +2727,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2741,7 +2741,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2754,7 +2754,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2762,7 +2762,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2774,7 +2774,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2782,7 +2782,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2790,7 +2790,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2798,7 +2798,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2806,7 +2806,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2814,7 +2814,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -2861,7 +2861,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2869,7 +2869,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2884,7 +2884,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2898,7 +2898,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2911,7 +2911,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2919,7 +2919,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2931,7 +2931,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2939,7 +2939,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2947,7 +2947,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2955,7 +2955,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2963,7 +2963,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -2971,7 +2971,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -3018,7 +3018,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3026,7 +3026,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3041,7 +3041,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3055,7 +3055,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3068,7 +3068,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3076,7 +3076,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3088,7 +3088,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3096,7 +3096,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3104,7 +3104,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3112,7 +3112,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3120,7 +3120,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3128,7 +3128,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -3175,7 +3175,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3183,7 +3183,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3198,7 +3198,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3212,7 +3212,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3225,7 +3225,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3233,7 +3233,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3245,7 +3245,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3253,7 +3253,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3261,7 +3261,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3269,7 +3269,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3277,7 +3277,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3285,7 +3285,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],
@@ -3324,15 +3324,15 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     name: 'Choco',
     type: AnimalType.DOG,
     size: AnimalSize.SMALL,
-    current_foster_start_date: new Date('2025-09-01'),
-    current_foster_end_date: new Date('2026-02-01'),
+    current_foster_start_date: new Date('2025-01-01'),
+    current_foster_end_date: new Date('2025-10-01'),
     foster_records: [
       {
         id: '0_q',
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-02T10:00:00Z',
+        created_at: new Date('2025-08-02T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3340,7 +3340,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-08-01T10:00:00Z',
+        created_at: new Date('2025-08-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3355,7 +3355,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '첫날부터 활발하게 잘 놀았어요!',
         health_note: '식욕 좋고 대소변 문제 없음.',
-        created_at: '2025-07-01T10:00:00Z',
+        created_at: new Date('2025-07-01T10:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3369,7 +3369,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '산책 중 낯선 강아지를 보고 짖음.',
         health_note: '약간의 분리불안 있음.',
-        created_at: '2025-07-03T14:20:00Z',
+        created_at: new Date('2025-07-03T14:20:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3382,7 +3382,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '고양이라 그런지 하루 종일 자네요.',
         health_note: '건강 양호, 식사 규칙적.',
-        created_at: '2025-07-05T08:30:00Z',
+        created_at: new Date('2025-07-05T08:30:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3390,7 +3390,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg', '/images/animal01.jpg'],
         content: '소리에 민감하지만 금방 적응함.',
         health_note: '이상 없음.',
-        created_at: '2025-07-07T19:10:00Z',
+        created_at: new Date('2025-07-07T19:10:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3402,7 +3402,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         ],
         content: '매일 똑같은 담요 위에만 앉아요.',
         health_note: '소화기능 양호.',
-        created_at: '2025-07-09T11:00:00Z',
+        created_at: new Date('2025-07-09T11:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3410,7 +3410,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '산책 중 풀밭에서 뒹굴기를 좋아함.',
         health_note: '피부 가려움 주의.',
-        created_at: '2025-07-10T13:40:00Z',
+        created_at: new Date('2025-07-10T13:40:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3418,7 +3418,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '캣타워 좋아함, 활동량 많음.',
         health_note: '귀 청소 필요.',
-        created_at: '2025-07-12T09:25:00Z',
+        created_at: new Date('2025-07-12T09:25:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3426,7 +3426,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '조금 무서움이 많지만 사람을 따름.',
         health_note: '예방접종 완료.',
-        created_at: '2025-07-13T18:00:00Z',
+        created_at: new Date('2025-07-13T18:00:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3434,7 +3434,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '첫날 밤에 낑낑거렸지만 이튿날 잠잠.',
         health_note: '배변훈련 중.',
-        created_at: '2025-07-15T07:45:00Z',
+        created_at: new Date('2025-07-15T07:45:00Z'),
         updated_at: new Date(),
       },
       {
@@ -3442,7 +3442,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
         images: ['/images/animal01.jpg'],
         content: '처음 와서 2일 동안 식욕이 없었지만 지금은 잘 먹음.',
         health_note: '스트레스 적응 완료.',
-        created_at: '2025-07-17T16:10:00Z',
+        created_at: new Date('2025-07-17T16:10:00Z'),
         updated_at: new Date(),
       },
     ],

@@ -2,7 +2,6 @@
 
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogFooter,
   DialogHeader,
@@ -19,8 +18,14 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CalendarIcon, Plus } from 'lucide-react';
+import { CalendarIcon, Dot, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
+import {
+  Accordion,
+  AccordionContent,
+  AccordionItem,
+  AccordionTrigger,
+} from '@/components/ui/accordion';
 import {
   Form,
   FormControl,
@@ -70,21 +75,21 @@ import Chip from '@/components/common/chip';
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
     message: '보호동물의 이름을 작성해 주세요.',
-  }), //
-  type: z.enum(AnimalType), //
-  size: z.enum(AnimalSize), //
-  gender: z.enum(AnimalGender), //
-  status: z.enum(FosterState), //
-  images: z.array(z.string()).min(1), //
+  }),
+  type: z.enum(AnimalType),
+  size: z.enum(AnimalSize),
+  gender: z.enum(AnimalGender),
+  status: z.enum(FosterState),
+  images: z.array(z.string()).min(1),
   breed: z.string().min(1, {
-    //
     message: '보호동물의 품종을 작성해 주세요.',
   }),
-  birth_date: z.date(), //
+  birth_date: z.date(),
   remark: z.string().min(1, {
     message: '보호동물의 특성을 작성해 주세요.',
   }),
-  isEmergency: z.boolean(),
+  isEmergency: z.boolean().optional(),
+  emergency_reason: z.string().optional(),
   animal_healths: z.array(z.enum(ANIMAL_HEALTH)),
   animal_personalitys: z.array(z.enum(ANIMAL_PERSONALITYS)),
   foster_environments: z.array(z.enum(ANIMAL_ENVIRONMENT)),
@@ -106,6 +111,7 @@ export function AnimalCreateDialog() {
       birth_date: new Date(),
       remark: '',
       isEmergency: false,
+      emergency_reason: '',
       animal_healths: [] as ANIMAL_HEALTH[],
       animal_personalitys: [] as ANIMAL_PERSONALITYS[],
       foster_environments: [] as ANIMAL_ENVIRONMENT[],
@@ -391,7 +397,7 @@ ex) 꼬리 만지는 걸 싫어함.
                   )}
                 />
               </div>
-            ) : (
+            ) : currentPage === 1 ? (
               <div className="flex flex-col gap-10">
                 <FormField
                   control={form.control}
@@ -483,7 +489,6 @@ ex) 꼬리 만지는 걸 싫어함.
                     );
                   }}
                 />
-
                 <FormField
                   control={form.control}
                   name="animal_healths"
@@ -523,33 +528,185 @@ ex) 꼬리 만지는 걸 싫어함.
                   }}
                 />
               </div>
+            ) : (
+              <div className="flex flex-col gap-10">
+                <div className="flex flex-col gap-1 rounded-lg bg-neutral-100 px-6 py-4">
+                  <span className="text-lg font-semibold text-red-500">
+                    🚨보호동물의 긴급도를 체크해주세요.
+                  </span>
+                  <span className="text-neutral-700">
+                    다른 긴급한 보호동물들의 빠른 임시보호가 이루어 질 수 있도록
+                    <br />
+                    긴급도를 신중히 체크해주세요.
+                  </span>
+                </div>
+                <FormField
+                  control={form.control}
+                  name="isEmergency"
+                  render={({ field }) => {
+                    return (
+                      <FormItem>
+                        <FormLabel>보호동물의 임시보호가 긴급합니까?</FormLabel>
+                        <FormControl>
+                          <SelectedButton
+                            first={{
+                              key: true,
+                              word: '예',
+                            }}
+                            third={{
+                              key: false,
+                              word: '아니요',
+                            }}
+                            value={field.value}
+                            onChange={field.onChange}
+                          />
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
+                {form.watch('isEmergency') === true && (
+                  <div className="flex flex-col gap-4">
+                    <FormField
+                      control={form.control}
+                      name="emergency_reason"
+                      render={({ field }) => {
+                        return (
+                          <FormItem>
+                            <FormLabel>긴급한 이유를 선택해주세요.</FormLabel>
+                            <FormControl>
+                              <Select
+                                onValueChange={field.onChange}
+                                defaultValue={field.value}
+                              >
+                                <FormControl>
+                                  <SelectTrigger className="w-full">
+                                    <SelectValue placeholder="긴급한 이유를 선택해주세요." />
+                                  </SelectTrigger>
+                                </FormControl>
+                                <SelectContent className="w-full">
+                                  <SelectItem value="euthanasia_is_not_far_away">
+                                    안락사 기간이 얼마 안 남은 경우
+                                  </SelectItem>
+                                  <SelectItem value="treatment_needed">
+                                    치료가 시급하거나 병원 진료가 반드시 필요한
+                                    경우
+                                  </SelectItem>
+                                  <SelectItem value="unable_to_survive_own">
+                                    어린 새끼나 고령으로 인해 스스로 생존하기
+                                    힘든 경우
+                                  </SelectItem>
+                                  <SelectItem value="abuse_exposure_to_risk">
+                                    당장 보호받지 못하면 위험에 노출되는 경우
+                                  </SelectItem>
+                                  <SelectItem value="failure_of_guardian">
+                                    보호자가 갑작스러운 환경 변화(이사, 입원
+                                    등)로 돌봄이 어려운 경우
+                                  </SelectItem>
+                                  <SelectItem value="prolonged_stress_in_a_shelter">
+                                    장기간 보호소에 있을 경우 스트레스가
+                                    심해지는 동물
+                                  </SelectItem>
+                                </SelectContent>
+                              </Select>
+                            </FormControl>
+                            <FormMessage />
+                          </FormItem>
+                        );
+                      }}
+                    />
+                    <div className="flex flex-col gap-3 rounded-lg bg-neutral-100 p-4">
+                      <span>긴급 이유 예시</span>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-1">
+                          <Dot className="h-4 w-4" />
+                          안락사 기간이 얼마 안 남은 경우
+                        </span>
+                        <span className="pl-5">
+                          예) 안락사가 일주일밖에 남지 않은 경우
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-1">
+                          <Dot className="h-4 w-4" />
+                          치료가 시급하거나 병원 진료가 반드시 필요한 경우
+                        </span>
+                        <span className="pl-5">
+                          예) 고열, 호흡곤란, 출산, 수술 후 회복 필요 등
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-1">
+                          <Dot className="h-4 w-4" />
+                          어린 새끼나 고령으로 인해 스스로 생존하기 힘든 경우
+                        </span>
+                        <span className="pl-5">
+                          예) 젖먹이, 15살 이상 노령견, 눈, 귀 장애나 퇴화 등
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-1">
+                          <Dot className="h-4 w-4" />
+                          당장 보호받지 못하면 위험에 노출되는 경우
+                        </span>
+                        <span className="pl-5">
+                          예: 길 위 방치, 학대 환경, 교통사고 위험 등
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-1">
+                          <Dot className="h-4 w-4" />
+                          보호자가 갑작스러운 환경 변화(이사, 입원 등)로 돌봄이
+                          어려운 경우
+                        </span>
+                        <span className="pl-5">
+                          예) 입원 예정, 해외 이사, 사망 등
+                        </span>
+                      </div>
+                      <div className="flex flex-col">
+                        <span className="flex items-center gap-1">
+                          <Dot className="h-4 w-4" />
+                          장기간 보호소에 있을 경우 스트레스가 심해지는 동물
+                        </span>
+                        <span className="pl-5">
+                          예) 분리 불안, 스트레스, 발작 등 문제행동
+                        </span>
+                      </div>
+                    </div>
+                  </div>
+                )}
+              </div>
             )}
             <DialogFooter className="mt-10">
-              {currentPage === 0 ? (
+              {(currentPage === 1 || currentPage === 2) && (
+                <Button
+                  variant="outline"
+                  onClick={() => {
+                    if (currentPage === 1) setCurrentPage(0);
+                    else setCurrentPage(1);
+                  }}
+                  className="w-24"
+                >
+                  이전으로
+                </Button>
+              )}
+              {(currentPage === 0 || currentPage === 1) && (
                 <Button
                   type="button"
                   onClick={() => {
-                    setCurrentPage(1);
+                    if (currentPage === 0) setCurrentPage(1);
+                    else setCurrentPage(2);
                   }}
                   className="w-40"
                 >
                   다음으로
                 </Button>
-              ) : (
-                <>
-                  <Button
-                    variant="outline"
-                    onClick={() => {
-                      setCurrentPage(0);
-                    }}
-                    className="w-24"
-                  >
-                    이전으로
-                  </Button>
-                  <Button type="submit" className="w-40">
-                    프로필 등록
-                  </Button>
-                </>
+              )}
+              {currentPage === 2 && (
+                <Button type="submit" className="w-40">
+                  프로필 등록
+                </Button>
               )}
             </DialogFooter>
           </DialogContent>

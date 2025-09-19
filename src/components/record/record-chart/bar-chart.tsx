@@ -21,33 +21,6 @@ import { format } from 'date-fns';
 
 export const description = 'A bar chart with a label';
 
-const monthNames = [
-  '1월',
-  '2월',
-  '3월',
-  '4월',
-  '5월',
-  '6월',
-  '7월',
-  '8월',
-  '9월',
-  '10월',
-  '11월',
-  '12월',
-];
-
-// foster 기간 동안의 month 리스트 생성
-function getMonthsBetween(start: Date, end: Date) {
-  const result: string[] = [];
-  const cur = new Date(start);
-
-  while (cur <= end) {
-    result.push(monthNames[cur.getMonth()]);
-    cur.setMonth(cur.getMonth() + 1);
-  }
-  return result;
-}
-
 const chartConfig = {
   desktop: {
     label: 'Desktop',
@@ -55,25 +28,28 @@ const chartConfig = {
   },
 } satisfies ChartConfig;
 
+type ChartDataItem = {
+  month: string; // ex: "January"
+  record: number; // 해당 달의 기록 개수
+};
+
 export function ChartBarLabel({
   start_date,
   end_date,
+  chartData,
 }: {
   start_date: Date;
   end_date: Date;
+  chartData: ChartDataItem[];
 }) {
-  const months = getMonthsBetween(start_date, end_date);
-
-  // chartData 생성
-  const chartData = months.map((m) => ({
-    month: m,
-    desktop: Math.floor(Math.random() * 300), // 임시 데이터 (예: 입양/임보 수치)
-  }));
+  const maxRecordMonth = chartData.reduce((prev, curr) => {
+    return curr.record > prev.record ? curr : prev;
+  });
 
   return (
     <Card>
       <CardHeader>
-        <CardTitle>{months?.length}개의 돌봄기록</CardTitle>
+        <CardTitle>{chartData?.length}개월의 돌봄기록</CardTitle>
         <CardDescription>
           {format(start_date, 'yyyy.MM.dd')} - {format(end_date, 'yyyy.MM.dd')}
         </CardDescription>
@@ -99,7 +75,7 @@ export function ChartBarLabel({
               cursor={false}
               content={<ChartTooltipContent hideLabel />}
             />
-            <Bar dataKey="desktop" fill="var(--color-desktop)" radius={8}>
+            <Bar dataKey="record" fill="var(--color-desktop)" radius={4}>
               <LabelList
                 position="top"
                 offset={12}
@@ -110,12 +86,14 @@ export function ChartBarLabel({
           </BarChart>
         </ChartContainer>
       </CardContent>
-      <CardFooter className="flex-col items-start gap-2 text-sm">
-        <div className="flex gap-2 leading-none font-medium">
-          기록을 가장 많이 작성한 달은 <TrendingUp className="h-4 w-4" />
+      <CardFooter className="mx-auto flex-col items-start gap-2 text-sm">
+        <div className="flex items-center gap-2 leading-none font-medium">
+          기록을 가장 많이 작성한 달은{' '}
+          <span className="text-base font-bold">{maxRecordMonth.month}</span>
+          <TrendingUp className="h-4 w-4" />
         </div>
         <div className="text-muted-foreground leading-none">
-          Showing total visitors for the last 6 months
+          꾸준한 활동 기록을 독려할 필요가 있어요.
         </div>
       </CardFooter>
     </Card>

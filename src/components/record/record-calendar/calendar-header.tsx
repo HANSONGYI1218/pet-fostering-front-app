@@ -2,7 +2,13 @@
 
 import React from 'react';
 import { format } from 'date-fns';
-import { CalendarDays, ChevronLeft, ChevronRight } from 'lucide-react';
+import {
+  CalendarDays,
+  ChevronLeft,
+  ChevronRight,
+  CircleChevronLeft,
+  CircleChevronRight,
+} from 'lucide-react';
 
 interface CalendarHeaderProps {
   currentMonth: Date;
@@ -15,8 +21,15 @@ const CalendarHeader = ({
   nextMonth,
 }: CalendarHeaderProps) => {
   return (
-    <div className="flex items-center justify-between">
-      <div className="flex w-fit cursor-pointer items-center gap-2">
+    <div className="flex items-center justify-between gap-3">
+      <button onClick={prevMonth}>
+        <CircleChevronLeft
+          className="h-6 w-6 cursor-pointer rounded-full hover:bg-neutral-100"
+          strokeWidth={1}
+          stroke={'#737373'}
+        />
+      </button>
+      <div className="flex w-36 cursor-pointer items-center justify-center gap-2">
         <CalendarDays className="h-4 w-4" stroke="#000000" />
         <span className="text-xl font-semibold">
           {currentMonth && (
@@ -26,22 +39,13 @@ const CalendarHeader = ({
           )}
         </span>
       </div>
-      <div className="flex items-center gap-10">
-        <button onClick={prevMonth}>
-          <ChevronLeft
-            width={32}
-            height={32}
-            className="cursor-pointer hover:text-neutral-600"
-          />
-        </button>
-        <button onClick={nextMonth}>
-          <ChevronRight
-            width={32}
-            height={32}
-            className="cursor-pointer hover:text-neutral-600"
-          />
-        </button>
-      </div>
+      <button onClick={nextMonth}>
+        <CircleChevronRight
+          className="h-6 w-6 cursor-pointer rounded-full hover:bg-neutral-100"
+          strokeWidth={1}
+          stroke={'#737373'}
+        />
+      </button>
     </div>
   );
 };

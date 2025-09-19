@@ -3,6 +3,6 @@ export type FosterRecord = {
   images: string[];
   content: string;
   health_note: string;
-  created_at: string;
+  created_at: Date;
   updated_at: Date;
 };

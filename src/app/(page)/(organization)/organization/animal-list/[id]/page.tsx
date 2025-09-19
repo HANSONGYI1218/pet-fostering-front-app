@@ -16,7 +16,7 @@ export default async function AnimalListDetailPage({
   return (
     <main className="bg-neutral-50">
       <div className="container_12 mx-auto flex min-h-screen w-full flex-col gap-6 pt-20 pb-40">
-        <BackButton link="/foster-list" />
+        <BackButton link="/organization/animal-list" />
         {animal ? (
           <AnimalDetailContainer animal={animal} />
         ) : (
