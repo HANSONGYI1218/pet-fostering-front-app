@@ -71,7 +71,7 @@ export default function AnimalDetailContainer({
     },
     {
       title: '임보 기간',
-      data: `${animal?.foster_duration}일`,
+      data: `${animal?.current_foster_start_date && animal?.current_foster_end_date && fosterTotalDuration(animal?.current_foster_start_date, animal?.current_foster_end_date)}일`,
     },
     {
       title: '마이크로칩 여부',
@@ -250,7 +250,7 @@ export default function AnimalDetailContainer({
                         fill="#EA1B1B"
                       />
                     </svg>
-                    긴급사유
+                    긴급 동물
                   </div>
                 )}
                 <span className="text-2xl font-semibold">{animal?.name}</span>
@@ -308,9 +308,27 @@ export default function AnimalDetailContainer({
                 />
                 {animal?.name} 이야기
               </h1>
-              <div className="flex w-full flex-1 flex-col justify-between">
+              <div className="flex w-full flex-1 flex-col justify-between gap-10">
                 <span>{animal?.introduction}</span>
                 <div className="flex flex-col gap-6">
+                  <div className="flex flex-col gap-2">
+                    <div className="flex items-center gap-1">
+                      <Check className="h-5 w-5" stroke="#298C5B" />
+                      <span className="font-medium text-[#298C5B]">
+                        임보기간
+                      </span>
+                    </div>
+                    <span>
+                      {animal?.current_foster_start_date &&
+                        format(
+                          animal?.current_foster_start_date,
+                          'yyyy.MM.dd',
+                        )}{' '}
+                      -{' '}
+                      {animal?.current_foster_end_date &&
+                        format(animal?.current_foster_end_date, 'yyyy.MM.dd')}
+                    </span>
+                  </div>
                   <div className="flex flex-col gap-2">
                     <div className="flex items-center gap-1">
                       <Check className="h-5 w-5" stroke="#298C5B" />

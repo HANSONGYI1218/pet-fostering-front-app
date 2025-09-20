@@ -19,8 +19,9 @@ import ConnectDialog from '@/components/foster-list/connect-dialog';
 import FosterRequestDialog from '@/components/foster-list/foster-requst-dialog';
 import { Badge } from '@/components/ui/badge';
 import KakaoMapLoader from '@/components/common/kakaomap-loader';
-import { formatAnimalAge } from '@/lib/utils';
+import { formatAnimalAge, fosterTotalDuration } from '@/lib/utils';
 import { ANIMAL_HEALTH } from '@/types/animal-condition/animal-condition';
+import { format } from 'date-fns';
 
 export default async function FosterListDetailPage({
   params,
@@ -66,7 +67,7 @@ export default async function FosterListDetailPage({
     },
     {
       title: '임보 기간',
-      data: `${animal?.foster_duration}일`,
+      data: `${animal?.current_foster_start_date && animal?.current_foster_end_date && fosterTotalDuration(animal?.current_foster_start_date, animal?.current_foster_end_date)}일`,
     },
     {
       title: '마이크로칩 여부',
@@ -105,30 +106,34 @@ export default async function FosterListDetailPage({
     <main className="bg-neutral-50">
       <div className="container_12 mx-auto flex min-h-screen w-full flex-col gap-6 pt-20 pb-40">
         <BackButton link="/foster-list" />
+        {animal?.isEmergency && (
+          <div className="flex w-full items-center gap-10 rounded-lg bg-[#FDE8E8] px-6 py-3">
+            <span className="flex items-center gap-2 text-xl font-semibold text-[#EA1B1B]">
+              <svg
+                width="24"
+                height="24"
+                viewBox="0 0 24 24"
+                fill="none"
+                xmlns="http://www.w3.org/2000/svg"
+              >
+                <path
+                  d="M23 11.995L20.56 9.21503L20.9 5.53503L17.29 4.71503L15.4 1.53503L12 2.99503L8.6 1.53503L6.71 4.71503L3.1 5.52503L3.44 9.20503L1 11.995L3.44 14.775L3.1 18.465L6.71 19.285L8.6 22.465L12 20.995L15.4 22.455L17.29 19.275L20.9 18.455L20.56 14.775L23 11.995ZM18.49 14.105L18.75 16.895L16.01 17.515L14.58 19.925L12 18.815L9.42 19.925L7.99 17.515L5.25 16.895L5.51 14.095L3.66 11.995L5.51 9.87503L5.25 7.09503L7.99 6.48503L9.42 4.07503L12 5.17503L14.58 4.06503L16.01 6.47503L18.75 7.09503L18.49 9.88503L20.34 11.995L18.49 14.105ZM11 14.995H13V16.995H11V14.995ZM11 6.99503H13V12.995H11V6.99503Z"
+                  fill="#EA1B1B"
+                />
+              </svg>
+              긴급 동물
+            </span>
+            <span className="text-[#EA1B1B]/90">
+              * {animal?.emergency_reason}
+            </span>
+          </div>
+        )}
         <div className="flex w-full gap-6 rounded-lg bg-white p-10">
           <div className="relative flex w-3/5 flex-col justify-between">
             {animal?.images && animal?.images?.length > 0 ? (
               <>
                 <AnimalBookmark isBookmarked={animal?.isBookmarked} />
                 <AnimalCarousel images={animal?.images} />
-                <div className="flex items-center justify-between rounded-lg bg-[#F5F5F5] p-3">
-                  <span className="flex items-end gap-1 font-medium">
-                    <img
-                      src="/images/support.png"
-                      alt="support"
-                      className="h-7 w-7"
-                    />{' '}
-                    {animal?.name}에게 작지만 따뜻한 후원을 해주세요.
-                  </span>
-                  <span className="text-end text-sm text-neutral-700">
-                    <span className="underline decoration-neutral-700">
-                      {animal?.organization?.donation_bank_name}{' '}
-                      {animal?.organization?.donation_account_number}
-                    </span>
-                    <br />
-                    예금주: {animal?.organization?.donation_account_holder}
-                  </span>
-                </div>
               </>
             ) : (
               <div>없어요~!</div>
@@ -136,23 +141,6 @@ export default async function FosterListDetailPage({
           </div>
           <div className="flex w-2/5 flex-col gap-6">
             <Card className="w-full cursor-default p-10">
-              {animal?.isEmergency && (
-                <div className="flex items-center gap-2 bg-[#FDE8E8] px-3 py-1.5 text-lg font-semibold text-[#EA1B1B]">
-                  <svg
-                    width="24"
-                    height="24"
-                    viewBox="0 0 24 24"
-                    fill="none"
-                    xmlns="http://www.w3.org/2000/svg"
-                  >
-                    <path
-                      d="M23 11.995L20.56 9.21503L20.9 5.53503L17.29 4.71503L15.4 1.53503L12 2.99503L8.6 1.53503L6.71 4.71503L3.1 5.52503L3.44 9.20503L1 11.995L3.44 14.775L3.1 18.465L6.71 19.285L8.6 22.465L12 20.995L15.4 22.455L17.29 19.275L20.9 18.455L20.56 14.775L23 11.995ZM18.49 14.105L18.75 16.895L16.01 17.515L14.58 19.925L12 18.815L9.42 19.925L7.99 17.515L5.25 16.895L5.51 14.095L3.66 11.995L5.51 9.87503L5.25 7.09503L7.99 6.48503L9.42 4.07503L12 5.17503L14.58 4.06503L16.01 6.47503L18.75 7.09503L18.49 9.88503L20.34 11.995L18.49 14.105ZM11 14.995H13V16.995H11V14.995ZM11 6.99503H13V12.995H11V6.99503Z"
-                      fill="#EA1B1B"
-                    />
-                  </svg>
-                  긴급사유
-                </div>
-              )}
               <span className="text-2xl font-semibold">{animal?.name}</span>
               <div className="grid w-full grid-cols-2 gap-6">
                 {animalDatas?.slice(0, 6)?.map((a) => (
@@ -215,9 +203,25 @@ export default async function FosterListDetailPage({
               />
               {animal?.name} 이야기
             </h1>
-            <div className="flex w-full flex-1 flex-col justify-between">
+            <div className="flex w-full flex-1 flex-col justify-between gap-10">
               <span>{animal?.introduction}</span>
               <div className="flex flex-col gap-6">
+                <div className="flex flex-col gap-2">
+                  <div className="flex items-center gap-1">
+                    <Check className="h-5 w-5" stroke="#298C5B" />
+                    <span className="font-medium text-[#298C5B]">임보기간</span>
+                  </div>
+                  <span>
+                    {animal?.current_foster_start_date &&
+                      format(
+                        animal?.current_foster_start_date,
+                        'yyyy.MM.dd',
+                      )}{' '}
+                    -{' '}
+                    {animal?.current_foster_end_date &&
+                      format(animal?.current_foster_end_date, 'yyyy.MM.dd')}
+                  </span>
+                </div>
                 <div className="flex flex-col gap-2">
                   <div className="flex items-center gap-1">
                     <Check className="h-5 w-5" stroke="#298C5B" />
@@ -244,7 +248,7 @@ export default async function FosterListDetailPage({
                       특이 사항
                     </span>
                   </div>
-                  <span className="min-h-12">{animal?.remark}</span>
+                  <span>{animal?.remark}</span>
                 </div>
               </div>
             </div>
@@ -285,7 +289,7 @@ export default async function FosterListDetailPage({
                   />
                   유의사항
                 </h1>
-                <div className="flex h-[60px] flex-wrap gap-6 overflow-hidden">
+                <div className="flex flex-wrap gap-6 overflow-hidden">
                   {animal?.special_notes_animals?.map((note, index) => {
                     return (
                       <Badge
@@ -305,6 +309,20 @@ export default async function FosterListDetailPage({
               있어요 :&#41;
             </div>
           </div>
+        </div>
+        <div className="flex w-full items-center justify-between rounded-lg border border-neutral-200 bg-[#F5F5F5] p-3 shadow-xs">
+          <span className="flex items-end gap-1 font-medium">
+            <img src="/images/support.png" alt="support" className="h-7 w-7" />{' '}
+            {animal?.name}에게 작지만 따뜻한 후원을 해주세요.
+          </span>
+          <span className="text-end text-sm text-neutral-700">
+            <span className="underline decoration-neutral-700">
+              {animal?.organization?.donation_bank_name}{' '}
+              {animal?.organization?.donation_account_number}
+            </span>
+            <br />
+            예금주: {animal?.organization?.donation_account_holder}
+          </span>
         </div>
         <div className="flex w-full flex-col gap-6 rounded-lg bg-white p-10">
           <div className="flex flex-col gap-2">

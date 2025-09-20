@@ -938,7 +938,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       '복자 이야기를 적어주세요. 더미텍스트 입니다. 복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. ',
     remark:
       '꼬리 만지는 걸 싫어하고, 나이가 좀 있어 각별한 관리가 필요함. 심장병으로인해 매일 약을 챙겨먹어야 함.',
-    foster_duration: 5,
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
     isBookmarked: true,
@@ -952,7 +951,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       ANIMAL_ENVIRONMENT.WILLINGNESS_FOR_POTTY_TRAINING,
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
-
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
     organization: {
       id: '5',
@@ -976,7 +975,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '에너지가 넘치고 산책을 좋아하는 강아지입니다.',
     remark: '활동적인 가정이 필요하며, 분리불안이 조금 있음.',
-    foster_duration: 3,
     isBookmarked: false,
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
@@ -990,6 +988,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       ANIMAL_ENVIRONMENT.PRESENCE_OF_OTHER_ANIMAL,
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
     organization: {
       id: '6',
@@ -1019,7 +1018,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '얌전하고 무릎에 앉는 걸 좋아하는 고양이.',
     remark: '장모종이라 빗질이 필요함.',
-    foster_duration: 10,
     isBookmarked: true,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -1031,6 +1029,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       ANIMAL_ENVIRONMENT.PRESENCE_OF_OTHER_ANIMAL,
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
     organization: {
       id: '7',
@@ -1054,7 +1053,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '작고 귀여운 강아지, 애교가 많음.',
     remark: '짖음이 있어 아파트 환경에는 주의 필요.',
-    foster_duration: 2,
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
     isBookmarked: false,
@@ -1068,6 +1066,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       ANIMAL_ENVIRONMENT.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
     organization: {
       id: '8',
@@ -1093,7 +1092,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '호기심이 많고 다른 동물과도 잘 지냄.',
     remark: '입양 전 건강검진 필요.',
-    foster_duration: 6,
     isBookmarked: false,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -1106,6 +1104,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: false,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '9',
       name: '희망 쉼터',
@@ -1130,7 +1129,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '온순하고 아이들을 좋아하는 대형견.',
     remark: '많은 운동량 필요.',
-    foster_duration: 7,
     isBookmarked: true,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -1143,6 +1141,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: false,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '10',
       name: '러브펫 보호소',
@@ -1167,7 +1166,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '사람에게 다가오는 친근한 고양이.',
     remark: '유전적 질환 검진 필요.',
-    foster_duration: 4,
     isBookmarked: false,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -1179,6 +1177,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       ANIMAL_ENVIRONMENT.FREQUENT_INTERACTION_WITH_PETS,
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
     organization: {
       id: '11',
@@ -1204,7 +1203,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '활동적이고 에너지 넘치는 견종.',
     remark: '산책 시간이 부족하면 스트레스가 심함.',
-    foster_duration: 5,
     isBookmarked: false,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -1217,6 +1215,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: false,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '12',
       name: '햇살동물사랑',
@@ -1241,7 +1240,6 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '나이가 있어 차분하고 순한 강아지.',
     remark: '심장 질환으로 꾸준한 약 복용 필요.',
-    foster_duration: 12,
     isBookmarked: true,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -1253,6 +1251,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       ANIMAL_ENVIRONMENT.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS,
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
     organization: {
       id: '13',
@@ -1279,6 +1278,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     animalStatus: FosterState.ADOPTED,
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1288,6 +1288,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1297,6 +1298,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1306,6 +1308,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1315,6 +1318,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1324,6 +1328,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1343,6 +1348,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
       ANIMAL_ENVIRONMENT.QUIET_ENVIRONMENT,
       ANIMAL_ENVIRONMENT.AVAILABILITY_FOR_WALKS_PLAY,
     ],
+
     isEmergency: true,
     foster_apply_number: 7,
   },
@@ -1357,6 +1363,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     gender: AnimalGender.FEMALE,
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1366,6 +1373,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1375,6 +1383,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1384,6 +1393,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1393,6 +1403,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1402,6 +1413,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1436,6 +1448,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     gender: AnimalGender.MALE,
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1445,6 +1458,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1454,6 +1468,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1463,6 +1478,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1472,6 +1488,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1481,6 +1498,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1513,6 +1531,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     breed: 'Korean Shorthair',
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1522,6 +1541,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1531,6 +1551,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1540,6 +1561,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1549,6 +1571,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1558,6 +1581,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1591,6 +1615,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     breed: 'Jindo',
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1600,6 +1625,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1609,6 +1635,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1618,6 +1645,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1627,6 +1655,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1636,6 +1665,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1671,6 +1701,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     birth_date: new Date('2024-01-01'),
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1680,6 +1711,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1689,6 +1721,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1698,6 +1731,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1707,6 +1741,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1716,6 +1751,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1748,6 +1784,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     image: '/images/animal01.jpg',
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1757,6 +1794,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1766,6 +1804,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1775,6 +1814,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1784,6 +1824,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1793,6 +1834,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1828,6 +1870,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     birth_date: new Date('2024-01-01'),
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1837,6 +1880,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1846,6 +1890,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1855,6 +1900,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1864,6 +1910,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1873,6 +1920,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1904,6 +1952,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     size: AnimalSize.SMALL,
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1913,6 +1962,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -1922,6 +1972,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -1931,6 +1982,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -1940,6 +1992,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -1949,6 +2002,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -1984,6 +2038,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
     image: '/images/animal01.jpg',
     applicants: [
       {
+        id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
         phone_number: '010-1414-5656',
@@ -1993,6 +2048,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호는 단순한 동물 돌봄을 넘어, 다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.',
       },
       {
+        id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
         phone_number: '010-9876-5432',
@@ -2002,6 +2058,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '반려동물과의 소통을 중요하게 생각하며, 임시보호 경험을 바탕으로 아이들이 편안하게 지낼 수 있도록 최선을 다하겠습니다.',
       },
       {
+        id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
         phone_number: '010-1234-5678',
@@ -2011,6 +2068,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '동물과의 일상에서 작은 행복을 느끼며, 임시보호를 통해 보호동물들이 새로운 가족을 만나는 여정을 돕고 싶습니다.',
       },
       {
+        id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
         phone_number: '010-8765-4321',
@@ -2020,6 +2078,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '책임감 있는 돌봄과 꼼꼼한 기록 관리로 보호동물들이 안전하고 건강하게 지낼 수 있도록 지원하겠습니다.',
       },
       {
+        id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
         phone_number: '010-5555-6666',
@@ -2029,6 +2088,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
           '임시보호를 통해 동물들이 새로운 가족과 행복하게 지낼 수 있도록, 정성껏 보살피고 신뢰를 쌓겠습니다.',
       },
       {
+        id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
         phone_number: '010-4444-7777',
@@ -2070,7 +2130,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       '복자 이야기를 적어주세요. 더미텍스트 입니다. 복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. ',
     remark:
       '꼬리 만지는 걸 싫어하고, 나이가 좀 있어 각별한 관리가 필요함. 심장병으로인해 매일 약을 챙겨먹어야 함.',
-    foster_duration: 5,
     current_foster_start_date: new Date('2025-07-01'),
     current_foster_end_date: new Date('2025-10-01'),
     foster_records: [
@@ -2205,6 +2264,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: true,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -2227,7 +2287,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '에너지가 넘치고 산책을 좋아하는 강아지입니다.',
     remark: '활동적인 가정이 필요하며, 분리불안이 조금 있음.',
-    foster_duration: 3,
     isBookmarked: false,
     current_foster_start_date: new Date('2025-07-01'),
     current_foster_end_date: new Date('2025-10-01'),
@@ -2362,6 +2421,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: true,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -2510,7 +2570,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '얌전하고 무릎에 앉는 걸 좋아하는 고양이.',
     remark: '장모종이라 빗질이 필요함.',
-    foster_duration: 10,
     isBookmarked: true,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -2523,6 +2582,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: true,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -2545,7 +2605,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '작고 귀여운 강아지, 애교가 많음.',
     remark: '짖음이 있어 아파트 환경에는 주의 필요.',
-    foster_duration: 2,
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
     foster_records: [
@@ -2680,6 +2739,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: true,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -2824,7 +2884,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '호기심이 많고 다른 동물과도 잘 지냄.',
     remark: '입양 전 건강검진 필요.',
-    foster_duration: 6,
     isBookmarked: false,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -2837,6 +2896,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: false,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -2981,7 +3041,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '온순하고 아이들을 좋아하는 대형견.',
     remark: '많은 운동량 필요.',
-    foster_duration: 7,
     isBookmarked: true,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -2994,6 +3053,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: false,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -3138,7 +3198,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '사람에게 다가오는 친근한 고양이.',
     remark: '유전적 질환 검진 필요.',
-    foster_duration: 4,
     isBookmarked: false,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -3151,6 +3210,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: true,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -3295,7 +3355,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.MALE,
     introduction: '활동적이고 에너지 넘치는 견종.',
     remark: '산책 시간이 부족하면 스트레스가 심함.',
-    foster_duration: 5,
     isBookmarked: false,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -3308,6 +3367,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: false,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -3452,7 +3512,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction: '나이가 있어 차분하고 순한 강아지.',
     remark: '심장 질환으로 꾸준한 약 복용 필요.',
-    foster_duration: 12,
     isBookmarked: true,
     animal_healths: [ANIMAL_HEALTH.NEUTERED, ANIMAL_HEALTH.VACCINATED],
     animal_personalitys: [
@@ -3465,6 +3524,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     ],
     special_notes_animals: [ANIMAL_SPECIAL_NOTES.POTTY_ACCIDENTS],
     isEmergency: true,
+    emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     organization: {
       id: '5',
       name: '콩콩 쉼터',

@@ -33,7 +33,11 @@ export type Animal = {
   remark: string;
   created_at: Date;
   updated_at: Date;
+  current_foster_start_date: Date;
+  current_foster_end_date: Date;
   state: FosterState;
+  isEmergency: boolean;
+  emergency_reason: string;
   organization_id: string;
   animal_condition_id: string;
   foster_match_id: string;

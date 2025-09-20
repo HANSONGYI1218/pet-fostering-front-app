@@ -21,12 +21,6 @@ import { z } from 'zod';
 import { CalendarIcon, Dot, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
-  Accordion,
-  AccordionContent,
-  AccordionItem,
-  AccordionTrigger,
-} from '@/components/ui/accordion';
-import {
   Form,
   FormControl,
   FormDescription,
@@ -43,7 +37,7 @@ import {
   FosterState,
 } from '@/types/animal/animal';
 import { Card } from '@/components/ui/card';
-import { useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
@@ -61,6 +55,7 @@ import {
   ANIMAL_PERSONALITYS_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
+  ANIMAL_SPECIAL_NOTES_LABEL_KO,
 } from '@/constants/enum';
 import AniamlCreateProgress from './animal-create-progress';
 import { Textarea } from '@/components/ui/textarea';
@@ -84,12 +79,15 @@ const AnimalCreateformSchema = z.object({
   breed: z.string().min(1, {
     message: '보호동물의 품종을 작성해 주세요.',
   }),
+  introduction: z.string().min(1, {
+    message: '보호동물의 소개를 작성해 주세요.',
+  }),
   birth_date: z.date(),
   remark: z.string().min(1, {
     message: '보호동물의 특성을 작성해 주세요.',
   }),
-  isEmergency: z.boolean().optional(),
-  emergency_reason: z.string().optional(),
+  isEmergency: z.boolean(),
+  emergency_reason: z.string(),
   animal_healths: z.array(z.enum(ANIMAL_HEALTH)),
   animal_personalitys: z.array(z.enum(ANIMAL_PERSONALITYS)),
   foster_environments: z.array(z.enum(ANIMAL_ENVIRONMENT)),
@@ -119,7 +117,43 @@ export function AnimalCreateDialog() {
       organization_id: '1',
     },
   });
+  const contentRef = useRef<HTMLDivElement>(null);
+
   const [currentPage, setCurrentPage] = useState(0);
+
+  useEffect(() => {
+    if (contentRef.current) {
+      contentRef.current.scrollTo({
+        top: 0,
+        behavior: 'smooth', // 부드럽게 스크롤
+      });
+    }
+  }, [currentPage]);
+
+  useEffect(() => {
+    form.setValue('emergency_reason', '');
+  }, [form.watch('isEmergency') === false]);
+
+  const isStep1Valid =
+    form.watch('images')?.length > 0 &&
+    form.watch('name')?.trim().length > 0 &&
+    form.watch('birth_date') &&
+    form.watch('breed')?.trim().length > 0 &&
+    form.watch('type') &&
+    form.watch('size') &&
+    form.watch('remark')?.trim().length > 0 &&
+    form.watch('introduction')?.trim().length > 0;
+
+  const isStep2Valid =
+    form.watch('animal_healths')?.length > 0 &&
+    form.watch('animal_personalitys')?.length > 0 &&
+    form.watch('foster_environments')?.length > 0 &&
+    form.watch('special_notes_animals')?.length > 0;
+
+  const isStep3Valid =
+    !form.watch('isEmergency') || // 비응급이면 그냥 통과
+    (form.watch('isEmergency') &&
+      form.watch('emergency_reason')?.trim().length > 0);
 
   // 2. Define a submit handler.
   function onSubmit(values: z.infer<typeof AnimalCreateformSchema>) {
@@ -142,7 +176,7 @@ export function AnimalCreateDialog() {
               보호 동물 추가
             </Button>
           </DialogTrigger>
-          <DialogContent className="gap-10 sm:max-w-xl">
+          <DialogContent ref={contentRef} className="gap-10 sm:max-w-xl">
             <DialogHeader>
               <DialogTitle>보호 동물 추가</DialogTitle>
             </DialogHeader>
@@ -377,13 +411,34 @@ export function AnimalCreateDialog() {
                 />
                 <FormField
                   control={form.control}
+                  name={'introduction'}
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>소개</FormLabel>
+                      <FormControl>
+                        <Textarea
+                          placeholder={`보호동물의 장점을 자신있게 소개해주세요.
+
+ex) 우리 이쁜 꽃남이는 정말 똑똑한 아이에요.
+애교가 많고 너무너무 순하고 착해요.
+사랑 많은 임시 보호자 곁에서 멋지게 자랄 거예요.`}
+                          className="min-h-32 resize-none whitespace-pre-wrap disabled:cursor-default disabled:border-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
                   name={'remark'}
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>특이사항</FormLabel>
                       <FormControl>
                         <Textarea
-                          placeholder={`임시보호중인 동물의 특징 및 특성을 자유롭게 작성해주세요.
+                          placeholder={`보호동물의 특징 및 특성을 자유롭게 작성해주세요.
 
 ex) 꼬리 만지는 걸 싫어함.
 나이가 좀 있어 각별한 관리가 필요함.
@@ -527,6 +582,45 @@ ex) 꼬리 만지는 걸 싫어함.
                     );
                   }}
                 />
+                <FormField
+                  control={form.control}
+                  name="special_notes_animals"
+                  render={({ field }) => {
+                    const current: ANIMAL_SPECIAL_NOTES[] = Array.isArray(
+                      field.value,
+                    )
+                      ? field.value
+                      : [];
+                    return (
+                      <FormItem>
+                        <FormLabel>유의사항</FormLabel>
+                        <FormControl>
+                          <div className="flex flex-wrap gap-2">
+                            {Object.values(ANIMAL_SPECIAL_NOTES).map((note) => {
+                              const label = ANIMAL_SPECIAL_NOTES_LABEL_KO[note];
+                              const selected = current?.includes(note) ?? false;
+
+                              return (
+                                <Chip
+                                  key={note}
+                                  value={label}
+                                  isSelected={selected}
+                                  onToggle={() => {
+                                    const next = selected
+                                      ? current?.filter((v) => v !== note) // 제거
+                                      : [...current, note]; // 추가
+                                    field.onChange(next);
+                                  }}
+                                />
+                              );
+                            })}
+                          </div>
+                        </FormControl>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
+                />
               </div>
             ) : (
               <div className="flex flex-col gap-10">
@@ -557,7 +651,7 @@ ex) 꼬리 만지는 걸 싫어함.
                               key: false,
                               word: '아니요',
                             }}
-                            value={field.value}
+                            value={field?.value === true ? true : false}
                             onChange={field.onChange}
                           />
                         </FormControl>
@@ -694,6 +788,10 @@ ex) 꼬리 만지는 걸 싫어함.
               {(currentPage === 0 || currentPage === 1) && (
                 <Button
                   type="button"
+                  disabled={
+                    (currentPage === 0 && !isStep1Valid) ||
+                    (currentPage === 1 && !isStep2Valid)
+                  }
                   onClick={() => {
                     if (currentPage === 0) setCurrentPage(1);
                     else setCurrentPage(2);
@@ -704,7 +802,11 @@ ex) 꼬리 만지는 걸 싫어함.
                 </Button>
               )}
               {currentPage === 2 && (
-                <Button type="submit" className="w-40">
+                <Button
+                  type="submit"
+                  disabled={currentPage === 2 && !isStep3Valid}
+                  className="w-40"
+                >
                   프로필 등록
                 </Button>
               )}

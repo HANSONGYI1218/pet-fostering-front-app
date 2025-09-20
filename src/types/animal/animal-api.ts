@@ -53,7 +53,6 @@ export type FosterAnimalDetailItem = {
   birth_date: Date;
   gender: AnimalGender;
   images: string[];
-  foster_duration: number;
   introduction: string;
   remark: string;
   isBookmarked: boolean;
@@ -64,6 +63,7 @@ export type FosterAnimalDetailItem = {
   foster_environments: ANIMAL_ENVIRONMENT[];
   special_notes_animals: ANIMAL_SPECIAL_NOTES[];
   isEmergency: boolean;
+  emergency_reason: string;
   organization: {
     id: string;
     name: string;
@@ -103,7 +103,6 @@ export type OgrainzationAnimalDetailItem = {
   birth_date: Date;
   gender: AnimalGender;
   images: string[];
-  foster_duration: number;
   introduction: string;
   remark: string;
   isBookmarked: boolean;
@@ -115,6 +114,7 @@ export type OgrainzationAnimalDetailItem = {
   foster_environments: ANIMAL_ENVIRONMENT[];
   special_notes_animals: ANIMAL_SPECIAL_NOTES[];
   isEmergency: boolean;
+  emergency_reason: string;
   organization: {
     id: string;
     name: string;

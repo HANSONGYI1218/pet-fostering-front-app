@@ -11,6 +11,7 @@ export default function SelectedButton({
   value: any;
   onChange: any;
 }) {
+  console.log('value:', value, third?.key);
   return (
     <div className="flex h-10 rounded-xl border">
       <div
@@ -21,15 +22,19 @@ export default function SelectedButton({
       >
         {first?.word}
       </div>
-      {second && <div className="flex h-full w-[1px] border" />}
-      <div
-        onClick={() => {
-          onChange(second?.key);
-        }}
-        className={`w-full cursor-pointer items-center justify-center ${value === second?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'} ${second ? 'flex' : 'hidden'}`}
-      >
-        {second?.word}
-      </div>
+      {second && (
+        <>
+          <div className="flex h-full w-[1px] border" />
+          <div
+            onClick={() => {
+              onChange(second?.key);
+            }}
+            className={`w-full cursor-pointer items-center justify-center ${value === second?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'}`}
+          >
+            {second?.word}
+          </div>
+        </>
+      )}
       <div className="flex h-full w-[1px] border" />
       <div
         onClick={() => {

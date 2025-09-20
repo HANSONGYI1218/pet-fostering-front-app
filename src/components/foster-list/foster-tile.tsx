@@ -40,7 +40,7 @@ export default function FosterTile({
             fill="white"
           />
         </svg>
-        <span className="flex-1">긴급 사유</span>
+        <span className="flex-1">긴급 동물</span>
       </div>
       <AnimalBookmark isBookmarked={animal?.isBookmarked} />
       <div className="flex flex-col gap-2 p-6">

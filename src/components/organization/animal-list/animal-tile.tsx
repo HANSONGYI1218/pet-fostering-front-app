@@ -90,7 +90,7 @@ export default function FosterTile({
               fill="white"
             />
           </svg>
-          <span className="flex-1">긴급 사유</span>
+          <span className="flex-1">긴급 동물</span>
         </div>
       )}
       <div className="flex w-full flex-col gap-2 p-6">
