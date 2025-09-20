@@ -1,6 +1,6 @@
 'use client';
 
-import { Card, CardContent } from '@/components/ui/card';
+import { Card } from '@/components/ui/card';
 import {
   Carousel,
   CarouselApi,
@@ -11,17 +11,16 @@ import {
 } from '@/components/ui/carousel';
 import { Dot } from 'lucide-react';
 import { useState, useEffect } from 'react';
+import Image from 'next/image';
 
 export function AnimalCarousel({ images }: { images: string[] }) {
   const [api, setApi] = useState<CarouselApi>();
   const [current, setCurrent] = useState(0);
-  const [count, setCount] = useState(0);
 
   useEffect(() => {
     if (!api) {
       return;
     }
-    setCount(api.scrollSnapList().length);
     setCurrent(api.selectedScrollSnap() + 1);
     api.on('select', () => {
       setCurrent(api.selectedScrollSnap() + 1);
@@ -44,10 +43,15 @@ export function AnimalCarousel({ images }: { images: string[] }) {
           {images.map((image, index) => (
             <CarouselItem key={index}>
               <Card className="aspect-[4/3] w-full cursor-default gap-0 overflow-hidden p-0">
-                <img
-                  src={image}
-                  className="h-full w-full rounded-xl object-cover"
-                />
+                <div className="relative h-full w-full">
+                  <Image
+                    src={image}
+                    alt={`animal-${index + 1}`}
+                    fill
+                    className="rounded-xl object-cover"
+                    sizes="(min-width: 768px) 40vw, 100vw"
+                  />
+                </div>
               </Card>
             </CarouselItem>
           ))}

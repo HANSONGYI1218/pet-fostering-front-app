@@ -14,6 +14,7 @@ import { FosterApplyListDialog } from './foster-apply-list-dialog';
 import { Button } from '@/components/ui/button';
 import { FosterState } from '@/types/animal/animal';
 import { formatAnimalAge } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function FosterTile({
   animal,
@@ -24,11 +25,15 @@ export default function FosterTile({
     <Card
       className={`relative mb-6 flex w-full cursor-default gap-0 overflow-hidden p-0 transition-all duration-500 hover:shadow-lg ${animal?.animalStatus === FosterState.FOSTERED || animal?.animalStatus === FosterState.ADOPTED ? 'opacity-70' : 'opacity-100'}`}
     >
-      <img
-        src={animal?.image}
-        className="h-64 w-full object-cover"
-        alt="profile"
-      />
+      <div className="relative h-64 w-full">
+        <Image
+          src={animal?.image ?? '/images/placeholder.png'}
+          alt={animal?.name ?? 'animal-profile'}
+          fill
+          className="object-cover"
+          sizes="(min-width: 1024px) 25vw, 100vw"
+        />
+      </div>
       {animal?.animalStatus === FosterState.FOSTERED ? (
         <div
           className={`absolute top-4 left-4 flex h-9 cursor-default items-center gap-1.5 rounded-md bg-[#FFE081]/70 px-4 text-base font-semibold text-white`}

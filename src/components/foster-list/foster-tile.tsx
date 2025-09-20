@@ -12,6 +12,7 @@ import { Badge } from '../ui/badge';
 import AnimalBookmark from './animal-bookmark';
 import Link from 'next/link';
 import { formatAnimalAge } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function FosterTile({
   animal,
@@ -20,11 +21,15 @@ export default function FosterTile({
 }) {
   return (
     <Card className="relative mb-6 flex cursor-default gap-0 overflow-hidden p-0 transition-all duration-500 hover:shadow-lg">
-      <img
-        src={animal?.image}
-        className="h-64 w-full object-cover"
-        alt="profile"
-      />
+      <div className="relative h-64 w-full">
+        <Image
+          src={animal?.image}
+          alt={animal?.name ?? 'animal-profile'}
+          fill
+          className="object-cover"
+          sizes="(min-width: 1024px) 33vw, 100vw"
+        />
+      </div>
       <div
         className={`absolute top-4 left-4 h-9 cursor-default items-center gap-1.5 rounded-md bg-[#EA1B1B]/70 px-4 text-base font-semibold text-white ${animal?.isEmergency ? 'flex' : 'hidden'}`}
       >
@@ -113,10 +118,15 @@ export default function FosterTile({
             </span>
           </div>
           <Link href={`/foster-list/${animal?.id}`}>
-            <div className="group relative flex h-8 w-32 cursor-pointer items-center justify-center gap-2 hover:text-white">
+            <div className="group relative flex h-8 w-32 cursor-pointer items-center justify-center gap-2">
               <div className="absolute top-0 right-0 z-0 h-full w-0 rounded-full bg-black opacity-0 transition-all duration-500 group-hover:w-full group-hover:opacity-100" />
-              <span className="z-10 font-semibold text-white">자세히 보기</span>
-              <MoveRight className="z-10 h-5 w-5" strokeWidth={2.5} />
+              <span className="z-10 font-semibold text-neutral-900 transition-colors group-hover:text-white">
+                자세히 보기
+              </span>
+              <MoveRight
+                className="z-10 h-5 w-5 text-neutral-900 transition-colors group-hover:text-white"
+                strokeWidth={2.5}
+              />
             </div>
           </Link>
         </div>

@@ -1,15 +1,20 @@
-export default function SelectedButton({
+type Option<T> = {
+  key: T;
+  word: string;
+};
+
+export default function SelectedButton<T extends string | number>({
   first,
   second,
   third,
   value,
   onChange,
 }: {
-  first: { key: any; word: string };
-  second?: { key: any; word: string };
-  third: { key: any; word: string };
-  value: any;
-  onChange: any;
+  first: Option<T>;
+  second?: Option<T>;
+  third: Option<T>;
+  value: T;
+  onChange: (value: T | undefined) => void;
 }) {
   console.log('value:', value, third?.key);
   return (

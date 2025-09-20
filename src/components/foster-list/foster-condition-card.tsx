@@ -1,4 +1,3 @@
-import { useState } from 'react';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
@@ -38,8 +37,6 @@ export default function FosterConditionCard({
   setAnimalGender: (value: string) => void;
   setAnimalStatus?: (value: string) => void;
 }) {
-  const [isSelected, setIsSelected] = useState(false);
-
   const conditionTypes = [
     {
       title: '종류',
@@ -129,11 +126,5 @@ export default function FosterConditionCard({
       : []),
   ];
 
-  return (
-    <ConditionItem
-      conditionTypes={conditionTypes}
-      isSelected={isSelected}
-      setIsSelected={setIsSelected}
-    />
-  );
+  return <ConditionItem conditionTypes={conditionTypes} />;
 }

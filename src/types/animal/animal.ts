@@ -17,7 +17,7 @@ export enum AnimalSize {
 export enum FosterState {
   IN_PROGRESS = 'IN_PROGRESS',
   FOSTERED = 'FOSTERED',
-  ADOPTED = 'ADOPTED ',
+  ADOPTED = 'ADOPTED',
 }
 
 export type Animal = {

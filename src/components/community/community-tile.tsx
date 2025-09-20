@@ -3,8 +3,11 @@ import { Card } from '../ui/card';
 import { Eye, MessageSquareText, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
+import { stripHtml } from '@/lib/utils';
 
 export default function CommunityTile({ post }: { post: PostItem }) {
+  const preview = stripHtml(post?.content ?? '').trim();
+
   return (
     <Link
       href={`/community/${post?.id}`}
@@ -16,7 +19,7 @@ export default function CommunityTile({ post }: { post: PostItem }) {
           <span className="line-clamp-1 text-lg font-semibold">
             {post?.title}
           </span>
-          <span className="line-clamp-2 text-neutral-500">{post?.content}</span>
+          <span className="line-clamp-2 text-neutral-500">{preview}</span>
           <div className="flex w-full justify-between gap-5">
             <div className="flex items-center gap-3">
               <Image

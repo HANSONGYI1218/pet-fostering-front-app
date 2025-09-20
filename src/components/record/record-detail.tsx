@@ -10,21 +10,20 @@ import {
   AccordionItem,
   AccordionTrigger,
 } from '@/components/ui/accordion';
-import { useEffect, useRef, useState } from 'react';
+import { useState } from 'react';
 import { ko } from 'date-fns/locale';
 import {
   Dialog,
   DialogContent,
-  DialogDescription,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import Image from 'next/image';
 import { Badge } from '../ui/badge';
 import { RecordImages } from './record-images';
 import { RecordContent } from './record-content';
 import { RecordHealthNote } from './record-health-note';
+import Image from 'next/image';
 
 export default function RecordDetail() {
   const [viewType, setViewType] = useState('record');
@@ -106,11 +105,15 @@ export default function RecordDetail() {
                       {record?.content}
                     </span>
                   </div>
-                  <img
-                    src={record?.images[0]}
-                    className="h-full w-full object-cover"
-                    alt="profile"
-                  />
+                  <div className="relative h-full w-full">
+                    <Image
+                      src={record?.images[0] ?? '/images/placeholder.png'}
+                      alt={`record-${record?.created_at}`}
+                      fill
+                      className="object-cover"
+                      sizes="(min-width: 1024px) 20vw, 50vw"
+                    />
+                  </div>
                 </div>
               </DialogTrigger>
               <DialogContent className="gap-10">

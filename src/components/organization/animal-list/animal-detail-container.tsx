@@ -487,11 +487,15 @@ export default function AnimalDetailContainer({
           <div className="flex w-full gap-6">
             <div className="flex h-fit w-96 flex-col gap-6 rounded-lg bg-white p-10">
               <h1 className="text-xl font-bold">{animal?.name}</h1>
-              <img
-                src={animal?.images[0]}
-                alt="animal_img"
-                className="h-64 w-full rounded-lg border object-cover"
-              />
+              <div className="relative h-64 w-full">
+                <Image
+                  src={animal?.images[0] ?? '/images/placeholder.png'}
+                  alt={animal?.name ?? 'animal-img'}
+                  fill
+                  className="rounded-lg border object-cover"
+                  sizes="(min-width: 1024px) 25vw, 100vw"
+                />
+              </div>
               <div className="flex flex-col gap-3">
                 <div className="flex items-center justify-between">
                   <span className="text-sm text-neutral-700">종</span>

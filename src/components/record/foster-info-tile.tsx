@@ -2,6 +2,7 @@ import { FosterMatchInfo } from '@/types/foster-record/foster-record-api';
 import { Card } from '../ui/card';
 import { ANIMAL_GENDER_LABEL_KO } from '@/constants/enum';
 import { formatAnimalAge, getDDay } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function FosterInfoCard({
   fosterInfo,
@@ -14,11 +15,15 @@ export default function FosterInfoCard({
     <div className="flex flex-col gap-6">
       <Card className="h-fit w-72 cursor-default border-none">
         <h1 className="text-xl font-bold">{fosterInfo?.animal?.name}</h1>
-        <img
-          src={fosterInfo?.animal?.images[0]}
-          alt="animal_img"
-          className="h-64 w-full rounded-lg border object-cover"
-        />
+        <div className="relative h-64 w-full">
+          <Image
+            src={fosterInfo?.animal?.images[0] ?? '/images/placeholder.png'}
+            alt={fosterInfo?.animal?.name ?? 'animal-img'}
+            fill
+            className="rounded-lg border object-cover"
+            sizes="(min-width: 1024px) 20vw, 100vw"
+          />
+        </div>
         <div className="flex flex-col gap-3">
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-700">종</span>

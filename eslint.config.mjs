@@ -15,7 +15,7 @@ const compat = new FlatCompat({
   baseDirectory: __dirname,
 });
 
-module.exports = [
+export default [
   // 기존 ESLint config 변환
   ...compat.extends('next/core-web-vitals', 'next/typescript'),
 

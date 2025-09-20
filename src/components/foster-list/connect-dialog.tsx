@@ -1,17 +1,14 @@
 import { Button } from '@/components/ui/button';
 import {
   Dialog,
-  DialogClose,
   DialogContent,
   DialogDescription,
-  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import { Input } from '@/components/ui/input';
-import { Label } from '@/components/ui/label';
 import { Phone } from 'lucide-react';
+import Image from 'next/image';
 
 export default function ConnectDialog({
   name,
@@ -39,7 +36,7 @@ export default function ConnectDialog({
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-2">
-          <img
+          <Image
             src="/images/call-center.png"
             width={160}
             height={160}

@@ -3,12 +3,12 @@ import {
   Dialog,
   DialogClose,
   DialogContent,
-  DialogDescription,
   DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
+import Image from 'next/image';
 
 export function ApplyAcceptDialog({
   animal_name,
@@ -33,7 +33,7 @@ export function ApplyAcceptDialog({
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col items-center justify-center gap-2 py-6">
-            <img
+            <Image
               src="/images/apply-accept.png"
               height={160}
               width={160}

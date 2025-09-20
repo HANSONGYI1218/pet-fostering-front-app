@@ -4,6 +4,8 @@ import { format } from 'date-fns';
 import { WholeDateArray } from './tr';
 import { Loader2, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
+import Image from 'next/image';
+import type { ChangeEvent } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -21,7 +23,6 @@ import {
   DialogTrigger,
 } from '@/components/ui/dialog';
 import { useRecord } from '@/providers/record-provider';
-import { useEffect, useState } from 'react';
 import { Button } from '@/components/ui/button';
 import { Textarea } from '@/components/ui/textarea';
 import { FosterRecord } from '@/types/foster-record/foster-record';
@@ -31,10 +32,12 @@ import { Card } from '@/components/ui/card';
 import { RecordContent } from '../record-content';
 import { RecordHealthNote } from '../record-health-note';
 
+import type { Dispatch, SetStateAction } from 'react';
+
 interface TdProps {
   p: WholeDateArray;
   currentMonth: Date;
-  setCurrentMonth: any;
+  setCurrentMonth: Dispatch<SetStateAction<Date>>;
 }
 
 const RecordSchema = z.object({
@@ -45,7 +48,6 @@ const RecordSchema = z.object({
 
 const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const recordContext = useRecord();
-  const [additionalFiles, setAdditionalFiles] = useState<File[]>([]);
 
   const currentRecord =
     recordContext?.records.length > 0
@@ -56,7 +58,6 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
         )
       : null;
 
-  const [isLoading, setIsLoading] = useState(false);
   const isToday = format(new Date(), 'yyyy-M-d') === format(p.date, 'yyyy-M-d');
   const isPasted = new Date(p.date) <= new Date();
   const isThisMonth =
@@ -74,19 +75,23 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     },
   });
 
-  async function onSubmit(data: z.infer<typeof RecordSchema>) {
-    console.log('onsubmit');
-  }
+  async function onSubmit(_data: z.infer<typeof RecordSchema>) {}
+
+  const isSubmitting = form.formState.isSubmitting;
 
   return (
     <Dialog>
       <DialogTrigger asChild>
         <Button
           onClick={() => {
-            currentRecord
-              ? recordContext?.setSelectedRecord(currentRecord)
-              : recordContext?.setSelectedRecord(null);
-            recordContext?.setCurrentMonth(p.date);
+            const setSelectedRecord = recordContext?.setSelectedRecord;
+            if (setSelectedRecord) {
+              setSelectedRecord(currentRecord ?? null);
+            }
+            const setRecordMonth = recordContext?.setCurrentMonth;
+            if (setRecordMonth) {
+              setRecordMonth(p.date);
+            }
 
             if (p.date.getMonth() !== recordContext.currentMonth.getMonth()) {
               setCurrentMonth(p.date);
@@ -110,30 +115,25 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
           >
             {p.formattedDate}
           </span>
-          {currentRecord &&
-            (recordContext.isDog ? (
-              <img
-                src="/icons/dog_stamp.svg"
-                width={100}
-                height={100}
-                alt="stamp"
-                className="relative z-10"
-              />
-            ) : (
-              <img
-                src="/icons/cat_stamp.svg"
-                width={100}
-                height={100}
-                alt="stamp"
-                className="relative z-10"
-              />
-            ))}
+          {currentRecord && (
+            <Image
+              src={
+                recordContext.isDog
+                  ? '/icons/dog_stamp.svg'
+                  : '/icons/cat_stamp.svg'
+              }
+              width={100}
+              height={100}
+              alt="stamp"
+              className="relative z-10"
+            />
+          )}
         </Button>
       </DialogTrigger>
       {isPasted && (
         <DialogContent
-          onInteractOutside={(e) => {
-            if (isLoading) e.preventDefault();
+          onInteractOutside={(event) => {
+            if (isSubmitting) event.preventDefault();
           }}
         >
           <Form {...form}>
@@ -210,31 +210,22 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                                       id="additionalImgs"
                                       accept="image/*"
                                       multiple
-                                      onChange={(e: any) => {
-                                        const files = e.target.files;
-                                        const selectedFiles = Array.from(files); // File[]
+                                      onChange={(
+                                        event: ChangeEvent<HTMLInputElement>,
+                                      ) => {
+                                        const { files } = event.target;
 
                                         if (files) {
-                                          // 선택된 파일들을 Array로 변환하고 URL을 생성
-                                          const videoPaths = Array.from(
+                                          const imagePaths = Array.from(
                                             files,
-                                          ).map((file: any) =>
+                                          ).map((file) =>
                                             URL.createObjectURL(file),
                                           );
 
-                                          // field.value와 videoPaths를 합친 배열을 직접 전달
-                                          const updatedFiles = [
-                                            ...videoPaths,
+                                          field.onChange([
                                             ...(field?.value ?? []),
-                                          ];
-                                          setAdditionalFiles(
-                                            (prevFiles: any) => [
-                                              ...selectedFiles, // 새로운 파일들을 추가
-                                              ...prevFiles, // 기존 파일들을 그대로 넣음
-                                            ],
-                                          );
-
-                                          field.onChange(updatedFiles); // 배열을 바로 전달
+                                            ...imagePaths,
+                                          ]);
                                         }
                                       }}
                                       className="hidden"
@@ -248,23 +239,11 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                                 key={index}
                               >
                                 <Button
+                                  type="button"
                                   onClick={() => {
                                     const deleteImage = field?.value?.filter(
-                                      (v: any) => v !== image,
+                                      (value) => value !== image,
                                     );
-                                    if (deleteImage) {
-                                      setAdditionalFiles((prevFiles: any) => {
-                                        const updatedFiles = [
-                                          ...(prevFiles?.filter(
-                                            (_: any, indx: any) =>
-                                              indx !== index,
-                                          ) ?? []),
-                                        ];
-
-                                        return updatedFiles; // 수정된 배열을 반환
-                                      });
-                                    }
-
                                     field?.onChange(deleteImage);
                                   }}
                                   className={`absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full bg-neutral-300 p-0 ${currentRecord ? 'hidden' : 'flex'}`}
@@ -274,11 +253,15 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                                     strokeWidth={2.5}
                                   />
                                 </Button>
-                                <img
-                                  src={image}
-                                  alt="preview"
-                                  className={`relative z-0 h-32 rounded-xl object-cover`}
-                                />
+                                <div className="relative h-32 w-full">
+                                  <Image
+                                    src={image}
+                                    alt={`record-image-${index + 1}`}
+                                    fill
+                                    className="rounded-xl object-cover"
+                                    sizes="(min-width: 1024px) 20vw, 100vw"
+                                  />
+                                </div>
                               </Card>
                             ))}
                           </div>
@@ -341,12 +324,26 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                     type="submit"
                     variant={'outline_black'}
                     className="w-24"
+                    disabled={isSubmitting}
                   >
-                    {isLoading ? <Loader2 className="animate-spin" /> : '수정'}
+                    {isSubmitting ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      '수정'
+                    )}
                   </Button>
                 ) : (
-                  <Button type="submit" variant={'default'} className="w-24">
-                    {isLoading ? <Loader2 className="animate-spin" /> : '완료'}
+                  <Button
+                    type="submit"
+                    variant={'default'}
+                    className="w-24"
+                    disabled={isSubmitting}
+                  >
+                    {isSubmitting ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      '완료'
+                    )}
                   </Button>
                 )}
               </div>

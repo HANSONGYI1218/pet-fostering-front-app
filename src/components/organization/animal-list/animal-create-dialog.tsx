@@ -23,7 +23,6 @@ import { Button } from '@/components/ui/button';
 import {
   Form,
   FormControl,
-  FormDescription,
   FormField,
   FormItem,
   FormLabel,
@@ -37,8 +36,9 @@ import {
   FosterState,
 } from '@/types/animal/animal';
 import { Card } from '@/components/ui/card';
-import { useEffect, useRef, useState } from 'react';
+import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
+import Image from 'next/image';
 import {
   Popover,
   PopoverContent,
@@ -156,15 +156,7 @@ export function AnimalCreateDialog() {
       form.watch('emergency_reason')?.trim().length > 0);
 
   // 2. Define a submit handler.
-  function onSubmit(values: z.infer<typeof AnimalCreateformSchema>) {
-    //  animal_condition: {
-    //   animal_healths: z.array(z.string()).min(1),
-    //   animal_personalitys: z.array(z.string()).min(1),
-    //   foster_environments: z.array(z.string()).min(1),
-    //   special_notes_animals: z.array(z.string()).min(1),
-    // }
-    console.log(values);
-  }
+  function onSubmit(_values: z.infer<typeof AnimalCreateformSchema>) {}
 
   return (
     <Dialog>
@@ -210,15 +202,16 @@ export function AnimalCreateDialog() {
                                 id="additionalImgs"
                                 accept="image/*"
                                 multiple
-                                onChange={(e: any) => {
-                                  const files: any = e.target.files;
+                                onChange={(
+                                  event: ChangeEvent<HTMLInputElement>,
+                                ) => {
+                                  const { files } = event.target;
                                   if (!files) return;
 
-                                  const urls = Array.from(files).map(
-                                    (file: any) => URL.createObjectURL(file),
+                                  const urls = Array.from(files).map((file) =>
+                                    URL.createObjectURL(file),
                                   );
 
-                                  // react-hook-form 값에 string[]으로 저장
                                   field.onChange([
                                     ...(field.value ?? []),
                                     ...urls,
@@ -235,9 +228,10 @@ export function AnimalCreateDialog() {
                             key={index}
                           >
                             <Button
+                              type="button"
                               onClick={() => {
                                 const deleteImage = field?.value?.filter(
-                                  (v: any) => v !== image,
+                                  (value) => value !== image,
                                 );
 
                                 field?.onChange(deleteImage);
@@ -249,11 +243,15 @@ export function AnimalCreateDialog() {
                                 strokeWidth={2.5}
                               />
                             </Button>
-                            <img
-                              src={image}
-                              alt="preview"
-                              className={`relative z-0 h-32 rounded-xl object-cover`}
-                            />
+                            <div className="relative h-32 w-full">
+                              <Image
+                                src={image}
+                                alt={`preview-${index + 1}`}
+                                fill
+                                className="rounded-xl object-cover"
+                                sizes="(min-width: 1024px) 20vw, 100vw"
+                              />
+                            </div>
                           </Card>
                         ))}
                       </div>

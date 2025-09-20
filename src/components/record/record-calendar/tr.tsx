@@ -7,7 +7,6 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
-import { PropsWithChildren } from 'react';
 import { CalendarProps } from './record-calendar';
 import Td from './td';
 
@@ -16,10 +15,7 @@ export interface WholeDateArray {
   formattedDate: string;
 }
 
-const Tr = ({
-  currentMonth,
-  setCurrentMonth,
-}: PropsWithChildren<CalendarProps>) => {
+const Tr = ({ currentMonth, setCurrentMonth }: CalendarProps) => {
   const monthStart = startOfMonth(currentMonth); //현재 보고 있는 달의 시작하는 날
   const monthEnd = endOfMonth(monthStart); //현재 보고 있는 달의 끝나는 날
   const startDate = startOfWeek(monthStart); //현재 보고 있는 달력에서 맨 앞칸
@@ -31,13 +27,13 @@ const Tr = ({
   let day = startDate;
 
   //이차원 배열
-  let wholeDate: WholeDateArray[][] = [];
+  const wholeDate: WholeDateArray[][] = [];
   for (let i = 0; i < countOfWeek; i++) {
-    let arr: WholeDateArray[] = [];
+    const week: WholeDateArray[] = [];
     //7번 반복
     for (let j = 0; j < 7; j++) {
       //추후에 날짜를 선택해서 저장할 것을 고려하여 date정보와 format된 정보를 객체로 저장했다.
-      arr.push({
+      week.push({
         date: day,
         formattedDate: format(day, 'd'),
       });
@@ -47,17 +43,17 @@ const Tr = ({
     }
 
     //위에서 만든 길이 7짜리 배열을 이차원 배열에 넣음
-    wholeDate.push(arr);
+    wholeDate.push(week);
   }
 
-  return wholeDate.map((p) => {
+  return wholeDate.map((week) => {
     return (
       <tr
         className="relative grid w-full grid-cols-7 gap-2"
-        key={Math.random()}
+        key={week[0]?.date.toISOString()}
       >
         <Td
-          weekDate={p}
+          weekDate={week}
           currentMonth={currentMonth}
           setCurrentMonth={setCurrentMonth}
         />

@@ -405,7 +405,7 @@ export const dummyAnimals: FosterRecordAnimalItem[] = [
     birth_date: new Date('2024-01-01'),
     gender: AnimalGender.MALE,
     foster_duration: 40,
-    state: FosterState.FOSTERED,
+    state: FosterState.ADOPTED,
     foster_match_id: '3',
   },
   {

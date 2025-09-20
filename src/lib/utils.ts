@@ -68,3 +68,7 @@ export function fosterDuration(start_date: Date): number {
   );
   return preceedingDays;
 }
+
+export function stripHtml(value: string): string {
+  return value.replace(/<[^>]*>/g, '');
+}

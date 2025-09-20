@@ -47,8 +47,8 @@ export default function ChartContainer({
   const preceedingDay = fosterDuration(start_date);
 
   const chartData = months.map((month) => {
-    const count = foster_records.filter((rec: any) => {
-      const recMonth = new Date(rec.created_at).getMonth(); // 0~11
+    const count = foster_records.filter((record) => {
+      const recMonth = record.created_at.getMonth(); // 0~11
       const monthIndex = monthNames.indexOf(month); // months 배열에 해당하는 인덱스
       return recMonth === monthIndex;
     }).length;

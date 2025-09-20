@@ -5,7 +5,7 @@ import RecordCalendar from './record-calendar/record-calendar';
 import { RecordProvider } from '@/providers/record-provider';
 import RecordDetail from './record-detail';
 import { useEffect, useState } from 'react';
-import { ArrowUp, ChevronUp } from 'lucide-react';
+import { ArrowUp } from 'lucide-react';
 
 export default function RecordContainer({
   records,
