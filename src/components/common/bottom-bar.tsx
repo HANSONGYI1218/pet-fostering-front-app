@@ -1,11 +1,6 @@
 'use client';
 
-import Link from 'next/link';
-import { usePathname } from 'next/navigation';
-
 export default function BottomBar() {
-  const path = usePathname();
-
   // 해당 조건에 맞지 않으면 null 반환
   return (
     <>

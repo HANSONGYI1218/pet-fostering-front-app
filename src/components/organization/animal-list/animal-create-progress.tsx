@@ -1,6 +1,7 @@
 'use client';
 
 import { Dot } from 'lucide-react';
+import Image from 'next/image';
 
 export default function AniamlCreateProgress({
   currentIndex,
@@ -53,11 +54,11 @@ export default function AniamlCreateProgress({
             stroke="#00592d"
           />
         </div> */}
-        <img
+        <Image
           src="/images/goal.png"
           width={36}
           height={36}
-          alt="achivement"
+          alt="achievement"
           className="ml-3"
         />
       </div>

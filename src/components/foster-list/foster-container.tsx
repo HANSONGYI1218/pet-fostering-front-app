@@ -3,7 +3,7 @@
 import { FosterListAnimalItem } from '@/types/animal/animal-api';
 import { Button } from '../ui/button';
 import SearchBox from '../common/search-box';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import FosterTile from './foster-tile';
 import FosterConditionCard from './foster-condition-card';
 import {
@@ -21,51 +21,33 @@ export default function FosterContainer({
   const [animalSize, setAnimalSize] = useState('전체');
   const [animalGender, setAnimalGender] = useState('전체');
   const [search, setSearch] = useState('');
-  const [filteredAnimals, setFilteredAnimals] = useState<
-    FosterListAnimalItem[] | null
-  >(null);
+  const filteredAnimals = useMemo(() => {
+    if (!animals?.length) return [];
 
-  useEffect(() => {
-    setFilteredAnimals(animals);
+    const keyword = search.trim();
 
-    console.log('filteredAnimals:', filteredAnimals);
-  }, [animals]);
+    return animals.filter((animal: FosterListAnimalItem) => {
+      const matchesGender =
+        animalGender === '전체' ||
+        ANIMAL_GENDER_LABEL_KO[animal.gender] === animalGender;
 
-  useEffect(() => {
-    if (animals && animals?.length > 0) {
-      const sortedAnimals = animals.filter((animal: FosterListAnimalItem) => {
-        const matcheAnimalGender =
-          !animalGender ||
-          animalGender === '전체' ||
-          ANIMAL_GENDER_LABEL_KO[animal.gender] === animalGender;
+      const matchesType =
+        animalType === '전체' ||
+        ANIMAL_TYPE_LABEL_KO[animal?.type] === animalType;
 
-        const matchesAimalTypes =
-          !animalType || animalType === '전체'
-            ? true
-            : animalType === ANIMAL_TYPE_LABEL_KO[animal?.type];
+      const matchesSize =
+        animalSize === '전체' ||
+        ANIMAL_SIZE_LABEL_KO[animal?.size] === animalSize;
 
-        const matchesAnimalSize =
-          !animalSize || animalSize === '전체'
-            ? true
-            : animalSize === ANIMAL_SIZE_LABEL_KO[animal?.size];
+      const matchesKeyword =
+        keyword.length === 0 ||
+        animal?.breed.includes(keyword) ||
+        animal?.name.includes(keyword) ||
+        animal?.organization?.name.includes(keyword);
 
-        const matchesSearch =
-          search.length === 0 ||
-          animal?.breed.includes(search) ||
-          animal?.name.includes(search) ||
-          animal?.organization?.name.includes(search);
-
-        return (
-          matcheAnimalGender &&
-          matchesAimalTypes &&
-          matchesAnimalSize &&
-          matchesSearch
-        );
-      });
-
-      setFilteredAnimals(sortedAnimals);
-    }
-  }, [animals, animalType, animalSize, animalGender, search]);
+      return matchesGender && matchesType && matchesSize && matchesKeyword;
+    });
+  }, [animals, animalGender, animalType, animalSize, search]);
 
   return (
     <div className="flex flex-col gap-10">
@@ -95,11 +77,14 @@ export default function FosterContainer({
             setAnimalGender={setAnimalGender}
           />
         </div>
-        <SearchBox placeholder="품종, 기관/동물 이름" useStateF={setSearch} />
+        <SearchBox
+          placeholder="품종, 기관/동물 이름"
+          onChangeValue={setSearch}
+        />
       </div>
       <div className="grid w-full grid-cols-3 gap-6 bg-white">
-        {filteredAnimals?.map((filteredAnimal, idx) => (
-          <FosterTile key={idx} animal={filteredAnimal} />
+        {filteredAnimals.map((filteredAnimal) => (
+          <FosterTile key={filteredAnimal.id} animal={filteredAnimal} />
         ))}
       </div>
     </div>

@@ -1,4 +1,6 @@
 import { Card } from '../ui/card';
+import Image from 'next/image';
+import { cn } from '@/lib/utils';
 
 export function RecordImages({
   images,
@@ -48,13 +50,17 @@ export function RecordImages({
         <>{children}</>
       ) : (
         <div className="grid w-full grid-cols-3 gap-2">
-          {images?.map((image, indx) => (
-            <Card className="p-0 shadow-none" key={indx}>
-              <img
-                src={image}
-                alt="preview"
-                className={`relative z-0 h-40 rounded-xl object-cover ${className}`}
-              />
+          {images?.map((image, index) => (
+            <Card className="p-0 shadow-none" key={index}>
+              <div className={cn('relative h-40 w-full', className)}>
+                <Image
+                  src={image}
+                  alt={`record-image-${index + 1}`}
+                  fill
+                  className="rounded-xl object-cover"
+                  sizes="(min-width: 1024px) 20vw, 100vw"
+                />
+              </div>
             </Card>
           ))}
         </div>

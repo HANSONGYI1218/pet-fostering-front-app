@@ -2,12 +2,15 @@ import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
+import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
+
+type CommentLike = CommentItem | ReplyCommentItem;
 
 export default function CommunityCommentTile({
   comment,
   isLast,
 }: {
-  comment: any;
+  comment: CommentLike;
   isLast: boolean;
 }) {
   return (
@@ -71,8 +74,8 @@ export default function CommunityCommentTile({
         </div>
       </div>
       <span className="py-4 text-neutral-500">
-        {comment?.content.split('<br />').map((line: string, i: number) => (
-          <span key={i}>
+        {(comment.content ?? '').split('<br />').map((line, index) => (
+          <span key={index}>
             {line}
             <br />
           </span>
@@ -80,7 +83,9 @@ export default function CommunityCommentTile({
       </span>
       <div className="flex w-full justify-between gap-5">
         <span className="text-[#525252]">
-          {format(comment?.created_at, 'yyyy.MM.dd a hh:mm', { locale: ko })}
+          {format(new Date(comment.created_at), 'yyyy.MM.dd a hh:mm', {
+            locale: ko,
+          })}
         </span>
         <div className="flex cursor-pointer items-center gap-1">
           <ThumbsUp className="h-4 w-4" stroke="#525252" />

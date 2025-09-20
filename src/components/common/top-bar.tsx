@@ -3,14 +3,8 @@
 import Image from 'next/image';
 import { Button } from '../ui/button';
 import Link from 'next/link';
-import { useContext, useEffect, useState } from 'react';
+import { useEffect, useState } from 'react';
 import { usePathname } from 'next/navigation';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/components/ui/popover';
-import { Badge } from '../ui/badge';
 
 export default function TopBar() {
   const path = usePathname();

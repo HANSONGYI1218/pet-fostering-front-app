@@ -10,7 +10,8 @@ export default function CommunityBanner() {
           </h1>
           <div className="flex flex-col gap-1 text-lg">
             <span>
-              퍼디의 이야기 놀이터에서는 '임시보호'에 관한 이야기만 나눠주세요!
+              퍼디의 이야기 놀이터에서는 &apos;임시보호&apos;에 관한 이야기만
+              나눠주세요!
             </span>
             <span>누구나 자유롭게 정보를 공유하고 소통왕이 되어보세요</span>
             <span>

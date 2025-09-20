@@ -1,9 +1,7 @@
 import BackButton from '@/components/common/back-button';
 import AnimalBookmark from '@/components/foster-list/animal-bookmark';
 import { AnimalCarousel } from '@/components/foster-list/animal-carousel';
-import { Button } from '@/components/ui/button';
 import { Card } from '@/components/ui/card';
-import Image from 'next/image';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
@@ -14,13 +12,14 @@ import {
   FOSTER_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
 import { dummyFosterAnimalDetails } from '@/lib/dummydata';
-import { Check, PawPrint } from 'lucide-react';
+import { Check } from 'lucide-react';
 import ConnectDialog from '@/components/foster-list/connect-dialog';
 import FosterRequestDialog from '@/components/foster-list/foster-requst-dialog';
 import { Badge } from '@/components/ui/badge';
 import KakaoMapLoader from '@/components/common/kakaomap-loader';
 import { formatAnimalAge } from '@/lib/utils';
 import { ANIMAL_HEALTH } from '@/types/animal-condition/animal-condition';
+import Image from 'next/image';
 
 export default async function FosterListDetailPage({
   params,
@@ -113,9 +112,11 @@ export default async function FosterListDetailPage({
                 <AnimalCarousel images={animal?.images} />
                 <div className="flex items-center justify-between rounded-lg bg-[#F5F5F5] p-3">
                   <span className="flex items-end gap-1 font-medium">
-                    <img
+                    <Image
                       src="/images/support.png"
                       alt="support"
+                      width={28}
+                      height={28}
                       className="h-7 w-7"
                     />{' '}
                     {animal?.name}에게 작지만 따뜻한 후원을 해주세요.

@@ -7,6 +7,7 @@ import { Popover } from '../ui/popover';
 import { PopoverContent, PopoverTrigger } from '../ui/popover';
 import Link from 'next/link';
 import { formatAnimalAge } from '@/lib/utils';
+import Image from 'next/image';
 
 export default function AnimalTile({
   animal,
@@ -36,11 +37,15 @@ export default function AnimalTile({
           </div>
         </PopoverContent>
       </Popover>
-      <img
-        src={animal?.images[0]}
-        className="h-64 w-full object-cover"
-        alt="profile"
-      />
+      <div className="relative h-64 w-full">
+        <Image
+          src={animal?.images[0] ?? '/images/placeholder.png'}
+          alt={animal?.name ?? 'animal-profile'}
+          fill
+          className="object-cover"
+          sizes="(min-width: 1024px) 25vw, 100vw"
+        />
+      </div>
       <div className="flex flex-col gap-2 p-6">
         <h1 className="text-xl font-semibold">{animal?.name}</h1>
         <div className="flex gap-1 text-sm text-neutral-500">

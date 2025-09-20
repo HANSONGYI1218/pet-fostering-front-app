@@ -7,7 +7,6 @@ import {
   PopoverTrigger,
 } from '@/components/ui/popover';
 import { Button } from '../ui/button';
-import { useEffect } from 'react';
 import { RotateCcwIcon } from 'lucide-react';
 
 type ConditionType = {
@@ -28,28 +27,14 @@ type ConditionType = {
 
 export default function ConditionItem({
   conditionTypes,
-  isSelected,
-  setIsSelected,
 }: {
   conditionTypes: ConditionType[];
-  isSelected: boolean;
-  setIsSelected: any;
 }) {
-  const getDefaults = () => conditionTypes.map((c) => c.default);
-
   const handleReset = () => {
     conditionTypes?.map((conditionType: ConditionType) =>
       conditionType.onchange('전체'),
     );
   };
-
-  useEffect(() => {
-    // 모든 값이 "전체"인지 확인
-    const allSelected = conditionTypes.every((type) => type.default === '전체');
-
-    // 하나라도 "전체"가 아니면 true, 전부 "전체"면 false
-    setIsSelected(!allSelected);
-  }, [getDefaults().join(',')]);
 
   return (
     <Popover>
@@ -98,7 +83,7 @@ export default function ConditionItem({
                     <CheckboxDemo
                       key={value}
                       value={conditionType?.default ?? ''}
-                      useStateF={conditionType?.onchange}
+                      onChangeValue={conditionType?.onchange}
                       label={key}
                       id={value}
                     />

@@ -12,7 +12,7 @@ export default function Chip({ value, isSelected, onToggle }: ChipProps) {
     <Button
       variant={isSelected ? 'outline_green' : 'outline'}
       onClick={onToggle}
-      className={`flex gap-1 rounded-full font-normal text-neutral-700 hover:text-black ${isSelected && 'border-2' }`}
+      className={`flex gap-1 rounded-full font-normal text-neutral-700 hover:text-black ${isSelected && 'border-2'}`}
     >
       {isSelected ? <Check strokeWidth={4} stroke="#00592d" /> : <Plus />}
       {value}

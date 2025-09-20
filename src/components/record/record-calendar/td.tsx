@@ -3,11 +3,12 @@
 import { format } from 'date-fns';
 import { WholeDateArray } from './tr';
 import CalendarDialogForm from './calendar-dialog-form';
+import type { Dispatch, SetStateAction } from 'react';
 
 interface TdProps {
   weekDate: WholeDateArray[];
   currentMonth: Date;
-  setCurrentMonth: any;
+  setCurrentMonth: Dispatch<SetStateAction<Date>>;
 }
 
 const Td = ({ weekDate, currentMonth, setCurrentMonth }: TdProps) => {

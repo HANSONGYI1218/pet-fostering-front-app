@@ -2,63 +2,51 @@
 
 import { Button } from '@/components/ui/button';
 import { FosterRecordAnimalItem } from '@/types/animal/animal-api';
-import { useEffect, useState } from 'react';
+import { useMemo, useState } from 'react';
 import AnimalTile from './animal-tile';
 import { Plus } from 'lucide-react';
 import { Card } from '../ui/card';
+import { FosterState } from '@/types/animal/animal';
+import { cn } from '@/lib/utils';
 
 export default function AnimalContainer({
   animals,
 }: {
   animals: FosterRecordAnimalItem[];
 }) {
-  const [selectedFilter, setSelectedFilter] = useState('IN_PROGRESS');
-  const [filteredAnimals, setFilteredAnimals] = useState<
-    FosterRecordAnimalItem[] | null
-  >(null);
+  const [selectedFilter, setSelectedFilter] = useState<FosterState>(
+    FosterState.IN_PROGRESS,
+  );
 
-  useEffect(() => {
-    setFilteredAnimals(animals);
-  }, [animals]);
+  const filteredAnimals = useMemo(
+    () => animals.filter((animal) => animal?.state === selectedFilter),
+    [animals, selectedFilter],
+  );
 
-  useEffect(() => {
-    const filteredAnimals = animals?.filter(
-      (a: any) => a?.state === selectedFilter,
-    );
-    setFilteredAnimals(filteredAnimals);
-  }, [selectedFilter, animals]);
+  const filters: { label: string; value: FosterState }[] = [
+    { label: '임시보호 중', value: FosterState.IN_PROGRESS },
+    { label: '임시보호 완료', value: FosterState.FOSTERED },
+    { label: '입양 중', value: FosterState.ADOPTED },
+  ];
 
   return (
     <div className="flex flex-col gap-10">
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-4">
-          <Button
-            variant="filter"
-            onClick={() => {
-              setSelectedFilter('IN_PROGRESS');
-            }}
-            className={`${selectedFilter === 'IN_PROGRESS' && 'bg-black font-semibold text-white hover:bg-black'}`}
-          >
-            임시보호 중
-          </Button>
-          <Button
-            variant="filter"
-            onClick={() => {
-              setSelectedFilter('FOSTERED');
-            }}
-            className={`${selectedFilter === 'FOSTERED' && 'bg-black font-semibold text-white hover:bg-black'}`}
-          >
-            임시보호 완료
-          </Button>
-          <Button
-            variant="filter"
-            onClick={() => {
-              setSelectedFilter('shared');
-            }}
-            className={`${selectedFilter === 'shared' && 'bg-black font-semibold text-white hover:bg-black'}`}
-          >
-            공유된 임시보호 기록
-          </Button>
+          {filters.map(({ label, value }) => (
+            <Button
+              key={value}
+              type="button"
+              variant="filter"
+              onClick={() => setSelectedFilter(value)}
+              className={cn(
+                selectedFilter === value &&
+                  'bg-black font-semibold text-white hover:bg-black',
+              )}
+            >
+              {label}
+            </Button>
+          ))}
         </div>
       </div>
       <div className="grid w-full grid-cols-3 gap-6">
@@ -72,8 +60,8 @@ export default function AnimalContainer({
             </span>
           </div>
         </Card>
-        {filteredAnimals?.map((filteredAnimal, idx) => (
-          <AnimalTile key={idx} animal={filteredAnimal} />
+        {filteredAnimals.map((filteredAnimal) => (
+          <AnimalTile key={filteredAnimal.id} animal={filteredAnimal} />
         ))}
       </div>
     </div>

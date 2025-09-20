@@ -11,6 +11,7 @@ import {
 } from '@/components/ui/dialog';
 import { PawPrint } from 'lucide-react';
 import Link from 'next/link';
+import Image from 'next/image';
 
 export default function FosterRequestDialog({ name }: { name: string }) {
   return (
@@ -41,11 +42,11 @@ export default function FosterRequestDialog({ name }: { name: string }) {
             </DialogDescription>
           </DialogHeader>
           <div className="flex flex-col items-center gap-2">
-            <img
+            <Image
               src="/images/fostser-request.png"
               width={160}
               height={160}
-              alt="fostser-request"
+              alt="foster-request"
               className="py-6"
             />
             <span className="text-center">

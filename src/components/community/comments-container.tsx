@@ -4,7 +4,7 @@ import { PaginationDynamic } from '../common/papagination-dynamic';
 import { useState } from 'react';
 import CommunityCommentTile from './community-comment-tile';
 import { Card } from '../ui/card';
-import { CommentItem } from '@/types/comment/comment-api';
+import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
 
 export default function CommentsContainer({
   comments,
@@ -16,6 +16,8 @@ export default function CommentsContainer({
 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
+
+  const pagedComments = comments.slice(startIdx, endIdx);
 
   return (
     <div className="flex w-full flex-col gap-10">
@@ -53,42 +55,35 @@ export default function CommentsContainer({
           </span>
         </div>{' '}
         <div className="flex w-full flex-col">
-          {comments
-            .slice(startIdx, endIdx)
-            .map((comment: CommentItem, idx: number) => {
-              const isLastParent =
-                idx === comments.slice(startIdx, endIdx).length - 1;
-              const hasReplies = comment?.reply_comments
-                ? comment?.reply_comments?.length > 0
-                : false;
+          {pagedComments.map((comment, index) => {
+            const replyComments = comment.reply_comments ?? [];
+            const isLastParent = index === pagedComments.length - 1;
+            const hasReplies = replyComments.length > 0;
 
-              return (
-                <div key={comment.id}>
-                  <CommunityCommentTile
-                    comment={comment}
-                    isLast={!hasReplies && isLastParent}
-                  />
-                  {hasReplies && (
-                    <div className="flex w-full flex-col pl-14">
-                      {comment!.reply_comments!.map(
-                        (reply: any, replyIdx: number) => {
-                          const isLastReply =
-                            isLastParent &&
-                            replyIdx === comment!.reply_comments!.length - 1;
-                          return (
-                            <CommunityCommentTile
-                              key={reply.id}
-                              comment={reply}
-                              isLast={isLastReply}
-                            />
-                          );
-                        },
-                      )}
-                    </div>
-                  )}
-                </div>
-              );
-            })}
+            return (
+              <div key={comment.id}>
+                <CommunityCommentTile
+                  comment={comment}
+                  isLast={!hasReplies && isLastParent}
+                />
+                {hasReplies && (
+                  <div className="flex w-full flex-col pl-14">
+                    {replyComments.map((reply: ReplyCommentItem, replyIdx) => {
+                      const isLastReply =
+                        isLastParent && replyIdx === replyComments.length - 1;
+                      return (
+                        <CommunityCommentTile
+                          key={reply.id}
+                          comment={reply}
+                          isLast={isLastReply}
+                        />
+                      );
+                    })}
+                  </div>
+                )}
+              </div>
+            );
+          })}
         </div>
       </Card>
       <PaginationDynamic

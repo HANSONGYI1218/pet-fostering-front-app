@@ -6,19 +6,19 @@ export default function CheckBox({
   label,
   id,
   value,
-  useStateF,
+  onChangeValue,
 }: {
   label: string;
   id: string;
   value: string;
-  useStateF: (state: string) => void;
+  onChangeValue: (state: string) => void;
 }) {
   const isChecked = value === label;
 
   const handleChange = () => {
     if (!isChecked) {
       // 체크박스를 클릭했을 때 value를 label로 설정하여 부모 상태를 업데이트
-      useStateF(label); // value를 label로 업데이트
+      onChangeValue(label);
     }
   };
 

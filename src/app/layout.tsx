@@ -8,7 +8,7 @@ import BottomBar from '@/components/common/bottom-bar';
 
 declare global {
   interface Window {
-    kakao: any;
+    kakao: Record<string, unknown>;
   }
 }
 

@@ -181,7 +181,7 @@ export default function AnimalContainer() {
             setAnimalGender={setAnimalGender}
             setAnimalStatus={setAnimalStatus}
           />
-          <SearchBox placeholder="품종, 동물 이름" useStateF={setSearch} />
+          <SearchBox placeholder="품종, 동물 이름" onChangeValue={setSearch} />
         </div>
         <AnimalCreateDialog />
       </div>
