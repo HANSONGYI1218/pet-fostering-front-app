@@ -34,3 +34,11 @@ You can check out [the Next.js GitHub repository](https://github.com/vercel/next
 The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
 
 Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+
+## 환경 변수
+
+- `NEXT_PUBLIC_API_BASE_URL`: 백엔드 API 엔드포인트. 미설정 시 `https://vfow5t29gb.execute-api.ap-northeast-2.amazonaws.com/dev/api` 를 사용합니다.
+
+## 테스트
+
+- Vitest 기반 유닛 테스트 실행: `pnpm test`

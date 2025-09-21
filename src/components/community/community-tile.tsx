@@ -7,6 +7,8 @@ import { stripHtml } from '@/lib/utils';
 
 export default function CommunityTile({ post }: { post: PostItem }) {
   const preview = stripHtml(post?.content ?? '').trim();
+  const nickname = post?.user?.nickname ?? '익명';
+  const commentCount = post?.commentCount ?? 0;
 
   return (
     <Link
@@ -28,12 +30,12 @@ export default function CommunityTile({ post }: { post: PostItem }) {
                 height={32}
                 alt="profile"
               />
-              <span className="text-[#525252]">By {post?.user?.nickname}</span>
+              <span className="text-[#525252]">By {nickname}</span>
             </div>
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1">
                 <MessageSquareText className="h-4 w-4" stroke="#525252" />
-                <span className="text-[#525252]">{2}</span>
+                <span className="text-[#525252]">{commentCount}</span>
               </div>
               <div className="flex items-center gap-1">
                 <ThumbsUp className="h-4 w-4" stroke="#525252" />

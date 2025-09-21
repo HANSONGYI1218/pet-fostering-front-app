@@ -17,6 +17,10 @@ export default function CommunityPost({
 }: {
   post: PostItem | undefined;
 }) {
+  const nickname = post?.user?.nickname ?? '익명';
+  const createdAt = post?.created_at
+    ? new Date(post.created_at)
+    : undefined;
   return (
     <Card className="relative cursor-default">
       <Bookmark
@@ -35,7 +39,7 @@ export default function CommunityPost({
               height={32}
               alt="profile"
             />
-            <span className="font-semibold">By {post?.user?.nickname}</span>
+            <span className="font-semibold">By {nickname}</span>
           </div>
           <div className="flex items-center gap-5">
             <div className="flex cursor-pointer items-center gap-1">
@@ -63,8 +67,8 @@ export default function CommunityPost({
       </div>
       <div className="flex w-full items-center justify-between">
         <span className="text-[#525252]">
-          {post?.created_at &&
-            format(post?.created_at, 'yyyy.MM.dd a hh:mm', { locale: ko })}
+          {createdAt &&
+            format(createdAt, 'yyyy.MM.dd a hh:mm', { locale: ko })}
         </span>
         <Button variant={'destructive'} className="w-32 self-end">
           <Pencil />

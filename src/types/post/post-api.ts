@@ -1,15 +1,19 @@
 export type PostUserItem = {
   id: string;
-  nickname: string;
+  nickname: string | null;
 };
 
 export type PostItem = {
   id: string;
   user: PostUserItem;
-  images: string[];
   title: string;
   content: string;
   likes: number;
   views: number;
-  created_at: string; // ISO 날짜 문자열 형식. 필요시 Date로 변환
+  created_at: string;
+} & {
+  authorId?: string;
+  images?: string[];
+  commentCount?: number;
+  updated_at?: string;
 };
