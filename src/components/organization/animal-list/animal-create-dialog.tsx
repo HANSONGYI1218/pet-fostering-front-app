@@ -52,29 +52,30 @@ import {
   FOSTER_ENVIRONMENT_LABEL_KO,
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
-  ANIMAL_PERSONALITYS_LABEL_KO,
+  ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  ANIMAL_SPECIAL_NOTES_LABEL_KO,
+  ANIMAL_SPECIAL_NOTE_LABEL_KO,
 } from '@/constants/enum';
 import AniamlCreateProgress from './animal-create-progress';
 import { Textarea } from '@/components/ui/textarea';
 import {
-  ANIMAL_ENVIRONMENT,
-  ANIMAL_HEALTH,
-  ANIMAL_PERSONALITYS,
-  ANIMAL_SPECIAL_NOTES,
+  AnimalEnvironment,
+  AnimalHealth,
+  AnimalPersonality,
+  AnimalSpecialNote,
 } from '@/types/animal-condition/animal-condition';
 import Chip from '@/components/common/chip';
+import { useEmergencyReasonReset } from './hooks/use-emergency-reason-reset';
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
     message: '보호동물의 이름을 작성해 주세요.',
   }),
-  type: z.enum(AnimalType),
-  size: z.enum(AnimalSize),
-  gender: z.enum(AnimalGender),
-  status: z.enum(FosterState),
+  type: z.nativeEnum(AnimalType),
+  size: z.nativeEnum(AnimalSize),
+  gender: z.nativeEnum(AnimalGender),
+  status: z.nativeEnum(FosterState),
   images: z.array(z.string()).min(1),
   breed: z.string().min(1, {
     message: '보호동물의 품종을 작성해 주세요.',
@@ -88,10 +89,10 @@ const AnimalCreateformSchema = z.object({
   }),
   isEmergency: z.boolean(),
   emergency_reason: z.string(),
-  animal_healths: z.array(z.enum(ANIMAL_HEALTH)),
-  animal_personalitys: z.array(z.enum(ANIMAL_PERSONALITYS)),
-  foster_environments: z.array(z.enum(ANIMAL_ENVIRONMENT)),
-  special_notes_animals: z.array(z.enum(ANIMAL_SPECIAL_NOTES)),
+  animal_healths: z.array(z.nativeEnum(AnimalHealth)),
+  animal_personalitys: z.array(z.nativeEnum(AnimalPersonality)),
+  foster_environments: z.array(z.nativeEnum(AnimalEnvironment)),
+  special_notes_animals: z.array(z.nativeEnum(AnimalSpecialNote)),
   organization_id: z.string(),
 });
 
@@ -110,10 +111,10 @@ export function AnimalCreateDialog() {
       remark: '',
       isEmergency: false,
       emergency_reason: '',
-      animal_healths: [] as ANIMAL_HEALTH[],
-      animal_personalitys: [] as ANIMAL_PERSONALITYS[],
-      foster_environments: [] as ANIMAL_ENVIRONMENT[],
-      special_notes_animals: [] as ANIMAL_SPECIAL_NOTES[],
+      animal_healths: [] as AnimalHealth[],
+      animal_personalitys: [] as AnimalPersonality[],
+      foster_environments: [] as AnimalEnvironment[],
+      special_notes_animals: [] as AnimalSpecialNote[],
       organization_id: '1',
     },
   });
@@ -130,9 +131,7 @@ export function AnimalCreateDialog() {
     }
   }, [currentPage]);
 
-  useEffect(() => {
-    form.setValue('emergency_reason', '');
-  }, [form.watch('isEmergency') === false]);
+  useEmergencyReasonReset(form);
 
   const isStep1Valid =
     form.watch('images')?.length > 0 &&
@@ -456,7 +455,7 @@ ex) 꼬리 만지는 걸 싫어함.
                   control={form.control}
                   name="animal_personalitys"
                   render={({ field }) => {
-                    const current: ANIMAL_PERSONALITYS[] = Array.isArray(
+                    const current: AnimalPersonality[] = Array.isArray(
                       field.value,
                     )
                       ? field.value
@@ -466,10 +465,10 @@ ex) 꼬리 만지는 걸 싫어함.
                         <FormLabel>보호동물의 성격</FormLabel>
                         <FormControl>
                           <div className="flex flex-wrap gap-2">
-                            {Object.values(ANIMAL_PERSONALITYS).map(
+                            {Object.values(AnimalPersonality).map(
                               (personality) => {
                                 const label =
-                                  ANIMAL_PERSONALITYS_LABEL_KO[personality];
+                                  ANIMAL_PERSONALITY_LABEL_KO[personality];
                                 const selected =
                                   current?.includes(personality) ?? false;
 
@@ -501,7 +500,7 @@ ex) 꼬리 만지는 걸 싫어함.
                   control={form.control}
                   name="foster_environments"
                   render={({ field }) => {
-                    const current: ANIMAL_ENVIRONMENT[] = Array.isArray(
+                    const current: AnimalEnvironment[] = Array.isArray(
                       field.value,
                     )
                       ? field.value
@@ -511,7 +510,7 @@ ex) 꼬리 만지는 걸 싫어함.
                         <FormLabel>임시보호자의 환경 및 조건</FormLabel>
                         <FormControl>
                           <div className="flex flex-wrap gap-2">
-                            {Object.values(ANIMAL_ENVIRONMENT).map(
+                            {Object.values(AnimalEnvironment).map(
                               (environment) => {
                                 const label =
                                   FOSTER_ENVIRONMENT_LABEL_KO[environment];
@@ -546,7 +545,7 @@ ex) 꼬리 만지는 걸 싫어함.
                   control={form.control}
                   name="animal_healths"
                   render={({ field }) => {
-                    const current: ANIMAL_HEALTH[] = Array.isArray(field.value)
+                    const current: AnimalHealth[] = Array.isArray(field.value)
                       ? field.value
                       : [];
                     return (
@@ -554,7 +553,7 @@ ex) 꼬리 만지는 걸 싫어함.
                         <FormLabel>임시보호자의 환경 및 조건</FormLabel>
                         <FormControl>
                           <div className="flex flex-wrap gap-2">
-                            {Object.values(ANIMAL_HEALTH).map((health) => {
+                            {Object.values(AnimalHealth).map((health) => {
                               const label = ANIMAL_HEALTH_LABEL_KO[health];
                               const selected =
                                 current?.includes(health) ?? false;
@@ -584,7 +583,7 @@ ex) 꼬리 만지는 걸 싫어함.
                   control={form.control}
                   name="special_notes_animals"
                   render={({ field }) => {
-                    const current: ANIMAL_SPECIAL_NOTES[] = Array.isArray(
+                    const current: AnimalSpecialNote[] = Array.isArray(
                       field.value,
                     )
                       ? field.value
@@ -594,8 +593,8 @@ ex) 꼬리 만지는 걸 싫어함.
                         <FormLabel>유의사항</FormLabel>
                         <FormControl>
                           <div className="flex flex-wrap gap-2">
-                            {Object.values(ANIMAL_SPECIAL_NOTES).map((note) => {
-                              const label = ANIMAL_SPECIAL_NOTES_LABEL_KO[note];
+                            {Object.values(AnimalSpecialNote).map((note) => {
+                              const label = ANIMAL_SPECIAL_NOTE_LABEL_KO[note];
                               const selected = current?.includes(note) ?? false;
 
                               return (

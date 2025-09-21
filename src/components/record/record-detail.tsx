@@ -24,6 +24,7 @@ import { RecordImages } from './record-images';
 import { RecordContent } from './record-content';
 import { RecordHealthNote } from './record-health-note';
 import Image from 'next/image';
+import { toDate } from '@/lib/utils';
 
 export default function RecordDetail() {
   const [viewType, setViewType] = useState('record');
@@ -75,7 +76,9 @@ export default function RecordDetail() {
                       fill="black"
                     />
                   </svg>
-                  {format(record?.created_at, 'M월 dd일 E요일', { locale: ko })}{' '}
+                  {format(toDate(record?.created_at), 'M월 dd일 E요일', {
+                    locale: ko,
+                  })}{' '}
                   돌봄기록
                 </div>
               </AccordionTrigger>
@@ -98,9 +101,9 @@ export default function RecordDetail() {
                 <div className="relative flex h-56">
                   <div className="absolute top-0 left-0 flex h-full w-full bg-black opacity-0 group-hover:opacity-50" />
                   <div className="absolute top-0 left-0 z-10 flex h-full w-full flex-col items-start justify-between p-6 opacity-0 group-hover:opacity-100">
-                    <span className="text-white">
-                      {format(record?.created_at, 'yyyy.MM.dd')}
-                    </span>
+                  <span className="text-white">
+                    {format(toDate(record?.created_at), 'yyyy.MM.dd')}
+                  </span>
                     <span className="line-clamp-3 text-start text-white">
                       {record?.content}
                     </span>
@@ -121,7 +124,7 @@ export default function RecordDetail() {
                   <DialogTitle className="flex items-center gap-2">
                     <span>돌봄기록 생성</span>
                     <Badge variant={'outline'} className="border-neutral-300">
-                      {format(record?.created_at, 'M월 d일 (eee)', {
+                      {format(toDate(record?.created_at), 'M월 d일 (eee)', {
                         locale: ko,
                       })}
                     </Badge>

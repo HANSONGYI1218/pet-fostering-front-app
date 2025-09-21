@@ -9,7 +9,6 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/components/ui/carousel';
-import { Dot } from 'lucide-react';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
@@ -21,10 +20,16 @@ export function AnimalCarousel({ images }: { images: string[] }) {
     if (!api) {
       return;
     }
-    setCurrent(api.selectedScrollSnap() + 1);
-    api.on('select', () => {
+    const updateCurrent = () => {
       setCurrent(api.selectedScrollSnap() + 1);
-    });
+    };
+
+    updateCurrent();
+    api.on('select', updateCurrent);
+
+    return () => {
+      api.off('select', updateCurrent);
+    };
   }, [api]);
 
   return (
@@ -60,17 +65,21 @@ export function AnimalCarousel({ images }: { images: string[] }) {
         <CarouselNext className="right-8" />
       </Carousel>
       <div className="mx-auto flex gap-4 py-3">
-        {Array.from({ length: images?.length ?? 0 }).map((_, index) => (
-          <Dot
-            key={index}
-            onClick={() => api?.scrollTo(index)}
-            className={`h-3 w-3 cursor-pointer rounded-full ${
-              current - 1 === index ? 'bg-[#7c7c7c]' : 'bg-[#d4d4d4]'
-            }`}
-            stroke={current - 1 === index ? '#7c7c7c' : '#d4d4d4'}
-            fill={current - 1 === index ? '#7c7c7c' : '#d4d4d4'}
-          />
-        ))}
+        {Array.from({ length: images?.length ?? 0 }).map((_, index) => {
+          const isActive = current - 1 === index;
+
+          return (
+            <button
+              key={index}
+              type="button"
+              onClick={() => api?.scrollTo(index)}
+              className={`h-3 w-3 rounded-full transition-colors ${
+                isActive ? 'bg-[#7c7c7c]' : 'bg-[#d4d4d4]'
+              }`}
+              aria-label={`이미지 ${index + 1} 보기`}
+            />
+          );
+        })}
       </div>
 
       {/* <div className="grid grid-cols-4 gap-2">

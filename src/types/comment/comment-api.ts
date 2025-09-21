@@ -10,7 +10,7 @@ export type ReplyCommentItem = {
   user: CommentUserItem;
   content: string;
   likes: number;
-  created_at: string; // 또는 Date, 백엔드 응답 형식에 따라
+  created_at: Date;
 };
 
 export type CommentItem = {
@@ -20,6 +20,6 @@ export type CommentItem = {
   user: CommentUserItem;
   content: string;
   likes: number;
-  created_at: string;
+  created_at: Date;
   reply_comments: ReplyCommentItem[] | null;
 };

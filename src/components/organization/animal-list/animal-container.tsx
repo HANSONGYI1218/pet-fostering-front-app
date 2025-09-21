@@ -3,20 +3,17 @@
 import { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
 import { useEffect, useState } from 'react';
 import AnimalTile from './animal-tile';
-import {
-  ANIMAL_GENDER_LABEL_KO,
-  ANIMAL_SIZE_LABEL_KO,
-  ANIMAL_TYPE_LABEL_KO,
-  FOSTER_STATE_LABEL_KO,
-} from '@/constants/enum';
+import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 import { Button } from '@/components/ui/button';
 import FosterConditionCard from '../../foster-list/foster-condition-card';
 import SearchBox from '@/components/common/search-box';
 import { AnimalCreateDialog } from './animal-create-dialog';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 import { FosterState } from '@/types/animal/animal';
-import { socket } from '@/lib/socket';
+import { getSocket } from '@/lib/socket';
 import { dummyOgrainzationAnimals } from '@/lib/dummydata';
+import type { FosterFilterValue } from '@/domain/foster-list/filters';
+import { FILTER_ALL_VALUE } from '@/constants/filter';
 
 const statusOrder = {
   [FosterState.IN_PROGRESS]: 0,
@@ -57,6 +54,12 @@ export default function AnimalContainer() {
 
   // 2️⃣ 소켓 실시간 업데이트 처리
   useEffect(() => {
+    const socket = getSocket();
+
+    if (!socket) {
+      return;
+    }
+
     const handler = (updatedAnimal: OgrainzationAnimalListItem) => {
       queryClient.setQueryData<OgrainzationAnimalListItem[]>(
         ['animals'],
@@ -78,10 +81,18 @@ export default function AnimalContainer() {
   }, [queryClient]);
 
   const [animalEmergency, setEmergency] = useState(false);
-  const [animalType, setAnimalType] = useState('전체');
-  const [animalSize, setAnimalSize] = useState('전체');
-  const [animalGender, setAnimalGender] = useState('전체');
-  const [animalStatus, setAnimalStatus] = useState('전체');
+  const [animalType, setAnimalType] = useState<FosterFilterValue<AnimalType>>(
+    FILTER_ALL_VALUE,
+  );
+  const [animalSize, setAnimalSize] = useState<FosterFilterValue<AnimalSize>>(
+    FILTER_ALL_VALUE,
+  );
+  const [animalGender, setAnimalGender] = useState<
+    FosterFilterValue<AnimalGender>
+  >(FILTER_ALL_VALUE);
+  const [animalStatus, setAnimalStatus] = useState<FosterFilterValue<FosterState>>(
+    FILTER_ALL_VALUE,
+  );
   const [search, setSearch] = useState('');
   const [filteredAnimals, setFilteredAnimals] = useState<
     OgrainzationAnimalListItem[] | null
@@ -89,47 +100,39 @@ export default function AnimalContainer() {
 
   useEffect(() => {
     if (animals && animals?.length > 0) {
-      const sortedAnimals = animals.filter(
-        (animal: OgrainzationAnimalListItem) => {
-          const matchAnimalEmergency = animalEmergency
-            ? animal.isEmergency
-            : true;
+      const trimmedSearch = search.trim().toLowerCase();
 
-          const matcheAnimalGender =
-            !animalGender ||
-            animalGender === '전체' ||
-            ANIMAL_GENDER_LABEL_KO[animal.gender] === animalGender;
+      const sortedAnimals = animals.filter((animal) => {
+        const matchAnimalEmergency = animalEmergency ? animal.isEmergency : true;
 
-          const matchesAimalTypes =
-            !animalType || animalType === '전체'
-              ? true
-              : animalType === ANIMAL_TYPE_LABEL_KO[animal?.type];
+        const matchesGender =
+          animalGender === FILTER_ALL_VALUE || animal.gender === animalGender;
 
-          const matchesAnimalSize =
-            !animalSize || animalSize === '전체'
-              ? true
-              : animalSize === ANIMAL_SIZE_LABEL_KO[animal?.size];
+        const matchesType =
+          animalType === FILTER_ALL_VALUE || animal.type === animalType;
 
-          const matchesAnimalStatus =
-            !animalStatus || animalStatus === '전체'
-              ? true
-              : animalStatus === FOSTER_STATE_LABEL_KO[animal?.animalStatus];
+        const matchesSize =
+          animalSize === FILTER_ALL_VALUE || animal.size === animalSize;
 
-          const matchesSearch =
-            search.length === 0 ||
-            animal?.breed.includes(search) ||
-            animal?.name.includes(search);
+        const matchesStatus =
+          animalStatus === FILTER_ALL_VALUE ||
+          animal.animalStatus === animalStatus;
 
-          return (
-            matchAnimalEmergency &&
-            matcheAnimalGender &&
-            matchesAimalTypes &&
-            matchesAnimalSize &&
-            matchesAnimalStatus &&
-            matchesSearch
+        const matchesSearch =
+          trimmedSearch.length === 0 ||
+          [animal.breed, animal.name].some((field) =>
+            field?.toLowerCase().includes(trimmedSearch),
           );
-        },
-      );
+
+        return (
+          matchAnimalEmergency &&
+          matchesGender &&
+          matchesType &&
+          matchesSize &&
+          matchesStatus &&
+          matchesSearch
+        );
+      });
 
       setFilteredAnimals(sortedAnimals);
     }
@@ -186,8 +189,8 @@ export default function AnimalContainer() {
         <AnimalCreateDialog />
       </div>
       <div className="grid w-full grid-cols-3 gap-6 bg-white">
-        {filteredAnimals?.map((filteredAnimal, idx) => (
-          <AnimalTile key={idx} animal={filteredAnimal} />
+        {filteredAnimals?.map((filteredAnimal) => (
+          <AnimalTile key={filteredAnimal.id} animal={filteredAnimal} />
         ))}
       </div>
     </div>

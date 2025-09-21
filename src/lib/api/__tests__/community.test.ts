@@ -32,8 +32,8 @@ describe('mapPostListItems', () => {
         views: 42,
         likes: 0,
         commentCount: 3,
-        created_at: '2025-01-01T00:00:00.000Z',
-        updated_at: '2025-01-02T00:00:00.000Z',
+        created_at: new Date('2025-01-01T00:00:00.000Z'),
+        updated_at: new Date('2025-01-02T00:00:00.000Z'),
         user: {
           id: 'user-1',
           nickname: null,
@@ -68,8 +68,8 @@ describe('mapPostListItems', () => {
         views: 0,
         likes: 0,
         commentCount: 0,
-        created_at: '2025-01-03T00:00:00.000Z',
-        updated_at: '2025-01-03T00:00:00.000Z',
+        created_at: new Date('2025-01-03T00:00:00.000Z'),
+        updated_at: new Date('2025-01-03T00:00:00.000Z'),
         user: {
           id: 'user-2',
           nickname: null,

@@ -1,3 +1,4 @@
+import type { Dispatch, SetStateAction } from 'react';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
@@ -10,6 +11,8 @@ import {
   AnimalType,
   FosterState,
 } from '@/types/animal/animal';
+import type { FosterFilterValue } from '@/domain/foster-list/filters';
+import { FILTER_ALL_LABEL_KO, FILTER_ALL_VALUE } from '@/constants/filter';
 import ConditionItem from '../common/condition-types';
 
 /**
@@ -28,99 +31,127 @@ export default function FosterConditionCard({
   setAnimalGender,
   setAnimalStatus,
 }: {
-  animalType: string;
-  animalSize: string;
-  animalGender: string;
-  animalStatus?: string;
-  setAnimalType: (value: string) => void;
-  setAnimalSize: (value: string) => void;
-  setAnimalGender: (value: string) => void;
-  setAnimalStatus?: (value: string) => void;
+  animalType: FosterFilterValue<AnimalType>;
+  animalSize: FosterFilterValue<AnimalSize>;
+  animalGender: FosterFilterValue<AnimalGender>;
+  animalStatus?: FosterFilterValue<FosterState>;
+  setAnimalType: Dispatch<
+    SetStateAction<FosterFilterValue<AnimalType>>
+  >;
+  setAnimalSize: Dispatch<
+    SetStateAction<FosterFilterValue<AnimalSize>>
+  >;
+  setAnimalGender: Dispatch<
+    SetStateAction<FosterFilterValue<AnimalGender>>
+  >;
+  setAnimalStatus?: Dispatch<
+    SetStateAction<FosterFilterValue<FosterState>>
+  >;
 }) {
+  const handleChangeAnimalType = (value: string) => {
+    setAnimalType(value as FosterFilterValue<AnimalType>);
+  };
+
+  const handleChangeAnimalSize = (value: string) => {
+    setAnimalSize(value as FosterFilterValue<AnimalSize>);
+  };
+
+  const handleChangeAnimalGender = (value: string) => {
+    setAnimalGender(value as FosterFilterValue<AnimalGender>);
+  };
+
+  const handleChangeAnimalStatus = (value: string) => {
+    setAnimalStatus?.(value as FosterFilterValue<FosterState>);
+  };
+
   const conditionTypes = [
     {
       title: '종류',
-      checkboxItems: [
+      options: [
         {
-          key: '전체',
-          value: 'type_all',
+          label: FILTER_ALL_LABEL_KO,
+          value: FILTER_ALL_VALUE,
         },
         {
-          key: ANIMAL_TYPE_LABEL_KO[AnimalType.DOG],
-          value: 'dog',
+          label: ANIMAL_TYPE_LABEL_KO[AnimalType.DOG],
+          value: AnimalType.DOG,
         },
         {
-          key: ANIMAL_TYPE_LABEL_KO[AnimalType.CAT],
-          value: 'cat',
+          label: ANIMAL_TYPE_LABEL_KO[AnimalType.CAT],
+          value: AnimalType.CAT,
         },
       ],
-      default: animalType,
-      onchange: setAnimalType,
+      selected: animalType,
+      onChange: handleChangeAnimalType,
+      resetValue: FILTER_ALL_VALUE,
     },
     {
       title: '사이즈',
-      checkboxItems: [
+      options: [
         {
-          key: '전체',
-          value: 'size-all',
+          label: FILTER_ALL_LABEL_KO,
+          value: FILTER_ALL_VALUE,
         },
         {
-          key: ANIMAL_SIZE_LABEL_KO[AnimalSize.SMALL],
-          value: 'small',
+          label: ANIMAL_SIZE_LABEL_KO[AnimalSize.SMALL],
+          value: AnimalSize.SMALL,
         },
         {
-          key: ANIMAL_SIZE_LABEL_KO[AnimalSize.MEDIUM],
-          value: 'medium',
+          label: ANIMAL_SIZE_LABEL_KO[AnimalSize.MEDIUM],
+          value: AnimalSize.MEDIUM,
         },
         {
-          key: ANIMAL_SIZE_LABEL_KO[AnimalSize.LARGE],
-          value: 'large',
+          label: ANIMAL_SIZE_LABEL_KO[AnimalSize.LARGE],
+          value: AnimalSize.LARGE,
         },
       ],
-      default: animalSize,
-      onchange: setAnimalSize,
+      selected: animalSize,
+      onChange: handleChangeAnimalSize,
+      resetValue: FILTER_ALL_VALUE,
     },
     {
       title: '성별',
-      checkboxItems: [
+      options: [
         {
-          key: '전체',
-          value: 'gender_all',
+          label: FILTER_ALL_LABEL_KO,
+          value: FILTER_ALL_VALUE,
         },
         {
-          key: ANIMAL_GENDER_LABEL_KO[AnimalGender.MALE],
-          value: 'male',
+          label: ANIMAL_GENDER_LABEL_KO[AnimalGender.MALE],
+          value: AnimalGender.MALE,
         },
         {
-          key: ANIMAL_GENDER_LABEL_KO[AnimalGender.FEMALE],
-          value: 'female',
+          label: ANIMAL_GENDER_LABEL_KO[AnimalGender.FEMALE],
+          value: AnimalGender.FEMALE,
         },
       ],
-      default: animalGender,
-      onchange: setAnimalGender,
+      selected: animalGender,
+      onChange: handleChangeAnimalGender,
+      resetValue: FILTER_ALL_VALUE,
     },
     // animalStatus가 존재할 때만 포함
     ...(animalStatus && setAnimalStatus
       ? [
           {
             title: '상태',
-            checkboxItems: [
-              { key: '전체', value: 'status_all' },
+            options: [
+              { label: FILTER_ALL_LABEL_KO, value: FILTER_ALL_VALUE },
               {
-                key: FOSTER_STATE_LABEL_KO[FosterState.IN_PROGRESS],
-                value: 'in_progress',
+                label: FOSTER_STATE_LABEL_KO[FosterState.IN_PROGRESS],
+                value: FosterState.IN_PROGRESS,
               },
               {
-                key: FOSTER_STATE_LABEL_KO[FosterState.FOSTERED],
-                value: 'fostered',
+                label: FOSTER_STATE_LABEL_KO[FosterState.FOSTERED],
+                value: FosterState.FOSTERED,
               },
               {
-                key: FOSTER_STATE_LABEL_KO[FosterState.ADOPTED],
-                value: 'adopted',
+                label: FOSTER_STATE_LABEL_KO[FosterState.ADOPTED],
+                value: FosterState.ADOPTED,
               },
             ],
-            default: animalStatus,
-            onchange: setAnimalStatus,
+            selected: animalStatus,
+            onChange: handleChangeAnimalStatus,
+            resetValue: FILTER_ALL_VALUE,
           },
         ]
       : []),

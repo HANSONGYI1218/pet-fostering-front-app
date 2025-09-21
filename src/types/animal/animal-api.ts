@@ -1,8 +1,8 @@
 import {
-  ANIMAL_ENVIRONMENT,
-  ANIMAL_HEALTH,
-  ANIMAL_PERSONALITYS,
-  ANIMAL_SPECIAL_NOTES,
+  AnimalEnvironment,
+  AnimalHealth,
+  AnimalPersonality,
+  AnimalSpecialNote,
 } from '../animal-condition/animal-condition';
 import { FosterApplicent } from '../foster-apply/foster-apply-api';
 import { FosterRecord } from '../foster-record/foster-record';
@@ -31,9 +31,9 @@ export type FosterListAnimalItem = {
   gender: AnimalGender;
   image: string;
   isBookmarked: boolean;
-  animal_healths: ANIMAL_HEALTH[];
-  animal_personalitys: ANIMAL_PERSONALITYS[];
-  foster_environments: ANIMAL_ENVIRONMENT[];
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  foster_environments: AnimalEnvironment[];
   isEmergency: boolean;
   organization: {
     id: string;
@@ -58,10 +58,10 @@ export type FosterAnimalDetailItem = {
   isBookmarked: boolean;
   current_foster_start_date: Date;
   current_foster_end_date: Date;
-  animal_healths: ANIMAL_HEALTH[];
-  animal_personalitys: ANIMAL_PERSONALITYS[];
-  foster_environments: ANIMAL_ENVIRONMENT[];
-  special_notes_animals: ANIMAL_SPECIAL_NOTES[];
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  foster_environments: AnimalEnvironment[];
+  special_notes_animals: AnimalSpecialNote[];
   isEmergency: boolean;
   emergency_reason: string;
   organization: {
@@ -87,9 +87,9 @@ export type OgrainzationAnimalListItem = {
   animalStatus: FosterState;
   image: string;
   applicants: FosterApplicent[];
-  animal_healths: ANIMAL_HEALTH[];
-  animal_personalitys: ANIMAL_PERSONALITYS[];
-  foster_environments: ANIMAL_ENVIRONMENT[];
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  foster_environments: AnimalEnvironment[];
   isEmergency: boolean;
   foster_apply_number: number;
 };
@@ -109,10 +109,10 @@ export type OgrainzationAnimalDetailItem = {
   current_foster_start_date: Date;
   current_foster_end_date: Date;
   foster_records: FosterRecord[];
-  animal_healths: ANIMAL_HEALTH[];
-  animal_personalitys: ANIMAL_PERSONALITYS[];
-  foster_environments: ANIMAL_ENVIRONMENT[];
-  special_notes_animals: ANIMAL_SPECIAL_NOTES[];
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  foster_environments: AnimalEnvironment[];
+  special_notes_animals: AnimalSpecialNote[];
   isEmergency: boolean;
   emergency_reason: string;
   organization: {

@@ -3,6 +3,7 @@ import CommunityPost from '@/components/community/community-post';
 import { dummyComments, dummyPosts } from '@/lib/dummydata';
 import { CommentItem } from '@/types/comment/comment-api';
 import { PostItem } from '@/types/post/post-api';
+import { toDate } from '@/lib/utils';
 
 export default async function CommunityPostPage({
   params,
@@ -14,8 +15,7 @@ export default async function CommunityPostPage({
   const comments: CommentItem[] = dummyComments
     .filter((c) => c.post_id === id && c.parent_id === null)
     .sort(
-      (a, b) =>
-        new Date(a.created_at).getTime() - new Date(b.created_at).getTime(),
+      (a, b) => toDate(a.created_at).getTime() - toDate(b.created_at).getTime(),
     );
 
   return (

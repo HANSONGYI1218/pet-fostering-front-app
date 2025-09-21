@@ -2,12 +2,14 @@ import {
   AnimalType,
   AnimalSize,
   AnimalGender,
-  ANIMAL_AGE,
-  ANIMAL_HEALTH,
-  ANIMAL_ENVIRONMENT,
-  ANIMAL_PERIOD,
-  ANIMAL_PERSONALITYS,
-  ANIMAL_SPECIAL_NOTES,
+} from '@/types/animal/animal';
+import {
+  AnimalAge,
+  AnimalHealth,
+  AnimalEnvironment,
+  AnimalPeriod,
+  AnimalPersonality,
+  AnimalSpecialNote,
 } from './animal-condition';
 
 export type AnimalConditionItem = {
@@ -16,12 +18,12 @@ export type AnimalConditionItem = {
   type: AnimalType;
   size: AnimalSize;
   gender: AnimalGender;
-  animal_age: ANIMAL_AGE;
-  animal_healths: ANIMAL_HEALTH[];
-  animal_personalitys: ANIMAL_PERSONALITYS[];
-  foster_environments: ANIMAL_ENVIRONMENT[];
-  special_notes_animalss: ANIMAL_SPECIAL_NOTES[];
-  foster_period: ANIMAL_PERIOD;
+  animal_age: AnimalAge;
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  foster_environments: AnimalEnvironment[];
+  special_notes_animals: AnimalSpecialNote[];
+  foster_period: AnimalPeriod;
   created_at: Date;
   updated_at: Date;
   animal_id: string;

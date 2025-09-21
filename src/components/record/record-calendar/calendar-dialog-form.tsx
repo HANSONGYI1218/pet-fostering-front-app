@@ -6,6 +6,7 @@ import { Loader2, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -31,6 +32,7 @@ import { ko } from 'date-fns/locale';
 import { Card } from '@/components/ui/card';
 import { RecordContent } from '../record-content';
 import { RecordHealthNote } from '../record-health-note';
+import { toDate } from '@/lib/utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -53,7 +55,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     recordContext?.records.length > 0
       ? recordContext?.records.find(
           (record: FosterRecord) =>
-            format(new Date(record.created_at), 'yyyy-M-d') ===
+            format(toDate(record.created_at), 'yyyy-M-d') ===
             format(p.date, 'yyyy-M-d'),
         )
       : null;
@@ -66,21 +68,71 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const isWeekend =
     new Date(p.date).getDay() === 0 || new Date(p.date).getDay() === 6;
 
-  const form = useForm<z.infer<typeof RecordSchema>>({
-    resolver: zodResolver(RecordSchema),
-    defaultValues: {
+  const [open, setOpen] = useState(false);
+
+  const defaultValues = useMemo(
+    () => ({
       images: currentRecord?.images ?? [],
       content: currentRecord?.content ?? '',
       health_note: currentRecord?.health_note ?? '',
-    },
+    }),
+    [currentRecord],
+  );
+
+  const form = useForm<z.infer<typeof RecordSchema>>({
+    resolver: zodResolver(RecordSchema),
+    defaultValues,
   });
 
-  async function onSubmit(_data: z.infer<typeof RecordSchema>) {}
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
+
+  const resolveRecordId = () => {
+    if (currentRecord?.id) {
+      return currentRecord.id;
+    }
+
+    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+      return crypto.randomUUID();
+    }
+
+    return `record-${Date.now()}`;
+  };
+
+  const onSubmit = async (data: z.infer<typeof RecordSchema>) => {
+    if (!recordContext) {
+      return;
+    }
+
+    const recordId = resolveRecordId();
+    const createdAt = currentRecord?.created_at ?? p.date;
+    const nextRecord: FosterRecord = {
+      id: recordId,
+      images: data.images ?? [],
+      content: data.content,
+      health_note: data.health_note,
+      created_at: toDate(createdAt),
+      updated_at: new Date(),
+    };
+
+    recordContext.upsertRecord(nextRecord);
+    recordContext.setSelectedRecord(nextRecord);
+    recordContext.setCurrentMonth(toDate(nextRecord.created_at));
+
+    form.reset({
+      images: nextRecord.images,
+      content: nextRecord.content,
+      health_note: nextRecord.health_note,
+    });
+
+    setOpen(false);
+  };
 
   const isSubmitting = form.formState.isSubmitting;
 
   return (
-    <Dialog>
+    <Dialog open={open} onOpenChange={setOpen}>
       <DialogTrigger asChild>
         <Button
           onClick={() => {

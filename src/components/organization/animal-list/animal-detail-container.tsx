@@ -7,9 +7,9 @@ import Image from 'next/image';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
-  ANIMAL_PERSONALITYS_LABEL_KO,
+  ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
-  ANIMAL_SPECIAL_NOTES_LABEL_KO,
+  ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   FOSTER_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
@@ -21,7 +21,7 @@ import {
   fosterRemaingDuration,
   fosterTotalDuration,
 } from '@/lib/utils';
-import { ANIMAL_HEALTH } from '@/types/animal-condition/animal-condition';
+import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { OgrainzationAnimalDetailItem } from '@/types/animal/animal-api';
 import { useState } from 'react';
 import ChartContainer from '@/components/record/record-chart/chart-container';
@@ -38,10 +38,10 @@ export default function AnimalDetailContainer({
   const total_address = `${animal?.organization?.address} ${animal?.organization?.address_detail}`;
 
   const healthData = [
-    ANIMAL_HEALTH.VACCINATED,
-    ANIMAL_HEALTH.HEARTWORM_TESTED,
-    ANIMAL_HEALTH.DEWORMED,
-    ANIMAL_HEALTH.FLEA_TICK_TREATED,
+    AnimalHealth.VACCINATED,
+    AnimalHealth.HEARTWORM_TESTED,
+    AnimalHealth.DEWORMED,
+    AnimalHealth.FLEA_TICK_TREATED,
   ]
     .map((health) => {
       return `✓ ${ANIMAL_HEALTH_LABEL_KO[health]}`;
@@ -75,13 +75,13 @@ export default function AnimalDetailContainer({
     },
     {
       title: '마이크로칩 여부',
-      data: animal?.animal_healths.find((a) => a === ANIMAL_HEALTH.MICROCHIPPED)
+      data: animal?.animal_healths.find((a) => a === AnimalHealth.MICROCHIPPED)
         ? '등록'
         : '미등록',
     },
     {
       title: '중성화',
-      data: animal?.animal_healths.find((a) => a === ANIMAL_HEALTH.NEUTERED)
+      data: animal?.animal_healths.find((a) => a === AnimalHealth.NEUTERED)
         ? '완료'
         : '미완료',
     },
@@ -113,8 +113,9 @@ export default function AnimalDetailContainer({
           <Button
             variant={'secondary'}
             onClick={() => {
-              if (currentPage === 0) setCurrentPage(1);
-              else setCurrentPage(0);
+              if (currentPage !== 0) {
+                setCurrentPage(0);
+              }
             }}
             className={`h-10 rounded-full font-semibold text-[#00592d] hover:bg-[D0EFE0] ${currentPage === 0 ? 'bg-[#D0EFE0]' : ''}`}
           >
@@ -123,8 +124,9 @@ export default function AnimalDetailContainer({
           <Button
             variant={'secondary'}
             onClick={() => {
-              if (currentPage === 0) setCurrentPage(1);
-              else setCurrentPage(0);
+              if (currentPage !== 1) {
+                setCurrentPage(1);
+              }
             }}
             className={`h-10 rounded-full font-semibold text-[#00592d] hover:bg-[D0EFE0] ${currentPage === 1 ? 'bg-[#D0EFE0]' : ''}`}
           >
@@ -344,7 +346,7 @@ export default function AnimalDetailContainer({
                             variant={'default'}
                             className="h-9 px-4 text-base font-normal"
                           >
-                            {ANIMAL_PERSONALITYS_LABEL_KO[personality]}
+                            {ANIMAL_PERSONALITY_LABEL_KO[personality]}
                           </Badge>
                         ),
                       )}
@@ -406,7 +408,7 @@ export default function AnimalDetailContainer({
                           variant={'destructive'}
                           className="h-9 px-4 text-base font-normal"
                         >
-                          {ANIMAL_SPECIAL_NOTES_LABEL_KO[note]}
+                          {ANIMAL_SPECIAL_NOTE_LABEL_KO[note]}
                         </Badge>
                       );
                     })}

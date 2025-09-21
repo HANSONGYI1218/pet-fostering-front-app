@@ -16,7 +16,6 @@ export default function SelectedButton<T extends string | number>({
   value: T;
   onChange: (value: T | undefined) => void;
 }) {
-  console.log('value:', value, third?.key);
   return (
     <div className="flex h-10 rounded-xl border">
       <div

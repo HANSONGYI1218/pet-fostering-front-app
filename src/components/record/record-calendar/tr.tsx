@@ -7,7 +7,7 @@ import {
   startOfMonth,
   startOfWeek,
 } from 'date-fns';
-import { CalendarProps } from './record-calendar';
+import type { CalendarProps } from './record-calendar';
 import Td from './td';
 
 export interface WholeDateArray {

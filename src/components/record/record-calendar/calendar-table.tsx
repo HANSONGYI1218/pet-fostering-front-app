@@ -1,5 +1,5 @@
 import Tr from './tr';
-import { CalendarProps } from './record-calendar';
+import type { CalendarProps } from './record-calendar';
 
 const DayoftheWeek = () => {
   const date = ['일', '월', '화', '수', '목', '금', '토'];

@@ -10,10 +10,12 @@ export default function FosterApplyProviders({
   queryClient: QueryClient;
   children: React.ReactNode;
 }) {
+  const shouldShowDevtools = process.env.NODE_ENV !== 'production';
+
   return (
     <QueryClientProvider client={queryClient}>
       {children}
-      <ReactQueryDevtools initialIsOpen={false} />
+      {shouldShowDevtools ? <ReactQueryDevtools initialIsOpen={false} /> : null}
     </QueryClientProvider>
   );
 }

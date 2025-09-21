@@ -1,4 +1,5 @@
 import { PostItem } from '@/types/post/post-api';
+import { toDate } from '@/lib/utils';
 
 import { resolveEndpoint } from './config';
 
@@ -42,8 +43,8 @@ export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
     likes: 0,
     commentCount: item._count?.comments ?? 0,
     views: item.viewCount,
-    created_at: item.createdAt,
-    updated_at: item.updatedAt,
+    created_at: toDate(item.createdAt),
+    updated_at: item.updatedAt ? toDate(item.updatedAt) : undefined,
   }));
 
 const communityHeaders = (token?: string) =>

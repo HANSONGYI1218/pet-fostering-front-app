@@ -13,7 +13,7 @@ export default function CommunityTopList({
       <div className="flex w-full flex-1 flex-col gap-5">
         {recentPopularPosts?.map((recentPopularPost: PostItem, idx: number) => (
           <TopListTile
-            key={idx}
+            key={recentPopularPost.id}
             index={idx}
             recentPopularPost={recentPopularPost}
           />

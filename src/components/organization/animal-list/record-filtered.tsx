@@ -14,6 +14,7 @@ import { ko } from 'date-fns/locale/ko';
 import { RecordImages } from '@/components/record/record-images';
 import { RecordContent } from '@/components/record/record-content';
 import { RecordHealthNote } from '@/components/record/record-health-note';
+import { toDate } from '@/lib/utils';
 
 const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
   //현재 보고 있는 달
@@ -35,13 +36,18 @@ const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
     if (!records) return;
 
     const results = records.filter((v) => {
+      const createdAt = toDate(v.created_at);
+
       return (
-        v.created_at.getMonth() === currentMonth.getMonth() &&
-        v.created_at.getFullYear() === currentMonth.getFullYear()
+        createdAt.getMonth() === currentMonth.getMonth() &&
+        createdAt.getFullYear() === currentMonth.getFullYear()
       );
     });
 
-    results.sort((a, b) => b.created_at.getTime() - a.created_at.getTime());
+    results.sort(
+      (a, b) =>
+        toDate(b.created_at).getTime() - toDate(a.created_at).getTime(),
+    );
 
     setFilteredRecords(results);
   }, [currentMonth, records]);
@@ -95,7 +101,7 @@ const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
                       fill="black"
                     />
                   </svg>
-                  {format(record?.created_at, 'M월 dd일 E요일', {
+                  {format(toDate(record?.created_at), 'M월 dd일 E요일', {
                     locale: ko,
                   })}{' '}
                   돌봄기록

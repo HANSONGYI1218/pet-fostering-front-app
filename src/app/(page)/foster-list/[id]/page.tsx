@@ -5,9 +5,9 @@ import { Card } from '@/components/ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
-  ANIMAL_PERSONALITYS_LABEL_KO,
+  ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
-  ANIMAL_SPECIAL_NOTES_LABEL_KO,
+  ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   FOSTER_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
@@ -18,7 +18,7 @@ import FosterRequestDialog from '@/components/foster-list/foster-requst-dialog';
 import { Badge } from '@/components/ui/badge';
 import KakaoMapLoader from '@/components/common/kakaomap-loader';
 import { formatAnimalAge, fosterTotalDuration } from '@/lib/utils';
-import { ANIMAL_HEALTH } from '@/types/animal-condition/animal-condition';
+import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { format } from 'date-fns';
 import Image from 'next/image';
 
@@ -33,10 +33,10 @@ export default async function FosterListDetailPage({
   const total_address = `${animal?.organization?.address} ${animal?.organization?.address_detail}`;
 
   const healthData = [
-    ANIMAL_HEALTH.VACCINATED,
-    ANIMAL_HEALTH.HEARTWORM_TESTED,
-    ANIMAL_HEALTH.DEWORMED,
-    ANIMAL_HEALTH.FLEA_TICK_TREATED,
+    AnimalHealth.VACCINATED,
+    AnimalHealth.HEARTWORM_TESTED,
+    AnimalHealth.DEWORMED,
+    AnimalHealth.FLEA_TICK_TREATED,
   ]
     .map((health) => {
       return `✓ ${ANIMAL_HEALTH_LABEL_KO[health]}`;
@@ -70,13 +70,13 @@ export default async function FosterListDetailPage({
     },
     {
       title: '마이크로칩 여부',
-      data: animal?.animal_healths.find((a) => a === ANIMAL_HEALTH.MICROCHIPPED)
+      data: animal?.animal_healths.find((a) => a === AnimalHealth.MICROCHIPPED)
         ? '등록'
         : '미등록',
     },
     {
       title: '중성화',
-      data: animal?.animal_healths.find((a) => a === ANIMAL_HEALTH.NEUTERED)
+      data: animal?.animal_healths.find((a) => a === AnimalHealth.NEUTERED)
         ? '완료'
         : '미완료',
     },
@@ -235,7 +235,7 @@ export default async function FosterListDetailPage({
                         variant={'default'}
                         className="h-9 px-4 text-base font-normal"
                       >
-                        {ANIMAL_PERSONALITYS_LABEL_KO[personality]}
+                        {ANIMAL_PERSONALITY_LABEL_KO[personality]}
                       </Badge>
                     ))}
                   </div>
@@ -296,7 +296,7 @@ export default async function FosterListDetailPage({
                         variant={'destructive'}
                         className="h-9 px-4 text-base font-normal"
                       >
-                        {ANIMAL_SPECIAL_NOTES_LABEL_KO[note]}
+                        {ANIMAL_SPECIAL_NOTE_LABEL_KO[note]}
                       </Badge>
                     );
                   })}

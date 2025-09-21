@@ -1,32 +1,17 @@
-export enum AnimalType {
-  DOG = 'DOG',
-  CAT = 'CAT',
-}
+import {
+  AnimalType,
+  AnimalGender,
+  AnimalSize,
+  FosterState,
+} from '@/types/animal/animal';
 
-export enum AnimalGender {
-  MALE = 'MALE',
-  FEMALE = 'FEMALE',
-}
-
-export enum AnimalSize {
-  SMALL = 'SMALL',
-  MEDIUM = 'MEDIUM',
-  LARGE = 'LARGE',
-}
-
-export enum FosterState {
-  IN_PROGRESS = 'IN_PROGRESS',
-  FOSTERED = 'FOSTERED',
-  ADOPTED = 'ADOPTED ',
-}
-
-export enum ANIMAL_AGE {
+export enum AnimalAge {
   JUVENILE = 'JUVENILE',
   ADULT = 'ADULT',
   SENIOR = 'SENIOR',
 }
 
-export enum ANIMAL_PERSONALITYS {
+export enum AnimalPersonality {
   QUIET = 'QUIET',
   ENERGETIC = 'ENERGETIC',
   INDEPENDENCE = 'INDEPENDENCE',
@@ -37,7 +22,7 @@ export enum ANIMAL_PERSONALITYS {
   NO_BITING = 'NO_BITING',
 }
 
-export enum ANIMAL_ENVIRONMENT {
+export enum AnimalEnvironment {
   QUIET_ENVIRONMENT = 'QUIET_ENVIRONMENT',
   AVAILABILITY_FOR_WALKS_PLAY = 'AVAILABILITY_FOR_WALKS_PLAY',
   FREQUENT_INTERACTION_WITH_PETS = 'FREQUENT_INTERACTION_WITH_PETS',
@@ -48,7 +33,7 @@ export enum ANIMAL_ENVIRONMENT {
   HOUSEHOLD_WITH_YOUNG_CHILDREN = 'HOUSEHOLD_WITH_YOUNG_CHILDREN',
 }
 
-export enum ANIMAL_HEALTH {
+export enum AnimalHealth {
   NEUTERED = 'NEUTERED',
   VACCINATED = 'VACCINATED',
   MICROCHIPPED = 'MICROCHIPPED',
@@ -57,13 +42,13 @@ export enum ANIMAL_HEALTH {
   FLEA_TICK_TREATED = 'FLEA_TICK_TREATED',
 }
 
-export enum ANIMAL_PERIOD {
+export enum AnimalPeriod {
   SHORT_TERM_FOSTER = 'SHORT_TERM_FOSTER',
   MID_TERM_FOSTER = 'MID_TERM_FOSTER',
   LONG_TERM_FOSTER = 'LONG_TERM_FOSTER',
 }
 
-export enum ANIMAL_SPECIAL_NOTES {
+export enum AnimalSpecialNote {
   SEPARATION_ANXIETY = 'SEPARATION_ANXIETY',
   MEDICATION_REQUIRED = 'MEDICATION_REQUIRED',
   POTTY_ACCIDENTS = 'POTTY_ACCIDENTS',
@@ -78,12 +63,12 @@ export type AnimalCondition = {
   type: AnimalType;
   size: AnimalSize;
   gender: AnimalGender;
-  animal_age: ANIMAL_AGE;
-  animal_healths: ANIMAL_HEALTH[];
-  animal_personalitys: ANIMAL_PERSONALITYS[];
-  foster_environments: ANIMAL_ENVIRONMENT[];
-  special_notes_animalss: ANIMAL_SPECIAL_NOTES[];
-  foster_period: ANIMAL_PERIOD;
+  animal_age: AnimalAge;
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  foster_environments: AnimalEnvironment[];
+  special_notes_animals: AnimalSpecialNote[];
+  foster_period: AnimalPeriod;
   created_at: Date;
   updated_at: Date;
   animal_id: string;

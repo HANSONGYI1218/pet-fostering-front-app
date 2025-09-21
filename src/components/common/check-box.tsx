@@ -1,25 +1,28 @@
 'use client';
 
+import type { CheckedState } from '@radix-ui/react-checkbox';
+
 import { Checkbox } from '../ui/checkbox';
 
 export default function CheckBox({
   label,
   id,
   value,
+  selectedValue,
   onChangeValue,
 }: {
   label: string;
   id: string;
   value: string;
+  selectedValue: string;
   onChangeValue: (state: string) => void;
 }) {
-  const isChecked = value === label;
+  const isChecked = selectedValue === value;
 
-  const handleChange = () => {
-    if (!isChecked) {
-      // 체크박스를 클릭했을 때 value를 label로 설정하여 부모 상태를 업데이트
-      onChangeValue(label);
-    }
+  const handleChange = (checked: CheckedState) => {
+    if (!checked || isChecked) return;
+
+    onChangeValue(value);
   };
 
   return (
@@ -27,7 +30,7 @@ export default function CheckBox({
       <Checkbox
         id={id}
         checked={isChecked}
-        onClick={handleChange}
+        onCheckedChange={handleChange}
         className="h-4 w-4 rounded-full"
       />
       <label

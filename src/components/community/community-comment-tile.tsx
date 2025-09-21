@@ -3,6 +3,7 @@ import { ko } from 'date-fns/locale';
 import { ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
+import { toDate } from '@/lib/utils';
 
 type CommentLike = CommentItem | ReplyCommentItem;
 
@@ -83,7 +84,7 @@ export default function CommunityCommentTile({
       </span>
       <div className="flex w-full justify-between gap-5">
         <span className="text-[#525252]">
-          {format(new Date(comment.created_at), 'yyyy.MM.dd a hh:mm', {
+          {format(toDate(comment.created_at), 'yyyy.MM.dd a hh:mm', {
             locale: ko,
           })}
         </span>

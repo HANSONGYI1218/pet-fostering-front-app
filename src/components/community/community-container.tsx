@@ -5,8 +5,9 @@ import { Button } from '../ui/button';
 import CommunityTile from './community-tile';
 import CommunityTopList from './community-top-list';
 import { PaginationDynamic } from '../common/papagination-dynamic';
-import { useState } from 'react';
+import { useMemo, useState } from 'react';
 import { PostItem } from '@/types/post/post-api';
+import { selectRecentPopularPosts } from '@/domain/community/posts';
 
 export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
   const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수
@@ -14,18 +15,15 @@ export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
+  const paginatedPosts = useMemo(
+    () => posts.slice(startIdx, endIdx),
+    [posts, startIdx, endIdx],
+  );
 
-  const now = new Date();
-  const oneMonthAgo = new Date();
-  oneMonthAgo.setMonth(now.getMonth() - 1);
-
-  const recentPopularPosts = posts
-    .filter((post: { created_at: string | number | Date }) => {
-      const createdAt = new Date(post.created_at);
-      return createdAt >= oneMonthAgo && createdAt <= now;
-    })
-    .sort((a: { views: number }, b: { views: number }) => b.views - a.views)
-    .slice(0, 10);
+  const recentPopularPosts = useMemo(
+    () => selectRecentPopularPosts(posts),
+    [posts],
+  );
 
   return (
     <div className="mx-auto flex w-full max-w-[1280px] flex-col gap-6 py-32">
@@ -35,8 +33,8 @@ export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
       </Button>
       <div className="flex w-full items-start justify-center gap-6">
         <div className="flex w-full flex-1 flex-col justify-center gap-6">
-          {posts.slice(startIdx, endIdx).map((post: PostItem, idx: number) => (
-            <CommunityTile key={startIdx + idx} post={post} />
+          {paginatedPosts.map((post: PostItem) => (
+            <CommunityTile key={post.id} post={post} />
           ))}
           <PaginationDynamic
             totalItems={posts.length}

@@ -1,29 +1,26 @@
 'use client';
 
-import { useState } from 'react';
+import type { Dispatch, SetStateAction } from 'react';
 import CalendarHeader from './calendar-header';
 import CalendarTable from './calendar-table';
 import { Card } from '@/components/ui/card';
 import { addMonths, subMonths } from 'date-fns';
-import type { Dispatch, SetStateAction } from 'react';
+import { useRecord } from '@/providers/record-provider';
 
-export interface CalendarProps {
+export type CalendarProps = {
   currentMonth: Date;
   setCurrentMonth: Dispatch<SetStateAction<Date>>;
-}
+};
 
 const RecordCalendar = () => {
-  //현재 보고 있는 달
-  const [currentMonth, setCurrentMonth] = useState(new Date());
+  const { currentMonth, setCurrentMonth } = useRecord();
 
-  //이전 달로 이동(currentMonth가 이전 달로 바뀜)
   const prevMonth = () => {
-    setCurrentMonth(subMonths(currentMonth, 1));
+    setCurrentMonth((month) => subMonths(month, 1));
   };
 
-  //다음 달로 이동(currentMonth가 다음 달로 바뀜)
   const nextMonth = () => {
-    setCurrentMonth(addMonths(currentMonth, 1));
+    setCurrentMonth((month) => addMonths(month, 1));
   };
 
   return (

@@ -5,68 +5,92 @@ export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
 }
 
-export function getDDay(createdAt: Date): string {
+export const toDate = (value: Date | string | number): Date => {
+  if (value instanceof Date) {
+    return value;
+  }
+
+  const parsed = new Date(value);
+
+  if (Number.isNaN(parsed.getTime())) {
+    return new Date();
+  }
+
+  return parsed;
+};
+
+export function getDDay(createdAt: Date | string | number): string {
   const today = new Date();
-  // 날짜만 비교하도록 시간 제거
-  const createdDate = new Date(createdAt.toDateString());
+  const createdDate = toDate(createdAt);
+
+  const plainCreated = new Date(createdDate.toDateString());
   const todayDate = new Date(today.toDateString());
 
-  const diffMs = todayDate.getTime() - createdDate.getTime();
+  const diffMs = todayDate.getTime() - plainCreated.getTime();
   const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
 
   return diffDays.toString();
 }
 
-export function formatAnimalAge(birthDate: Date): string {
+export function formatAnimalAge(birthDate: Date | string | number): string {
   const now = new Date();
+  const parsedBirthDate = toDate(birthDate);
 
-  // 년, 월 계산
-  let years = now.getFullYear() - birthDate.getFullYear();
-  let months = now.getMonth() - birthDate.getMonth();
+  let years = now.getFullYear() - parsedBirthDate.getFullYear();
+  let months = now.getMonth() - parsedBirthDate.getMonth();
 
-  // 월이 음수면 연에서 차감하고, 월 계산 보정
   if (months < 0) {
     years -= 1;
     months += 12;
   }
 
+  if (years < 0) {
+    return '1개월 미만';
+  }
+
+  if (years <= 0 && months <= 0) {
+    return '1개월 미만';
+  }
+
   if (years <= 0 && months > 0) {
     return `${months}개월`;
-  } else if (months === 0) {
-    return `${years}년`;
-  } else {
-    return `${years}년 ${months}개월`;
   }
+
+  if (months === 0) {
+    return `${years}년`;
+  }
+
+  return `${years}년 ${months}개월`;
 }
 
-// 1️⃣ 임보 전체 기간 (일 단위)
-export function fosterTotalDuration(start_date: Date, end_date: Date): number {
-  const totalDays = Math.ceil(
-    (end_date.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24),
-  );
-  return totalDays;
+export function fosterTotalDuration(
+  startDate: Date | string | number,
+  endDate: Date | string | number,
+): number {
+  const start = toDate(startDate);
+  const end = toDate(endDate);
+
+  return Math.ceil((end.getTime() - start.getTime()) / (1000 * 60 * 60 * 24));
 }
 
-// 1️⃣ 임보 남은 기간 (일 단위)
-export function fosterRemaingDuration(end_date: Date): number {
+export function fosterRemaingDuration(endDate: Date | string | number): number {
   const today = new Date();
+  const end = toDate(endDate);
 
-  const remainingDays = Math.max(
+  return Math.max(
     0,
-    Math.ceil((end_date.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)),
+    Math.ceil((end.getTime() - today.getTime()) / (1000 * 60 * 60 * 24)),
   );
-  return remainingDays;
 }
 
-// 1️⃣ 임보 진행된 기간 (일 단위)
-export function fosterDuration(start_date: Date): number {
+export function fosterDuration(startDate: Date | string | number): number {
   const today = new Date();
+  const start = toDate(startDate);
 
-  const preceedingDays = Math.max(
+  return Math.max(
     0,
-    Math.ceil((today.getTime() - start_date.getTime()) / (1000 * 60 * 60 * 24)),
+    Math.ceil((today.getTime() - start.getTime()) / (1000 * 60 * 60 * 24)),
   );
-  return preceedingDays;
 }
 
 export function stripHtml(value: string): string {

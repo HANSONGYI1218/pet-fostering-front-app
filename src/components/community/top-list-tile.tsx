@@ -25,7 +25,9 @@ export default function TopListTile({
           </span>
           <div className="flex items-center gap-1">
             <MessageSquareText className="h-4 w-4" stroke="#525252" />
-            <span className="text-[#525252]">4</span>
+            <span className="text-[#525252]">
+              {recentPopularPost?.commentCount ?? 0}
+            </span>
           </div>
           <div className="flex items-center gap-1">
             <Eye className="h-4 w-4" stroke="#525252" />

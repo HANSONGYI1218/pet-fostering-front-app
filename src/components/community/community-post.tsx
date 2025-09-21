@@ -11,6 +11,7 @@ import Image from 'next/image';
 import { ko } from 'date-fns/locale';
 import { Button } from '../ui/button';
 import { PostItem } from '@/types/post/post-api';
+import { toDate } from '@/lib/utils';
 
 export default function CommunityPost({
   post,
@@ -18,9 +19,8 @@ export default function CommunityPost({
   post: PostItem | undefined;
 }) {
   const nickname = post?.user?.nickname ?? '익명';
-  const createdAt = post?.created_at
-    ? new Date(post.created_at)
-    : undefined;
+  const createdAt = post?.created_at ? toDate(post.created_at) : undefined;
+  const contentLines = post?.content?.split('<br/>') ?? [];
   return (
     <Card className="relative cursor-default">
       <Bookmark
@@ -56,14 +56,16 @@ export default function CommunityPost({
           </div>
         </div>
 
-        <span className="py-10 text-neutral-500">
-          {post?.content.split('<br/>').map((line: string, i: number) => (
-            <span key={i}>
-              {line}
-              <br />
-            </span>
-          ))}
-        </span>
+        {contentLines.length > 0 ? (
+          <span className="py-10 text-neutral-500">
+            {contentLines.map((line, i) => (
+              <span key={i}>
+                {line}
+                {i < contentLines.length - 1 ? <br /> : null}
+              </span>
+            ))}
+          </span>
+        ) : null}
       </div>
       <div className="flex w-full items-center justify-between">
         <span className="text-[#525252]">

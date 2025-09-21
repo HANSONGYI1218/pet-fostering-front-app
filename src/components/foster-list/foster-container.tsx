@@ -6,48 +6,36 @@ import SearchBox from '../common/search-box';
 import { useMemo, useState } from 'react';
 import FosterTile from './foster-tile';
 import FosterConditionCard from './foster-condition-card';
-import {
-  ANIMAL_GENDER_LABEL_KO,
-  ANIMAL_SIZE_LABEL_KO,
-  ANIMAL_TYPE_LABEL_KO,
-} from '@/constants/enum';
+import { filterFosterList } from '@/domain/foster-list/filters';
+import type { FosterFilterValue } from '@/domain/foster-list/filters';
+import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+import { FILTER_ALL_VALUE } from '@/constants/filter';
 
 export default function FosterContainer({
   animals,
 }: {
   animals: FosterListAnimalItem[];
 }) {
-  const [animalType, setAnimalType] = useState('전체');
-  const [animalSize, setAnimalSize] = useState('전체');
-  const [animalGender, setAnimalGender] = useState('전체');
+  const [animalType, setAnimalType] = useState<FosterFilterValue<AnimalType>>(
+    FILTER_ALL_VALUE,
+  );
+  const [animalSize, setAnimalSize] = useState<FosterFilterValue<AnimalSize>>(
+    FILTER_ALL_VALUE,
+  );
+  const [animalGender, setAnimalGender] = useState<
+    FosterFilterValue<AnimalGender>
+  >(FILTER_ALL_VALUE);
   const [search, setSearch] = useState('');
-  const filteredAnimals = useMemo(() => {
-    if (!animals?.length) return [];
-
-    const keyword = search.trim();
-
-    return animals.filter((animal: FosterListAnimalItem) => {
-      const matchesGender =
-        animalGender === '전체' ||
-        ANIMAL_GENDER_LABEL_KO[animal.gender] === animalGender;
-
-      const matchesType =
-        animalType === '전체' ||
-        ANIMAL_TYPE_LABEL_KO[animal?.type] === animalType;
-
-      const matchesSize =
-        animalSize === '전체' ||
-        ANIMAL_SIZE_LABEL_KO[animal?.size] === animalSize;
-
-      const matchesKeyword =
-        keyword.length === 0 ||
-        animal?.breed.includes(keyword) ||
-        animal?.name.includes(keyword) ||
-        animal?.organization?.name.includes(keyword);
-
-      return matchesGender && matchesType && matchesSize && matchesKeyword;
-    });
-  }, [animals, animalGender, animalType, animalSize, search]);
+  const filteredAnimals = useMemo(
+    () =>
+      filterFosterList(animals ?? [], {
+        type: animalType,
+        size: animalSize,
+        gender: animalGender,
+        keyword: search,
+      }),
+    [animals, animalGender, animalType, animalSize, search],
+  );
 
   return (
     <div className="flex flex-col gap-10">

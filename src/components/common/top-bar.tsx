@@ -15,32 +15,27 @@ export default function TopBar() {
       href: '/foster-list',
       name: '임보를 기다려요',
       page: 'foster-list',
-      accessUserTypes: ['USER', 'ORGANIZATION', 'OWNER'],
     },
     {
       href: '/record',
       name: '돌봄 기록',
       page: 'record',
-      accessUserTypes: ['USER', 'OWNER'],
     },
     {
       href: '/community',
       name: '놀이터',
       page: 'community',
-      accessUserTypes: ['USER', 'ORGANIZATION', 'OWNER'],
     },
 
     {
       href: `/mypage`,
       name: '내 정보',
       page: 'mypage',
-      accessUserTypes: ['USER', 'ORGANIZATION', 'OWNER'],
     },
     {
       href: `/notice`,
       name: '공지사항',
       page: 'notice',
-      accessUserTypes: ['USER', 'ORGANIZATION', 'OWNER'],
     },
   ];
 

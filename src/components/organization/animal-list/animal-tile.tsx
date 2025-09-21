@@ -3,7 +3,7 @@ import { Card } from '../../ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
-  ANIMAL_PERSONALITYS_LABEL_KO,
+  ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   FOSTER_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
@@ -131,7 +131,7 @@ export default function FosterTile({
             {animal?.animal_personalitys?.map((personality, index) => {
               return (
                 <Badge key={index} variant={'default'} className="font-normal">
-                  {ANIMAL_PERSONALITYS_LABEL_KO[personality]}
+                  {ANIMAL_PERSONALITY_LABEL_KO[personality]}
                 </Badge>
               );
             })}

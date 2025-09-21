@@ -1,10 +1,53 @@
+export type KakaoLatLng = {
+  getLat?: () => number;
+  getLng?: () => number;
+};
+
+export type KakaoMap = {
+  setCenter: (position: KakaoLatLng) => void;
+};
+
+export type KakaoMarker = {
+  setMap: (map: KakaoMap | null) => void;
+};
+
+export type KakaoGeocoderResult = {
+  x: number;
+  y: number;
+};
+
+type KakaoLatLngConstructor = new (lat: number, lng: number) => KakaoLatLng;
+type KakaoMapConstructor = new (
+  container: HTMLElement,
+  options: { center: KakaoLatLng; level: number },
+) => KakaoMap;
+type KakaoMarkerConstructor = new (options: {
+  position: KakaoLatLng;
+  map?: KakaoMap;
+}) => KakaoMarker;
+type KakaoGeocoderConstructor = new () => {
+  addressSearch: (
+    address: string,
+    callback: (result: KakaoGeocoderResult[], status: string) => void,
+  ) => void;
+};
+
+type KakaoMapsServicesNamespace = {
+  Geocoder: KakaoGeocoderConstructor;
+  Status: Record<string, string>;
+};
+
 type KakaoMapsNamespace = {
   load?: (callback: () => void) => void;
-} & Record<string, unknown>;
+  LatLng?: KakaoLatLngConstructor;
+  Map?: KakaoMapConstructor;
+  Marker?: KakaoMarkerConstructor;
+  services?: KakaoMapsServicesNamespace;
+};
 
-type KakaoNamespace = {
+export type KakaoNamespace = {
   maps?: KakaoMapsNamespace;
-} & Record<string, unknown>;
+};
 
 type KakaoWindow = Window & {
   kakao?: KakaoNamespace;

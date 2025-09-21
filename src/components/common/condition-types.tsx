@@ -1,6 +1,6 @@
 'use client';
 
-import CheckboxDemo from '@/components/common/check-box';
+import CheckBox from '@/components/common/check-box';
 import {
   Popover,
   PopoverContent,
@@ -9,14 +9,17 @@ import {
 import { Button } from '../ui/button';
 import { RotateCcwIcon } from 'lucide-react';
 
+type ConditionOption = {
+  label: string;
+  value: string;
+};
+
 type ConditionType = {
   title: string;
-  checkboxItems: {
-    key: string;
-    value: string;
-  }[];
-  default: string;
-  onchange: (value: string) => void;
+  options: ConditionOption[];
+  selected: string;
+  onChange: (value: string) => void;
+  resetValue: string;
 };
 
 /**
@@ -31,9 +34,9 @@ export default function ConditionItem({
   conditionTypes: ConditionType[];
 }) {
   const handleReset = () => {
-    conditionTypes?.map((conditionType: ConditionType) =>
-      conditionType.onchange('전체'),
-    );
+    conditionTypes.forEach((conditionType) => {
+      conditionType.onChange(conditionType.resetValue);
+    });
   };
 
   return (
@@ -74,24 +77,23 @@ export default function ConditionItem({
       >
         <h1 className="text-lg font-semibold">필터</h1>
         <div className="flex flex-col gap-6">
-          {conditionTypes.map((conditionType: ConditionType) => {
-            return (
-              <div key={conditionType?.title} className="flex flex-col gap-1">
-                <span className="font-semibold">{conditionType?.title}</span>
-                <div className="flex flex-wrap items-center gap-2">
-                  {conditionType?.checkboxItems.map(({ key, value }) => (
-                    <CheckboxDemo
-                      key={value}
-                      value={conditionType?.default ?? ''}
-                      onChangeValue={conditionType?.onchange}
-                      label={key}
-                      id={value}
-                    />
-                  ))}
-                </div>
+          {conditionTypes.map((conditionType) => (
+            <div key={conditionType.title} className="flex flex-col gap-1">
+              <span className="font-semibold">{conditionType.title}</span>
+              <div className="flex flex-wrap items-center gap-2">
+                {conditionType.options.map(({ label, value }) => (
+                  <CheckBox
+                    key={value}
+                    id={`${conditionType.title}-${value}`}
+                    label={label}
+                    value={value}
+                    selectedValue={conditionType.selected}
+                    onChangeValue={conditionType.onChange}
+                  />
+                ))}
               </div>
-            );
-          })}
+            </div>
+          ))}
         </div>
         <Button
           variant={'default'}

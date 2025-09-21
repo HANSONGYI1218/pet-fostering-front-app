@@ -2,7 +2,7 @@
 
 import { ChartBarLabel } from '@/components/record/record-chart/bar-chart';
 import { ChartRadialStacked } from '@/components/record/record-chart/radial-chart';
-import { fosterDuration, fosterTotalDuration } from '@/lib/utils';
+import { fosterDuration, fosterTotalDuration, toDate } from '@/lib/utils';
 import { FosterRecord } from '@/types/foster-record/foster-record';
 import CircleChart from './circle-chart';
 
@@ -38,17 +38,20 @@ export default function ChartContainer({
   end_date,
   foster_records,
 }: {
-  start_date: Date;
-  end_date: Date;
+  start_date: Date | string | number;
+  end_date: Date | string | number;
   foster_records: FosterRecord[];
 }) {
-  const months = getMonthsBetween(start_date, end_date);
-  const totalDay = fosterTotalDuration(start_date, end_date);
-  const preceedingDay = fosterDuration(start_date);
+  const startDateObj = toDate(start_date);
+  const endDateObj = toDate(end_date);
+
+  const months = getMonthsBetween(startDateObj, endDateObj);
+  const totalDay = fosterTotalDuration(startDateObj, endDateObj);
+  const preceedingDay = fosterDuration(startDateObj);
 
   const chartData = months.map((month) => {
     const count = foster_records.filter((record) => {
-      const recMonth = record.created_at.getMonth(); // 0~11
+      const recMonth = toDate(record.created_at).getMonth();
       const monthIndex = monthNames.indexOf(month); // months 배열에 해당하는 인덱스
       return recMonth === monthIndex;
     }).length;
@@ -64,16 +67,16 @@ export default function ChartContainer({
       <div className="flex w-full flex-col gap-2">
         <h1 className="text-lg font-semibold">돌봄기록</h1>
         <ChartBarLabel
-          start_date={start_date}
-          end_date={end_date}
+          start_date={startDateObj}
+          end_date={endDateObj}
           chartData={chartData}
         />
       </div>
       <div className="flex w-full flex-col gap-2">
         <h1 className="text-lg font-semibold">기록 작성률</h1>
         <ChartRadialStacked
-          start_date={start_date}
-          end_date={end_date}
+          start_date={startDateObj}
+          end_date={endDateObj}
           totalDay={totalDay}
           value={foster_records.length}
         />

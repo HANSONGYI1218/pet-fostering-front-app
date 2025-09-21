@@ -10,10 +10,10 @@ export type PostItem = {
   content: string;
   likes: number;
   views: number;
-  created_at: string;
+  created_at: Date;
 } & {
   authorId?: string;
   images?: string[];
   commentCount?: number;
-  updated_at?: string;
+  updated_at?: Date;
 };
