@@ -311,7 +311,13 @@ export default async function FosterListDetailPage({
         </div>
         <div className="flex w-full items-center justify-between rounded-lg border border-neutral-200 bg-[#F5F5F5] p-3 shadow-xs">
           <span className="flex items-end gap-1 font-medium">
-            <img src="/images/support.png" alt="support" className="h-7 w-7" />{' '}
+            <Image
+              src="/images/support.png"
+              alt="support"
+              width={28}
+              height={28}
+              className="h-7 w-7"
+            />{' '}
             {animal?.name}에게 작지만 따뜻한 후원을 해주세요.
           </span>
           <span className="text-end text-sm text-neutral-700">

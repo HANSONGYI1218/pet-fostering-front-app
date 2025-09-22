@@ -28,7 +28,9 @@ describe('CalendarDialogForm', () => {
       date: today,
       formattedDate: String(today.getDate()),
     };
-    const initialRecords = [createRecord('seed', new Date('2024-01-01'), 'seed')];
+    const initialRecords = [
+      createRecord('seed', new Date('2024-01-01'), 'seed'),
+    ];
     const handleRecords = vi.fn();
 
     function Observer() {
@@ -57,7 +59,11 @@ describe('CalendarDialogForm', () => {
     }
 
     render(
-      <RecordProvider records={initialRecords} initalValue={initialRecords[0]} isDog>
+      <RecordProvider
+        records={initialRecords}
+        initalValue={initialRecords[0]}
+        isDog
+      >
         <Wrapper />
       </RecordProvider>,
     );
@@ -127,7 +133,11 @@ describe('CalendarDialogForm', () => {
     }
 
     render(
-      <RecordProvider records={initialRecords} initalValue={existingRecord} isDog>
+      <RecordProvider
+        records={initialRecords}
+        initalValue={existingRecord}
+        isDog
+      >
         <Wrapper />
       </RecordProvider>,
     );

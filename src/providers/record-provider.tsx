@@ -49,9 +49,8 @@ export const RecordProvider: React.FC<{
     [records],
   );
 
-  const [recordsState, setRecordsState] = useState<FosterRecord[]>(
-    normalizedRecords,
-  );
+  const [recordsState, setRecordsState] =
+    useState<FosterRecord[]>(normalizedRecords);
 
   const normalizedInitialRecord = useMemo(
     () => (initalValue ? normalizeRecord(initalValue) : null),

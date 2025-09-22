@@ -101,9 +101,9 @@ export default function RecordDetail() {
                 <div className="relative flex h-56">
                   <div className="absolute top-0 left-0 flex h-full w-full bg-black opacity-0 group-hover:opacity-50" />
                   <div className="absolute top-0 left-0 z-10 flex h-full w-full flex-col items-start justify-between p-6 opacity-0 group-hover:opacity-100">
-                  <span className="text-white">
-                    {format(toDate(record?.created_at), 'yyyy.MM.dd')}
-                  </span>
+                    <span className="text-white">
+                      {format(toDate(record?.created_at), 'yyyy.MM.dd')}
+                    </span>
                     <span className="line-clamp-3 text-start text-white">
                       {record?.content}
                     </span>

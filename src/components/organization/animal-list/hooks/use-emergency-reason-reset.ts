@@ -6,9 +6,7 @@ type EmergencyForm = {
   emergency_reason: string;
 };
 
-export const useEmergencyReasonReset = (
-  form: UseFormReturn<EmergencyForm>,
-) => {
+export const useEmergencyReasonReset = (form: UseFormReturn<EmergencyForm>) => {
   const isEmergency = form.watch('isEmergency');
 
   useEffect(() => {

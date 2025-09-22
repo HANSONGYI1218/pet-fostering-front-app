@@ -12,7 +12,9 @@ const organization = {
   phone_number: '010-0000-0000',
 };
 
-const createAnimal = (overrides: Partial<FosterListAnimalItem>): FosterListAnimalItem => ({
+const createAnimal = (
+  overrides: Partial<FosterListAnimalItem>,
+): FosterListAnimalItem => ({
   id: 'default',
   name: '보리',
   type: AnimalType.DOG,

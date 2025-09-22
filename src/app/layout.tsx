@@ -6,6 +6,7 @@ import { buildKakaoSdkUrl } from '@/lib/kakao-sdk';
 import { Toaster } from '@/components/ui/sonner';
 import TopBar from '@/components/common/top-bar';
 import BottomBar from '@/components/common/bottom-bar';
+import { logWarning } from '@/lib/logging';
 
 declare global {
   interface Window {
@@ -27,8 +28,10 @@ export const metadata: Metadata = {
 
 const kakaoSdkUrl = buildKakaoSdkUrl(process.env.NEXT_PUBLIC_MAP_KEY);
 
-if (!kakaoSdkUrl && process.env.NODE_ENV !== 'production') {
-  console.warn('NEXT_PUBLIC_MAP_KEY가 설정되지 않아 Kakao Maps SDK가 로드되지 않습니다.');
+if (!kakaoSdkUrl) {
+  logWarning(
+    'NEXT_PUBLIC_MAP_KEY가 설정되지 않아 Kakao Maps SDK가 로드되지 않습니다.',
+  );
 }
 
 export default function RootLayout({

@@ -14,7 +14,13 @@ type MockCarouselApi = {
 };
 
 vi.mock('@/components/ui/carousel', () => {
-  const Carousel = ({ setApi, children }: { setApi?: (api: MockCarouselApi) => void; children: React.ReactNode }) => {
+  const Carousel = ({
+    setApi,
+    children,
+  }: {
+    setApi?: (api: MockCarouselApi) => void;
+    children: React.ReactNode;
+  }) => {
     React.useEffect(() => {
       if (setApi && mockApiRef.current) {
         setApi(mockApiRef.current);
@@ -24,9 +30,13 @@ vi.mock('@/components/ui/carousel', () => {
     return <div data-testid="carousel">{children}</div>;
   };
 
-  const Wrapper = ({ children }: { children: React.ReactNode }) => <div>{children}</div>;
+  const Wrapper = ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  );
 
-  const Control = (props: React.ComponentProps<'button'>) => <button type="button" {...props} />;
+  const Control = (props: React.ComponentProps<'button'>) => (
+    <button type="button" {...props} />
+  );
 
   return {
     Carousel,
@@ -59,7 +69,7 @@ describe('AnimalCarousel', () => {
 
     mockApiRef.current = api;
 
-    const { unmount } = render(<AnimalCarousel images={["/a.jpg"]} />);
+    const { unmount } = render(<AnimalCarousel images={['/a.jpg']} />);
 
     expect(api.on).toHaveBeenCalledWith('select', expect.any(Function));
     expect(selectHandlers).toHaveLength(1);

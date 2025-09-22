@@ -3,12 +3,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import AnimalDetailContainer from '../animal-detail-container';
-import {
-  AnimalGender,
-  AnimalSize,
-  AnimalType,
-  FosterState,
-} from '@/types/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 
 vi.mock('@/components/common/kakaomap-loader', () => ({
@@ -25,6 +20,8 @@ vi.mock('next/image', () => ({
     const { fill: _fill, ...imgProps } = rest as React.ComponentProps<'img'> & {
       fill?: boolean;
     };
+
+    void _fill;
 
     // eslint-disable-next-line @next/next/no-img-element
     return <img alt={alt} {...imgProps} />;

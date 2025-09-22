@@ -35,18 +35,10 @@ export default function FosterConditionCard({
   animalSize: FosterFilterValue<AnimalSize>;
   animalGender: FosterFilterValue<AnimalGender>;
   animalStatus?: FosterFilterValue<FosterState>;
-  setAnimalType: Dispatch<
-    SetStateAction<FosterFilterValue<AnimalType>>
-  >;
-  setAnimalSize: Dispatch<
-    SetStateAction<FosterFilterValue<AnimalSize>>
-  >;
-  setAnimalGender: Dispatch<
-    SetStateAction<FosterFilterValue<AnimalGender>>
-  >;
-  setAnimalStatus?: Dispatch<
-    SetStateAction<FosterFilterValue<FosterState>>
-  >;
+  setAnimalType: Dispatch<SetStateAction<FosterFilterValue<AnimalType>>>;
+  setAnimalSize: Dispatch<SetStateAction<FosterFilterValue<AnimalSize>>>;
+  setAnimalGender: Dispatch<SetStateAction<FosterFilterValue<AnimalGender>>>;
+  setAnimalStatus?: Dispatch<SetStateAction<FosterFilterValue<FosterState>>>;
 }) {
   const handleChangeAnimalType = (value: string) => {
     setAnimalType(value as FosterFilterValue<AnimalType>);

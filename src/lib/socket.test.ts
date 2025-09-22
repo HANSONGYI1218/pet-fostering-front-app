@@ -32,7 +32,11 @@ describe('getSocket', () => {
   });
 
   it('클라이언트 환경에서는 단일 소켓 인스턴스를 재사용한다', async () => {
-    const socketStub = { id: 'client-socket', on: vi.fn(), off: vi.fn() } as const;
+    const socketStub = {
+      id: 'client-socket',
+      on: vi.fn(),
+      off: vi.fn(),
+    } as const;
     const ioSpy = vi.fn(() => socketStub);
     vi.doMock('socket.io-client', () => ({ io: ioSpy }));
 

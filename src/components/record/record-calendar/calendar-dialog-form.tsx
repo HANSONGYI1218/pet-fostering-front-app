@@ -93,7 +93,10 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       return currentRecord.id;
     }
 
-    if (typeof crypto !== 'undefined' && typeof crypto.randomUUID === 'function') {
+    if (
+      typeof crypto !== 'undefined' &&
+      typeof crypto.randomUUID === 'function'
+    ) {
       return crypto.randomUUID();
     }
 

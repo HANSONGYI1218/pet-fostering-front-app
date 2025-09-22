@@ -1,9 +1,4 @@
-import {
-  AnimalType,
-  AnimalGender,
-  AnimalSize,
-  FosterState,
-} from '@/types/animal/animal';
+import { AnimalType, AnimalGender, AnimalSize } from '@/types/animal/animal';
 
 export enum AnimalAge {
   JUVENILE = 'JUVENILE',

@@ -6,17 +6,20 @@ vi.mock('@/lib/kakao-sdk', () => ({
   getKakao: () => undefined,
 }));
 
+const { logWarningSpy } = vi.hoisted(() => ({
+  logWarningSpy: vi.fn(),
+}));
+
+vi.mock('@/lib/logging', () => ({
+  logWarning: (...args: unknown[]) => logWarningSpy(...args),
+  logError: vi.fn(),
+}));
+
 import KakaoMapLoader from '../kakaomap-loader';
 
 describe('KakaoMapLoader', () => {
-  let warnSpy: ReturnType<typeof vi.spyOn>;
-
   beforeEach(() => {
-    warnSpy = vi.spyOn(console, 'warn').mockImplementation(() => {});
-  });
-
-  afterEach(() => {
-    warnSpy.mockRestore();
+    logWarningSpy.mockClear();
   });
 
   it('DOM 요소에 고정된 id를 부여하지 않는다', () => {
@@ -25,8 +28,8 @@ describe('KakaoMapLoader', () => {
     const root = container.firstElementChild as HTMLElement;
 
     expect(root).not.toHaveAttribute('id');
-    expect(warnSpy).toHaveBeenCalledTimes(1);
-    expect(warnSpy).toHaveBeenCalledWith(
+    expect(logWarningSpy).toHaveBeenCalledTimes(1);
+    expect(logWarningSpy).toHaveBeenCalledWith(
       'Kakao Maps SDK가 준비되지 않아 지도를 초기화하지 않습니다.',
     );
   });

@@ -10,14 +10,21 @@ export type FosterFilterOptions = {
   keyword?: string;
 };
 
-const normalizeKeyword = (keyword?: string): string => keyword?.trim().toLowerCase() ?? '';
+const normalizeKeyword = (keyword?: string): string =>
+  keyword?.trim().toLowerCase() ?? '';
 
-const matchesFilter = <T>(value: T, filter: FosterFilterValue<T> | undefined): boolean => {
+const matchesFilter = <T>(
+  value: T,
+  filter: FosterFilterValue<T> | undefined,
+): boolean => {
   if (!filter || filter === 'ALL') return true;
   return value === filter;
 };
 
-const matchesKeyword = (animal: FosterListAnimalItem, keyword: string): boolean => {
+const matchesKeyword = (
+  animal: FosterListAnimalItem,
+  keyword: string,
+): boolean => {
   if (!keyword) return true;
 
   const fields = [animal.breed, animal.name, animal.organization?.name];

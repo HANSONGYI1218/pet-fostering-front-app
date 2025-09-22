@@ -69,8 +69,7 @@ export default function CommunityPost({
       </div>
       <div className="flex w-full items-center justify-between">
         <span className="text-[#525252]">
-          {createdAt &&
-            format(createdAt, 'yyyy.MM.dd a hh:mm', { locale: ko })}
+          {createdAt && format(createdAt, 'yyyy.MM.dd a hh:mm', { locale: ko })}
         </span>
         <Button variant={'destructive'} className="w-32 self-end">
           <Pencil />

@@ -69,7 +69,9 @@ export const hasKakaoSdk = (): boolean => {
   return typeof kakao?.maps?.load === 'function';
 };
 
-export const buildKakaoSdkUrl = (rawAppKey?: string | null): string | undefined => {
+export const buildKakaoSdkUrl = (
+  rawAppKey?: string | null,
+): string | undefined => {
   const appKey = rawAppKey?.trim();
 
   if (!appKey) {
@@ -77,7 +79,10 @@ export const buildKakaoSdkUrl = (rawAppKey?: string | null): string | undefined 
   }
 
   const baseUrl = 'https://dapi.kakao.com/v2/maps/sdk.js';
-  const search = new URLSearchParams({ appkey: appKey, autoload: 'false' }).toString();
+  const search = new URLSearchParams({
+    appkey: appKey,
+    autoload: 'false',
+  }).toString();
 
   return `${baseUrl}?${search}&libraries=services,clusterer,drawing`;
 };

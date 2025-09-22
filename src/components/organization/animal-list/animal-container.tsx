@@ -81,18 +81,14 @@ export default function AnimalContainer() {
   }, [queryClient]);
 
   const [animalEmergency, setEmergency] = useState(false);
-  const [animalType, setAnimalType] = useState<FosterFilterValue<AnimalType>>(
-    FILTER_ALL_VALUE,
-  );
-  const [animalSize, setAnimalSize] = useState<FosterFilterValue<AnimalSize>>(
-    FILTER_ALL_VALUE,
-  );
-  const [animalGender, setAnimalGender] = useState<
-    FosterFilterValue<AnimalGender>
-  >(FILTER_ALL_VALUE);
-  const [animalStatus, setAnimalStatus] = useState<FosterFilterValue<FosterState>>(
-    FILTER_ALL_VALUE,
-  );
+  const [animalType, setAnimalType] =
+    useState<FosterFilterValue<AnimalType>>(FILTER_ALL_VALUE);
+  const [animalSize, setAnimalSize] =
+    useState<FosterFilterValue<AnimalSize>>(FILTER_ALL_VALUE);
+  const [animalGender, setAnimalGender] =
+    useState<FosterFilterValue<AnimalGender>>(FILTER_ALL_VALUE);
+  const [animalStatus, setAnimalStatus] =
+    useState<FosterFilterValue<FosterState>>(FILTER_ALL_VALUE);
   const [search, setSearch] = useState('');
   const [filteredAnimals, setFilteredAnimals] = useState<
     OgrainzationAnimalListItem[] | null
@@ -103,7 +99,9 @@ export default function AnimalContainer() {
       const trimmedSearch = search.trim().toLowerCase();
 
       const sortedAnimals = animals.filter((animal) => {
-        const matchAnimalEmergency = animalEmergency ? animal.isEmergency : true;
+        const matchAnimalEmergency = animalEmergency
+          ? animal.isEmergency
+          : true;
 
         const matchesGender =
           animalGender === FILTER_ALL_VALUE || animal.gender === animalGender;

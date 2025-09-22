@@ -1,0 +1,140 @@
+import { describe, expect, it } from 'vitest';
+
+import { filterOrganizationAnimals, sortOrganizationAnimals } from '../animals';
+import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
+import {
+  AnimalGender,
+  AnimalSize,
+  AnimalType,
+  FosterState,
+} from '@/types/animal/animal';
+
+const createAnimal = (
+  overrides: Partial<OgrainzationAnimalListItem>,
+): OgrainzationAnimalListItem => ({
+  id: 'default',
+  name: '보리',
+  type: AnimalType.DOG,
+  size: AnimalSize.SMALL,
+  breed: '믹스',
+  birth_date: new Date('2020-01-01'),
+  gender: AnimalGender.MALE,
+  animalStatus: FosterState.IN_PROGRESS,
+  image: '/image.png',
+  applicants: [],
+  animal_healths: [],
+  animal_personalitys: [],
+  foster_environments: [],
+  isEmergency: false,
+  foster_apply_number: 0,
+  ...overrides,
+});
+
+describe('sortOrganizationAnimals', () => {
+  it('임시보호 상태 우선순위에 맞게 정렬한다', () => {
+    const animals = [
+      createAnimal({ id: 'adopted', animalStatus: FosterState.ADOPTED }),
+      createAnimal({
+        id: 'in-progress',
+        animalStatus: FosterState.IN_PROGRESS,
+      }),
+      createAnimal({ id: 'fostered', animalStatus: FosterState.FOSTERED }),
+    ];
+
+    const result = sortOrganizationAnimals(animals);
+
+    expect(result.map((animal) => animal.id)).toEqual([
+      'in-progress',
+      'fostered',
+      'adopted',
+    ]);
+  });
+
+  it('정렬 시 원본 배열을 변경하지 않는다', () => {
+    const animals = [
+      createAnimal({ id: 'first', animalStatus: FosterState.ADOPTED }),
+      createAnimal({ id: 'second', animalStatus: FosterState.FOSTERED }),
+    ];
+
+    sortOrganizationAnimals(animals);
+
+    expect(animals[0].id).toBe('first');
+  });
+});
+
+describe('filterOrganizationAnimals', () => {
+  const animals: OgrainzationAnimalListItem[] = [
+    createAnimal({
+      id: 'dog-small-male',
+      name: '보리',
+      type: AnimalType.DOG,
+      size: AnimalSize.SMALL,
+      gender: AnimalGender.MALE,
+      animalStatus: FosterState.IN_PROGRESS,
+    }),
+    createAnimal({
+      id: 'cat-medium-female',
+      name: '나비',
+      type: AnimalType.CAT,
+      size: AnimalSize.MEDIUM,
+      gender: AnimalGender.FEMALE,
+      animalStatus: FosterState.FOSTERED,
+      isEmergency: true,
+      breed: '코리안숏헤어',
+    }),
+    createAnimal({
+      id: 'dog-large-female',
+      name: '코코',
+      type: AnimalType.DOG,
+      size: AnimalSize.LARGE,
+      gender: AnimalGender.FEMALE,
+      animalStatus: FosterState.ADOPTED,
+      breed: 'Poodle Mix',
+    }),
+  ];
+
+  const allFilters = {
+    emergencyOnly: false,
+    type: 'ALL' as const,
+    size: 'ALL' as const,
+    gender: 'ALL' as const,
+    status: 'ALL' as const,
+    keyword: '',
+  };
+
+  it('필터를 적용하지 않으면 전체 목록을 반환한다', () => {
+    const result = filterOrganizationAnimals(animals, allFilters);
+
+    expect(result).toHaveLength(3);
+  });
+
+  it('긴급 동물만 필터링할 수 있다', () => {
+    const result = filterOrganizationAnimals(animals, {
+      ...allFilters,
+      emergencyOnly: true,
+    });
+
+    expect(result.map((animal) => animal.id)).toEqual(['cat-medium-female']);
+  });
+
+  it('종류/사이즈/성별/상태 필터를 동시에 적용한다', () => {
+    const result = filterOrganizationAnimals(animals, {
+      ...allFilters,
+      type: AnimalType.DOG,
+      size: AnimalSize.LARGE,
+      gender: AnimalGender.FEMALE,
+      status: FosterState.ADOPTED,
+    });
+
+    expect(result.map((animal) => animal.id)).toEqual(['dog-large-female']);
+  });
+
+  it('검색어는 이름과 품종을 대상으로 대소문자 구분 없이 적용된다', () => {
+    const result = filterOrganizationAnimals(animals, {
+      ...allFilters,
+      keyword: 'Poodle',
+    });
+
+    expect(result.map((animal) => animal.id)).toEqual(['dog-large-female']);
+  });
+});

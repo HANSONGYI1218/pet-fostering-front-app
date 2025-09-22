@@ -28,8 +28,7 @@ export default async function RecordDetailPage({
   };
 
   const sortedRecords: FosterRecord[] = [...target.foster_records].sort(
-    (a, b) =>
-      toDate(a.created_at).getTime() - toDate(b.created_at).getTime(),
+    (a, b) => toDate(a.created_at).getTime() - toDate(b.created_at).getTime(),
   );
 
   return (

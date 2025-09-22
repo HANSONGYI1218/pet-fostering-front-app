@@ -16,15 +16,12 @@ export default function FosterContainer({
 }: {
   animals: FosterListAnimalItem[];
 }) {
-  const [animalType, setAnimalType] = useState<FosterFilterValue<AnimalType>>(
-    FILTER_ALL_VALUE,
-  );
-  const [animalSize, setAnimalSize] = useState<FosterFilterValue<AnimalSize>>(
-    FILTER_ALL_VALUE,
-  );
-  const [animalGender, setAnimalGender] = useState<
-    FosterFilterValue<AnimalGender>
-  >(FILTER_ALL_VALUE);
+  const [animalType, setAnimalType] =
+    useState<FosterFilterValue<AnimalType>>(FILTER_ALL_VALUE);
+  const [animalSize, setAnimalSize] =
+    useState<FosterFilterValue<AnimalSize>>(FILTER_ALL_VALUE);
+  const [animalGender, setAnimalGender] =
+    useState<FosterFilterValue<AnimalGender>>(FILTER_ALL_VALUE);
   const [search, setSearch] = useState('');
   const filteredAnimals = useMemo(
     () =>

@@ -9,6 +9,7 @@ import {
   type KakaoMap,
   type KakaoMarker,
 } from '@/lib/kakao-sdk';
+import { logWarning } from '@/lib/logging';
 
 const KakaoMapLoader = ({ address }: { address: string }) => {
   const [map, setMap] = useState<KakaoMap | null>(null);
@@ -17,9 +18,7 @@ const KakaoMapLoader = ({ address }: { address: string }) => {
 
   useEffect(() => {
     if (!hasKakaoSdk()) {
-      if (process.env.NODE_ENV !== 'production') {
-        console.warn('Kakao Maps SDK가 준비되지 않아 지도를 초기화하지 않습니다.');
-      }
+      logWarning('Kakao Maps SDK가 준비되지 않아 지도를 초기화하지 않습니다.');
       return;
     }
 
@@ -55,36 +54,35 @@ const KakaoMapLoader = ({ address }: { address: string }) => {
 
     const geocoder = new services.Geocoder();
     // 주소를 좌표로 변환하는 함수
-    geocoder.addressSearch(address, (results: KakaoGeocoderResult[], status) => {
-      if (status === services.Status.OK) {
-        const result = results[0];
+    geocoder.addressSearch(
+      address,
+      (results: KakaoGeocoderResult[], status) => {
+        if (status === services.Status.OK) {
+          const result = results[0];
 
-        if (!result) {
-          return;
+          if (!result) {
+            return;
+          }
+
+          const coords = new LatLng(result.y, result.x);
+
+          if (markerRef.current) {
+            markerRef.current.setMap(null);
+          }
+
+          markerRef.current = new Marker({
+            position: coords,
+            map,
+          });
+
+          map.setCenter(coords);
         }
-
-        const coords = new LatLng(result.y, result.x);
-
-        if (markerRef.current) {
-          markerRef.current.setMap(null);
-        }
-
-        markerRef.current = new Marker({
-          position: coords,
-          map,
-        });
-
-        map.setCenter(coords);
-      }
-    });
+      },
+    );
   }, [map, address]); // map과 address가 변경될 때마다 실행
 
   return (
-    <div
-      ref={containerRef}
-      style={{ height: '200px' }}
-      className="w-full"
-    />
+    <div ref={containerRef} style={{ height: '200px' }} className="w-full" />
   );
 };
 

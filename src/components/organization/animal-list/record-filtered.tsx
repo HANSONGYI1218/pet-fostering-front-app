@@ -45,8 +45,7 @@ const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
     });
 
     results.sort(
-      (a, b) =>
-        toDate(b.created_at).getTime() - toDate(a.created_at).getTime(),
+      (a, b) => toDate(b.created_at).getTime() - toDate(a.created_at).getTime(),
     );
 
     setFilteredRecords(results);
