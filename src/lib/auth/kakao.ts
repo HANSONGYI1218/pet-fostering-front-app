@@ -1,7 +1,8 @@
 import { resolveEndpoint } from '@/lib/api/config';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
-const ENV_ERROR_MESSAGE = '카카오 로그인에 필요한 환경 변수가 설정되지 않았습니다.';
+const ENV_ERROR_MESSAGE =
+  '카카오 로그인에 필요한 환경 변수가 설정되지 않았습니다.';
 
 export const ACCESS_TOKEN_STORAGE_KEY = 'pet.accessToken';
 export const REFRESH_TOKEN_STORAGE_KEY = 'pet.refreshToken';
@@ -94,7 +95,9 @@ export const exchangeKakaoAuthorizationCode = async ({
   if (!response.ok) {
     const reason = await response.text().catch(() => '');
     const suffix = reason ? ` ${reason}` : '';
-    throw new Error(`카카오 로그인 요청이 실패했습니다 (${response.status}).${suffix}`);
+    throw new Error(
+      `카카오 로그인 요청이 실패했습니다 (${response.status}).${suffix}`,
+    );
   }
 
   return response.json() as Promise<{ token: string; refreshToken: string }>;
@@ -112,10 +115,7 @@ const resolveStorage = (candidate?: Pick<Storage, 'setItem'>) => {
   return null;
 };
 
-export const persistAuthTokens = ({
-  tokens,
-  storage,
-}: PersistDependencies) => {
+export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
   const targetStorage = resolveStorage(storage);
 
   if (!targetStorage) {

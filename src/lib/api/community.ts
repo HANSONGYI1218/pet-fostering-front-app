@@ -47,12 +47,15 @@ export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
     updated_at: item.updatedAt ? toDate(item.updatedAt) : undefined,
   }));
 
-const communityHeaders = (token?: string) =>
-  token
-    ? {
-        Authorization: `Bearer ${token}`,
-      }
-    : {};
+const communityHeaders = (token?: string): Record<string, string> => {
+  const headers: Record<string, string> = {};
+
+  if (token) {
+    headers.Authorization = `Bearer ${token}`;
+  }
+
+  return headers;
+};
 
 const buildQueryString = ({ limit, cursor }: CommunityListParams) => {
   const params = new URLSearchParams();

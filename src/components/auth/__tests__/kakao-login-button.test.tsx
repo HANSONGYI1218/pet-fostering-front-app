@@ -27,7 +27,9 @@ describe('KakaoLoginButton', () => {
 
     render(<KakaoLoginButton />);
 
-    await user.click(screen.getByRole('button', { name: /카카오로 시작하기/i }));
+    await user.click(
+      screen.getByRole('button', { name: /카카오로 시작하기/i }),
+    );
 
     expect(redirectToKakaoLogin).toHaveBeenCalledTimes(1);
   });

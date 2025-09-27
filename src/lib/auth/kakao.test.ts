@@ -111,10 +111,7 @@ describe('persistAuthTokens', () => {
     });
 
     expect(setItem).toHaveBeenCalledWith(ACCESS_TOKEN_STORAGE_KEY, 'access');
-    expect(setItem).toHaveBeenCalledWith(
-      REFRESH_TOKEN_STORAGE_KEY,
-      'refresh',
-    );
+    expect(setItem).toHaveBeenCalledWith(REFRESH_TOKEN_STORAGE_KEY, 'refresh');
   });
 });
 

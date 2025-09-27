@@ -1,7 +1,9 @@
 import { KakaoCallbackHandler } from '@/components/auth/kakao-callback-handler';
 
+type SearchParams = Record<string, string | string[] | undefined>;
+
 type KakaoCallbackPageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams: Promise<SearchParams>;
 };
 
 const extractCodeParam = (value?: string | string[]) => {
@@ -12,10 +14,11 @@ const extractCodeParam = (value?: string | string[]) => {
   return value ?? null;
 };
 
-export default function KakaoCallbackPage({
+export default async function KakaoCallbackPage({
   searchParams,
 }: KakaoCallbackPageProps) {
-  const code = extractCodeParam(searchParams?.code);
+  const resolvedSearchParams = await (searchParams ?? Promise.resolve({}));
+  const code = extractCodeParam(resolvedSearchParams?.code);
 
   return <KakaoCallbackHandler code={code} />;
 }

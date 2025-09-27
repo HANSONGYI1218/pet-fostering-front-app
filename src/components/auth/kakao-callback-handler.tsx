@@ -45,7 +45,15 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
 
         setStatus('error');
 
-        console.error('카카오 로그인 처리 실패', error);
+        if (
+          'reportError' in globalThis &&
+          typeof (globalThis as { reportError?: (err: unknown) => void })
+            .reportError === 'function'
+        ) {
+          (
+            globalThis as { reportError?: (err: unknown) => void }
+          ).reportError?.(error);
+        }
       }
     };
 
@@ -59,7 +67,9 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 p-6 text-center">
       <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl bg-white p-10 shadow-lg">
-        <h1 className="text-xl font-semibold text-neutral-900">카카오 로그인</h1>
+        <h1 className="text-xl font-semibold text-neutral-900">
+          카카오 로그인
+        </h1>
         <p className="text-neutral-600">{messages[status]}</p>
       </div>
     </div>

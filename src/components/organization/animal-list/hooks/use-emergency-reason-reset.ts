@@ -1,20 +1,27 @@
 import { useEffect } from 'react';
-import type { UseFormReturn } from 'react-hook-form';
+import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
 
-type EmergencyForm = {
+export type EmergencyForm = {
   isEmergency: boolean;
   emergency_reason: string;
 };
 
-export const useEmergencyReasonReset = (form: UseFormReturn<EmergencyForm>) => {
-  const isEmergency = form.watch('isEmergency');
+export const useEmergencyReasonReset = <
+  FormValues extends EmergencyForm & FieldValues,
+>(
+  form: UseFormReturn<FormValues>,
+) => {
+  const isEmergencyField = 'isEmergency' as FieldPath<FormValues>;
+  const emergencyReasonField = 'emergency_reason' as FieldPath<FormValues>;
+  const isEmergency = form.watch(isEmergencyField) as FormValues['isEmergency'];
 
   useEffect(() => {
     if (!isEmergency) {
-      form.setValue('emergency_reason', '', {
-        shouldDirty: false,
-        shouldTouch: false,
+      form.resetField(emergencyReasonField, {
+        keepDirty: false,
+        keepTouched: false,
+        keepError: false,
       });
     }
-  }, [form, isEmergency]);
+  }, [form, emergencyReasonField, isEmergency]);
 };
