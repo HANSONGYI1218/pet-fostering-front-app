@@ -8,6 +8,12 @@ import BottomBar from '@/components/common/bottom-bar';
 
 declare global {
   interface Window {
+    daum: any;
+  }
+}
+
+declare global {
+  interface Window {
     kakao: Record<string, unknown>;
   }
 }
