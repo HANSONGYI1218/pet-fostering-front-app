@@ -1,5 +1,10 @@
 import { useEffect } from 'react';
-import type { FieldPath, FieldValues, UseFormReturn } from 'react-hook-form';
+import type {
+  FieldPath,
+  FieldPathValue,
+  FieldValues,
+  UseFormReturn,
+} from 'react-hook-form';
 
 export type EmergencyForm = {
   isEmergency: boolean;
@@ -17,7 +22,11 @@ export const useEmergencyReasonReset = <
 
   useEffect(() => {
     if (!isEmergency) {
-      form.setValue(emergencyReasonField, '' as FormValues['emergency_reason'], {
+      const resetValue = '' as FieldPathValue<
+        FormValues,
+        typeof emergencyReasonField
+      >;
+      form.setValue(emergencyReasonField, resetValue, {
         shouldDirty: false,
         shouldTouch: false,
         shouldValidate: false,
