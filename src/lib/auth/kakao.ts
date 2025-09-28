@@ -19,23 +19,25 @@ type ExchangeDependencies = {
   fetcher?: typeof fetch;
 };
 
+export type AuthTokenPair = {
+  token: string;
+  refreshToken: string;
+  displayName: string | null;
+  avatarUrl: string | null;
+};
+
 type PersistDependencies = {
-  tokens: { token: string; refreshToken: string };
+  tokens: AuthTokenPair;
   storage?: Pick<Storage, 'setItem'>;
 };
 
 type CompleteDependencies = {
   code: Maybe<string>;
-  exchangeCode?: (deps: ExchangeDependencies) => Promise<{
-    token: string;
-    refreshToken: string;
-  }>;
+  exchangeCode?: (deps: ExchangeDependencies) => Promise<AuthTokenPair>;
   persistTokens?: (deps: PersistDependencies) => unknown;
   storage?: Pick<Storage, 'setItem'>;
   fetcher?: typeof fetch;
-  onSuccess?: (deps: {
-    tokens: { token: string; refreshToken: string };
-  }) => void;
+  onSuccess?: (deps: { tokens: AuthTokenPair }) => void;
 };
 
 const requireEnv = (value: Maybe<string>): string => {
@@ -83,7 +85,7 @@ export const redirectToKakaoLogin = ({
 export const exchangeKakaoAuthorizationCode = async ({
   code,
   fetcher = fetch,
-}: ExchangeDependencies) => {
+}: ExchangeDependencies): Promise<AuthTokenPair> => {
   const response = await fetcher(resolveEndpoint('/auth/kakao'), {
     method: 'POST',
     headers: {
@@ -100,7 +102,7 @@ export const exchangeKakaoAuthorizationCode = async ({
     );
   }
 
-  return response.json() as Promise<{ token: string; refreshToken: string }>;
+  return response.json() as Promise<AuthTokenPair>;
 };
 
 const resolveStorage = (candidate?: Pick<Storage, 'setItem'>) => {

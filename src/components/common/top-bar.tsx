@@ -1,14 +1,22 @@
 'use client';
 
 import Image from 'next/image';
-import { Button } from '../ui/button';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
-import { usePathname } from 'next/navigation';
+import { useCallback, useEffect, useMemo, useState } from 'react';
+import { usePathname, useRouter } from 'next/navigation';
+
+import { Button } from '../ui/button';
+import {
+  clearStoredAuthTokens,
+  resolveStoredAuthClaims,
+  type AuthClaims,
+} from '@/lib/auth/session';
 
 export default function TopBar() {
   const path = usePathname();
+  const router = useRouter();
   const [page, setPage] = useState<string | null>(null);
+  const [authUser, setAuthUser] = useState<AuthClaims | null>(null);
 
   const menuValues = [
     {
@@ -42,9 +50,52 @@ export default function TopBar() {
   useEffect(() => {
     if (!path) return; // path가 없으면 실행 안 함
 
-    const router = path.split('/')[1];
-    setPage(router);
+    const routerPath = path.split('/')[1];
+    setPage(routerPath);
   }, [path]); // path가 변경될 때 실행
+
+  useEffect(() => {
+    const syncAuth = () => {
+      setAuthUser(resolveStoredAuthClaims());
+    };
+
+    syncAuth();
+
+    if (typeof window !== 'undefined') {
+      window.addEventListener('storage', syncAuth);
+    }
+
+    return () => {
+      if (typeof window !== 'undefined') {
+        window.removeEventListener('storage', syncAuth);
+      }
+    };
+  }, []);
+
+  const handleLogout = useCallback(() => {
+    clearStoredAuthTokens();
+    setAuthUser(null);
+    router.push('/login');
+  }, [router]);
+
+  const userLabel = useMemo(() => {
+    if (!authUser) {
+      return '';
+    }
+
+    if (authUser.displayName) {
+      return authUser.displayName;
+    }
+
+    const rawId = authUser.userId;
+    const normalized = rawId.includes(':')
+      ? rawId.split(':').pop() ?? rawId
+      : rawId;
+
+    return normalized;
+  }, [authUser]);
+
+  const avatarUrl = authUser?.avatarUrl ?? null;
 
   return (
     <header
@@ -90,11 +141,36 @@ export default function TopBar() {
             </Link>
           ))}
         </div>
-        <Link href="/login">
-          <Button variant="outline_black" className="px-2 py-1">
-            로그인
-          </Button>
-        </Link>
+        {authUser ? (
+          <div className="flex items-center gap-3">
+            {avatarUrl ? (
+              <Image
+                src={avatarUrl}
+                alt="사용자 프로필 사진"
+                width={32}
+                height={32}
+                className="h-8 w-8 rounded-full object-cover"
+                unoptimized
+              />
+            ) : null}
+            <span className="text-sm font-medium text-neutral-600">
+              {userLabel}
+            </span>
+            <Button
+              variant="outline_black"
+              className="px-2 py-1"
+              onClick={handleLogout}
+            >
+              로그아웃
+            </Button>
+          </div>
+        ) : (
+          <Link href="/login">
+            <Button variant="outline_black" className="px-2 py-1">
+              로그인
+            </Button>
+          </Link>
+        )}
       </div>
     </header>
   );

@@ -22,6 +22,8 @@ describe('KakaoCallbackHandler', () => {
     vi.mocked(completeKakaoLogin).mockResolvedValue({
       token: 'token',
       refreshToken: 'refresh',
+      displayName: '퍼디',
+      avatarUrl: 'https://cdn.kakao/avatar.png',
     });
   });
 

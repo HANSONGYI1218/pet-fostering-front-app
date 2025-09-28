@@ -60,7 +60,12 @@ describe('exchangeKakaoAuthorizationCode', () => {
   const endpoint = resolveEndpoint('/auth/kakao');
 
   it('인가 코드를 서버와 교환한다', async () => {
-    const tokens = { token: 'access-token', refreshToken: 'refresh-token' };
+    const tokens = {
+      token: 'access-token',
+      refreshToken: 'refresh-token',
+      displayName: '퍼디',
+      avatarUrl: 'https://cdn.kakao/avatar.png',
+    };
     const fetchMock = vi.fn().mockResolvedValue({
       ok: true,
       json: () => Promise.resolve(tokens),
@@ -107,7 +112,12 @@ describe('persistAuthTokens', () => {
 
     persistAuthTokens({
       storage,
-      tokens: { token: 'access', refreshToken: 'refresh' },
+      tokens: {
+        token: 'access',
+        refreshToken: 'refresh',
+        displayName: null,
+        avatarUrl: null,
+      },
     });
 
     expect(setItem).toHaveBeenCalledWith(ACCESS_TOKEN_STORAGE_KEY, 'access');
@@ -130,6 +140,8 @@ describe('completeKakaoLogin', () => {
     const exchangeCode = vi.fn().mockResolvedValue({
       token: 'token',
       refreshToken: 'refresh',
+      displayName: '퍼디',
+      avatarUrl: 'https://cdn.kakao/avatar.png',
     });
     const persistTokens = vi.fn();
     const onSuccess = vi.fn();
@@ -153,14 +165,23 @@ describe('completeKakaoLogin', () => {
       tokens: {
         token: 'token',
         refreshToken: 'refresh',
+        displayName: '퍼디',
+        avatarUrl: 'https://cdn.kakao/avatar.png',
       },
     });
     expect(onSuccess).toHaveBeenCalledWith({
       tokens: {
         token: 'token',
         refreshToken: 'refresh',
+        displayName: '퍼디',
+        avatarUrl: 'https://cdn.kakao/avatar.png',
       },
     });
-    expect(tokens).toEqual({ token: 'token', refreshToken: 'refresh' });
+    expect(tokens).toEqual({
+      token: 'token',
+      refreshToken: 'refresh',
+      displayName: '퍼디',
+      avatarUrl: 'https://cdn.kakao/avatar.png',
+    });
   });
 });
