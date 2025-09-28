@@ -17,16 +17,14 @@ describe('getApiBaseUrl', () => {
   });
 
   it('환경 변수가 없으면 기본 URL을 반환한다', () => {
-    expect(getApiBaseUrl()).toBe(
-      'https://vfow5t29gb.execute-api.ap-northeast-2.amazonaws.com/dev/api',
-    );
+    expect(getApiBaseUrl()).toBe('https://api.impomatch.com/api');
   });
 });
 
 describe('resolveEndpoint', () => {
   it('선행 슬래시를 정규화하고 기본 URL과 결합한다', () => {
     expect(resolveEndpoint('/community/posts')).toBe(
-      'https://vfow5t29gb.execute-api.ap-northeast-2.amazonaws.com/dev/api/community/posts',
+      'https://api.impomatch.com/api/community/posts',
     );
   });
 });

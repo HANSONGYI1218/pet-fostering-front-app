@@ -37,7 +37,7 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## 환경 변수
 
-- `NEXT_PUBLIC_API_BASE_URL`: 백엔드 API 엔드포인트. 미설정 시 `https://vfow5t29gb.execute-api.ap-northeast-2.amazonaws.com/dev/api` 를 사용합니다.
+- `NEXT_PUBLIC_API_BASE_URL`: 백엔드 API 엔드포인트. 미설정 시 `https://api.impomatch.com/api` 를 사용합니다.
 
 ## 테스트
 

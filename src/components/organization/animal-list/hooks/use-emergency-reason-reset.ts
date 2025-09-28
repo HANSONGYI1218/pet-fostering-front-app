@@ -17,10 +17,10 @@ export const useEmergencyReasonReset = <
 
   useEffect(() => {
     if (!isEmergency) {
-      form.resetField(emergencyReasonField, {
-        keepDirty: false,
-        keepTouched: false,
-        keepError: false,
+      form.setValue(emergencyReasonField, '' as FormValues['emergency_reason'], {
+        shouldDirty: false,
+        shouldTouch: false,
+        shouldValidate: false,
       });
     }
   }, [form, emergencyReasonField, isEmergency]);

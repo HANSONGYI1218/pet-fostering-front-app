@@ -1,5 +1,4 @@
-const DEFAULT_API_BASE_URL =
-  'https://vfow5t29gb.execute-api.ap-northeast-2.amazonaws.com/dev/api';
+const DEFAULT_API_BASE_URL = 'https://api.impomatch.com/api';
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 const ensureLeadingSlash = (value: string) =>
