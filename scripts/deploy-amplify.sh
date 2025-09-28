@@ -108,7 +108,6 @@ ensure_branch() {
     --profile "$AWS_PROFILE"
     --region "$AWS_REGION"
     --stage PRODUCTION
-    --framework NEXTJS
     --no-enable-auto-build
   )
 
