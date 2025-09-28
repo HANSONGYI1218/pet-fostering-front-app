@@ -11,6 +11,7 @@ import {
   parseAuthClaims,
   resolveStoredAuthClaims,
 } from './session';
+import { USER_PROFILE_STORAGE_KEY } from './kakao';
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
@@ -77,15 +78,42 @@ describe('session utilities', () => {
     });
   });
 
+  it('토큰에 닉네임이나 아바타가 없으면 저장된 프로필로 보완한다', () => {
+    const storage = createStorage();
+    const token = createToken({ sub: 'user-id' });
+
+    storage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
+    storage.setItem(
+      USER_PROFILE_STORAGE_KEY,
+      JSON.stringify({
+        displayName: '퍼디',
+        avatarUrl: 'https://cdn.kakao/avatar.png',
+      }),
+    );
+
+    const claims = resolveStoredAuthClaims(storage);
+
+    expect(claims).toMatchObject({
+      userId: 'user-id',
+      displayName: '퍼디',
+      avatarUrl: 'https://cdn.kakao/avatar.png',
+    });
+  });
+
   it('저장소 토큰을 제거한다', () => {
     const storage = createStorage();
 
     storage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'access');
     storage.setItem(REFRESH_TOKEN_STORAGE_KEY, 'refresh');
+    storage.setItem(
+      USER_PROFILE_STORAGE_KEY,
+      JSON.stringify({ displayName: '퍼디', avatarUrl: null }),
+    );
 
     clearStoredAuthTokens(storage);
 
     expect(storage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
     expect(storage.getItem(REFRESH_TOKEN_STORAGE_KEY)).toBeNull();
+    expect(storage.getItem(USER_PROFILE_STORAGE_KEY)).toBeNull();
   });
 });

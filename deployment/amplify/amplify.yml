@@ -6,6 +6,7 @@ applications:
         preBuild:
           commands:
             - corepack enable
+            - pnpm config set store-dir .pnpm-store
             - pnpm install --frozen-lockfile
             - pnpm env:verify
         build:
@@ -18,7 +19,7 @@ applications:
       cache:
         paths:
           - node_modules/**/*
-          - pnpm-store/**/*
+          - .pnpm-store/**/*
     environment:
       variables:
         NEXT_TELEMETRY_DISABLED: '1'

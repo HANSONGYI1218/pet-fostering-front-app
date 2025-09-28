@@ -10,6 +10,9 @@ import {
   exchangeKakaoAuthorizationCode,
   persistAuthTokens,
   redirectToKakaoLogin,
+  USER_PROFILE_STORAGE_KEY,
+  buildKakaoLogoutUrl,
+  redirectToKakaoLogout,
 } from './kakao';
 
 const ORIGINAL_ENV = { ...process.env };
@@ -122,6 +125,57 @@ describe('persistAuthTokens', () => {
 
     expect(setItem).toHaveBeenCalledWith(ACCESS_TOKEN_STORAGE_KEY, 'access');
     expect(setItem).toHaveBeenCalledWith(REFRESH_TOKEN_STORAGE_KEY, 'refresh');
+  });
+
+  it('사용자 프로필 정보를 JSON으로 저장한다', () => {
+    const setItem = vi.fn();
+    const storage = { setItem } as Pick<Storage, 'setItem'>;
+
+    persistAuthTokens({
+      storage,
+      tokens: {
+        token: 'access',
+        refreshToken: 'refresh',
+        displayName: '퍼디',
+        avatarUrl: 'https://cdn.kakao/avatar.png',
+      },
+    });
+
+    expect(setItem).toHaveBeenCalledWith(
+      USER_PROFILE_STORAGE_KEY,
+      JSON.stringify({
+        displayName: '퍼디',
+        avatarUrl: 'https://cdn.kakao/avatar.png',
+      }),
+    );
+  });
+});
+
+describe('logout helpers', () => {
+  beforeEach(() => {
+    process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID = 'client-id';
+    process.env.NEXT_PUBLIC_KAKAO_LOGOUT_REDIRECT_URI =
+      'https://example.com/logout';
+  });
+
+  afterEach(() => {
+    process.env = { ...ORIGINAL_ENV };
+  });
+
+  it('빌드한 카카오 로그아웃 URL을 반환한다', () => {
+    expect(buildKakaoLogoutUrl()).toBe(
+      'https://kauth.kakao.com/oauth/logout?client_id=client-id&logout_redirect_uri=https%3A%2F%2Fexample.com%2Flogout',
+    );
+  });
+
+  it('위임한 location.assign으로 리다이렉트를 수행한다', () => {
+    const assign = vi.fn();
+
+    redirectToKakaoLogout({ location: { assign } });
+
+    expect(assign).toHaveBeenCalledWith(
+      'https://kauth.kakao.com/oauth/logout?client_id=client-id&logout_redirect_uri=https%3A%2F%2Fexample.com%2Flogout',
+    );
   });
 });
 

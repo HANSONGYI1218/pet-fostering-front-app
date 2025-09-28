@@ -1,11 +1,13 @@
 import { resolveEndpoint } from '@/lib/api/config';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
+const KAKAO_LOGOUT_URL = 'https://kauth.kakao.com/oauth/logout';
 const ENV_ERROR_MESSAGE =
   '카카오 로그인에 필요한 환경 변수가 설정되지 않았습니다.';
 
 export const ACCESS_TOKEN_STORAGE_KEY = 'pet.accessToken';
 export const REFRESH_TOKEN_STORAGE_KEY = 'pet.refreshToken';
+export const USER_PROFILE_STORAGE_KEY = 'pet.userProfile';
 
 type Maybe<T> = T | null | undefined;
 
@@ -57,6 +59,15 @@ const resolveAuthorizeParams = () => {
   return { clientId, redirectUri };
 };
 
+const resolveLogoutParams = () => {
+  const clientId = requireEnv(process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID);
+  const logoutRedirectUri = requireEnv(
+    process.env.NEXT_PUBLIC_KAKAO_LOGOUT_REDIRECT_URI,
+  );
+
+  return { clientId, logoutRedirectUri };
+};
+
 export const buildKakaoAuthorizeUrl = () => {
   const { clientId, redirectUri } = resolveAuthorizeParams();
 
@@ -80,6 +91,35 @@ export const redirectToKakaoLogin = ({
   const authorizeUrl = buildAuthorizeUrl();
 
   location.assign(authorizeUrl);
+};
+
+export const buildKakaoLogoutUrl = () => {
+  const { clientId, logoutRedirectUri } = resolveLogoutParams();
+
+  const params = new URLSearchParams({
+    client_id: clientId,
+    logout_redirect_uri: logoutRedirectUri,
+  });
+
+  return `${KAKAO_LOGOUT_URL}?${params.toString()}`;
+};
+
+type LogoutDependencies = {
+  location?: Pick<Location, 'assign'>;
+  buildLogoutUrl?: () => string;
+};
+
+export const redirectToKakaoLogout = ({
+  location = typeof window !== 'undefined' ? window.location : undefined,
+  buildLogoutUrl = buildKakaoLogoutUrl,
+}: LogoutDependencies = {}) => {
+  if (!location) {
+    throw new Error('브라우저 환경에서만 카카오 로그아웃을 시작할 수 있습니다.');
+  }
+
+  const logoutUrl = buildLogoutUrl();
+
+  location.assign(logoutUrl);
 };
 
 export const exchangeKakaoAuthorizationCode = async ({
@@ -126,6 +166,13 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
 
   targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, tokens.token);
   targetStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken);
+  targetStorage.setItem(
+    USER_PROFILE_STORAGE_KEY,
+    JSON.stringify({
+      displayName: tokens.displayName ?? null,
+      avatarUrl: tokens.avatarUrl ?? null,
+    }),
+  );
 
   return tokens;
 };

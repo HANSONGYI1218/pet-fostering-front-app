@@ -1,12 +1,25 @@
 import { Buffer } from 'node:buffer';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
+
+vi.mock('@/lib/auth/kakao', async () => {
+  const actual = await vi.importActual<
+    typeof import('@/lib/auth/kakao')
+  >('@/lib/auth/kakao');
+
+  return {
+    ...actual,
+    redirectToKakaoLogout: vi.fn(),
+  };
+});
 
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
+  USER_PROFILE_STORAGE_KEY,
+  redirectToKakaoLogout,
 } from '@/lib/auth/kakao';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const pushMock = vi.fn();
 
@@ -21,6 +34,7 @@ describe('TopBar', () => {
   beforeEach(() => {
     vi.clearAllMocks();
     window.localStorage.clear();
+    vi.mocked(redirectToKakaoLogout).mockReset();
   });
 
   const createToken = (payload: Record<string, unknown>) => {
@@ -90,6 +104,35 @@ describe('TopBar', () => {
     );
     expect(window.localStorage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
     expect(window.localStorage.getItem(REFRESH_TOKEN_STORAGE_KEY)).toBeNull();
-    expect(pushMock).toHaveBeenCalledWith('/login');
+    expect(redirectToKakaoLogout).toHaveBeenCalledTimes(1);
+    expect(pushMock).not.toHaveBeenCalled();
+  });
+
+  it('토큰에 닉네임이 없어도 저장된 프로필로 표시한다', async () => {
+    window.localStorage.setItem(
+      ACCESS_TOKEN_STORAGE_KEY,
+      createToken({
+        sub: 'user-without-profile',
+      }),
+    );
+    window.localStorage.setItem(
+      USER_PROFILE_STORAGE_KEY,
+      JSON.stringify({
+        displayName: '퍼디',
+        avatarUrl: 'https://cdn.kakao/avatar.png',
+      }),
+    );
+
+    const { default: TopBar } = await import('../top-bar');
+
+    render(<TopBar />);
+
+    await waitFor(() =>
+      expect(screen.getByText((content) => content.includes('퍼디'))).toBeDefined(),
+    );
+    expect(screen.getByAltText('사용자 프로필 사진')).toHaveAttribute(
+      'src',
+      expect.stringContaining('https://cdn.kakao/avatar.png'),
+    );
   });
 });

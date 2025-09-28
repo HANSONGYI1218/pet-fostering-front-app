@@ -11,6 +11,7 @@ import {
   resolveStoredAuthClaims,
   type AuthClaims,
 } from '@/lib/auth/session';
+import { redirectToKakaoLogout } from '@/lib/auth/kakao';
 
 export default function TopBar() {
   const path = usePathname();
@@ -52,6 +53,7 @@ export default function TopBar() {
 
     const routerPath = path.split('/')[1];
     setPage(routerPath);
+    setAuthUser(resolveStoredAuthClaims());
   }, [path]); // path가 변경될 때 실행
 
   useEffect(() => {
@@ -75,7 +77,12 @@ export default function TopBar() {
   const handleLogout = useCallback(() => {
     clearStoredAuthTokens();
     setAuthUser(null);
-    router.push('/login');
+
+    try {
+      redirectToKakaoLogout();
+    } catch {
+      router.push('/login');
+    }
   }, [router]);
 
   const userLabel = useMemo(() => {

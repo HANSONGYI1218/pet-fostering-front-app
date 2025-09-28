@@ -1,9 +1,15 @@
 import {
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
+  USER_PROFILE_STORAGE_KEY,
 } from './kakao';
 
 type StorageSource = Pick<Storage, 'getItem' | 'removeItem'>;
+
+type StoredProfile = {
+  displayName: string | null;
+  avatarUrl: string | null;
+};
 
 type BufferCtor = typeof import('buffer').Buffer;
 
@@ -68,6 +74,43 @@ const decodeBase64Url = (segment: string) => {
   return decodeBase64(padded);
 };
 
+const parseStoredProfile = (value: string | null): StoredProfile | null => {
+  if (!value) {
+    return null;
+  }
+
+  try {
+    const parsed = JSON.parse(value) as {
+      displayName?: unknown;
+      avatarUrl?: unknown;
+    };
+
+    const displayName =
+      typeof parsed.displayName === 'string'
+        ? parsed.displayName.trim() || null
+        : null;
+    const avatarUrl =
+      typeof parsed.avatarUrl === 'string'
+        ? parsed.avatarUrl.trim() || null
+        : null;
+
+    if (displayName === null && avatarUrl === null) {
+      return null;
+    }
+
+    return { displayName, avatarUrl };
+  } catch {
+    return null;
+  }
+};
+
+const resolveStoredProfile = (storage?: StorageSource | null) => {
+  const source = resolveStorage(storage);
+  const raw = source?.getItem(USER_PROFILE_STORAGE_KEY) ?? null;
+
+  return parseStoredProfile(raw);
+};
+
 export const parseAuthClaims = (token: string): AuthClaims | null => {
   const payloadSegment = token.split('.')[1];
 
@@ -123,8 +166,23 @@ export const resolveStoredAuthClaims = (storage?: StorageSource | null) => {
   if (!token) {
     return null;
   }
+  const claims = parseAuthClaims(token);
 
-  return parseAuthClaims(token);
+  if (!claims) {
+    return null;
+  }
+
+  const profile = resolveStoredProfile(storage);
+
+  if (!profile) {
+    return claims;
+  }
+
+  return {
+    ...claims,
+    displayName: claims.displayName ?? profile.displayName,
+    avatarUrl: claims.avatarUrl ?? profile.avatarUrl,
+  };
 };
 
 export const clearStoredAuthTokens = (storage?: StorageSource | null) => {
@@ -136,4 +194,5 @@ export const clearStoredAuthTokens = (storage?: StorageSource | null) => {
 
   source.removeItem(ACCESS_TOKEN_STORAGE_KEY);
   source.removeItem(REFRESH_TOKEN_STORAGE_KEY);
+  source.removeItem(USER_PROFILE_STORAGE_KEY);
 };
