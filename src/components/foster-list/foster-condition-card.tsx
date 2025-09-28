@@ -13,7 +13,24 @@ import {
 } from '@/types/animal/animal';
 import type { FosterFilterValue } from '@/domain/foster-list/filters';
 import { FILTER_ALL_LABEL_KO, FILTER_ALL_VALUE } from '@/constants/filter';
-import ConditionItem from '../common/condition-types';
+import { Button } from '../ui/button';
+import { Label } from '../ui/label';
+import {
+  Select,
+  SelectContent,
+  SelectItem,
+  SelectTrigger,
+  SelectValue,
+} from '../ui/select';
+import {
+  Popover,
+  PopoverContent,
+  PopoverTrigger,
+} from '../ui/popover';
+import { RotateCcwIcon, SlidersHorizontal } from 'lucide-react';
+
+const OPTION_BUTTON_TEXT = '옵션';
+const RESET_BUTTON_TEXT = '초기화';
 
 /**
  * @file [training-center] training-center 파일 안에 Training-center_Condition Card 컴포넌트
@@ -149,5 +166,72 @@ export default function FosterConditionCard({
       : []),
   ];
 
-  return <ConditionItem conditionTypes={conditionTypes} />;
+  const handleResetFilters = () => {
+    conditionTypes.forEach((conditionType) => {
+      conditionType.onChange(conditionType.resetValue);
+    });
+  };
+
+  return (
+    <Popover>
+      <PopoverTrigger asChild>
+        <Button type="button" variant="outline" className="gap-2">
+          <SlidersHorizontal className="size-4" />
+          {OPTION_BUTTON_TEXT}
+        </Button>
+      </PopoverTrigger>
+      <PopoverContent align="start" className="flex w-full max-w-md flex-col gap-6 p-6">
+        <h2 className="text-lg font-semibold">필터</h2>
+        <div className="flex flex-col gap-4">
+          {conditionTypes.map((conditionType) => {
+            const controlId = `foster-${conditionType.title}`;
+            const resetLabel =
+              conditionType.options.find(
+                (option) => option.value === conditionType.resetValue,
+              )?.label ?? conditionType.options[0]?.label ?? '';
+
+            return (
+              <div key={conditionType.title} className="flex flex-col gap-2">
+                <Label
+                  htmlFor={controlId}
+                  className="text-sm font-medium text-muted-foreground"
+                >
+                  {conditionType.title}
+                </Label>
+                <Select
+                  value={conditionType.selected}
+                  onValueChange={conditionType.onChange}
+                >
+                  <SelectTrigger
+                    id={controlId}
+                    aria-label={conditionType.title}
+                    className="w-full justify-between"
+                  >
+                    <SelectValue placeholder={resetLabel} />
+                  </SelectTrigger>
+                  <SelectContent>
+                    {conditionType.options.map(({ label, value }) => (
+                      <SelectItem key={value} value={value}>
+                        {label}
+                      </SelectItem>
+                    ))}
+                  </SelectContent>
+                </Select>
+              </div>
+            );
+          })}
+        </div>
+        <Button
+          type="button"
+          variant="ghost"
+          size="sm"
+          className="self-end gap-2"
+          onClick={handleResetFilters}
+        >
+          <RotateCcwIcon className="size-4" />
+          {RESET_BUTTON_TEXT}
+        </Button>
+      </PopoverContent>
+    </Popover>
+  );
 }

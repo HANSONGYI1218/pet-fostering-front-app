@@ -17,14 +17,17 @@ export default function AnimalBookmark({
 
   return (
     <Button
-      className="absolute top-4 right-4 z-10 rounded-md bg-white p-3 hover:bg-white/80"
       type="button"
+      variant="secondary"
+      size="icon"
+      className="absolute right-4 top-4 z-10 bg-white/90 text-destructive shadow-sm hover:bg-white"
       onClick={() => {
         setIsChecked((prev) => !prev);
       }}
+      aria-pressed={isChecked}
     >
       <Heart
-        className={`h-5 w-5`}
+        className="size-5"
         stroke={isChecked ? '#EA1B1B' : '#BFBFBF'}
         fill={isChecked ? '#EA1B1B' : '#BFBFBF'}
       />

@@ -22,9 +22,10 @@ import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const pushMock = vi.fn();
+const usePathnameMock = vi.fn(() => '/main');
 
 vi.mock('next/navigation', () => ({
-  usePathname: () => '/main',
+  usePathname: () => usePathnameMock(),
   useRouter: () => ({
     push: pushMock,
   }),
@@ -35,6 +36,7 @@ describe('TopBar', () => {
     vi.clearAllMocks();
     window.localStorage.clear();
     vi.mocked(redirectToKakaoLogout).mockReset();
+    usePathnameMock.mockReturnValue('/main');
   });
 
   const createToken = (payload: Record<string, unknown>) => {
@@ -53,6 +55,16 @@ describe('TopBar', () => {
     render(<TopBar />);
 
     expect(screen.getByRole('link', { name: /로그인/ })).toBeInTheDocument();
+  });
+
+  it('메뉴를 기본 NavigationMenu로 렌더링한다', async () => {
+    const { default: TopBar } = await import('../top-bar');
+
+    render(<TopBar />);
+
+    const navigation = screen.getByRole('navigation', { name: '주요 메뉴' });
+    expect(navigation).toBeInTheDocument();
+    expect(navigation).toHaveAttribute('data-radix-navigation-menu');
   });
 
   it('로그인 상태에서는 프로필 이미지와 닉네임, 로그아웃 버튼을 표시한다', async () => {
@@ -134,5 +146,17 @@ describe('TopBar', () => {
       'src',
       expect.stringContaining('https://cdn.kakao/avatar.png'),
     );
+  });
+
+  it('활성화된 메뉴에만 paw 아이콘을 표시한다', async () => {
+    usePathnameMock.mockReturnValue('/community');
+
+    const { default: TopBar } = await import('../top-bar');
+
+    render(<TopBar />);
+
+    const pawIcons = screen.getAllByAltText('paw');
+    expect(pawIcons).toHaveLength(1);
+    expect(pawIcons[0].closest('a')).toHaveAttribute('href', '/community');
   });
 });

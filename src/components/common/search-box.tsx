@@ -1,6 +1,8 @@
 import { Search } from 'lucide-react';
-import { Input } from '../ui/input';
+
 import { cn } from '@/lib/utils';
+
+import { Input } from '../ui/input';
 
 type SearchBoxProps = {
   placeholder: string;
@@ -14,17 +16,14 @@ export default function SearchBox({
   onChangeValue,
 }: SearchBoxProps) {
   return (
-    <div
-      className={cn(
-        'text-normal hover:bg-accent hover:text-accent-foreground dark:bg-input/30 dark:border-input dark:hover:bg-input/50 inline-flex h-9 cursor-pointer items-center justify-center rounded-md border bg-white px-4 py-2 font-medium whitespace-nowrap shadow-xs has-[>svg]:px-3',
-        className,
-      )}
-    >
-      <Search stroke="#595959" />
+    <div className={cn('relative w-full', className)}>
+      <Search className="pointer-events-none absolute left-3 top-1/2 size-4 -translate-y-1/2 text-muted-foreground" />
       <Input
+        type="search"
+        inputMode="search"
         onChange={(event) => onChangeValue(event.target.value)}
         placeholder={placeholder}
-        className="border-none shadow-none"
+        className="w-full pl-9"
       />
     </div>
   );
