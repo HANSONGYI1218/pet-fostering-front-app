@@ -20,6 +20,7 @@ import {
 import { CommentItem } from '@/types/comment/comment-api';
 import { FosterRecordItem } from '@/types/foster-record/foster-record-api';
 import { PostItem } from '@/types/post/post-api';
+import { UserInfoItem } from '@/types/user/user-api';
 
 export const dummyPosts: PostItem[] = [
   {
@@ -3537,3 +3538,18 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
     },
   },
 ];
+
+export const dummyUser: UserInfoItem = {
+  id: '1',
+  name: '한송이',
+  nickname: '불꽃',
+  email: 'hhan1218@naber.com',
+  phone_number: '010-1414-5656',
+  zipcode: '24124',
+  address: '서울특별시 광진구 뚝섬로 52길 4',
+  address_datail: '17-3',
+  introduction: `임시보호는 단순한 동물 돌봄을 넘어,
+  다시 새로운 가족을 만날 수 있도록 도와주는 소중한 과정이라 생각합니다. 
+  그만큼 책임감을 갖고, 보호소와도 잘 소통하며 정성껏 돌보겠습니다.`,
+  isEligibleForFoster: false,
+};

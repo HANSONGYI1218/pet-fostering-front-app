@@ -10,6 +10,12 @@ import { logWarning } from '@/lib/logging';
 
 declare global {
   interface Window {
+    daum: any;
+  }
+}
+
+declare global {
+  interface Window {
     kakao: Record<string, unknown>;
   }
 }
