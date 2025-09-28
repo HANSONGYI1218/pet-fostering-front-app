@@ -109,7 +109,7 @@ ensure_branch() {
     --region "$AWS_REGION"
     --stage PRODUCTION
     --framework NEXTJS
-    --enable-auto-build
+    --no-enable-auto-build
   )
 
   if [[ -n "$AMPLIFY_COMPUTE_ROLE_ARN" ]]; then
