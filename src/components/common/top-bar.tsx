@@ -93,7 +93,7 @@ export default function TopBar() {
 
     const rawId = authUser.userId;
     const normalized = rawId.includes(':')
-      ? rawId.split(':').pop() ?? rawId
+      ? (rawId.split(':').pop() ?? rawId)
       : rawId;
 
     return normalized;
@@ -109,49 +109,55 @@ export default function TopBar() {
   }, [path]);
 
   return (
-    <header className="sticky top-0 z-30 border-b bg-background">
-      <div className="mx-auto flex h-16 w-full max-w-6xl items-center gap-6 px-6">
-        <Link href="/main" className="flex shrink-0 items-center" aria-label="홈">
-          <Image
-            src="/main-logo.png"
-            width={150}
-            height={70}
-            alt="main-logo"
-            priority
-          />
-        </Link>
-        <div className="flex flex-1 justify-center">
-          <NavigationMenu aria-label="주요 메뉴">
-            <NavigationMenuList>
-              {NAV_ITEMS.map((item) => {
-                const isActive = item.segment === currentSegment;
+    <header className="bg-background sticky top-0 z-30 border-b">
+      <div className="container_12 mx-auto flex h-16 w-full items-center justify-between">
+        <div className="flex items-center gap-6">
+          <Link
+            href="/main"
+            className="flex shrink-0 items-center"
+            aria-label="홈"
+          >
+            <Image
+              src="/main-logo.png"
+              width={140}
+              height={60}
+              alt="main-logo"
+              priority
+            />
+          </Link>
+          <div className="flex flex-1 justify-center">
+            <NavigationMenu aria-label="주요 메뉴">
+              <NavigationMenuList>
+                {NAV_ITEMS.map((item) => {
+                  const isActive = item.segment === currentSegment;
 
-                return (
-                  <NavigationMenuItem key={item.href}>
-                    <NavigationMenuLink asChild>
-                      <Link
-                        href={item.href}
-                        data-active={isActive ? 'true' : undefined}
-                        aria-current={isActive ? 'page' : undefined}
-                        className={`${navigationMenuTriggerStyle()} gap-2`}
-                      >
-                        <span>{item.name}</span>
-                        {isActive ? (
-                          <Image
-                            src="/icons/paw.svg"
-                            width={24}
-                            height={24}
-                            alt="paw"
-                            className="rotate-12"
-                          />
-                        ) : null}
-                      </Link>
-                    </NavigationMenuLink>
-                  </NavigationMenuItem>
-                );
-              })}
-            </NavigationMenuList>
-          </NavigationMenu>
+                  return (
+                    <NavigationMenuItem key={item.href} className="">
+                      <NavigationMenuLink asChild>
+                        <Link
+                          href={item.href}
+                          data-active={isActive ? 'true' : undefined}
+                          aria-current={isActive ? 'page' : undefined}
+                          className={`${navigationMenuTriggerStyle()} gap-2`}
+                        >
+                          <span>{item.name}</span>
+                          {isActive ? (
+                            <Image
+                              src="/icons/paw.svg"
+                              width={24}
+                              height={24}
+                              alt="paw"
+                              className="rotate-12"
+                            />
+                          ) : null}
+                        </Link>
+                      </NavigationMenuLink>
+                    </NavigationMenuItem>
+                  );
+                })}
+              </NavigationMenuList>
+            </NavigationMenu>
+          </div>
         </div>
         {authUser ? (
           <div className="flex items-center gap-3">
@@ -168,11 +174,7 @@ export default function TopBar() {
             <span className="text-sm font-medium text-neutral-600">
               {userLabel}
             </span>
-            <Button
-              variant="outline"
-              size="sm"
-              onClick={handleLogout}
-            >
+            <Button variant="outline" size="sm" onClick={handleLogout}>
               로그아웃
             </Button>
           </div>

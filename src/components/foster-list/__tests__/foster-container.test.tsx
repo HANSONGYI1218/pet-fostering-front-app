@@ -2,11 +2,7 @@ import { describe, expect, it } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import {
-  AnimalGender,
-  AnimalSize,
-  AnimalType,
-} from '@/types/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 import type { FosterListAnimalItem } from '@/types/animal/animal-api';
 
 const createAnimal = (
@@ -61,7 +57,11 @@ describe('FosterContainer', () => {
   it('긴급 토글을 누르면 긴급 동물만 표시한다', async () => {
     const { default: FosterContainer } = await import('../foster-container');
 
-    render(<FosterContainer animals={sampleAnimals.map((animal) => ({ ...animal }))} />);
+    render(
+      <FosterContainer
+        animals={sampleAnimals.map((animal) => ({ ...animal }))}
+      />,
+    );
 
     expect(screen.getByText('루나')).toBeInTheDocument();
     expect(screen.getByText('루비')).toBeInTheDocument();

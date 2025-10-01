@@ -30,7 +30,7 @@ export default function FosterTile({
   animal: FosterListAnimalItem;
 }) {
   return (
-    <Card className="overflow-hidden">
+    <Card className="overflow-hidden p-0 duration-300 hover:shadow-lg">
       <CardHeader className="p-0">
         <div className="relative">
           <AspectRatio ratio={4 / 3}>
@@ -43,7 +43,7 @@ export default function FosterTile({
             />
           </AspectRatio>
           {animal.isEmergency ? (
-            <Badge variant="destructive" className="absolute left-4 top-4">
+            <Badge variant="red" className="absolute top-4 left-4">
               긴급 동물
             </Badge>
           ) : null}
@@ -52,24 +52,24 @@ export default function FosterTile({
       </CardHeader>
       <CardContent className="space-y-4">
         <div className="flex flex-col gap-2">
-          <div className="flex items-start justify-between gap-2">
-            <div className="space-y-1">
-              <CardTitle>{animal.name}</CardTitle>
-              <p className="text-sm text-muted-foreground">
-                {ANIMAL_TYPE_LABEL_KO[animal.type]}
-                {' · '}
-                {animal.birth_date ? formatAnimalAge(animal.birth_date) : ''}
-                {' · '}
-                {ANIMAL_GENDER_LABEL_KO[animal.gender]}
-              </p>
+          <div className="flex flex-col gap-2">
+            <div className="flex items-center justify-between">
+              <CardTitle className="text-xl">{animal.name}</CardTitle>
+              <div className="flex flex-wrap justify-end gap-1 text-xs font-medium">
+                {animal.animal_healths.slice(0, 3).map((health) => (
+                  <Badge key={health} variant="outline_none">
+                    #{ANIMAL_HEALTH_LABEL_KO[health]}
+                  </Badge>
+                ))}
+              </div>
             </div>
-            <div className="flex flex-wrap justify-end gap-1 text-xs font-medium text-muted-foreground">
-              {animal.animal_healths.slice(0, 3).map((health) => (
-                <Badge key={health} variant="outline">
-                  #{ANIMAL_HEALTH_LABEL_KO[health]}
-                </Badge>
-              ))}
-            </div>
+            <p className="text-muted-foreground text-sm">
+              {ANIMAL_TYPE_LABEL_KO[animal.type]}
+              {' · '}
+              {animal.birth_date ? formatAnimalAge(animal.birth_date) : ''}
+              {' · '}
+              {ANIMAL_GENDER_LABEL_KO[animal.gender]}
+            </p>
           </div>
         </div>
         {animal.animal_personalitys.length > 0 ? (
@@ -89,7 +89,7 @@ export default function FosterTile({
             <h3 className="text-sm font-semibold">추천하는 임보자</h3>
             <div className="flex flex-wrap gap-2">
               {animal.foster_environments.map((environment) => (
-                <Badge key={environment} variant="outline">
+                <Badge key={environment} variant="default">
                   {FOSTER_ENVIRONMENT_LABEL_KO[environment]}
                 </Badge>
               ))}
@@ -99,7 +99,7 @@ export default function FosterTile({
       </CardContent>
       <CardFooter className="justify-between border-t py-4">
         <div className="space-y-1 text-sm">
-          <div className="flex items-center gap-1 text-muted-foreground">
+          <div className="text-muted-foreground flex items-center gap-1">
             <MapPin className="size-4" />
             <span>
               {animal.organization.address}
@@ -109,7 +109,10 @@ export default function FosterTile({
           <p className="font-medium">{animal.organization.name}</p>
         </div>
         <Button variant="ghost" size="sm" asChild>
-          <Link href={`/foster-list/${animal.id}`} className="inline-flex items-center gap-1">
+          <Link
+            href={`/foster-list/${animal.id}`}
+            className="inline-flex items-center gap-1"
+          >
             자세히 보기
             <ArrowRight className="size-4" />
           </Link>

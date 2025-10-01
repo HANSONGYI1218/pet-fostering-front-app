@@ -49,13 +49,17 @@ const parseArgs = (argv: string[]) => {
 };
 
 const loadEnvFile = async (filePath?: string) => {
-  const target = filePath ?? process.env.AMPLIFY_ENV_FILE ?? 'deployment/amplify/env.local';
+  const target =
+    filePath ?? process.env.AMPLIFY_ENV_FILE ?? 'deployment/amplify/env.local';
 
   try {
     const content = await readFile(target, 'utf-8');
     return parseEnvFile(content);
   } catch (error) {
-    console.warn(`환경 변수 파일을 열 수 없습니다 (${target}). 건너뜁니다.`, error);
+    console.warn(
+      `환경 변수 파일을 열 수 없습니다 (${target}). 건너뜁니다.`,
+      error,
+    );
     return {};
   }
 };
@@ -74,9 +78,7 @@ const main = async () => {
   const missing = findMissingKeys(combined, REQUIRED_KEYS);
 
   if (missing.length > 0) {
-    exitWithMessage(
-      `필수 환경 변수가 비어 있습니다: ${missing.join(', ')}`,
-    );
+    exitWithMessage(`필수 환경 변수가 비어 있습니다: ${missing.join(', ')}`);
   }
 
   console.log('필수 환경 변수가 모두 설정되었습니다.');

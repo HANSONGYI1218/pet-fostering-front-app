@@ -10,3 +10,12 @@ export type UserInfoItem = {
   address_datail: string;
   isEligibleForFoster: boolean;
 };
+
+export type UserSettingInfoItem = {
+  id: string;
+  comment_email: boolean;
+  foster_animal_info_email: boolean;
+  foster_animal_info_kakao: boolean;
+  marketing_email: boolean;
+  marketing_kakao: boolean;
+};

@@ -96,3 +96,6 @@ export function fosterDuration(startDate: Date | string | number): number {
 export function stripHtml(value: string): string {
   return value.replace(/<[^>]*>/g, '');
 }
+
+export const normalizeKeyword = (keyword?: string): string =>
+  keyword?.trim().toLowerCase() ?? '';

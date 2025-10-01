@@ -21,26 +21,14 @@ import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import AddressPopUp from '../common/address-popup';
 
-const ProfileformSchema = z.object({
-  name: z.string().min(1, {
-    message: '이름을 작성해 주세요.',
-  }),
-  email: z.string().min(1, {
-    message: '이메일을 작성해 주세요.',
-  }),
-  phone_number: z.string().min(1, {
-    message: '전화번호를 작성해 주세요.',
-  }),
+export const ProfileformSchema = z.object({
+  name: z.string().optional(),
+  email: z.string().optional(),
+  phone_number: z.string().optional(),
   zipcode: z.string(),
-  address: z.string().min(1, {
-    message: '주소를 작성해 주세요.',
-  }),
-  address_datail: z.string().min(1, {
-    message: '상세주소를 작성해 주세요.',
-  }),
-  introduction: z.string().min(1, {
-    message: '보호동물의 소개를 작성해 주세요.',
-  }),
+  address: z.string().optional(),
+  address_datail: z.string().optional(),
+  introduction: z.string().optional(),
 });
 
 //     import useSWR, { mutate } from 'swr';
@@ -96,7 +84,7 @@ export default function ProfileTab() {
       {/* {'기본정보'} */}
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
-          <h1 className="text-lg font-semibold">기본정보</h1>
+          <h1 className="text-xl font-semibold">기본정보</h1>
           <Button
             variant={'link'}
             onClick={() => {
@@ -147,9 +135,16 @@ export default function ProfileTab() {
                       render={({ field }) => (
                         <FormItem className="w-auto">
                           <FormControl>
-                            <span className="text-neutral-800">
-                              {field?.value},
-                            </span>
+                            <div className="flex items-center gap-1">
+                              <div
+                                className={`flex h-9 items-center rounded-md ${isInfoEdited ? 'bg-neutral-100 px-3' : ''}`}
+                              >
+                                <span className={`text-neutral-800`}>
+                                  {field?.value}
+                                </span>
+                              </div>
+                              <span>,</span>
+                            </div>
                           </FormControl>
                           <FormMessage />
                         </FormItem>
@@ -220,12 +215,17 @@ export default function ProfileTab() {
                 control={form.control}
                 name="introduction"
                 render={({ field }) => (
-                  <FormItem className="flex w-full items-start">
-                    <FormLabel className="w-24">나의 소개</FormLabel>
+                  <FormItem className="flex w-full flex-col gap-2">
+                    <div className="flex flex-col">
+                      <FormLabel className="w-24">나의 소개</FormLabel>
+                      <span className="text-sm text-red-500">
+                        * 나의 소개를 작성하고 매칭율을 높여보세요
+                      </span>
+                    </div>
                     <FormControl>
                       {isInfoEdited ? (
                         <Textarea
-                          className={`border-none bg-neutral-100 text-base whitespace-pre-wrap text-neutral-800 shadow-none`}
+                          className={`resize-none border-none bg-neutral-100 text-base whitespace-pre-wrap text-neutral-800 shadow-none`}
                           placeholder="이름을 적어주세요."
                           {...field}
                         />
@@ -246,7 +246,7 @@ export default function ProfileTab() {
       {/* {'계정정보'} */}
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
-          <h1 className="text-lg font-semibold">계정정보</h1>
+          <h1 className="text-xl font-semibold">계정정보</h1>
           <Button
             variant={'link'}
             onClick={() => {

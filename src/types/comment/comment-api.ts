@@ -23,3 +23,15 @@ export type CommentItem = {
   created_at: Date;
   reply_comments: ReplyCommentItem[] | null;
 };
+
+export type CommentItemByUserId = {
+  id: string;
+  post: {
+    id: string;
+    title: string;
+  };
+  content: string;
+  likes: number;
+  created_at: Date;
+  reply_length: number;
+};

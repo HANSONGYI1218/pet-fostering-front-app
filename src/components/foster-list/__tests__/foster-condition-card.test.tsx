@@ -3,20 +3,19 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import FosterConditionCard from '../foster-condition-card';
-import {
-  AnimalGender,
-  AnimalSize,
-  AnimalType,
-} from '@/types/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 import { FILTER_ALL_VALUE } from '@/constants/filter';
 
 beforeAll(() => {
-  (Element.prototype as unknown as { hasPointerCapture?: () => boolean }).hasPointerCapture ??=
-    () => false;
-  (Element.prototype as unknown as { releasePointerCapture?: () => void }).releasePointerCapture ??=
-    () => {};
-  (Element.prototype as unknown as { scrollIntoView?: (arg?: unknown) => void }).scrollIntoView ??=
-    () => {};
+  (
+    Element.prototype as unknown as { hasPointerCapture?: () => boolean }
+  ).hasPointerCapture ??= () => false;
+  (
+    Element.prototype as unknown as { releasePointerCapture?: () => void }
+  ).releasePointerCapture ??= () => {};
+  (
+    Element.prototype as unknown as { scrollIntoView?: (arg?: unknown) => void }
+  ).scrollIntoView ??= () => {};
 });
 
 describe('FosterConditionCard', () => {
@@ -40,23 +39,17 @@ describe('FosterConditionCard', () => {
     await user.click(screen.getByRole('button', { name: '옵션' }));
 
     await user.click(screen.getByLabelText('종류'));
-    await user.click(
-      await screen.findByRole('option', { name: '고양이' }),
-    );
+    await user.click(await screen.findByRole('option', { name: '고양이' }));
 
     expect(setAnimalType).toHaveBeenCalledWith(AnimalType.CAT);
 
     await user.click(screen.getByLabelText('사이즈'));
-    await user.click(
-      await screen.findByRole('option', { name: '중형' }),
-    );
+    await user.click(await screen.findByRole('option', { name: '중형' }));
 
     expect(setAnimalSize).toHaveBeenCalledWith(AnimalSize.MEDIUM);
 
     await user.click(screen.getByLabelText('성별'));
-    await user.click(
-      await screen.findByRole('option', { name: '여' }),
-    );
+    await user.click(await screen.findByRole('option', { name: '여' }));
 
     expect(setAnimalGender).toHaveBeenCalledWith(AnimalGender.FEMALE);
   });

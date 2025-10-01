@@ -114,7 +114,9 @@ export const redirectToKakaoLogout = ({
   buildLogoutUrl = buildKakaoLogoutUrl,
 }: LogoutDependencies = {}) => {
   if (!location) {
-    throw new Error('브라우저 환경에서만 카카오 로그아웃을 시작할 수 있습니다.');
+    throw new Error(
+      '브라우저 환경에서만 카카오 로그아웃을 시작할 수 있습니다.',
+    );
   }
 
   const logoutUrl = buildLogoutUrl();

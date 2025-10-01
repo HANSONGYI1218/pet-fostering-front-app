@@ -2,15 +2,25 @@
 
 import { Search } from 'lucide-react';
 import { Button } from '../ui/button';
+import { DaumPostcodeData } from '@/app/layout';
+import { UseFormReturn } from 'react-hook-form';
+import { ProfileformSchema } from '../mypage/profile-tab';
+import z from 'zod';
 
-export default function AddressPopUp({ form }: { form: any }) {
+export type ProfileFormValues = z.infer<typeof ProfileformSchema>;
+
+export default function AddressPopUp({
+  form,
+}: {
+  form: UseFormReturn<ProfileFormValues>;
+}) {
   const openAddressPopup = () => {
     new window.daum.Postcode({
-      oncomplete: (data: any) => {
+      oncomplete: (data: DaumPostcodeData) => {
         const addr =
           data.userSelectedType === 'R' ? data.roadAddress : data.jibunAddress;
 
-        form.setValue('zipCode', data.zonecode);
+        form.setValue('zipcode', data.zonecode);
         form.setValue('address', addr);
       },
     }).open();

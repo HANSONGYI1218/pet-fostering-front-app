@@ -2,9 +2,10 @@ import { Buffer } from 'node:buffer';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 vi.mock('@/lib/auth/kakao', async () => {
-  const actual = await vi.importActual<
-    typeof import('@/lib/auth/kakao')
-  >('@/lib/auth/kakao');
+  const actual =
+    await vi.importActual<typeof import('@/lib/auth/kakao')>(
+      '@/lib/auth/kakao',
+    );
 
   return {
     ...actual,
@@ -83,13 +84,17 @@ describe('TopBar', () => {
     render(<TopBar />);
 
     await waitFor(() =>
-      expect(screen.getByText((content) => content.includes('퍼디'))).toBeDefined(),
+      expect(
+        screen.getByText((content) => content.includes('퍼디')),
+      ).toBeDefined(),
     );
     expect(screen.getByAltText('사용자 프로필 사진')).toHaveAttribute(
       'src',
       expect.stringContaining('https://cdn.kakao/avatar.png'),
     );
-    expect(screen.getByRole('button', { name: '로그아웃' })).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '로그아웃' }),
+    ).toBeInTheDocument();
     expect(screen.queryByRole('link', { name: /로그인/ })).toBeNull();
   });
 
@@ -108,7 +113,9 @@ describe('TopBar', () => {
 
     render(<TopBar />);
 
-    const logoutButton = await screen.findByRole('button', { name: '로그아웃' });
+    const logoutButton = await screen.findByRole('button', {
+      name: '로그아웃',
+    });
     await userEvent.click(logoutButton);
 
     await waitFor(() =>
@@ -140,7 +147,9 @@ describe('TopBar', () => {
     render(<TopBar />);
 
     await waitFor(() =>
-      expect(screen.getByText((content) => content.includes('퍼디'))).toBeDefined(),
+      expect(
+        screen.getByText((content) => content.includes('퍼디')),
+      ).toBeDefined(),
     );
     expect(screen.getByAltText('사용자 프로필 사진')).toHaveAttribute(
       'src',

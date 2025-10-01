@@ -28,28 +28,25 @@ export default function FosterContainer({
     useState<FosterFilterValue<AnimalGender>>(FILTER_ALL_VALUE);
   const [search, setSearch] = useState('');
   const [isEmergencyOnly, setIsEmergencyOnly] = useState(false);
-  const filteredAnimals = useMemo(
-    () => {
-      const result = filterFosterList(animals ?? [], {
-        type: animalType,
-        size: animalSize,
-        gender: animalGender,
-        keyword: search,
-      });
+  const filteredAnimals = useMemo(() => {
+    const result = filterFosterList(animals ?? [], {
+      type: animalType,
+      size: animalSize,
+      gender: animalGender,
+      keyword: search,
+    });
 
-      if (!isEmergencyOnly) {
-        return result;
-      }
+    if (!isEmergencyOnly) {
+      return result;
+    }
 
-      return result.filter((animal) => animal.isEmergency);
-    },
-    [animals, animalGender, animalType, animalSize, isEmergencyOnly, search],
-  );
+    return result.filter((animal) => animal.isEmergency);
+  }, [animals, animalGender, animalType, animalSize, isEmergencyOnly, search]);
 
   return (
     <div className="flex flex-col gap-8">
-      <Card className="cursor-auto">
-        <CardHeader className="gap-4">
+      <Card className="cursor-auto border-none p-0 shadow-none">
+        <CardHeader className="gap-4 p-0">
           <div className="flex flex-wrap items-center gap-2">
             <Button
               type="button"

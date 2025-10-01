@@ -5,11 +5,11 @@ export default function MypageMeue({
   setCurrentStep,
 }: {
   currentStep: string;
-  setCurrentStep: any;
+  setCurrentStep: (step: string) => void;
 }) {
   return (
     <div className="flex min-h-screen w-96 flex-col items-start gap-10 rounded-2xl bg-white p-10">
-      <h1 className="text-xl font-semibold">계정설정</h1>
+      <h1 className="text-xl font-semibold">내 정보</h1>
       <div className="flex w-full flex-col gap-2">
         <Button
           onClick={() => {

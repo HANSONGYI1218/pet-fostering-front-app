@@ -22,11 +22,7 @@ import {
   SelectTrigger,
   SelectValue,
 } from '../ui/select';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '../ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { RotateCcwIcon, SlidersHorizontal } from 'lucide-react';
 
 const OPTION_BUTTON_TEXT = '옵션';
@@ -180,7 +176,10 @@ export default function FosterConditionCard({
           {OPTION_BUTTON_TEXT}
         </Button>
       </PopoverTrigger>
-      <PopoverContent align="start" className="flex w-full max-w-md flex-col gap-6 p-6">
+      <PopoverContent
+        align="start"
+        className="flex w-full max-w-md flex-col gap-6 p-6"
+      >
         <h2 className="text-lg font-semibold">필터</h2>
         <div className="flex flex-col gap-4">
           {conditionTypes.map((conditionType) => {
@@ -188,13 +187,15 @@ export default function FosterConditionCard({
             const resetLabel =
               conditionType.options.find(
                 (option) => option.value === conditionType.resetValue,
-              )?.label ?? conditionType.options[0]?.label ?? '';
+              )?.label ??
+              conditionType.options[0]?.label ??
+              '';
 
             return (
               <div key={conditionType.title} className="flex flex-col gap-2">
                 <Label
                   htmlFor={controlId}
-                  className="text-sm font-medium text-muted-foreground"
+                  className="text-muted-foreground text-sm font-medium"
                 >
                   {conditionType.title}
                 </Label>
@@ -225,7 +226,7 @@ export default function FosterConditionCard({
           type="button"
           variant="ghost"
           size="sm"
-          className="self-end gap-2"
+          className="gap-2 self-end"
           onClick={handleResetFilters}
         >
           <RotateCcwIcon className="size-4" />

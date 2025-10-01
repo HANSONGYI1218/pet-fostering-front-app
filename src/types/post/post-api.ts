@@ -17,3 +17,16 @@ export type PostItem = {
   commentCount?: number;
   updated_at?: Date;
 };
+
+export type PostItemByUserId = {
+  id: string;
+  title: string;
+  content: string;
+  likes: number;
+  views: number;
+  created_at: Date;
+} & {
+  images?: string[];
+  commentCount?: number;
+  updated_at?: Date;
+};

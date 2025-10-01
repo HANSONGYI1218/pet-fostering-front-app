@@ -15,4 +15,3 @@ const KakaoLogoutCallbackPage = async ({
 };
 
 export default KakaoLogoutCallbackPage;
-

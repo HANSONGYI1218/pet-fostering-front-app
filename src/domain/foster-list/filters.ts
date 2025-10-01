@@ -1,3 +1,4 @@
+import { normalizeKeyword } from '@/lib/utils';
 import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 import type { FosterListAnimalItem } from '@/types/animal/animal-api';
 
@@ -9,9 +10,6 @@ export type FosterFilterOptions = {
   gender?: FosterFilterValue<AnimalGender>;
   keyword?: string;
 };
-
-const normalizeKeyword = (keyword?: string): string =>
-  keyword?.trim().toLowerCase() ?? '';
 
 const matchesFilter = <T>(
   value: T,

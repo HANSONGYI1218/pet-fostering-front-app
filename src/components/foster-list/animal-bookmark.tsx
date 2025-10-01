@@ -20,7 +20,7 @@ export default function AnimalBookmark({
       type="button"
       variant="secondary"
       size="icon"
-      className="absolute right-4 top-4 z-10 bg-white/90 text-destructive shadow-sm hover:bg-white"
+      className="text-destructive absolute top-4 right-4 z-10 bg-white/90 shadow-sm hover:bg-white"
       onClick={() => {
         setIsChecked((prev) => !prev);
       }}

@@ -19,8 +19,12 @@ const exitWithUsage = (message?: string): never => {
     console.error(message);
   }
 
-  console.error(`사용법: pnpm sync:amplify-env [--file <env 파일>] [--path <ssm 경로>] [--region ap-northeast-2] [--profile default] [--dry-run]`);
-  console.error('환경 변수 AMPLIFY_ENV_FILE, AMPLIFY_SSM_PATH 로도 기본값을 지정할 수 있습니다.');
+  console.error(
+    `사용법: pnpm sync:amplify-env [--file <env 파일>] [--path <ssm 경로>] [--region ap-northeast-2] [--profile default] [--dry-run]`,
+  );
+  console.error(
+    '환경 변수 AMPLIFY_ENV_FILE, AMPLIFY_SSM_PATH 로도 기본값을 지정할 수 있습니다.',
+  );
   process.exit(1);
 };
 
@@ -77,14 +81,17 @@ const parseArgs = (argv: string[]): CliOptions => {
     }
   }
 
-  const envFile = process.env.AMPLIFY_ENV_FILE ?? 'deployment/amplify/env.local';
+  const envFile =
+    process.env.AMPLIFY_ENV_FILE ?? 'deployment/amplify/env.local';
   const envPath = process.env.AMPLIFY_SSM_PATH;
 
   options.filePath ??= envFile;
   options.parameterPath ??= envPath ? normalizePath(envPath) : undefined;
 
   if (!options.filePath || !options.parameterPath) {
-    exitWithUsage('필수 입력(파일 경로, SSM 경로)을 인자나 환경 변수로 지정해야 합니다.');
+    exitWithUsage(
+      '필수 입력(파일 경로, SSM 경로)을 인자나 환경 변수로 지정해야 합니다.',
+    );
   }
 
   return options as CliOptions;
