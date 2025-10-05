@@ -20,7 +20,10 @@ import {
   resolveStoredAccessToken,
   resolveStoredAuthClaims,
 } from '@/lib/auth/session';
-import type { UserProfileItem, UserNotificationSettingItem } from '@/types/user/user-api';
+import type {
+  UserProfileItem,
+  UserNotificationSettingItem,
+} from '@/types/user/user-api';
 import type { PostItemByUserId } from '@/types/post/post-api';
 import type { CommentItemByUserId } from '@/types/comment/comment-api';
 import { mergeProfileWithClaims } from './profile-fallback';
@@ -152,12 +155,9 @@ export default function MypageContainer() {
     setCurrentStep((prev) => (prev === tabParam ? prev : tabParam));
   }, [pathname, router, searchParamsString]);
 
-  const handleProfileUpdate = useCallback(
-    (next: UserProfileItem) => {
-      setProfile(mergeProfileWithClaims(next, resolveStoredAuthClaims()));
-    },
-    [],
-  );
+  const handleProfileUpdate = useCallback((next: UserProfileItem) => {
+    setProfile(mergeProfileWithClaims(next, resolveStoredAuthClaims()));
+  }, []);
 
   const handleNotificationUpdate = useCallback(
     (next: UserNotificationSettingItem) => {

@@ -32,7 +32,10 @@ import {
   fetchMyNotificationSetting,
   updateMyNotificationSetting,
 } from '@/lib/api/user';
-import { clearStoredAuthTokens, resolveStoredAccessToken } from '@/lib/auth/session';
+import {
+  clearStoredAuthTokens,
+  resolveStoredAccessToken,
+} from '@/lib/auth/session';
 import type {
   UpdateUserNotificationSettingPayload,
   UserNotificationSettingItem,
@@ -91,33 +94,36 @@ export default function SettingTab({
     form.reset(toSettingValues(settings));
   }, [form, settings]);
 
-  const onSubmit = useCallback(async (values: SettingFormValues) => {
-    const token = resolveStoredAccessToken();
+  const onSubmit = useCallback(
+    async (values: SettingFormValues) => {
+      const token = resolveStoredAccessToken();
 
-    if (!token) {
-      toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
-      return;
-    }
+      if (!token) {
+        toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
+        return;
+      }
 
-    try {
-      setIsSaving(true);
-      const payload = toUpdatePayload(values);
-      await updateMyNotificationSetting(token, payload);
-      const latest = await fetchMyNotificationSetting(token);
-      onSettingsUpdate(latest);
-      form.reset(toSettingValues(latest));
-      toast.success('알림 설정을 저장했어요.');
-    } catch (error) {
-      const status = (error as { status?: number }).status;
-      toast.error(
-        status === 401
-          ? '인증이 만료되었습니다. 다시 로그인해주세요.'
-          : '알림 설정 저장에 실패했습니다.',
-      );
-    } finally {
-      setIsSaving(false);
-    }
-  }, [form, onSettingsUpdate]);
+      try {
+        setIsSaving(true);
+        const payload = toUpdatePayload(values);
+        await updateMyNotificationSetting(token, payload);
+        const latest = await fetchMyNotificationSetting(token);
+        onSettingsUpdate(latest);
+        form.reset(toSettingValues(latest));
+        toast.success('알림 설정을 저장했어요.');
+      } catch (error) {
+        const status = (error as { status?: number }).status;
+        toast.error(
+          status === 401
+            ? '인증이 만료되었습니다. 다시 로그인해주세요.'
+            : '알림 설정 저장에 실패했습니다.',
+        );
+      } finally {
+        setIsSaving(false);
+      }
+    },
+    [form, onSettingsUpdate],
+  );
 
   const handleAccountDelete = useCallback(async () => {
     const token = resolveStoredAccessToken();
@@ -213,8 +219,8 @@ export default function SettingTab({
                   <div className="flex flex-col gap-3">
                     <FormLabel>마케팅 활용 및 공고 수신 동의</FormLabel>
                     <span className="text-muted-foreground">
-                      각종 이벤트, 회원 혜택, 할인 행사 등 이메일로 마케팅 알림을
-                      받겠습니다.
+                      각종 이벤트, 회원 혜택, 할인 행사 등 이메일로 마케팅
+                      알림을 받겠습니다.
                     </span>
                   </div>
                   <FormControl>
@@ -303,12 +309,17 @@ export default function SettingTab({
                   <DialogHeader>
                     <DialogTitle>정말 계정을 삭제하시겠어요?</DialogTitle>
                   </DialogHeader>
-                  <div className="py-4 text-sm text-muted-foreground">
-                    계정을 삭제하면 활동 기록이 모두 삭제되며 복구할 수 없습니다.
+                  <div className="text-muted-foreground py-4 text-sm">
+                    계정을 삭제하면 활동 기록이 모두 삭제되며 복구할 수
+                    없습니다.
                   </div>
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button type="button" variant="secondary" disabled={isDeleting}>
+                      <Button
+                        type="button"
+                        variant="secondary"
+                        disabled={isDeleting}
+                      >
                         취소
                       </Button>
                     </DialogClose>

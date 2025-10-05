@@ -10,7 +10,9 @@ import { resolveEndpoint } from '@/lib/api/config';
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>;
 
-const createStorage = (): StorageLike & { setCalls: Array<[string, string]> } => {
+const createStorage = (): StorageLike & {
+  setCalls: Array<[string, string]>;
+} => {
   const map = new Map<string, string>();
   const setCalls: Array<[string, string]> = [];
 
@@ -62,7 +64,10 @@ describe('tryRefreshAuthTokens', () => {
       body: JSON.stringify({ refreshToken: 'refresh-token' }),
       cache: 'no-store',
     });
-    expect(result).toMatchObject({ token: 'new-access', refreshToken: 'new-refresh' });
+    expect(result).toMatchObject({
+      token: 'new-access',
+      refreshToken: 'new-refresh',
+    });
     expect(storage.setCalls).toEqual([
       [ACCESS_TOKEN_STORAGE_KEY, 'new-access'],
       [REFRESH_TOKEN_STORAGE_KEY, 'new-refresh'],

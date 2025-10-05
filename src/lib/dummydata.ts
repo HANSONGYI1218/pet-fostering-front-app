@@ -20,7 +20,10 @@ import {
 import { CommentItem, CommentItemByUserId } from '@/types/comment/comment-api';
 import { FosterRecordItem } from '@/types/foster-record/foster-record-api';
 import { PostItem, PostItemByUserId } from '@/types/post/post-api';
-import { UserProfileItem, UserNotificationSettingItem } from '@/types/user/user-api';
+import {
+  UserProfileItem,
+  UserNotificationSettingItem,
+} from '@/types/user/user-api';
 
 export const dummyPosts: PostItem[] = [
   {

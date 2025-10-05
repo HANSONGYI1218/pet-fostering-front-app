@@ -4,7 +4,9 @@ import type { AuthClaims } from '@/lib/auth/session';
 import type { UserProfileItem } from '@/types/user/user-api';
 import { mergeProfileWithClaims } from './profile-fallback';
 
-const createProfile = (overrides: Partial<UserProfileItem> = {}): UserProfileItem => ({
+const createProfile = (
+  overrides: Partial<UserProfileItem> = {},
+): UserProfileItem => ({
   id: 'user-123',
   name: null,
   email: null,
@@ -17,9 +19,7 @@ const createProfile = (overrides: Partial<UserProfileItem> = {}): UserProfileIte
   ...overrides,
 });
 
-const createClaims = (
-  overrides: Partial<AuthClaims> = {},
-): AuthClaims => ({
+const createClaims = (overrides: Partial<AuthClaims> = {}): AuthClaims => ({
   userId: 'user-123',
   displayName: 'Muna',
   avatarUrl: 'https://example.com/avatar.png',

@@ -1,5 +1,9 @@
 import { Button } from '../ui/button';
-import { MYPAGE_STEPS, MYPAGE_STEP_LABEL, type MypageStep } from './mypage-steps';
+import {
+  MYPAGE_STEPS,
+  MYPAGE_STEP_LABEL,
+  type MypageStep,
+} from './mypage-steps';
 
 export default function MypageMeue({
   currentStep,

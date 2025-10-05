@@ -64,7 +64,10 @@ export default function PostRecord({ posts, loading }: PostRecordProps) {
       <Card className="cursor-auto border-none p-0 shadow-none">
         <CardHeader className="gap-4 p-0">
           <div className="flex flex-wrap items-center gap-2">
-            <Select onValueChange={(value) => setSorted(value as 'asc' | 'desc')} defaultValue="desc">
+            <Select
+              onValueChange={(value) => setSorted(value as 'asc' | 'desc')}
+              defaultValue="desc"
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="최신순" />
               </SelectTrigger>
@@ -129,7 +132,10 @@ export default function PostRecord({ posts, loading }: PostRecordProps) {
                     </span>
                     <div className="flex items-center gap-5">
                       <div className="flex items-center gap-1">
-                        <MessageSquareText className="h-4 w-4" stroke="#525252" />
+                        <MessageSquareText
+                          className="h-4 w-4"
+                          stroke="#525252"
+                        />
                         <span className="text-[#525252]">{commentCount}</span>
                       </div>
                       <div className="flex items-center gap-1">

@@ -49,3 +49,5 @@ export type FosterRecordItem = {
   created_at: Date;
   foster_records: FosterRecord[];
 };
+
+export type { FosterRecord };

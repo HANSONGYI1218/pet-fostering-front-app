@@ -25,7 +25,10 @@ type CommentRecordProps = {
   loading: boolean;
 };
 
-export default function CommentRecord({ comments, loading }: CommentRecordProps) {
+export default function CommentRecord({
+  comments,
+  loading,
+}: CommentRecordProps) {
   const [sorted, setSorted] = useState<'asc' | 'desc'>('desc');
   const [search, setSearch] = useState('');
 
@@ -66,7 +69,10 @@ export default function CommentRecord({ comments, loading }: CommentRecordProps)
       <Card className="cursor-auto border-none p-0 shadow-none">
         <CardHeader className="gap-4 p-0">
           <div className="flex flex-wrap items-center gap-2">
-            <Select onValueChange={(value) => setSorted(value as 'asc' | 'desc')} defaultValue="desc">
+            <Select
+              onValueChange={(value) => setSorted(value as 'asc' | 'desc')}
+              defaultValue="desc"
+            >
               <SelectTrigger className="w-[180px]">
                 <SelectValue placeholder="최신순" />
               </SelectTrigger>
@@ -105,7 +111,9 @@ export default function CommentRecord({ comments, loading }: CommentRecordProps)
               <div className="flex items-center gap-2 text-neutral-700">
                 <MessageSquareText className="h-4 w-4" />
                 <span>
-                  &quot;{comment.post?.id ? comment.post.title : '지워진 게시글의'}&quot; 의 댓글
+                  &quot;
+                  {comment.post?.id ? comment.post.title : '지워진 게시글의'}
+                  &quot; 의 댓글
                 </span>
               </div>
               <span className="line-clamp-3 font-semibold whitespace-pre-line">

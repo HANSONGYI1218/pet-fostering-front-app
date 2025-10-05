@@ -26,11 +26,16 @@ type RefreshDependencies = {
   persistTokens?: typeof persistAuthTokens;
 };
 
-const parseTokens = async (response: Response): Promise<AuthTokenPair | null> => {
+const parseTokens = async (
+  response: Response,
+): Promise<AuthTokenPair | null> => {
   try {
     const data = (await response.json()) as AuthTokenPair;
 
-    if (typeof data?.token !== 'string' || typeof data?.refreshToken !== 'string') {
+    if (
+      typeof data?.token !== 'string' ||
+      typeof data?.refreshToken !== 'string'
+    ) {
       return null;
     }
 

@@ -13,7 +13,11 @@ type RecordTabProps = {
   loading: boolean;
 };
 
-export default function RecordTab({ posts, comments, loading }: RecordTabProps) {
+export default function RecordTab({
+  posts,
+  comments,
+  loading,
+}: RecordTabProps) {
   const [currentPage, setCurrentPage] = useState(0);
 
   return (
