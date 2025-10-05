@@ -141,6 +141,23 @@ export default function TopBar() {
         onClick: onSelect,
       } as const;
 
+      const pawIconMobile = (
+        <span className="flex w-6 justify-center">
+          {isActive ? (
+            <Image
+              src="/icons/paw.svg"
+              width={20}
+              height={20}
+              alt="paw"
+              aria-hidden="true"
+              className="rotate-12"
+            />
+          ) : (
+            <span aria-hidden="true" className="h-5 w-5" />
+          )}
+        </span>
+      );
+
       return itemClassName ? (
         <li key={item.href}>
           <Link
@@ -148,15 +165,7 @@ export default function TopBar() {
             className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition hover:bg-neutral-100 ${itemClassName}`}
           >
             <span>{item.name}</span>
-            {isActive ? (
-              <Image
-                src="/icons/paw.svg"
-                width={20}
-                height={20}
-                alt="paw"
-                className="rotate-12"
-              />
-            ) : null}
+            {pawIconMobile}
           </Link>
         </li>
       ) : (
@@ -168,15 +177,20 @@ export default function TopBar() {
               className={`${navigationMenuTriggerStyle()} gap-2`}
             >
               <span>{item.name}</span>
-              {isActive ? (
-                <Image
-                  src="/icons/paw.svg"
-                  width={24}
-                  height={24}
-                  alt="paw"
-                  className="rotate-12"
-                />
-              ) : null}
+              <span className="flex w-6 justify-center">
+                {isActive ? (
+                  <Image
+                    src="/icons/paw.svg"
+                    width={24}
+                    height={24}
+                    alt="paw"
+                    aria-hidden="true"
+                    className="rotate-12"
+                  />
+                ) : (
+                  <span aria-hidden="true" className="h-6 w-6" />
+                )}
+              </span>
             </Link>
           </NavigationMenuLink>
         </NavigationMenuItem>
