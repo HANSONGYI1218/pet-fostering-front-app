@@ -505,7 +505,7 @@ export const fosterRecordDummyData: FosterRecordItem[] = [
     organization: {
       id: 'o1',
       name: '퍼디 동물보호소',
-      phoneNumber: '02-1234-5678',
+      phone_number: '02-1234-5678',
       zipcode: '04524',
       address: '서울특별시 강남구 테헤란로 123',
       address_detail: '3층 302호',
@@ -671,7 +671,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '보듬컴퍼니',
       address: '중랑구 상봉동',
       address_detail: '2-4-37',
-      phoneNumber: '010-2222-1022',
+      phone_number: '010-2222-1022',
     },
   },
   {
@@ -699,7 +699,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '푸른보호소',
       address: '마포구 망원동',
       address_detail: '58-12',
-      phoneNumber: '010-7777-8888',
+      phone_number: '010-7777-8888',
     },
   },
   {
@@ -727,7 +727,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '달빛 보호센터',
       address: '서초구 방배동',
       address_detail: '24-11',
-      phoneNumber: '010-9999-1010',
+      phone_number: '010-9999-1010',
     },
   },
   {
@@ -755,7 +755,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
     },
   },
   {
@@ -783,7 +783,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '보호의집',
       address: '종로구 혜화동',
       address_detail: '31-18',
-      phoneNumber: '010-1212-3434',
+      phone_number: '010-1212-3434',
     },
   },
   {
@@ -811,7 +811,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '사랑의쉼터',
       address: '송파구 잠실동',
       address_detail: '88-14',
-      phoneNumber: '010-8989-5656',
+      phone_number: '010-8989-5656',
     },
   },
   {
@@ -839,7 +839,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '루나 센터',
       address: '용산구 이촌동',
       address_detail: '6-5-17',
-      phoneNumber: '010-5656-7878',
+      phone_number: '010-5656-7878',
     },
   },
   {
@@ -867,7 +867,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '사랑의쉼터',
       address: '송파구 잠실동',
       address_detail: '88-14',
-      phoneNumber: '010-8989-5656',
+      phone_number: '010-8989-5656',
     },
   },
   {
@@ -895,7 +895,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '보호의집',
       address: '종로구 혜화동',
       address_detail: '31-18',
-      phoneNumber: '010-1212-3434',
+      phone_number: '010-1212-3434',
     },
   },
   {
@@ -923,7 +923,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
     },
   },
 ];
@@ -962,7 +962,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -999,7 +999,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '햇살 보호소',
       address: '마포구 합정동',
       address_detail: '101-5',
-      phoneNumber: '010-7777-8888',
+      phone_number: '010-7777-8888',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1040,7 +1040,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '냥이 쉼터',
       address: '강동구 천호동',
       address_detail: '32-11',
-      phoneNumber: '010-4444-5555',
+      phone_number: '010-4444-5555',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1077,7 +1077,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '하늘 보호소',
       address: '용산구 원효로',
       address_detail: '45-9',
-      phoneNumber: '010-1111-2222',
+      phone_number: '010-1111-2222',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1114,7 +1114,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '희망 쉼터',
       address: '노원구 공릉동',
       address_detail: '21-7',
-      phoneNumber: '010-3333-9999',
+      phone_number: '010-3333-9999',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1151,7 +1151,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '러브펫 보호소',
       address: '성북구 보문동',
       address_detail: '10-4',
-      phoneNumber: '010-6666-7777',
+      phone_number: '010-6666-7777',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1188,7 +1188,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '푸른 보호소',
       address: '송파구 방이동',
       address_detail: '78-5',
-      phoneNumber: '010-9999-1234',
+      phone_number: '010-9999-1234',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1225,7 +1225,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '햇살동물사랑',
       address: '강남구 논현동',
       address_detail: '15-6',
-      phoneNumber: '010-1212-3434',
+      phone_number: '010-1212-3434',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1262,7 +1262,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       name: '행복 쉼터',
       address: '은평구 불광동',
       address_detail: '17-3',
-      phoneNumber: '010-1414-5656',
+      phone_number: '010-1414-5656',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -1285,7 +1285,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1295,7 +1295,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1305,7 +1305,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1315,7 +1315,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1325,7 +1325,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1335,7 +1335,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1370,7 +1370,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1380,7 +1380,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1390,7 +1390,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1400,7 +1400,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1410,7 +1410,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1420,7 +1420,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1455,7 +1455,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1465,7 +1465,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1475,7 +1475,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1485,7 +1485,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1495,7 +1495,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1505,7 +1505,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1538,7 +1538,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1548,7 +1548,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1558,7 +1558,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1568,7 +1568,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1578,7 +1578,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1588,7 +1588,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1622,7 +1622,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1632,7 +1632,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1642,7 +1642,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1652,7 +1652,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1662,7 +1662,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1672,7 +1672,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1708,7 +1708,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1718,7 +1718,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1728,7 +1728,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1738,7 +1738,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1748,7 +1748,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1758,7 +1758,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1791,7 +1791,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1801,7 +1801,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1811,7 +1811,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1821,7 +1821,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1831,7 +1831,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1841,7 +1841,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1877,7 +1877,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1887,7 +1887,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1897,7 +1897,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1907,7 +1907,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1917,7 +1917,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -1927,7 +1927,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -1959,7 +1959,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -1969,7 +1969,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -1979,7 +1979,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -1989,7 +1989,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -1999,7 +1999,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -2009,7 +2009,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -2045,7 +2045,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '1',
         name: '한송이',
         email: 'hhan1218@naber.com',
-        phoneNumber: '010-1414-5656',
+        phone_number: '010-1414-5656',
         address: '은평구 불광동',
         address_detail: '17-3',
         introduction:
@@ -2055,7 +2055,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '2',
         name: '김민재',
         email: 'minjae.kim@example.com',
-        phoneNumber: '010-9876-5432',
+        phone_number: '010-9876-5432',
         address: '마포구 상암동',
         address_detail: '22-5',
         introduction:
@@ -2065,7 +2065,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '3',
         name: '이수진',
         email: 'sujin.lee@example.com',
-        phoneNumber: '010-1234-5678',
+        phone_number: '010-1234-5678',
         address: '서대문구 연희동',
         address_detail: '8-10',
         introduction:
@@ -2075,7 +2075,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '4',
         name: '박지훈',
         email: 'jihun.park@example.com',
-        phoneNumber: '010-8765-4321',
+        phone_number: '010-8765-4321',
         address: '강서구 화곡동',
         address_detail: '3-12',
         introduction:
@@ -2085,7 +2085,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '5',
         name: '최윤아',
         email: 'yuna.choi@example.com',
-        phoneNumber: '010-5555-6666',
+        phone_number: '010-5555-6666',
         address: '송파구 잠실동',
         address_detail: '101-1',
         introduction:
@@ -2095,7 +2095,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
         id: '6',
         name: '정다은',
         email: 'daeun.jung@example.com',
-        phoneNumber: '010-4444-7777',
+        phone_number: '010-4444-7777',
         address: '강남구 역삼동',
         address_detail: '45-9',
         introduction:
@@ -2274,7 +2274,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -2431,7 +2431,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -2592,7 +2592,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -2749,7 +2749,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -2906,7 +2906,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -3063,7 +3063,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -3220,7 +3220,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -3377,7 +3377,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
@@ -3534,7 +3534,7 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
       name: '콩콩 쉼터',
       address: '은평구 구산동',
       address_detail: '9-22',
-      phoneNumber: '010-5555-6666',
+      phone_number: '010-5555-6666',
       donation_bank_name: '농협',
       donation_account_number: '352-1367-6181-93',
       donation_account_holder: '한송이',
