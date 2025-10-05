@@ -11,7 +11,7 @@ import {
   ANIMAL_TYPE_LABEL_KO,
   FOSTER_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
-import { dummyFosterAnimalDetails } from '@/lib/dummydata';
+import { fetchFosterAnimalDetail } from '@/lib/api/foster';
 import { Check } from 'lucide-react';
 import ConnectDialog from '@/components/foster-list/connect-dialog';
 import FosterRequestDialog from '@/components/foster-list/foster-requst-dialog';
@@ -21,6 +21,7 @@ import { formatAnimalAge, fosterTotalDuration } from '@/lib/utils';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { format } from 'date-fns';
 import Image from 'next/image';
+import { notFound } from 'next/navigation';
 
 export default async function FosterListDetailPage({
   params,
@@ -29,54 +30,61 @@ export default async function FosterListDetailPage({
 }) {
   const { id } = await params;
 
-  const animal = dummyFosterAnimalDetails.find((animal) => animal?.id === id);
-  const total_address = `${animal?.organization?.address} ${animal?.organization?.address_detail}`;
+  const animal = await fetchFosterAnimalDetail(id).catch((error: unknown) => {
+    if (error instanceof Error && /404/.test(error.message)) {
+      notFound();
+    }
+    throw error;
+  });
+  const total_address =
+    `${animal.organization.address} ${animal.organization.address_detail}`.trim();
 
-  const healthData = [
-    AnimalHealth.VACCINATED,
-    AnimalHealth.HEARTWORM_TESTED,
-    AnimalHealth.DEWORMED,
-    AnimalHealth.FLEA_TICK_TREATED,
-  ]
-    .map((health) => {
-      return `✓ ${ANIMAL_HEALTH_LABEL_KO[health]}`;
-    })
+  const healthData = animal.animal_healths
+    .map((health) => `✓ ${ANIMAL_HEALTH_LABEL_KO[health]}`)
     .join('\n');
+
+  const fosterDurationText =
+    animal.current_foster_start_date && animal.current_foster_end_date
+      ? `${fosterTotalDuration(
+          animal.current_foster_start_date,
+          animal.current_foster_end_date,
+        )}일`
+      : '';
 
   const animalDatas = [
     {
       title: '구분',
-      data: animal ? ANIMAL_TYPE_LABEL_KO[animal.type] : '',
+      data: ANIMAL_TYPE_LABEL_KO[animal.type],
     },
     {
       title: '품종',
-      data: animal?.breed,
+      data: animal.breed,
     },
     {
       title: '크기',
-      data: animal ? ANIMAL_SIZE_LABEL_KO[animal?.size] : '',
+      data: ANIMAL_SIZE_LABEL_KO[animal.size],
     },
     {
       title: '성별',
-      data: animal ? ANIMAL_GENDER_LABEL_KO[animal?.gender] : '',
+      data: ANIMAL_GENDER_LABEL_KO[animal.gender],
     },
     {
       title: '나이',
-      data: animal?.birth_date ? formatAnimalAge(animal?.birth_date) : '',
+      data: animal.birth_date ? formatAnimalAge(animal.birth_date) : '',
     },
     {
       title: '임보 기간',
-      data: `${animal?.current_foster_start_date && animal?.current_foster_end_date && fosterTotalDuration(animal?.current_foster_start_date, animal?.current_foster_end_date)}일`,
+      data: fosterDurationText,
     },
     {
       title: '마이크로칩 여부',
-      data: animal?.animal_healths.find((a) => a === AnimalHealth.MICROCHIPPED)
+      data: animal.animal_healths.find((a) => a === AnimalHealth.MICROCHIPPED)
         ? '등록'
         : '미등록',
     },
     {
       title: '중성화',
-      data: animal?.animal_healths.find((a) => a === AnimalHealth.NEUTERED)
+      data: animal.animal_healths.find((a) => a === AnimalHealth.NEUTERED)
         ? '완료'
         : '미완료',
     },
@@ -89,11 +97,11 @@ export default async function FosterListDetailPage({
   const centerDatas = [
     {
       title: '기관명',
-      data: animal?.organization?.name,
+      data: animal.organization.name,
     },
     {
       title: '연락처',
-      data: animal?.organization?.phone_number,
+      data: animal.organization.phone_number,
     },
     {
       title: '주소',

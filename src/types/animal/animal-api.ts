@@ -27,7 +27,7 @@ export type FosterListAnimalItem = {
   type: AnimalType;
   size: AnimalSize;
   breed: string;
-  birth_date: Date;
+  birth_date: Date | null;
   gender: AnimalGender;
   image: string;
   isBookmarked: boolean;
@@ -50,14 +50,14 @@ export type FosterAnimalDetailItem = {
   type: AnimalType;
   size: AnimalSize;
   breed: string;
-  birth_date: Date;
+  birth_date: Date | null;
   gender: AnimalGender;
   images: string[];
   introduction: string;
   remark: string;
   isBookmarked: boolean;
-  current_foster_start_date: Date;
-  current_foster_end_date: Date;
+  current_foster_start_date: Date | null;
+  current_foster_end_date: Date | null;
   animal_healths: AnimalHealth[];
   animal_personalitys: AnimalPersonality[];
   foster_environments: AnimalEnvironment[];

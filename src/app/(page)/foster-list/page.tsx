@@ -1,5 +1,5 @@
 import FosterContainer from '@/components/foster-list/foster-container';
-import { dummyFosterAnimals } from '@/lib/dummydata';
+import { fetchFosterAnimals } from '@/lib/api/foster';
 import {
   Card,
   CardDescription,
@@ -8,6 +8,8 @@ import {
 } from '@/components/ui/card';
 
 export default async function FosterListPage() {
+  const animals = await fetchFosterAnimals();
+
   return (
     <main className="bg-background min-h-screen">
       <section className="mx-auto flex w-full max-w-screen-xl flex-col gap-12 px-6 py-16">
@@ -21,7 +23,7 @@ export default async function FosterListPage() {
             </CardDescription>
           </CardHeader>
         </Card>
-        <FosterContainer animals={dummyFosterAnimals} />
+        <FosterContainer animals={animals} />
       </section>
     </main>
   );

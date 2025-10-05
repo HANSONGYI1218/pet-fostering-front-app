@@ -3,6 +3,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { Menu, X } from 'lucide-react';
 import { usePathname, useRouter } from 'next/navigation';
 
 import { Button } from '../ui/button';
@@ -52,6 +53,7 @@ export default function TopBar() {
   const path = usePathname();
   const router = useRouter();
   const [authUser, setAuthUser] = useState<AuthClaims | null>(null);
+  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const syncAuth = () => {
@@ -71,6 +73,10 @@ export default function TopBar() {
     };
   }, []);
 
+  const closeMobileMenu = useCallback(() => {
+    setIsMobileMenuOpen(false);
+  }, []);
+
   const handleLogout = useCallback(() => {
     clearStoredAuthTokens();
     setAuthUser(null);
@@ -80,7 +86,19 @@ export default function TopBar() {
     } catch {
       router.push('/login');
     }
-  }, [router]);
+    closeMobileMenu();
+  }, [closeMobileMenu, router]);
+
+  useEffect(() => {
+    if (!isMobileMenuOpen) return undefined;
+
+    const originalOverflow = document.body.style.overflow;
+    document.body.style.overflow = 'hidden';
+
+    return () => {
+      document.body.style.overflow = originalOverflow;
+    };
+  }, [isMobileMenuOpen]);
 
   const userLabel = useMemo(() => {
     if (!authUser) {
@@ -108,84 +126,192 @@ export default function TopBar() {
     return path.split('/')[1] ?? null;
   }, [path]);
 
-  return (
-    <header className="bg-background sticky top-0 z-30 border-b">
-      <div className="container_12 mx-auto flex h-16 w-full items-center justify-between">
-        <div className="flex items-center gap-6">
-          <Link
-            href="/main"
-            className="flex shrink-0 items-center"
-            aria-label="홈"
-          >
-            <Image
-              src="/main-logo.png"
-              width={140}
-              height={60}
-              alt="main-logo"
-              priority
-            />
-          </Link>
-          <div className="flex flex-1 justify-center">
-            <NavigationMenu aria-label="주요 메뉴">
-              <NavigationMenuList>
-                {NAV_ITEMS.map((item) => {
-                  const isActive = item.segment === currentSegment;
+  useEffect(() => {
+    closeMobileMenu();
+  }, [closeMobileMenu, path]);
 
-                  return (
-                    <NavigationMenuItem key={item.href} className="">
-                      <NavigationMenuLink asChild>
-                        <Link
-                          href={item.href}
-                          data-active={isActive ? 'true' : undefined}
-                          aria-current={isActive ? 'page' : undefined}
-                          className={`${navigationMenuTriggerStyle()} gap-2`}
-                        >
-                          <span>{item.name}</span>
-                          {isActive ? (
-                            <Image
-                              src="/icons/paw.svg"
-                              width={24}
-                              height={24}
-                              alt="paw"
-                              className="rotate-12"
-                            />
-                          ) : null}
-                        </Link>
-                      </NavigationMenuLink>
-                    </NavigationMenuItem>
-                  );
-                })}
-              </NavigationMenuList>
-            </NavigationMenu>
-          </div>
-        </div>
-        {authUser ? (
-          <div className="flex items-center gap-3">
-            {avatarUrl ? (
+  const renderNavItems = (itemClassName?: string, onSelect?: () => void) =>
+    NAV_ITEMS.map((item) => {
+      const isActive = item.segment === currentSegment;
+
+      const linkProps = {
+        href: item.href,
+        'data-active': isActive ? 'true' : undefined,
+        'aria-current': isActive ? 'page' : undefined,
+        onClick: onSelect,
+      } as const;
+
+      return itemClassName ? (
+        <li key={item.href}>
+          <Link
+            {...linkProps}
+            className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition hover:bg-neutral-100 ${itemClassName}`}
+          >
+            <span>{item.name}</span>
+            {isActive ? (
               <Image
-                src={avatarUrl}
-                alt="사용자 프로필 사진"
-                width={32}
-                height={32}
-                className="h-8 w-8 rounded-full object-cover"
-                unoptimized
+                src="/icons/paw.svg"
+                width={20}
+                height={20}
+                alt="paw"
+                className="rotate-12"
               />
             ) : null}
-            <span className="text-sm font-medium text-neutral-600">
-              {userLabel}
-            </span>
-            <Button variant="outline" size="sm" onClick={handleLogout}>
-              로그아웃
-            </Button>
-          </div>
-        ) : (
-          <Link href="/login">
-            <Button variant="outline" size="sm">
-              로그인
-            </Button>
           </Link>
-        )}
+        </li>
+      ) : (
+        <NavigationMenuItem key={item.href}>
+          <NavigationMenuLink asChild>
+            <Link
+              key={item.href}
+              {...linkProps}
+              className={`${navigationMenuTriggerStyle()} gap-2`}
+            >
+              <span>{item.name}</span>
+              {isActive ? (
+                <Image
+                  src="/icons/paw.svg"
+                  width={24}
+                  height={24}
+                  alt="paw"
+                  className="rotate-12"
+                />
+              ) : null}
+            </Link>
+          </NavigationMenuLink>
+        </NavigationMenuItem>
+      );
+    });
+
+  return (
+    <header className="bg-background sticky top-0 z-30 border-b">
+      <div className="container_12 mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 md:px-6">
+        <Link
+          href="/main"
+          className="flex shrink-0 items-center"
+          aria-label="홈"
+        >
+          <Image
+            src="/main-logo.png"
+            width={140}
+            height={60}
+            alt="main-logo"
+            priority
+          />
+        </Link>
+        <div className="hidden flex-1 justify-center md:flex">
+          <NavigationMenu aria-label="주요 메뉴">
+            <NavigationMenuList>{renderNavItems()}</NavigationMenuList>
+          </NavigationMenu>
+        </div>
+        <div className="flex items-center gap-3">
+          {authUser ? (
+            <div className="flex items-center gap-3">
+              {avatarUrl ? (
+                <Image
+                  src={avatarUrl}
+                  alt="사용자 프로필 사진"
+                  width={32}
+                  height={32}
+                  className="h-8 w-8 rounded-full object-cover"
+                  unoptimized
+                />
+              ) : null}
+              <span className="hidden text-sm font-medium text-neutral-600 sm:block">
+                {userLabel}
+              </span>
+              <Button
+                variant="outline"
+                size="sm"
+                onClick={handleLogout}
+                className="hidden sm:inline-flex"
+              >
+                로그아웃
+              </Button>
+            </div>
+          ) : (
+            <Link href="/login" className="hidden sm:block">
+              <Button variant="outline" size="sm">
+                로그인
+              </Button>
+            </Link>
+          )}
+          <Button
+            variant="ghost"
+            size="icon"
+            className="sm:hidden"
+            aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
+            aria-expanded={isMobileMenuOpen}
+            onClick={() => setIsMobileMenuOpen((prev) => !prev)}
+          >
+            {isMobileMenuOpen ? (
+              <X className="size-5" />
+            ) : (
+              <Menu className="size-5" />
+            )}
+          </Button>
+        </div>
       </div>
+      {isMobileMenuOpen ? (
+        <div className="md:hidden">
+          <div
+            role="presentation"
+            className="fixed inset-0 z-40 bg-black/40"
+            onClick={closeMobileMenu}
+          />
+          <nav
+            className="bg-background fixed inset-y-0 right-0 z-50 flex w-72 max-w-[calc(100%-3rem)] flex-col border-l shadow-lg"
+            aria-label="모바일 메뉴"
+          >
+            <div className="flex h-16 items-center justify-between border-b px-4">
+              <span className="text-base font-semibold">메뉴</span>
+              <Button
+                variant="ghost"
+                size="icon"
+                onClick={closeMobileMenu}
+                aria-label="모바일 메뉴 닫기"
+              >
+                <X className="size-5" />
+              </Button>
+            </div>
+            <div className="flex flex-1 flex-col justify-between overflow-y-auto">
+              <ul className="flex flex-col gap-1 p-4">
+                {renderNavItems('text-neutral-700', closeMobileMenu)}
+              </ul>
+              <div className="border-t p-4">
+                {authUser ? (
+                  <div className="flex flex-col gap-3">
+                    <div className="flex items-center gap-3">
+                      {avatarUrl ? (
+                        <Image
+                          src={avatarUrl}
+                          alt="사용자 프로필 사진"
+                          width={40}
+                          height={40}
+                          className="h-10 w-10 rounded-full object-cover"
+                          unoptimized
+                        />
+                      ) : null}
+                      <span className="text-sm font-medium text-neutral-600">
+                        {userLabel}
+                      </span>
+                    </div>
+                    <Button variant="outline" onClick={handleLogout}>
+                      로그아웃
+                    </Button>
+                  </div>
+                ) : (
+                  <Button asChild>
+                    <Link href="/login" onClick={closeMobileMenu}>
+                      로그인
+                    </Link>
+                  </Button>
+                )}
+              </div>
+            </div>
+          </nav>
+        </div>
+      ) : null}
     </header>
   );
 }

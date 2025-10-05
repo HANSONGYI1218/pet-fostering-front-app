@@ -1,4 +1,10 @@
-const DEFAULT_API_BASE_URL = 'https://api.impomatch.com/api';
+const PROD_API_BASE_URL = 'https://api.impomatch.com/api';
+const LOCAL_API_BASE_URL = 'http://localhost:3001';
+
+const DEFAULT_API_BASE_URL =
+  process.env.NODE_ENV === 'production'
+    ? PROD_API_BASE_URL
+    : LOCAL_API_BASE_URL;
 
 const trimTrailingSlash = (value: string) => value.replace(/\/+$/, '');
 const ensureLeadingSlash = (value: string) =>
