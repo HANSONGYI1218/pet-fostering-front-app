@@ -1,9 +1,11 @@
 'use client';
 
 import { zodResolver } from '@hookform/resolvers/zod';
-import { useEffect } from 'react';
+import { useCallback, useEffect, useState } from 'react';
+import { useRouter } from 'next/navigation';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
+import { toast } from 'sonner';
 
 import { Card } from '../ui/card';
 import {
@@ -25,7 +27,16 @@ import {
 } from '@/components/ui/form';
 import { Switch } from '../ui/switch';
 import { Button } from '../ui/button';
-import type { UserNotificationSettingItem } from '@/types/user/user-api';
+import {
+  deleteMyAccount,
+  fetchMyNotificationSetting,
+  updateMyNotificationSetting,
+} from '@/lib/api/user';
+import { clearStoredAuthTokens, resolveStoredAccessToken } from '@/lib/auth/session';
+import type {
+  UpdateUserNotificationSettingPayload,
+  UserNotificationSettingItem,
+} from '@/types/user/user-api';
 
 const SettingFormSchema = z.object({
   commentEmail: z.boolean().optional(),
@@ -40,9 +51,8 @@ type SettingFormValues = z.infer<typeof SettingFormSchema>;
 type SettingTabProps = {
   settings: UserNotificationSettingItem | null;
   loading: boolean;
+  onSettingsUpdate: (settings: UserNotificationSettingItem) => void;
 };
-
-type DeleteHandler = () => Promise<void> | void;
 
 const toSettingValues = (
   settings: UserNotificationSettingItem | null,
@@ -54,11 +64,24 @@ const toSettingValues = (
   marketingKakao: settings?.marketingKakao ?? false,
 });
 
-const handleAccountDelete: DeleteHandler = async () => {
-  // TODO: API 연결 시 구현
-};
+const toUpdatePayload = (
+  values: SettingFormValues,
+): UpdateUserNotificationSettingPayload => ({
+  commentEmail: values.commentEmail ?? false,
+  fosterAnimalInfoEmail: values.fosterAnimalInfoEmail ?? false,
+  fosterAnimalInfoKakao: values.fosterAnimalInfoKakao ?? false,
+  marketingEmail: values.marketingEmail ?? false,
+  marketingKakao: values.marketingKakao ?? false,
+});
 
-export default function SettingTab({ settings, loading }: SettingTabProps) {
+export default function SettingTab({
+  settings,
+  loading,
+  onSettingsUpdate,
+}: SettingTabProps) {
+  const router = useRouter();
+  const [isSaving, setIsSaving] = useState(false);
+  const [isDeleting, setIsDeleting] = useState(false);
   const form = useForm<SettingFormValues>({
     resolver: zodResolver(SettingFormSchema),
     defaultValues: toSettingValues(settings),
@@ -68,7 +91,59 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
     form.reset(toSettingValues(settings));
   }, [form, settings]);
 
-  function onSubmit(_values: SettingFormValues) {}
+  const onSubmit = useCallback(async (values: SettingFormValues) => {
+    const token = resolveStoredAccessToken();
+
+    if (!token) {
+      toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      const payload = toUpdatePayload(values);
+      await updateMyNotificationSetting(token, payload);
+      const latest = await fetchMyNotificationSetting(token);
+      onSettingsUpdate(latest);
+      form.reset(toSettingValues(latest));
+      toast.success('알림 설정을 저장했어요.');
+    } catch (error) {
+      const status = (error as { status?: number }).status;
+      toast.error(
+        status === 401
+          ? '인증이 만료되었습니다. 다시 로그인해주세요.'
+          : '알림 설정 저장에 실패했습니다.',
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }, [form, onSettingsUpdate]);
+
+  const handleAccountDelete = useCallback(async () => {
+    const token = resolveStoredAccessToken();
+
+    if (!token) {
+      toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
+      return;
+    }
+
+    try {
+      setIsDeleting(true);
+      await deleteMyAccount(token);
+      clearStoredAuthTokens();
+      toast.success('계정을 삭제했어요. 메인 페이지로 이동합니다.');
+      router.replace('/');
+    } catch (error) {
+      const status = (error as { status?: number }).status;
+      toast.error(
+        status === 401
+          ? '인증이 만료되었습니다. 다시 로그인해주세요.'
+          : '계정 삭제에 실패했습니다.',
+      );
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [router]);
 
   if (loading) {
     return (
@@ -99,6 +174,7 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
                     <Switch
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
+                      disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -121,6 +197,7 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
                     <Switch
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
+                      disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -144,6 +221,7 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
                     <Switch
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
+                      disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -171,6 +249,7 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
                     <Switch
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
+                      disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -194,6 +273,7 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
                     <Switch
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
+                      disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
                   <FormMessage />
@@ -228,22 +308,34 @@ export default function SettingTab({ settings, loading }: SettingTabProps) {
                   </div>
                   <DialogFooter>
                     <DialogClose asChild>
-                      <Button type="button" variant="secondary">
+                      <Button type="button" variant="secondary" disabled={isDeleting}>
                         취소
                       </Button>
                     </DialogClose>
                     <Button
                       type="button"
                       variant="destructive"
-                      onClick={() => handleAccountDelete()}
+                      disabled={isDeleting}
+                      onClick={() => void handleAccountDelete()}
                     >
-                      삭제하기
+                      {isDeleting ? '삭제 중...' : '삭제하기'}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
             </FormControl>
           </Card>
+        </div>
+
+        <div className="flex justify-end">
+          <Button
+            type="submit"
+            variant="destructive"
+            disabled={isSaving || loading || isDeleting}
+            className="min-w-28"
+          >
+            {isSaving ? '저장 중...' : '저장하기'}
+          </Button>
         </div>
       </form>
     </Form>

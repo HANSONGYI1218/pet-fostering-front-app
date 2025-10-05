@@ -5,6 +5,7 @@ import { UserPen, UserRoundCogIcon } from 'lucide-react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
+import { toast } from 'sonner';
 
 import { Card } from '../ui/card';
 import { Button } from '../ui/button';
@@ -20,7 +21,12 @@ import { Input } from '@/components/ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import AddressPopUp from '../common/address-popup';
-import type { UserProfileItem } from '@/types/user/user-api';
+import { updateMyProfile } from '@/lib/api/user';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
+import type {
+  UpdateUserProfilePayload,
+  UserProfileItem,
+} from '@/types/user/user-api';
 
 const ProfileFormSchema = z.object({
   name: z.string().optional(),
@@ -37,6 +43,7 @@ type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 type ProfileTabProps = {
   profile: UserProfileItem | null;
   loading: boolean;
+  onProfileUpdate: (profile: UserProfileItem) => void;
 };
 
 const toFormValues = (profile: UserProfileItem | null): ProfileFormValues => ({
@@ -49,9 +56,30 @@ const toFormValues = (profile: UserProfileItem | null): ProfileFormValues => ({
   introduction: profile?.introduction ?? '',
 });
 
-export default function ProfileTab({ profile, loading }: ProfileTabProps) {
+const toUpdatePayload = (
+  values: ProfileFormValues,
+): UpdateUserProfilePayload => ({
+  name: values.name?.trim() ? values.name.trim() : null,
+  email: values.email?.trim() ? values.email.trim() : null,
+  phoneNumber: values.phoneNumber?.trim() ? values.phoneNumber.trim() : null,
+  zipcode: values.zipcode?.trim() ? values.zipcode.trim() : null,
+  address: values.address?.trim() ? values.address.trim() : null,
+  addressDetail: values.addressDetail?.trim()
+    ? values.addressDetail.trim()
+    : null,
+  introduction: values.introduction?.trim()
+    ? values.introduction
+    : null,
+});
+
+export default function ProfileTab({
+  profile,
+  loading,
+  onProfileUpdate,
+}: ProfileTabProps) {
   const [isInfoEdited, setIsInfoEdited] = useState(false);
   const [isAuthEdited, setIsAuthEdited] = useState(false);
+  const [isSaving, setIsSaving] = useState(false);
 
   const form = useForm<ProfileFormValues>({
     resolver: zodResolver(ProfileFormSchema),
@@ -62,11 +90,64 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
     form.reset(toFormValues(profile));
   }, [form, profile]);
 
+  const submitProfile = () => form.handleSubmit(onSubmit)();
+
+  const handleInfoButtonClick = () => {
+    if (isSaving) {
+      return;
+    }
+
+    if (isInfoEdited) {
+      void submitProfile();
+      return;
+    }
+
+    setIsInfoEdited(true);
+    setIsAuthEdited(false);
+  };
+
+  const handleAuthButtonClick = () => {
+    if (isSaving) {
+      return;
+    }
+
+    if (isAuthEdited) {
+      void submitProfile();
+      return;
+    }
+
+    setIsAuthEdited(true);
+    setIsInfoEdited(false);
+  };
+
   const isEligible = profile?.isEligibleForFoster ?? false;
   const nickname = useMemo(() => profile?.name ?? '-', [profile]);
+  async function onSubmit(values: ProfileFormValues) {
+    const token = resolveStoredAccessToken();
 
-  // TODO: 연결 예정
-  function onSubmit(_values: ProfileFormValues) {}
+    if (!token) {
+      toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
+      return;
+    }
+
+    try {
+      setIsSaving(true);
+      const updated = await updateMyProfile(token, toUpdatePayload(values));
+      onProfileUpdate(updated);
+      toast.success('프로필을 저장했어요.');
+      setIsInfoEdited(false);
+      setIsAuthEdited(false);
+    } catch (error) {
+      const status = (error as { status?: number }).status;
+      toast.error(
+        status === 401
+          ? '인증이 만료되었습니다. 다시 로그인해주세요.'
+          : '프로필 저장에 실패했습니다.',
+      );
+    } finally {
+      setIsSaving(false);
+    }
+  }
 
   if (loading) {
     return (
@@ -98,11 +179,17 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
           <h1 className="text-xl font-semibold">기본정보</h1>
           <Button
             variant="link"
-            onClick={() => setIsInfoEdited((prev) => !prev)}
+            type="button"
+            onClick={() => handleInfoButtonClick()}
+            disabled={isSaving}
             className="gap-1 self-end text-neutral-700"
           >
             <UserPen className="h-3 w-3" stroke="#737373" />
-            {isInfoEdited ? '저장하기' : '수정하기'}
+            {isInfoEdited
+              ? isSaving
+                ? '저장 중...'
+                : '저장하기'
+              : '수정하기'}
           </Button>
         </div>
         <Form {...form}>
@@ -119,6 +206,7 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
                         <Input
                           className="border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                           placeholder="이름을 적어주세요."
+                          disabled={isSaving}
                           {...field}
                         />
                       ) : (
@@ -193,6 +281,7 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
                             <Input
                               className="w-full border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                               placeholder="상세주소를 적어주세요."
+                              disabled={isSaving}
                               {...field}
                             />
                           ) : (
@@ -235,6 +324,7 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
                         <Textarea
                           className="whitespace-pre-wrap resize-none border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                           placeholder="나의 소개를 작성해보세요."
+                          disabled={isSaving}
                           {...field}
                         />
                       ) : (
@@ -257,11 +347,17 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
           <h1 className="text-xl font-semibold">계정정보</h1>
           <Button
             variant="link"
-            onClick={() => setIsAuthEdited((prev) => !prev)}
+            type="button"
+            onClick={() => handleAuthButtonClick()}
+            disabled={isSaving}
             className="gap-1 self-end text-neutral-700"
           >
             <UserRoundCogIcon className="h-3 w-3" stroke="#737373" />
-            {isAuthEdited ? '저장하기' : '수정하기'}
+            {isAuthEdited
+              ? isSaving
+                ? '저장 중...'
+                : '저장하기'
+              : '수정하기'}
           </Button>
         </div>
         <Form {...form}>
@@ -278,6 +374,7 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
                         <Input
                           className="border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                           placeholder="이메일을 적어주세요."
+                          disabled={isSaving}
                           {...field}
                         />
                       ) : (
@@ -305,6 +402,7 @@ export default function ProfileTab({ profile, loading }: ProfileTabProps) {
                         <Input
                           className="border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                           placeholder="전화번호를 입력해주세요."
+                          disabled={isSaving}
                           {...field}
                         />
                       ) : (

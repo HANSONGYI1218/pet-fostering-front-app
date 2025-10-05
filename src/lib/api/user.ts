@@ -3,6 +3,8 @@ import { resolveEndpoint } from './config';
 import type { CommentItemByUserId } from '@/types/comment/comment-api';
 import type { PostItemByUserId } from '@/types/post/post-api';
 import type {
+  UpdateUserNotificationSettingPayload,
+  UpdateUserProfilePayload,
   UserNotificationSettingItem,
   UserProfileItem,
 } from '@/types/user/user-api';
@@ -174,4 +176,53 @@ export const fetchMyComments = async (token?: string) => {
   const payload = (await response.json()) as UserCommentListItemDto[];
 
   return mapUserComments(payload);
+};
+
+export const updateMyProfile = async (
+  token: string | undefined,
+  payload: UpdateUserProfilePayload,
+) => {
+  const response = await expectOk(
+    await fetch(resolveEndpoint('/users/me/profile'), {
+      method: 'PATCH',
+      headers: {
+        ...userHeaders(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }),
+  );
+
+  const dto = (await response.json()) as UserProfileResponseDto;
+
+  return mapUserProfile(dto);
+};
+
+export const updateMyNotificationSetting = async (
+  token: string | undefined,
+  payload: UpdateUserNotificationSettingPayload,
+) => {
+  const response = await expectOk(
+    await fetch(resolveEndpoint('/users/me/notification-settings'), {
+      method: 'PATCH',
+      headers: {
+        ...userHeaders(token),
+        'Content-Type': 'application/json',
+      },
+      body: JSON.stringify(payload),
+    }),
+  );
+
+  const dto = (await response.json()) as UserNotificationResponseDto;
+
+  return mapUserNotificationSetting(dto);
+};
+
+export const deleteMyAccount = async (token: string | undefined) => {
+  await expectOk(
+    await fetch(resolveEndpoint('/users/me'), {
+      method: 'DELETE',
+      headers: userHeaders(token),
+    }),
+  );
 };
