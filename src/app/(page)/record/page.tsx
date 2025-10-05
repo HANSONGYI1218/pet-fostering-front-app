@@ -1,7 +1,9 @@
 import AnimalContainer from '@/components/record/animal-container';
-import { dummyAnimals } from '@/lib/dummydata';
+import { fetchRecordAnimals } from '@/lib/api/record';
 
 export default async function RecordPage() {
+  const animals = await fetchRecordAnimals();
+
   return (
     <main className="bg-neutral-50">
       <div className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-12 pt-20 pb-40">
@@ -11,7 +13,7 @@ export default async function RecordPage() {
             임보 중인 동물들의 기록을 관리하고 공유하세요
           </span>
         </div>
-        <AnimalContainer animals={dummyAnimals} />
+        <AnimalContainer animals={animals} />
       </div>
     </main>
   );

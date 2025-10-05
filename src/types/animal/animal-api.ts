@@ -13,7 +13,7 @@ export type FosterRecordAnimalItem = {
   name: string;
   type: AnimalType;
   breed: string;
-  birth_date: Date;
+  birth_date: Date | null;
   gender: AnimalGender;
   images: string[];
   foster_duration: number;
