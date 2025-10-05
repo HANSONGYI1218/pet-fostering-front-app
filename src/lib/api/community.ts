@@ -7,9 +7,15 @@ type PostCountDto = {
   comments: number;
 };
 
+type PostAuthorDto = {
+  id: string;
+  displayName: string | null;
+};
+
 type PostListItemDto = {
   id: string;
   authorId: string;
+  author?: PostAuthorDto | null;
   title: string;
   content: string;
   viewCount: number;
@@ -35,8 +41,8 @@ export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
     id: item.id,
     authorId: item.authorId,
     user: {
-      id: item.authorId,
-      nickname: null,
+      id: item.author?.id ?? item.authorId,
+      nickname: item.author?.displayName ?? null,
     },
     title: item.title,
     content: item.content,

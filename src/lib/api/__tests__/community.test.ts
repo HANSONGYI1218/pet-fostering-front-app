@@ -9,6 +9,10 @@ describe('mapPostListItems', () => {
         {
           id: 'p-1',
           authorId: 'user-1',
+          author: {
+            id: 'user-1',
+            displayName: '테스터',
+          },
           title: '테스트 제목',
           content: '<p>본문</p>',
           viewCount: 42,
@@ -36,7 +40,7 @@ describe('mapPostListItems', () => {
         updated_at: new Date('2025-01-02T00:00:00.000Z'),
         user: {
           id: 'user-1',
-          nickname: null,
+          nickname: '테스터',
         },
       },
     ]);
@@ -48,6 +52,10 @@ describe('mapPostListItems', () => {
         {
           id: 'p-2',
           authorId: 'user-2',
+          author: {
+            id: 'user-2',
+            displayName: null,
+          },
           title: '다른 게시글',
           content: '내용',
           viewCount: 0,

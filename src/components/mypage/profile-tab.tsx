@@ -1,13 +1,13 @@
 'use client';
 
-import { dummyUser } from '@/lib/dummydata';
-import { Card } from '../ui/card';
-import { useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { UserPen, UserRoundCogIcon } from 'lucide-react';
-import { Button } from '../ui/button';
+import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
-import { z } from 'zod';
+
+import { Card } from '../ui/card';
+import { Button } from '../ui/button';
 import {
   Form,
   FormControl,
@@ -20,79 +20,88 @@ import { Input } from '@/components/ui/input';
 import { Label } from '../ui/label';
 import { Textarea } from '../ui/textarea';
 import AddressPopUp from '../common/address-popup';
+import type { UserProfileItem } from '@/types/user/user-api';
 
-export const ProfileformSchema = z.object({
+const ProfileFormSchema = z.object({
   name: z.string().optional(),
   email: z.string().optional(),
-  phone_number: z.string().optional(),
-  zipcode: z.string(),
+  phoneNumber: z.string().optional(),
+  zipcode: z.string().optional(),
   address: z.string().optional(),
-  address_datail: z.string().optional(),
+  addressDetail: z.string().optional(),
   introduction: z.string().optional(),
 });
 
-//     import useSWR, { mutate } from 'swr';
+type ProfileFormValues = z.infer<typeof ProfileFormSchema>;
 
-// const { data: user } = useSWR('/api/items', fetcher);
+type ProfileTabProps = {
+  profile: UserProfileItem | null;
+  loading: boolean;
+};
 
-// // 삭제 후
-// const handleDelete = async (id: number) => {
-//   await fetch(`/api/items/${id}`, { method: 'DELETE' });
-//   mutate('/api/items'); // 다시 fetch
-// };
+const toFormValues = (profile: UserProfileItem | null): ProfileFormValues => ({
+  name: profile?.name ?? '',
+  email: profile?.email ?? '',
+  phoneNumber: profile?.phoneNumber ?? '',
+  zipcode: profile?.zipcode ?? '',
+  address: profile?.address ?? '',
+  addressDetail: profile?.addressDetail ?? '',
+  introduction: profile?.introduction ?? '',
+});
 
-const user = dummyUser;
-
-export default function ProfileTab() {
-  const form = useForm<z.infer<typeof ProfileformSchema>>({
-    resolver: zodResolver(ProfileformSchema),
-    defaultValues: {
-      name: user?.name ?? '',
-      email: user?.email ?? '',
-      phone_number: user?.phone_number ?? '',
-      zipcode: user?.zipcode ?? '',
-      address: user?.address ?? '',
-      address_datail: user?.address_datail ?? '',
-      introduction: user?.introduction ?? '',
-    },
-  });
-
+export default function ProfileTab({ profile, loading }: ProfileTabProps) {
   const [isInfoEdited, setIsInfoEdited] = useState(false);
   const [isAuthEdited, setIsAuthEdited] = useState(false);
 
-  // 2. Define a submit handler.
-  function onSubmit(_values: z.infer<typeof ProfileformSchema>) {}
+  const form = useForm<ProfileFormValues>({
+    resolver: zodResolver(ProfileFormSchema),
+    defaultValues: toFormValues(profile),
+  });
+
+  useEffect(() => {
+    form.reset(toFormValues(profile));
+  }, [form, profile]);
+
+  const isEligible = profile?.isEligibleForFoster ?? false;
+  const nickname = useMemo(() => profile?.name ?? '-', [profile]);
+
+  // TODO: 연결 예정
+  function onSubmit(_values: ProfileFormValues) {}
+
+  if (loading) {
+    return (
+      <div className="flex w-full justify-center py-16 text-neutral-500">
+        마이페이지 정보를 불러오는 중입니다...
+      </div>
+    );
+  }
 
   return (
     <div className="flex w-full flex-col gap-10">
       <Card className="gap-2">
         <h1 className="text-xl font-semibold">
           임시보호자{' '}
-          <span
-            className={`${user?.isEligibleForFoster === true ? 'text-[#00592d]' : 'text-[#FF5F57]'}`}
-          >
-            {user?.isEligibleForFoster === true ? '등록' : '미등록'}
+          <span className={isEligible ? 'text-[#00592d]' : 'text-[#FF5F57]'}>
+            {isEligible ? '등록' : '미등록'}
           </span>{' '}
           상태입니다.
         </h1>
         <span className="text-neutral-700">
-          {user?.isEligibleForFoster === true
-            ? `조건에 맞는 보호동물의 임시보호를 신청해보세요.`
+          {isEligible
+            ? '조건에 맞는 보호동물의 임시보호를 신청해보세요.'
             : '임시보호자로 등록해야만 보호동물 신청이 가능합니다.'}
         </span>
       </Card>
-      {/* {'기본정보'} */}
+
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
           <h1 className="text-xl font-semibold">기본정보</h1>
           <Button
-            variant={'link'}
-            onClick={() => {
-              setIsInfoEdited(!isInfoEdited);
-            }}
+            variant="link"
+            onClick={() => setIsInfoEdited((prev) => !prev)}
             className="gap-1 self-end text-neutral-700"
           >
-            <UserPen className="h-3 w-3" stroke={'#737373'} />
+            <UserPen className="h-3 w-3" stroke="#737373" />
             {isInfoEdited ? '저장하기' : '수정하기'}
           </Button>
         </div>
@@ -108,12 +117,12 @@ export default function ProfileTab() {
                     <FormControl>
                       {isInfoEdited ? (
                         <Input
-                          className={`border-none bg-neutral-100 text-base text-neutral-800 shadow-none`}
+                          className="border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                           placeholder="이름을 적어주세요."
                           {...field}
                         />
                       ) : (
-                        <span className="text-neutral-800">{field?.value}</span>
+                        <span className="text-neutral-800">{field.value}</span>
                       )}
                     </FormControl>
                     <FormMessage />
@@ -124,11 +133,9 @@ export default function ProfileTab() {
               <div className="flex items-start gap-2">
                 <Label className="w-24 text-base font-medium">주소</Label>
                 <div
-                  className={`flex w-full flex-1 gap-1 ${isInfoEdited ? 'flex-col items-start' : 'flew-row items-center'}`}
+                  className={`flex w-full flex-1 gap-1 ${isInfoEdited ? 'flex-col items-start' : 'items-center'}`}
                 >
-                  <div
-                    className={`flex items-center gap-1 ${isInfoEdited ? 'w-full' : 'w-fit'}`}
-                  >
+                  <div className={`flex items-center gap-1 ${isInfoEdited ? 'w-full' : 'w-fit'}`}>
                     <FormField
                       control={form.control}
                       name="zipcode"
@@ -139,8 +146,8 @@ export default function ProfileTab() {
                               <div
                                 className={`flex h-9 items-center rounded-md ${isInfoEdited ? 'bg-neutral-100 px-3' : ''}`}
                               >
-                                <span className={`text-neutral-800`}>
-                                  {field?.value}
+                                <span className="text-neutral-800">
+                                  {field.value}
                                 </span>
                               </div>
                               <span>,</span>
@@ -161,13 +168,13 @@ export default function ProfileTab() {
                             {isInfoEdited ? (
                               <Input
                                 disabled
-                                className={`w-full border-none bg-neutral-100 text-base text-neutral-800 shadow-none disabled:opacity-100`}
+                                className="w-full border-none bg-neutral-100 text-base text-neutral-800 shadow-none disabled:opacity-100"
                                 placeholder="주소를 적어주세요."
                                 {...field}
                               />
                             ) : (
                               <span className="text-neutral-800">
-                                {field?.value}
+                                {field.value}
                               </span>
                             )}
                           </FormControl>
@@ -178,22 +185,18 @@ export default function ProfileTab() {
                   </div>
                   <FormField
                     control={form.control}
-                    name="address_datail"
+                    name="addressDetail"
                     render={({ field }) => (
-                      <FormItem
-                        className={`flex ${isInfoEdited ? 'w-full' : 'w-fit'}`}
-                      >
+                      <FormItem className={`flex ${isInfoEdited ? 'w-full' : 'w-fit'}`}>
                         <FormControl>
                           {isInfoEdited ? (
                             <Input
-                              className={`w-full border-none bg-neutral-100 text-base text-neutral-800 shadow-none`}
+                              className="w-full border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
                               placeholder="상세주소를 적어주세요."
                               {...field}
                             />
                           ) : (
-                            <span className="text-neutral-800">
-                              {field?.value}
-                            </span>
+                            <span className="text-neutral-800">{field.value}</span>
                           )}
                         </FormControl>
                         <FormMessage />
@@ -201,21 +204,19 @@ export default function ProfileTab() {
                     )}
                   />
                 </div>
-                {isInfoEdited && (
+                {isInfoEdited ? (
                   <AddressPopUp
                     onSelect={({ zipcode, address }) => {
                       form.setValue('zipcode', zipcode);
                       form.setValue('address', address);
                     }}
                   />
-                )}
+                ) : null}
               </div>
               <hr className="w-full" />
               <div className="flex w-full items-center gap-2">
                 <Label className="w-24 text-base font-medium">닉네임</Label>
-                <span className="w-full flex-1 text-neutral-800">
-                  {user?.nickname}
-                </span>
+                <span className="w-full flex-1 text-neutral-800">{nickname}</span>
               </div>
               <hr className="w-full" />
               <FormField
@@ -226,19 +227,19 @@ export default function ProfileTab() {
                     <div className="flex flex-col">
                       <FormLabel className="w-24">나의 소개</FormLabel>
                       <span className="text-sm text-red-500">
-                        * 나의 소개를 작성하고 매칭율을 높여보세요
+                        * 나의 소개를 작성하고 매칭률을 높여보세요
                       </span>
                     </div>
                     <FormControl>
                       {isInfoEdited ? (
                         <Textarea
-                          className={`resize-none border-none bg-neutral-100 text-base whitespace-pre-wrap text-neutral-800 shadow-none`}
-                          placeholder="이름을 적어주세요."
+                          className="whitespace-pre-wrap resize-none border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
+                          placeholder="나의 소개를 작성해보세요."
                           {...field}
                         />
                       ) : (
                         <span className="flex-1 whitespace-pre-wrap text-neutral-800">
-                          {field?.value}
+                          {field.value}
                         </span>
                       )}
                     </FormControl>
@@ -250,18 +251,16 @@ export default function ProfileTab() {
           </form>
         </Form>
       </div>
-      {/* {'계정정보'} */}
+
       <div className="flex flex-col gap-2">
         <div className="flex flex-col">
           <h1 className="text-xl font-semibold">계정정보</h1>
           <Button
-            variant={'link'}
-            onClick={() => {
-              setIsAuthEdited(!isAuthEdited);
-            }}
+            variant="link"
+            onClick={() => setIsAuthEdited((prev) => !prev)}
             className="gap-1 self-end text-neutral-700"
           >
-            <UserRoundCogIcon className="h-3 w-3" stroke={'#737373'} />
+            <UserRoundCogIcon className="h-3 w-3" stroke="#737373" />
             {isAuthEdited ? '저장하기' : '수정하기'}
           </Button>
         </div>
@@ -277,12 +276,12 @@ export default function ProfileTab() {
                     <FormControl>
                       {isAuthEdited ? (
                         <Input
-                          className={`border-none bg-neutral-100 text-base text-neutral-800 shadow-none`}
-                          placeholder="이름을 적어주세요."
+                          className="border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
+                          placeholder="이메일을 적어주세요."
                           {...field}
                         />
                       ) : (
-                        <span className="text-neutral-800">{field?.value}</span>
+                        <span className="text-neutral-800">{field.value}</span>
                       )}
                     </FormControl>
                     <FormMessage />
@@ -290,43 +289,26 @@ export default function ProfileTab() {
                 )}
               />
               <hr className="w-full" />
-              <FormField
-                control={form.control}
-                name="email"
-                render={({ field }) => (
-                  <FormItem className="flex w-full">
-                    <FormLabel className="w-24">패스워드</FormLabel>
-                    <FormControl>
-                      {isAuthEdited ? (
-                        <Input
-                          className={`border-none bg-neutral-100 text-base text-neutral-800 shadow-none`}
-                          placeholder="이름을 적어주세요."
-                          {...field}
-                        />
-                      ) : (
-                        <span className="text-neutral-800">{field?.value}</span>
-                      )}
-                    </FormControl>
-                    <FormMessage />
-                  </FormItem>
-                )}
-              />
+              <div className="flex w-full">
+                <FormLabel className="w-24">패스워드</FormLabel>
+                <span className="text-neutral-800">보안상 표시하지 않습니다.</span>
+              </div>
               <hr className="w-full" />
               <FormField
                 control={form.control}
-                name="phone_number"
+                name="phoneNumber"
                 render={({ field }) => (
                   <FormItem className="flex w-full">
                     <FormLabel className="w-24">전화번호</FormLabel>
                     <FormControl>
                       {isAuthEdited ? (
                         <Input
-                          className={`text-neutral-800} text-base`}
-                          placeholder="이름을 적어주세요."
+                          className="border-none bg-neutral-100 text-base text-neutral-800 shadow-none"
+                          placeholder="전화번호를 입력해주세요."
                           {...field}
                         />
                       ) : (
-                        <span className="text-neutral-800">{field?.value}</span>
+                        <span className="text-neutral-800">{field.value}</span>
                       )}
                     </FormControl>
                     <FormMessage />

@@ -15,9 +15,10 @@ export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
+  const hasPosts = posts.length > 0;
   const paginatedPosts = useMemo(
-    () => posts.slice(startIdx, endIdx),
-    [posts, startIdx, endIdx],
+    () => (hasPosts ? posts.slice(startIdx, endIdx) : []),
+    [endIdx, hasPosts, posts, startIdx],
   );
 
   const recentPopularPosts = useMemo(
@@ -33,15 +34,23 @@ export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
       </Button>
       <div className="flex w-full items-start justify-center gap-6">
         <div className="flex w-full flex-1 flex-col justify-center gap-6">
-          {paginatedPosts.map((post: PostItem) => (
-            <CommunityTile key={post.id} post={post} />
-          ))}
-          <PaginationDynamic
-            totalItems={posts.length}
-            itemsPerPage={itemsPerPage}
-            currentPage={currentPage}
-            onPageChange={setCurrentPage}
-          />
+          {hasPosts ? (
+            <>
+              {paginatedPosts.map((post: PostItem) => (
+                <CommunityTile key={post.id} post={post} />
+              ))}
+              <PaginationDynamic
+                totalItems={posts.length}
+                itemsPerPage={itemsPerPage}
+                currentPage={currentPage}
+                onPageChange={setCurrentPage}
+              />
+            </>
+          ) : (
+            <div className="flex min-h-[240px] flex-col items-center justify-center rounded-xl border border-dashed border-neutral-200 bg-white/60 p-12 text-center text-neutral-500">
+              <p>게시글이 아직 없습니다. 첫 글을 남겨보세요!</p>
+            </div>
+          )}
         </div>
 
         <CommunityTopList recentPopularPosts={recentPopularPosts} />

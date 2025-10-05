@@ -1,17 +1,17 @@
 import CommunityBanner from '@/components/community/community-banner';
 import CommunityContainer from '@/components/community/community-container';
 import { fetchCommunityPosts } from '@/lib/api/community';
-import { dummyPosts } from '@/lib/dummydata';
 import { logError } from '@/lib/logging';
+import type { PostItem } from '@/types/post/post-api';
 
 const DEFAULT_POST_LIMIT = 20;
 
 export default async function CommunityPage() {
-  let posts = dummyPosts;
+  let posts: PostItem[] = [];
 
   try {
     const { items } = await fetchCommunityPosts({ limit: DEFAULT_POST_LIMIT });
-    posts = items.length > 0 ? items : dummyPosts;
+    posts = items;
   } catch (error) {
     logError('커뮤니티 게시글 불러오기 실패', error);
   }

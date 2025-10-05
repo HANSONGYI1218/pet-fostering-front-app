@@ -1,21 +1,19 @@
-export type UserInfoItem = {
+export type UserProfileItem = {
   id: string;
-  name: string;
-  nickname: string;
-  introduction: string;
-  phone_number: string;
-  email: string;
-  zipcode: string;
-  address: string;
-  address_datail: string;
+  name: string | null;
+  email: string | null;
+  phoneNumber: string | null;
+  zipcode: string | null;
+  address: string | null;
+  addressDetail: string | null;
+  introduction: string | null;
   isEligibleForFoster: boolean;
 };
 
-export type UserSettingInfoItem = {
-  id: string;
-  comment_email: boolean;
-  foster_animal_info_email: boolean;
-  foster_animal_info_kakao: boolean;
-  marketing_email: boolean;
-  marketing_kakao: boolean;
+export type UserNotificationSettingItem = {
+  commentEmail: boolean;
+  fosterAnimalInfoEmail: boolean;
+  fosterAnimalInfoKakao: boolean;
+  marketingEmail: boolean;
+  marketingKakao: boolean;
 };
