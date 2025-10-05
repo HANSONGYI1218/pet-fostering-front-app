@@ -66,6 +66,8 @@ export default function PostRecord() {
       </Card>
       <div className="flex w-full flex-col gap-6">
         {filteredPosts?.map((post: PostItemByUserId, index: number) => {
+          const commentCount = post?.commentCount ?? 0;
+
           return (
             <Link
               key={index}
@@ -111,7 +113,7 @@ export default function PostRecord() {
                           className="h-4 w-4"
                           stroke="#525252"
                         />
-                        <span className="text-[#525252]">{post?.views}</span>
+                        <span className="text-[#525252]">{commentCount}</span>
                       </div>
                       <div className="flex items-center gap-1">
                         <ThumbsUp className="h-4 w-4" stroke="#525252" />

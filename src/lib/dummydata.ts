@@ -3580,6 +3580,7 @@ export const userPosts: PostItemByUserId[] = [
 선배 임보자님들의 경험이나 작은 팁이라도 정말 큰 도움이 될 것 같아요. 읽어주셔서 감사합니다. 많은 조언 부탁드립니다! 🥹`,
     likes: 5,
     views: 34,
+    commentCount: 12,
     created_at: new Date('2025-07-21T10:15:00Z'),
   },
   {
@@ -3598,6 +3599,7 @@ export const userPosts: PostItemByUserId[] = [
 선배 임보자님들의 경험이나 작은 팁이라도 정말 큰 도움이 될 것 같아요. 읽어주셔서 감사합니다. 많은 조언 부탁드립니다! 🥹`,
     likes: 5,
     views: 34,
+    commentCount: 8,
     created_at: new Date('2025-06-21T10:15:00Z'),
   },
   {
@@ -3616,6 +3618,7 @@ export const userPosts: PostItemByUserId[] = [
 선배 임보자님들의 경험이나 작은 팁이라도 정말 큰 도움이 될 것 같아요. 읽어주셔서 감사합니다. 많은 조언 부탁드립니다! 🥹`,
     likes: 5,
     views: 34,
+    commentCount: 4,
     created_at: new Date('2025-04-21T10:15:00Z'),
   },
   {
@@ -3634,6 +3637,7 @@ export const userPosts: PostItemByUserId[] = [
 선배 임보자님들의 경험이나 작은 팁이라도 정말 큰 도움이 될 것 같아요. 읽어주셔서 감사합니다. 많은 조언 부탁드립니다! 🥹`,
     likes: 5,
     views: 34,
+    commentCount: 6,
     created_at: new Date('2025-10-21T10:15:00Z'),
   },
 ];
