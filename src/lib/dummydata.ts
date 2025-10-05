@@ -3545,7 +3545,6 @@ export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
 export const dummyUser: UserProfileItem = {
   id: '1',
   name: '한송이',
-  nickname: '불꽃',
   email: 'hhan1218@naber.com',
   phoneNumber: '010-1414-5656',
   zipcode: '24124',
