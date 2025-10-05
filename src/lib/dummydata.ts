@@ -3557,7 +3557,6 @@ export const dummyUser: UserProfileItem = {
 };
 
 export const userSettingInfo: UserNotificationSettingItem = {
-  id: '1',
   commentEmail: true,
   fosterAnimalInfoEmail: false,
   fosterAnimalInfoKakao: true,
