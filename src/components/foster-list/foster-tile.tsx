@@ -8,7 +8,7 @@ import {
   ANIMAL_HEALTH_LABEL_KO,
   ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  FOSTER_ENVIRONMENT_LABEL_KO,
+  ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
 import { formatAnimalAge } from '@/lib/utils';
 
@@ -84,13 +84,13 @@ export default function FosterTile({
             </div>
           </div>
         ) : null}
-        {animal.foster_environments.length > 0 ? (
+        {animal.animal_environments.length > 0 ? (
           <div className="space-y-2">
             <h3 className="text-sm font-semibold">추천하는 임보자</h3>
             <div className="flex flex-wrap gap-2">
-              {animal.foster_environments.map((environment) => (
+              {animal.animal_environments.map((environment) => (
                 <Badge key={environment} variant="default">
-                  {FOSTER_ENVIRONMENT_LABEL_KO[environment]}
+                  {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
                 </Badge>
               ))}
             </div>

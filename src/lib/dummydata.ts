@@ -1,6 +1,8 @@
 import {
+  AnimalAge,
   AnimalEnvironment,
   AnimalHealth,
+  AnimalPeriod,
   AnimalPersonality,
   AnimalSpecialNote,
 } from '@/types/animal-condition/animal-condition';
@@ -18,6 +20,8 @@ import {
   OgrainzationAnimalListItem,
 } from '@/types/animal/animal-api';
 import { CommentItem, CommentItemByUserId } from '@/types/comment/comment-api';
+import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
+import { FosterConditionItem } from '@/types/foster-condition/foster-condition-api';
 import { FosterRecordItem } from '@/types/foster-record/foster-record-api';
 import { PostItem, PostItemByUserId } from '@/types/post/post-api';
 import { UserInfoItem, UserSettingInfoItem } from '@/types/user/user-api';
@@ -658,7 +662,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
@@ -686,7 +690,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
@@ -714,7 +718,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
@@ -742,7 +746,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
@@ -770,7 +774,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS,
     ],
@@ -798,7 +802,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
@@ -826,7 +830,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
@@ -854,7 +858,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
@@ -882,7 +886,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS,
     ],
@@ -910,7 +914,7 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.FREQUENT_INTERACTION_WITH_PETS,
     ],
@@ -3715,3 +3719,38 @@ export const userComments: CommentItemByUserId[] = [
     created_at: new Date('2025-08-31T09:00:00Z'),
   },
 ];
+
+export const userFosterCondition: FosterConditionItem = {
+  id: '1',
+  type: [AnimalType.CAT],
+  size: [AnimalSize.SMALL, AnimalSize.MEDIUM],
+  animal_age: [AnimalAge.JUVENILE, AnimalAge.ADULT],
+  foster_environments: [
+    FosterEnvironment.QUIET_ENVIRONMENT,
+    FosterEnvironment.WILLINGNESS_FOR_POTTY_TRAINING,
+  ],
+  special_notes_animals: [AnimalSpecialNote.POTTY_ACCIDENTS],
+  foster_period: AnimalPeriod.LONG_TERM_FOSTER,
+  foster_experiences: [
+    {
+      id: '1',
+      animal_type: AnimalType.CAT,
+      animal_size: AnimalSize.SMALL,
+      animal_age: AnimalAge.ADULT,
+      foster_start_date: new Date('2025-04-04'),
+      foster_end_date: new Date('2025-09-04'),
+      organization_name: '으뜸 유기견센터',
+      note: '입질이 있었습니다. 하지만 저의 노력으로 극복했어요~!',
+    },
+    {
+      id: '2',
+      animal_type: AnimalType.DOG,
+      animal_size: AnimalSize.MEDIUM,
+      animal_age: AnimalAge.SENIOR,
+      foster_start_date: new Date('2025-02-04'),
+      foster_end_date: new Date('2025-05-04'),
+      organization_name: '사랑 유기견센터',
+      note: '너무 노견이었습니다. 하지만 저의 노력으로 극복했어요~!',
+    },
+  ],
+};

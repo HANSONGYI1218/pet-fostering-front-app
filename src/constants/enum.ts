@@ -12,6 +12,7 @@ import {
   AnimalType,
   FosterState,
 } from '@/types/animal/animal';
+import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
 
 export const ANIMAL_GENDER_LABEL_KO: Record<AnimalGender, string> = {
   [AnimalGender.MALE]: '남',
@@ -36,9 +37,9 @@ export const FOSTER_STATE_LABEL_KO: Record<FosterState, string> = {
 };
 
 export const ANIMAL_AGE_LABEL_KO: Record<AnimalAge, string> = {
-  [AnimalAge.JUVENILE]: '2년 미만',
-  [AnimalAge.ADULT]: '2년 이상 ~ 8년 미만',
-  [AnimalAge.SENIOR]: '8년 이상',
+  [AnimalAge.JUVENILE]: '2살 미만',
+  [AnimalAge.ADULT]: '8살 미만',
+  [AnimalAge.SENIOR]: '8살 이상',
 };
 
 export const ANIMAL_PERSONALITY_LABEL_KO: Record<AnimalPersonality, string> = {
@@ -52,19 +53,34 @@ export const ANIMAL_PERSONALITY_LABEL_KO: Record<AnimalPersonality, string> = {
   [AnimalPersonality.NO_BITING]: '무는 버릇 없음',
 };
 
-export const FOSTER_ENVIRONMENT_LABEL_KO: Record<AnimalEnvironment, string> = {
-  [AnimalEnvironment.QUIET_ENVIRONMENT]: '조용한 환경',
-  [AnimalEnvironment.AVAILABILITY_FOR_WALKS_PLAY]: '산책/놀이 가능',
+export const ANIMAL_ENVIRONMENT_LABEL_KO: Record<AnimalEnvironment, string> = {
+  [AnimalEnvironment.QUIET_ENVIRONMENT]: '조용한 집',
+  [AnimalEnvironment.AVAILABILITY_FOR_WALKS_PLAY]: '산책/놀이 활동 필요',
   [AnimalEnvironment.FREQUENT_INTERACTION_WITH_PETS]:
     '반려동물과 자주 교감 필요',
   [AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL]: '타 동물과 함께 지내는 환경',
-  [AnimalEnvironment.WILLINGNESS_FOR_POTTY_TRAINING]: '배변 훈련 필요',
+  [AnimalEnvironment.WILLINGNESS_FOR_POTTY_TRAINING]: '배변 훈련 지도 필요',
   [AnimalEnvironment.PATIENCE_WITH_BARKING_BITING]:
     '짖음/입질 훈련에 인내심 필요',
   [AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS]:
     '예민하거나 겁 많은 동물 배려 필요',
   [AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN]:
     '어린아이 함께 지내는 가정 필요',
+};
+
+export const FOSTER_ENVIRONMENT_LABEL_KO: Record<FosterEnvironment, string> = {
+  [AnimalEnvironment.FREQUENT_INTERACTION_WITH_PETS]:
+    '반려동물과 자주 교감 가능',
+  [AnimalEnvironment.WILLINGNESS_FOR_POTTY_TRAINING]: '배변 훈련 지도 가능',
+  [AnimalEnvironment.AVAILABILITY_FOR_WALKS_PLAY]: '산책/놀이 활동 가능',
+  [AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN]:
+    '어린아이 함께 지내는 환경',
+  [AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL]: '타 동물과 함께 지내는 환경',
+  [AnimalEnvironment.QUIET_ENVIRONMENT]: '조용한 집',
+  [AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS]:
+    '예민하거나 겁 많은 동물 배려 가능',
+  [AnimalEnvironment.PATIENCE_WITH_BARKING_BITING]:
+    '짖음/입질 훈련에 인내심 가능',
 };
 
 export const ANIMAL_HEALTH_LABEL_KO: Record<AnimalHealth, string> = {
@@ -79,14 +95,14 @@ export const ANIMAL_HEALTH_LABEL_KO: Record<AnimalHealth, string> = {
 export const ANIMAL_PERIOD_LABEL_KO: Record<AnimalPeriod, string> = {
   [AnimalPeriod.SHORT_TERM_FOSTER]: '1개월 미만',
   [AnimalPeriod.MID_TERM_FOSTER]: '3개월 미만',
-  [AnimalPeriod.LONG_TERM_FOSTER]: '6개월 이상',
+  [AnimalPeriod.LONG_TERM_FOSTER]: '3개월 이상',
 };
 
 export const ANIMAL_SPECIAL_NOTE_LABEL_KO: Record<AnimalSpecialNote, string> = {
   [AnimalSpecialNote.SEPARATION_ANXIETY]: '분리불안',
   [AnimalSpecialNote.MEDICATION_REQUIRED]: '약 복용 필요',
+  [AnimalSpecialNote.ONGOING_TREATMENT_OR_RECOVERY]: '치료/회복 중',
   [AnimalSpecialNote.POTTY_ACCIDENTS]: '배변 실수 있음',
   [AnimalSpecialNote.AGGRESSION_TOWARD_OTHER_ANIMALS]: '타 동물 공격성 있음',
-  [AnimalSpecialNote.ONGOING_TREATMENT_OR_RECOVERY]: '치료/회복 중',
   [AnimalSpecialNote.DISABLED_OR_ILL_PETS_ACCEPTED]: '장애/질환 있음',
 };
