@@ -201,7 +201,14 @@ export default function ProfileTab() {
                     )}
                   />
                 </div>
-                {isInfoEdited && <AddressPopUp form={form} />}
+                {isInfoEdited && (
+                  <AddressPopUp
+                    onSelect={({ zipcode, address }) => {
+                      form.setValue('zipcode', zipcode);
+                      form.setValue('address', address);
+                    }}
+                  />
+                )}
               </div>
               <hr className="w-full" />
               <div className="flex w-full items-center gap-2">

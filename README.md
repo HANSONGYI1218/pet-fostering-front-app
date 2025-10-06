@@ -37,9 +37,14 @@ Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/bui
 
 ## 환경 변수
 
-- `NEXT_PUBLIC_API_BASE_URL`: 백엔드 API 엔드포인트. 미설정 시 `https://api.impomatch.com/api` 를 사용합니다.
+- `NEXT_PUBLIC_KAKAO_CLIENT_ID`: 카카오 JavaScript 키.
 - `NEXT_PUBLIC_KAKAO_REDIRECT_URI`: 카카오 로그인 리다이렉트 URI.
 - `NEXT_PUBLIC_KAKAO_LOGOUT_REDIRECT_URI`: 카카오 로그아웃 리다이렉트 URI.
+- `NEXT_PUBLIC_API_BASE_URL`: 백엔드 API 엔드포인트. 미설정 시 `https://api.impomatch.com/api` 를 사용합니다.
+- `NEXT_PUBLIC_SOCKET_URL`: 소켓 서버 엔드포인트.
+- `NEXT_PUBLIC_MAP_KEY`: 카카오 맵 JavaScript 키.
+
+자세한 예시는 `.env.example` 파일을 참고하세요.
 
 ## 테스트
 
