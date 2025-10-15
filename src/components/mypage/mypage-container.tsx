@@ -28,9 +28,13 @@ import type { PostItemByUserId } from '@/types/post/post-api';
 import type { CommentItemByUserId } from '@/types/comment/comment-api';
 import { mergeProfileWithClaims } from './profile-fallback';
 import { tryRefreshAuthTokens } from '@/lib/auth/refresh';
+import { Button } from '../ui/button';
+import Link from 'next/link';
+import LoginNoticeBox from '../common/login-notice-box';
+import FetchErrorBox from '../common/fetch-error-box';
 
 const ERROR_MESSAGES = {
-  unauthorized: '로그인이 필요합니다. 다시 로그인해주세요.',
+  unauthorized: '로그인이 필요합니다.',
   generic: '마이페이지 정보를 불러오지 못했습니다.',
 } as const;
 
@@ -206,10 +210,10 @@ export default function MypageContainer() {
     }
 
     if (status === 'error') {
-      return (
-        <Card className="flex h-48 w-full items-center justify-center text-neutral-500">
-          {errorMessage}
-        </Card>
+      return errorMessage === '로그인이 필요합니다.' ? (
+        <LoginNoticeBox errorMessage={errorMessage} />
+      ) : (
+        <FetchErrorBox errorMessage={errorMessage} />
       );
     }
 

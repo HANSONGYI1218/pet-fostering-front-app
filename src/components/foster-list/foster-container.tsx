@@ -76,14 +76,21 @@ export default function FosterContainer({
           />
         </CardAction>
       </Card>
-      {filteredAnimals?.length > 0 ? (
-        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-          {filteredAnimals.map((filteredAnimal) => (
-            <FosterTile key={filteredAnimal.id} animal={filteredAnimal} />
-          ))}
-        </div>
+      {animals?.length > 0 ? (
+        filteredAnimals?.length > 0 ? (
+          <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+            {filteredAnimals.map((filteredAnimal) => (
+              <FosterTile key={filteredAnimal.id} animal={filteredAnimal} />
+            ))}
+          </div>
+        ) : (
+          <EmptyBox
+            className="min-h-96"
+            text="조건에 맞는 보호동물이 없어요."
+          />
+        )
       ) : (
-        <EmptyBox className="min-h-96" text="조건에 맞는 보호동물이 없어요." />
+        <EmptyBox className="min-h-96" text="아직 보호동물이 없어요." />
       )}{' '}
     </div>
   );

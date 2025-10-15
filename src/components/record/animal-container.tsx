@@ -4,10 +4,11 @@ import { Button } from '@/components/ui/button';
 import { FosterRecordAnimalItem } from '@/types/animal/animal-api';
 import { useMemo, useState } from 'react';
 import AnimalTile from './animal-tile';
-import { Plus } from 'lucide-react';
-import { Card } from '../ui/card';
 import { FosterState } from '@/types/animal/animal';
 import { cn } from '@/lib/utils';
+
+import EmptyBox from '../common/empty-box';
+import { AniamlCreateDialog } from './animal-create-dialog';
 
 export default function AnimalContainer({
   animals,
@@ -49,21 +50,23 @@ export default function AnimalContainer({
           ))}
         </div>
       </div>
-      <div className="grid w-full grid-cols-3 gap-6">
-        <Card className="group relative mb-6 items-center justify-center overflow-hidden bg-transparent">
-          <div className="absolute top-0 left-0 z-0 h-full w-full bg-black opacity-0 group-hover:opacity-85" />
-          <div className="relative flex flex-col items-center justify-center gap-2">
-            <Plus className="h-10 w-10" stroke="#a3a3a3" strokeWidth={1} />
-            <span className="flex text-center text-neutral-700 group-hover:text-white">
-              임시보호 기록을 작성할
-              <br /> 보호동물을 추가해보세요!
-            </span>
+      {animals?.length > 0 ? (
+        filteredAnimals?.length > 0 ? (
+          <div className="grid w-full gap-6 md:grid-cols-2 xl:grid-cols-3">
+            <AniamlCreateDialog />
+            {filteredAnimals.map((filteredAnimal) => (
+              <AnimalTile key={filteredAnimal.id} animal={filteredAnimal} />
+            ))}
           </div>
-        </Card>
-        {filteredAnimals.map((filteredAnimal) => (
-          <AnimalTile key={filteredAnimal.id} animal={filteredAnimal} />
-        ))}
-      </div>
+        ) : (
+          <EmptyBox
+            className="min-h-96"
+            text="조건에 맞는 돌봄 기록이 없어요."
+          />
+        )
+      ) : (
+        <EmptyBox className="min-h-96" text="아직 돌봄 기록이 없어요." />
+      )}
     </div>
   );
 }

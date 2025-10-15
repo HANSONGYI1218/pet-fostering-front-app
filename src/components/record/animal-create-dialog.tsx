@@ -8,17 +8,10 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/components/ui/dialog';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '@/components/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CalendarIcon, Dot, Plus } from 'lucide-react';
+import { CalendarIcon, Plus } from 'lucide-react';
 import { Button } from '@/components/ui/button';
 import {
   Form,
@@ -29,16 +22,10 @@ import {
   FormMessage,
 } from '@/components/ui/form';
 import { Input } from '@/components/ui/input';
-import {
-  AnimalType,
-  AnimalSize,
-  AnimalGender,
-  FosterState,
-} from '@/types/animal/animal';
+import { AnimalType, AnimalSize, AnimalGender } from '@/types/animal/animal';
 import { Card } from '@/components/ui/card';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Calendar } from '@/components/ui/calendar';
-import Image from 'next/image';
 import {
   Popover,
   PopoverContent,
@@ -57,7 +44,6 @@ import {
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
 } from '@/constants/enum';
-import AniamlCreateProgress from './animal-create-progress';
 import { Textarea } from '@/components/ui/textarea';
 import {
   AnimalEnvironment,
@@ -66,7 +52,8 @@ import {
   AnimalSpecialNote,
 } from '@/types/animal-condition/animal-condition';
 import Chip from '@/components/common/chip';
-import { useEmergencyReasonReset } from './hooks/use-emergency-reason-reset';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
+import AniamlCreateProgress from '../organization/animal-list/animal-create-progress';
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
@@ -75,7 +62,6 @@ const AnimalCreateformSchema = z.object({
   type: z.nativeEnum(AnimalType),
   size: z.nativeEnum(AnimalSize),
   gender: z.nativeEnum(AnimalGender),
-  status: z.nativeEnum(FosterState),
   images: z.array(z.string()).min(1),
   breed: z.string().min(1, {
     message: '보호동물의 품종을 작성해 주세요.',
@@ -87,16 +73,13 @@ const AnimalCreateformSchema = z.object({
   remark: z.string().min(1, {
     message: '보호동물의 특성을 작성해 주세요.',
   }),
-  isEmergency: z.boolean(),
-  emergency_reason: z.string(),
   animal_healths: z.array(z.nativeEnum(AnimalHealth)),
   animal_personalitys: z.array(z.nativeEnum(AnimalPersonality)),
   animal_environments: z.array(z.nativeEnum(AnimalEnvironment)),
   special_notes_animals: z.array(z.nativeEnum(AnimalSpecialNote)),
-  organization_id: z.string(),
 });
 
-export function AnimalCreateDialog() {
+export function AniamlCreateDialog() {
   const form = useForm<z.infer<typeof AnimalCreateformSchema>>({
     resolver: zodResolver(AnimalCreateformSchema),
     defaultValues: {
@@ -104,21 +87,18 @@ export function AnimalCreateDialog() {
       type: AnimalType.DOG,
       size: AnimalSize.SMALL,
       gender: AnimalGender.MALE,
-      status: FosterState.IN_PROGRESS,
       images: [],
       breed: '',
       birth_date: new Date(),
       remark: '',
-      isEmergency: false,
-      emergency_reason: '',
       animal_healths: [] as AnimalHealth[],
       animal_personalitys: [] as AnimalPersonality[],
       animal_environments: [] as AnimalEnvironment[],
       special_notes_animals: [] as AnimalSpecialNote[],
-      organization_id: '1',
     },
   });
   const contentRef = useRef<HTMLDivElement>(null);
+  const token = resolveStoredAccessToken();
 
   const [currentPage, setCurrentPage] = useState(0);
 
@@ -130,8 +110,6 @@ export function AnimalCreateDialog() {
       });
     }
   }, [currentPage]);
-
-  useEmergencyReasonReset(form);
 
   const isStep1Valid =
     form.watch('images')?.length > 0 &&
@@ -149,24 +127,40 @@ export function AnimalCreateDialog() {
     form.watch('animal_environments')?.length > 0 &&
     form.watch('special_notes_animals')?.length > 0;
 
-  const isStep3Valid =
-    !form.watch('isEmergency') || // 비응급이면 그냥 통과
-    (form.watch('isEmergency') &&
-      form.watch('emergency_reason')?.trim().length > 0);
-
   // 2. Define a submit handler.
   function onSubmit(_values: z.infer<typeof AnimalCreateformSchema>) {}
 
   return (
     <Dialog>
       <Form {...form}>
-        <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
+        <form
+          onSubmit={form.handleSubmit(onSubmit)}
+          className="flex h-full w-full space-y-8"
+        >
           <DialogTrigger asChild>
-            <Button variant="outline_green" className="h-10 text-[#00592d]">
-              <Plus />
-              보호 동물 추가
-            </Button>
+            <Card className="group relative mb-6 w-full items-center justify-center overflow-hidden bg-transparent max-md:h-80">
+              <div className="absolute top-0 left-0 z-0 h-full w-full bg-black opacity-0 group-hover:opacity-85" />
+              <div className="relative flex flex-col items-center justify-center gap-2">
+                <Plus className="h-10 w-10" stroke="#a3a3a3" strokeWidth={1} />
+                <span className="text-center text-neutral-700 group-hover:text-white">
+                  {token ? (
+                    <>
+                      임시보호 기록을 작성할
+                      <br />
+                      보호동물을 추가해보세요!
+                    </>
+                  ) : (
+                    <>
+                      돌봄 기록을 작성하려면
+                      <br />
+                      로그인이 필요해요!
+                    </>
+                  )}
+                </span>
+              </div>
+            </Card>
           </DialogTrigger>
+          {/* {token && ( */}
           <DialogContent ref={contentRef} className="gap-10 sm:max-w-xl">
             <DialogHeader>
               <DialogTitle>보호 동물 추가</DialogTitle>
@@ -185,7 +179,7 @@ export function AnimalCreateDialog() {
                           * 사진은 최대 3장까지 등록 가능합니다.
                         </span>
                       </div>
-                      <div className="grid w-full grid-cols-3 gap-2">
+                      <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
                         {(!field?.value ||
                           (field?.value && field?.value?.length < 3)) && (
                           <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
@@ -243,12 +237,10 @@ export function AnimalCreateDialog() {
                               />
                             </Button>
                             <div className="relative h-32 w-full">
-                              <Image
+                              <img
                                 src={image}
                                 alt={`preview-${index + 1}`}
-                                fill
-                                className="rounded-xl object-cover"
-                                sizes="(min-width: 1024px) 20vw, 100vw"
+                                className="h-full w-full rounded-xl object-cover"
                               />
                             </div>
                           </Card>
@@ -449,7 +441,7 @@ ex) 꼬리 만지는 걸 싫어함.
                   )}
                 />
               </div>
-            ) : currentPage === 1 ? (
+            ) : (
               <div className="flex flex-col gap-10">
                 <FormField
                   control={form.control}
@@ -619,189 +611,34 @@ ex) 꼬리 만지는 걸 싫어함.
                   }}
                 />
               </div>
-            ) : (
-              <div className="flex flex-col gap-10">
-                <div className="flex flex-col gap-1 rounded-lg bg-neutral-100 px-6 py-4">
-                  <span className="text-lg font-semibold text-red-500">
-                    🚨보호동물의 긴급도를 체크해주세요.
-                  </span>
-                  <span className="text-neutral-700">
-                    다른 긴급한 보호동물들의 빠른 임시보호가 이루어 질 수 있도록
-                    <br />
-                    긴급도를 신중히 체크해주세요.
-                  </span>
-                </div>
-                <FormField
-                  control={form.control}
-                  name="isEmergency"
-                  render={({ field }) => {
-                    return (
-                      <FormItem>
-                        <FormLabel>보호동물의 임시보호가 긴급합니까?</FormLabel>
-                        <FormControl>
-                          <SelectedButton
-                            first={{
-                              key: true,
-                              word: '예',
-                            }}
-                            third={{
-                              key: false,
-                              word: '아니요',
-                            }}
-                            value={field?.value === true ? true : false}
-                            onChange={field.onChange}
-                          />
-                        </FormControl>
-                        <FormMessage />
-                      </FormItem>
-                    );
-                  }}
-                />
-                {form.watch('isEmergency') === true && (
-                  <div className="flex flex-col gap-4">
-                    <FormField
-                      control={form.control}
-                      name="emergency_reason"
-                      render={({ field }) => {
-                        return (
-                          <FormItem>
-                            <FormLabel>긴급한 이유를 선택해주세요.</FormLabel>
-                            <FormControl>
-                              <Select
-                                onValueChange={field.onChange}
-                                defaultValue={field.value}
-                              >
-                                <FormControl>
-                                  <SelectTrigger className="w-full">
-                                    <SelectValue placeholder="긴급한 이유를 선택해주세요." />
-                                  </SelectTrigger>
-                                </FormControl>
-                                <SelectContent className="w-full">
-                                  <SelectItem value="euthanasia_is_not_far_away">
-                                    안락사 기간이 얼마 안 남은 경우
-                                  </SelectItem>
-                                  <SelectItem value="treatment_needed">
-                                    치료가 시급하거나 병원 진료가 반드시 필요한
-                                    경우
-                                  </SelectItem>
-                                  <SelectItem value="unable_to_survive_own">
-                                    어린 새끼나 고령으로 인해 스스로 생존하기
-                                    힘든 경우
-                                  </SelectItem>
-                                  <SelectItem value="abuse_exposure_to_risk">
-                                    당장 보호받지 못하면 위험에 노출되는 경우
-                                  </SelectItem>
-                                  <SelectItem value="failure_of_guardian">
-                                    보호자가 갑작스러운 환경 변화(이사, 입원
-                                    등)로 돌봄이 어려운 경우
-                                  </SelectItem>
-                                  <SelectItem value="prolonged_stress_in_a_shelter">
-                                    장기간 보호소에 있을 경우 스트레스가
-                                    심해지는 동물
-                                  </SelectItem>
-                                </SelectContent>
-                              </Select>
-                            </FormControl>
-                            <FormMessage />
-                          </FormItem>
-                        );
-                      }}
-                    />
-                    <div className="flex flex-col gap-3 rounded-lg bg-neutral-100 p-4">
-                      <span>긴급 이유 예시</span>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-1">
-                          <Dot className="h-4 w-4" />
-                          안락사 기간이 얼마 안 남은 경우
-                        </span>
-                        <span className="pl-5">
-                          예) 안락사가 일주일밖에 남지 않은 경우
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-1">
-                          <Dot className="h-4 w-4" />
-                          치료가 시급하거나 병원 진료가 반드시 필요한 경우
-                        </span>
-                        <span className="pl-5">
-                          예) 고열, 호흡곤란, 출산, 수술 후 회복 필요 등
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-1">
-                          <Dot className="h-4 w-4" />
-                          어린 새끼나 고령으로 인해 스스로 생존하기 힘든 경우
-                        </span>
-                        <span className="pl-5">
-                          예) 젖먹이, 15살 이상 노령견, 눈, 귀 장애나 퇴화 등
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-1">
-                          <Dot className="h-4 w-4" />
-                          당장 보호받지 못하면 위험에 노출되는 경우
-                        </span>
-                        <span className="pl-5">
-                          예: 길 위 방치, 학대 환경, 교통사고 위험 등
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-1">
-                          <Dot className="h-4 w-4" />
-                          보호자가 갑작스러운 환경 변화(이사, 입원 등)로 돌봄이
-                          어려운 경우
-                        </span>
-                        <span className="pl-5">
-                          예) 입원 예정, 해외 이사, 사망 등
-                        </span>
-                      </div>
-                      <div className="flex flex-col">
-                        <span className="flex items-center gap-1">
-                          <Dot className="h-4 w-4" />
-                          장기간 보호소에 있을 경우 스트레스가 심해지는 동물
-                        </span>
-                        <span className="pl-5">
-                          예) 분리 불안, 스트레스, 발작 등 문제행동
-                        </span>
-                      </div>
-                    </div>
-                  </div>
-                )}
-              </div>
             )}
             <DialogFooter className="mt-10">
-              {(currentPage === 1 || currentPage === 2) && (
+              {currentPage === 1 && (
                 <Button
                   variant="outline"
                   onClick={() => {
-                    if (currentPage === 1) setCurrentPage(0);
-                    else setCurrentPage(1);
+                    setCurrentPage(0);
                   }}
                   className="w-24"
                 >
                   이전으로
                 </Button>
               )}
-              {(currentPage === 0 || currentPage === 1) && (
+              {currentPage === 0 ? (
                 <Button
                   type="button"
-                  disabled={
-                    (currentPage === 0 && !isStep1Valid) ||
-                    (currentPage === 1 && !isStep2Valid)
-                  }
+                  disabled={currentPage === 0 && !isStep1Valid}
                   onClick={() => {
-                    if (currentPage === 0) setCurrentPage(1);
-                    else setCurrentPage(2);
+                    setCurrentPage(1);
                   }}
                   className="w-40"
                 >
                   다음으로
                 </Button>
-              )}
-              {currentPage === 2 && (
+              ) : (
                 <Button
                   type="submit"
-                  disabled={currentPage === 2 && !isStep3Valid}
+                  disabled={currentPage === 1 && !isStep2Valid}
                   className="w-40"
                 >
                   프로필 등록
@@ -809,6 +646,7 @@ ex) 꼬리 만지는 걸 싫어함.
               )}
             </DialogFooter>
           </DialogContent>
+          {/* )} */}
         </form>
       </Form>
     </Dialog>

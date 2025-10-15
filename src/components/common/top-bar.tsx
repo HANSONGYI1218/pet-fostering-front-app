@@ -162,7 +162,7 @@ export default function TopBar() {
         <li key={item.href}>
           <Link
             {...linkProps}
-            className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition hover:bg-neutral-100 ${itemClassName}`}
+            className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition ${itemClassName}`}
           >
             <span>{item.name}</span>
             {pawIconMobile}
