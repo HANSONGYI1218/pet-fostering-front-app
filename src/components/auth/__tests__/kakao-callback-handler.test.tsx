@@ -78,12 +78,14 @@ describe('KakaoCallbackHandler', () => {
       </StrictMode>,
     );
 
-    await waitFor(() =>
-      expect(completeKakaoLogin).toHaveBeenCalledTimes(1),
-    );
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith('/main'));
-    await waitFor(() =>
-      expect(screen.getByText(/로그인이 완료되었어요/i)).toBeInTheDocument(),
-    );
+    await waitFor(() => {
+      expect(completeKakaoLogin).toHaveBeenCalledTimes(1);
+    });
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith('/main');
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/로그인이 완료되었어요/i)).toBeInTheDocument();
+    });
   });
 });
