@@ -197,6 +197,7 @@ export default function FosterConditionCard({
                   {conditionType?.options.map(({ label, value }) => (
                     <CheckBox
                       key={label}
+                      id={`${controlId}-${value}`}
                       value={value ?? ''}
                       selectedValue={conditionType?.selected ?? ''}
                       onChangeValue={conditionType?.onChange}

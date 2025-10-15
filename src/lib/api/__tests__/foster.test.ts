@@ -21,6 +21,7 @@ describe('foster api mappers', () => {
       birthDate: '2024-01-01T00:00:00.000Z',
       mainImageUrl: null,
       isEmergency: true,
+      isFosterCondition: true,
       emergencyReason: 'urgent',
       organization: {
         id: 'org-1',
@@ -45,7 +46,8 @@ describe('foster api mappers', () => {
       gender: AnimalGender.MALE,
       image: '/images/animal-placeholder.png',
       animal_healths: [AnimalHealth.NEUTERED],
-      foster_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
+      animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
+      isFosterCondition: true,
       organization: {
         id: 'org-1',
         address: 'Seoul',
@@ -66,6 +68,7 @@ describe('foster api mappers', () => {
       birthDate: null,
       mainImageUrl: null,
       isEmergency: false,
+      isFosterCondition: false,
       emergencyReason: null,
       organization: null,
       healthTags: [],
@@ -89,6 +92,7 @@ describe('foster api mappers', () => {
         name: '',
       },
       emergency_reason: '',
+      isFosterCondition: false,
     });
     expect(result.current_foster_start_date).toBeNull();
     expect(result.birth_date).toBeNull();

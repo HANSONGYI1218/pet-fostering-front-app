@@ -27,7 +27,7 @@ export type Animal = {
   type: AnimalType;
   breed: string;
   birth_date: Date;
-  euthanasia_date: Date;
+  euthanasia_date: Date | null;
   gender: AnimalGender;
   images: string[];
   introduction: string;
