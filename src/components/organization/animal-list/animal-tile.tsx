@@ -5,7 +5,7 @@ import {
   ANIMAL_HEALTH_LABEL_KO,
   ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  FOSTER_ENVIRONMENT_LABEL_KO,
+  ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
 import { Check, MoveRight } from 'lucide-react';
 import { Badge } from '../../ui/badge';
@@ -150,7 +150,7 @@ export default function FosterTile({
                   variant={'secondary'}
                   className="font-normal"
                 >
-                  {FOSTER_ENVIRONMENT_LABEL_KO[environment]}
+                  {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
                 </Badge>
               );
             })}

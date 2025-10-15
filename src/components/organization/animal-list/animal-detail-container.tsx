@@ -11,7 +11,7 @@ import {
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  FOSTER_ENVIRONMENT_LABEL_KO,
+  ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
 import { Check, Pencil } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
@@ -384,7 +384,7 @@ export default function AnimalDetailContainer({
                           variant={'secondary'}
                           className="h-9 px-4 text-base font-normal"
                         >
-                          {FOSTER_ENVIRONMENT_LABEL_KO[environment]}
+                          {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
                         </Badge>
                       );
                     })}

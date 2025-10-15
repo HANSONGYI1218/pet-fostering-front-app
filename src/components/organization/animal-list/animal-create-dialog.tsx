@@ -49,7 +49,7 @@ import { cn } from '@/lib/utils';
 import { ko } from 'date-fns/locale/ko';
 import SelectedButton from '@/components/common/selected-button';
 import {
-  FOSTER_ENVIRONMENT_LABEL_KO,
+  ANIMAL_ENVIRONMENT_LABEL_KO,
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
   ANIMAL_PERSONALITY_LABEL_KO,
@@ -91,7 +91,7 @@ const AnimalCreateformSchema = z.object({
   emergency_reason: z.string(),
   animal_healths: z.array(z.nativeEnum(AnimalHealth)),
   animal_personalitys: z.array(z.nativeEnum(AnimalPersonality)),
-  foster_environments: z.array(z.nativeEnum(AnimalEnvironment)),
+  animal_environments: z.array(z.nativeEnum(AnimalEnvironment)),
   special_notes_animals: z.array(z.nativeEnum(AnimalSpecialNote)),
   organization_id: z.string(),
 });
@@ -113,7 +113,7 @@ export function AnimalCreateDialog() {
       emergency_reason: '',
       animal_healths: [] as AnimalHealth[],
       animal_personalitys: [] as AnimalPersonality[],
-      foster_environments: [] as AnimalEnvironment[],
+      animal_environments: [] as AnimalEnvironment[],
       special_notes_animals: [] as AnimalSpecialNote[],
       organization_id: '1',
     },
@@ -146,7 +146,7 @@ export function AnimalCreateDialog() {
   const isStep2Valid =
     form.watch('animal_healths')?.length > 0 &&
     form.watch('animal_personalitys')?.length > 0 &&
-    form.watch('foster_environments')?.length > 0 &&
+    form.watch('animal_environments')?.length > 0 &&
     form.watch('special_notes_animals')?.length > 0;
 
   const isStep3Valid =
@@ -498,7 +498,7 @@ ex) 꼬리 만지는 걸 싫어함.
                 />
                 <FormField
                   control={form.control}
-                  name="foster_environments"
+                  name="animal_environments"
                   render={({ field }) => {
                     const current: AnimalEnvironment[] = Array.isArray(
                       field.value,
@@ -513,7 +513,7 @@ ex) 꼬리 만지는 걸 싫어함.
                             {Object.values(AnimalEnvironment).map(
                               (environment) => {
                                 const label =
-                                  FOSTER_ENVIRONMENT_LABEL_KO[environment];
+                                  ANIMAL_ENVIRONMENT_LABEL_KO[environment];
                                 const selected =
                                   current?.includes(environment) ?? false;
 

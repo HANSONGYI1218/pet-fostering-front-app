@@ -33,7 +33,7 @@ export type FosterListAnimalItem = {
   isBookmarked: boolean;
   animal_healths: AnimalHealth[];
   animal_personalitys: AnimalPersonality[];
-  foster_environments: AnimalEnvironment[];
+  animal_environments: AnimalEnvironment[];
   isEmergency: boolean;
   organization: {
     id: string;

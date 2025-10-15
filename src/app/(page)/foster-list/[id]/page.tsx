@@ -9,7 +9,7 @@ import {
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  FOSTER_ENVIRONMENT_LABEL_KO,
+  ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
 import { fetchFosterAnimalDetail } from '@/lib/api/foster';
 import { Check } from 'lucide-react';
@@ -280,7 +280,7 @@ export default async function FosterListDetailPage({
                         variant={'secondary'}
                         className="h-9 px-4 text-base font-normal"
                       >
-                        {FOSTER_ENVIRONMENT_LABEL_KO[environment]}
+                        {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
                       </Badge>
                     );
                   })}

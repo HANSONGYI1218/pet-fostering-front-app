@@ -1,9 +1,9 @@
 import { AnimalType, AnimalGender, AnimalSize } from '@/types/animal/animal';
 
 export enum AnimalAge {
-  JUVENILE = 'JUVENILE',
-  ADULT = 'ADULT',
-  SENIOR = 'SENIOR',
+  JUVENILE = 'JUVENILE', //2살 미만
+  ADULT = 'ADULT', //8살 미말
+  SENIOR = 'SENIOR', //8살 이상
 }
 
 export enum AnimalPersonality {
@@ -38,9 +38,9 @@ export enum AnimalHealth {
 }
 
 export enum AnimalPeriod {
-  SHORT_TERM_FOSTER = 'SHORT_TERM_FOSTER',
-  MID_TERM_FOSTER = 'MID_TERM_FOSTER',
-  LONG_TERM_FOSTER = 'LONG_TERM_FOSTER',
+  SHORT_TERM_FOSTER = 'SHORT_TERM_FOSTER', //1개월 미만
+  MID_TERM_FOSTER = 'MID_TERM_FOSTER', // 3개월 미만
+  LONG_TERM_FOSTER = 'LONG_TERM_FOSTER', // 3개월 이상
 }
 
 export enum AnimalSpecialNote {
@@ -54,7 +54,6 @@ export enum AnimalSpecialNote {
 
 export type AnimalCondition = {
   id: string;
-  name: string;
   type: AnimalType;
   size: AnimalSize;
   gender: AnimalGender;

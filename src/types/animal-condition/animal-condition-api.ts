@@ -10,7 +10,6 @@ import {
 
 export type AnimalConditionItem = {
   id: string;
-  name: string;
   type: AnimalType;
   size: AnimalSize;
   gender: AnimalGender;
