@@ -52,7 +52,7 @@ export const FosterformSchema = z.object({
 });
 
 // Step 1 체크 함수
-export const validateStep01 = (data: any) => {
+export const validateStep01 = (data: unknown) => {
   const step01Schema = FosterformSchema.pick({
     type: true,
     size: true,
@@ -72,7 +72,7 @@ export const validateStep01 = (data: any) => {
 };
 
 // Step 2 체크 함수
-export const validateStep02 = (data: any) => {
+export const validateStep02 = (data: unknown) => {
   const step02Schema = FosterformSchema.pick({
     foster_environments: true,
     special_notes_animals: true,

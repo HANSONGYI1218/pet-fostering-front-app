@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useState } from 'react';
+import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { completeKakaoLogin } from '@/lib/auth/kakao';
@@ -17,47 +17,75 @@ const messages: Record<Status, string> = {
   error: '로그인에 실패했어요. 다시 시도해주세요.',
 };
 
+const reportGlobalError = (error: unknown) => {
+  const reporter = (
+    globalThis as {
+      reportError?: (err: unknown) => void;
+    }
+  ).reportError;
+
+  if (typeof reporter === 'function') {
+    reporter(error);
+  }
+};
+
 export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
   const router = useRouter();
   const [status, setStatus] = useState<Status>('loading');
+  const loginAttemptRef = useRef<{
+    code: string;
+    promise: Promise<unknown>;
+  } | null>(null);
 
   useEffect(() => {
+    if (!code) {
+      setStatus('error');
+
+      reportGlobalError(new Error('카카오 인가 코드가 필요합니다.'));
+
+      return;
+    }
+
+    const storage =
+      typeof window !== 'undefined' ? window.localStorage : undefined;
+
+    if (loginAttemptRef.current?.code !== code) {
+      loginAttemptRef.current = {
+        code,
+        promise: completeKakaoLogin({
+          code,
+          storage,
+        }),
+      };
+    }
+
+    const loginPromise = loginAttemptRef.current?.promise;
+
+    if (!loginPromise) {
+      setStatus('error');
+      return;
+    }
+
     let cancelled = false;
 
-    const run = async () => {
-      try {
-        await completeKakaoLogin({
-          code,
-          storage:
-            typeof window !== 'undefined' ? window.localStorage : undefined,
-        });
-
+    loginPromise
+      .then(() => {
         if (cancelled) {
           return;
         }
 
         setStatus('success');
         router.replace('/main');
-      } catch (error) {
+      })
+      .catch((error) => {
         if (cancelled) {
           return;
         }
 
         setStatus('error');
 
-        if (
-          'reportError' in globalThis &&
-          typeof (globalThis as { reportError?: (err: unknown) => void })
-            .reportError === 'function'
-        ) {
-          (
-            globalThis as { reportError?: (err: unknown) => void }
-          ).reportError?.(error);
-        }
-      }
-    };
-
-    run();
+        reportGlobalError(error);
+      });
 
     return () => {
       cancelled = true;

@@ -13,7 +13,7 @@ import SearchBox from '../common/search-box';
 import FosterConditionCard from './foster-condition-card';
 import FosterTile from './foster-tile';
 import { Button } from '../ui/button';
-import { Card, CardAction, CardHeader } from '../ui/card';
+import { Card, CardAction } from '../ui/card';
 import EmptyBox from '../common/empty-box';
 
 export default function FosterContainer({

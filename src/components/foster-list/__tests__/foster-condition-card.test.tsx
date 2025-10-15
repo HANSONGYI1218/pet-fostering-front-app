@@ -19,7 +19,7 @@ beforeAll(() => {
 });
 
 describe('FosterConditionCard', () => {
-  it('옵션 셀렉트를 통해 조건을 변경할 수 있다', async () => {
+  it('체크박스를 통해 조건을 변경할 수 있다', async () => {
     const user = userEvent.setup();
     const setAnimalType = vi.fn();
     const setAnimalSize = vi.fn();
@@ -38,18 +38,15 @@ describe('FosterConditionCard', () => {
 
     await user.click(screen.getByRole('button', { name: '옵션' }));
 
-    await user.click(screen.getByLabelText('종류'));
-    await user.click(await screen.findByRole('option', { name: '고양이' }));
+    await user.click(screen.getByRole('checkbox', { name: '고양이' }));
 
     expect(setAnimalType).toHaveBeenCalledWith(AnimalType.CAT);
 
-    await user.click(screen.getByLabelText('사이즈'));
-    await user.click(await screen.findByRole('option', { name: '중형' }));
+    await user.click(screen.getByRole('checkbox', { name: '중형' }));
 
     expect(setAnimalSize).toHaveBeenCalledWith(AnimalSize.MEDIUM);
 
-    await user.click(screen.getByLabelText('성별'));
-    await user.click(await screen.findByRole('option', { name: '여' }));
+    await user.click(screen.getByRole('checkbox', { name: '여' }));
 
     expect(setAnimalGender).toHaveBeenCalledWith(AnimalGender.FEMALE);
   });

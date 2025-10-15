@@ -99,6 +99,7 @@ const mapListItem = (
     (value) => AnimalEnvironment[value] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
   ),
   isEmergency: dto.isEmergency,
+  isFosterCondition: dto.isFosterCondition ?? false,
   organization: mapOrganization(dto.organization) ?? {
     id: '',
     name: '',
@@ -124,7 +125,7 @@ const mapDetail = (
   euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
   remark: dto.remark ?? '',
   isBookmarked: false,
-  isFosterCondition: false,
+  isFosterCondition: dto.isFosterCondition ?? false,
   current_foster_start_date: dto.currentFosterStartDate
     ? toDate(dto.currentFosterStartDate)
     : null,

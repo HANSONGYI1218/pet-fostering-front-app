@@ -14,14 +14,6 @@ import {
 import type { FosterFilterValue } from '@/domain/foster-list/filters';
 import { FILTER_ALL_LABEL_KO, FILTER_ALL_VALUE } from '@/constants/filter';
 import { Button } from '../ui/button';
-import { Label } from '../ui/label';
-import {
-  Select,
-  SelectContent,
-  SelectItem,
-  SelectTrigger,
-  SelectValue,
-} from '../ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { RotateCcwIcon, SlidersHorizontal } from 'lucide-react';
 import CheckBox from '../common/check-box';
@@ -197,6 +189,7 @@ export default function FosterConditionCard({
                   {conditionType?.options.map(({ label, value }) => (
                     <CheckBox
                       key={label}
+                      id={`${controlId}-${value}`}
                       value={value ?? ''}
                       selectedValue={conditionType?.selected ?? ''}
                       onChangeValue={conditionType?.onChange}

@@ -28,6 +28,7 @@ const buildListItem = (
   animal_personalitys: [AnimalPersonality.GOOD_WITH_OTHER_ANIMAL],
   animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
   isEmergency: true,
+  isFosterCondition: false,
   organization: {
     id: 'org-dummy',
     name: '퍼디 보호소',

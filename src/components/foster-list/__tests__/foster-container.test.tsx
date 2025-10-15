@@ -19,8 +19,9 @@ const createAnimal = (
   isBookmarked: false,
   animal_healths: [],
   animal_personalitys: [],
-  foster_environments: [],
+  animal_environments: [],
   isEmergency: false,
+  isFosterCondition: false,
   organization: {
     id: 'org-default',
     name: '퍼디 보호소',

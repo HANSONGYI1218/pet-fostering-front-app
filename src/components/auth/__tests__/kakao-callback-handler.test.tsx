@@ -1,3 +1,4 @@
+import { StrictMode } from 'react';
 import { render, screen, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -68,5 +69,23 @@ describe('KakaoCallbackHandler', () => {
     expect(replaceMock).not.toHaveBeenCalled();
 
     errorSpy.mockRestore();
+  });
+
+  it('StrictMode에서도 한 번만 토큰 교환을 수행한다', async () => {
+    render(
+      <StrictMode>
+        <KakaoCallbackHandler code="strict-code" />
+      </StrictMode>,
+    );
+
+    await waitFor(() => {
+      expect(completeKakaoLogin).toHaveBeenCalledTimes(1);
+    });
+    await waitFor(() => {
+      expect(replaceMock).toHaveBeenCalledWith('/main');
+    });
+    await waitFor(() => {
+      expect(screen.getByText(/로그인이 완료되었어요/i)).toBeInTheDocument();
+    });
   });
 });
