@@ -18,21 +18,24 @@ const messages: Record<Status, string> = {
 };
 
 const reportGlobalError = (error: unknown) => {
-  if (
-    'reportError' in globalThis &&
-    typeof (globalThis as { reportError?: (err: unknown) => void }).reportError ===
-      'function'
-  ) {
-    (globalThis as { reportError?: (err: unknown) => void }).reportError?.(error);
+  const reporter = (
+    globalThis as {
+      reportError?: (err: unknown) => void;
+    }
+  ).reportError;
+
+  if (typeof reporter === 'function') {
+    reporter(error);
   }
 };
 
 export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
   const router = useRouter();
   const [status, setStatus] = useState<Status>('loading');
-  const loginAttemptRef = useRef<{ code: string; promise: Promise<unknown> } | null>(
-    null,
-  );
+  const loginAttemptRef = useRef<{
+    code: string;
+    promise: Promise<unknown>;
+  } | null>(null);
 
   useEffect(() => {
     if (!code) {

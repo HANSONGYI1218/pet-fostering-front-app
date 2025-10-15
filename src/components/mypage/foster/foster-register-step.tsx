@@ -13,7 +13,7 @@ import RegisterStep03 from './register-step03';
 import { Card } from '@/components/ui/card';
 import Image from 'next/image';
 import { Button } from '@/components/ui/button';
-import { useEffect, useState } from 'react';
+import { useCallback, useEffect, useState } from 'react';
 import Link from 'next/link';
 import Stepper from './stepper';
 import { ArrowLeft, ArrowRight } from 'lucide-react';
@@ -38,33 +38,47 @@ export default function FosterRegisterStep({
   const [step02Passed, setStep02Passed] = useState(false);
 
   // Watch values
-  const type = useWatch({ control, name: 'type' }) ?? [];
-  const size = useWatch({ control, name: 'size' }) ?? [];
-  const animal_age = useWatch({ control, name: 'animal_age' }) ?? [];
+  const type = useWatch({ control, name: 'type' });
+  const size = useWatch({ control, name: 'size' });
+  const animal_age = useWatch({ control, name: 'animal_age' });
 
-  const foster_environments =
-    useWatch({ control, name: 'foster_environments' }) ?? [];
-  const special_notes_animals =
-    useWatch({ control, name: 'special_notes_animals' }) ?? [];
+  const foster_environments = useWatch({
+    control,
+    name: 'foster_environments',
+  });
+  const special_notes_animals = useWatch({
+    control,
+    name: 'special_notes_animals',
+  });
   const foster_period = useWatch({ control, name: 'foster_period' });
 
   // Step validation
-  const isStep01Valid = () =>
-    validateStep01({ type, size, animal_age }).success;
-  const isStep02Valid = () =>
-    validateStep02({
-      foster_environments,
-      special_notes_animals,
-      foster_period,
-    }).success;
+  const isStep01Valid = useCallback(
+    () =>
+      validateStep01({
+        type: type ?? [],
+        size: size ?? [],
+        animal_age: animal_age ?? [],
+      }).success,
+    [animal_age, size, type],
+  );
+  const isStep02Valid = useCallback(
+    () =>
+      validateStep02({
+        foster_environments: foster_environments ?? [],
+        special_notes_animals: special_notes_animals ?? [],
+        foster_period,
+      }).success,
+    [foster_environments, foster_period, special_notes_animals],
+  );
 
   useEffect(() => {
     setStep01Passed(isStep01Valid());
-  }, [type, size, animal_age]);
+  }, [isStep01Valid]);
 
   useEffect(() => {
     setStep02Passed(isStep02Valid());
-  }, [foster_environments, special_notes_animals, foster_period]);
+  }, [isStep02Valid]);
 
   // currentStep이 바뀔 때 버튼 상태 & canNext 업데이트
   useEffect(() => {
