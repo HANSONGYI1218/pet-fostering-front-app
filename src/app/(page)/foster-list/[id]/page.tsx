@@ -22,6 +22,7 @@ import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
 
 export default async function FosterListDetailPage({
   params,
@@ -29,6 +30,7 @@ export default async function FosterListDetailPage({
   params: Promise<{ id: string }>;
 }) {
   const { id } = await params;
+  const token = resolveStoredAccessToken();
 
   const animal = await fetchFosterAnimalDetail(id).catch((error: unknown) => {
     if (error instanceof Error && /404/.test(error.message)) {
@@ -139,7 +141,9 @@ export default async function FosterListDetailPage({
           <div className="relative flex w-full flex-col md:w-3/5 md:p-10">
             {animal?.images && animal?.images?.length > 0 ? (
               <div className="relative flex w-full">
-                <AnimalBookmark isBookmarked={animal?.isBookmarked} />
+                {token && (
+                  <AnimalBookmark isBookmarked={animal?.isBookmarked} />
+                )}
                 <AnimalCarousel images={animal?.images} />
               </div>
             ) : (

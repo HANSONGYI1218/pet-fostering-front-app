@@ -23,12 +23,14 @@ import {
 } from '../ui/card';
 import { Button } from '../ui/button';
 import { AspectRatio } from '../ui/aspect-ratio';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
 
 export default function FosterTile({
   animal,
 }: {
   animal: FosterListAnimalItem;
 }) {
+  const token = resolveStoredAccessToken();
   return (
     <Card className="overflow-hidden p-0 duration-300 hover:shadow-lg">
       <CardHeader className="p-0">
@@ -47,7 +49,7 @@ export default function FosterTile({
               긴급 동물
             </Badge>
           ) : null}
-          <AnimalBookmark isBookmarked={animal?.isBookmarked} />
+          {token && <AnimalBookmark isBookmarked={animal?.isBookmarked} />}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
