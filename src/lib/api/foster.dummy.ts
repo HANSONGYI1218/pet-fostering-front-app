@@ -28,6 +28,7 @@ const buildListItem = (
   animal_personalitys: [AnimalPersonality.GOOD_WITH_OTHER_ANIMAL],
   animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
   isEmergency: true,
+  isFosterCondition: false,
   organization: {
     id: 'org-dummy',
     name: '퍼디 보호소',
@@ -82,6 +83,7 @@ const buildDetail = (item: FosterListAnimalItem): FosterAnimalDetailItem => ({
   animal_environments: item.animal_environments,
   special_notes_animals: [AnimalSpecialNote.SEPARATION_ANXIETY],
   isEmergency: item.isEmergency,
+  isFosterCondition: item.isFosterCondition,
   emergency_reason: item.isEmergency ? '긴급 임보 필요' : '',
   organization: {
     id: item.organization.id,
