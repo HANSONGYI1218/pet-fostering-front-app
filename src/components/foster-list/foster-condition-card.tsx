@@ -24,6 +24,7 @@ import {
 } from '../ui/select';
 import { Popover, PopoverContent, PopoverTrigger } from '../ui/popover';
 import { RotateCcwIcon, SlidersHorizontal } from 'lucide-react';
+import CheckBox from '../common/check-box';
 
 const OPTION_BUTTON_TEXT = '옵션';
 const RESET_BUTTON_TEXT = '초기화';
@@ -171,53 +172,38 @@ export default function FosterConditionCard({
   return (
     <Popover>
       <PopoverTrigger asChild>
-        <Button type="button" variant="outline" className="gap-2">
+        <Button
+          type="button"
+          variant="outline"
+          className="gap-2 max-md:text-sm"
+        >
           <SlidersHorizontal className="size-4" />
           {OPTION_BUTTON_TEXT}
         </Button>
       </PopoverTrigger>
       <PopoverContent
         align="start"
-        className="flex w-full max-w-md flex-col gap-6 p-6"
+        className="mr-6 flex w-full flex-col gap-6 p-6 max-md:max-w-[330px]"
       >
         <h2 className="text-lg font-semibold">필터</h2>
-        <div className="flex flex-col gap-4">
+        <div className="flex flex-col gap-6">
           {conditionTypes.map((conditionType) => {
             const controlId = `foster-${conditionType.title}`;
-            const resetLabel =
-              conditionType.options.find(
-                (option) => option.value === conditionType.resetValue,
-              )?.label ??
-              conditionType.options[0]?.label ??
-              '';
 
             return (
-              <div key={conditionType.title} className="flex flex-col gap-2">
-                <Label
-                  htmlFor={controlId}
-                  className="text-muted-foreground text-sm font-medium"
-                >
-                  {conditionType.title}
-                </Label>
-                <Select
-                  value={conditionType.selected}
-                  onValueChange={conditionType.onChange}
-                >
-                  <SelectTrigger
-                    id={controlId}
-                    aria-label={conditionType.title}
-                    className="w-full justify-between"
-                  >
-                    <SelectValue placeholder={resetLabel} />
-                  </SelectTrigger>
-                  <SelectContent>
-                    {conditionType.options.map(({ label, value }) => (
-                      <SelectItem key={value} value={value}>
-                        {label}
-                      </SelectItem>
-                    ))}
-                  </SelectContent>
-                </Select>
+              <div key={controlId} className="flex flex-col gap-1">
+                <span className="font-semibold">{conditionType?.title}</span>
+                <div className="flex flex-wrap items-center gap-2">
+                  {conditionType?.options.map(({ label, value }) => (
+                    <CheckBox
+                      key={label}
+                      value={value ?? ''}
+                      selectedValue={conditionType?.selected ?? ''}
+                      onChangeValue={conditionType?.onChange}
+                      label={label}
+                    />
+                  ))}
+                </div>
               </div>
             );
           })}

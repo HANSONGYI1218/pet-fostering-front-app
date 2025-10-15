@@ -944,6 +944,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     gender: AnimalGender.FEMALE,
     introduction:
       '복자 이야기를 적어주세요. 더미텍스트 입니다. 복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. 더미텍스트 입니다.복자 이야기를 적어주세요. ',
+    euthanasia_date: new Date('2025-10-21'),
     remark:
       '꼬리 만지는 걸 싫어하고, 나이가 좀 있어 각별한 관리가 필요함. 심장병으로인해 매일 약을 챙겨먹어야 함.',
     current_foster_start_date: new Date('2025-09-01'),
@@ -954,13 +955,14 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.WILLINGNESS_FOR_POTTY_TRAINING,
     ],
     special_notes_animals: [AnimalSpecialNote.POTTY_ACCIDENTS],
     emergency_reason: '안락사 기간이 얼마 안 남은 경우',
     isEmergency: true,
+    isFosterCondition: false,
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -982,8 +984,10 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     birth_date: new Date('2024-01-01'),
     gender: AnimalGender.MALE,
     introduction: '에너지가 넘치고 산책을 좋아하는 강아지입니다.',
+    euthanasia_date: new Date('2025-10-21'),
     remark: '활동적인 가정이 필요하며, 분리불안이 조금 있음.',
     isBookmarked: false,
+    isFosterCondition: true,
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
     animal_healths: [AnimalHealth.NEUTERED, AnimalHealth.VACCINATED],
@@ -991,7 +995,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
@@ -1023,6 +1027,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
     birth_date: new Date('2024-01-01'),
+    euthanasia_date: new Date('2025-10-21'),
     gender: AnimalGender.FEMALE,
     introduction: '얌전하고 무릎에 앉는 걸 좋아하는 고양이.',
     remark: '장모종이라 빗질이 필요함.',
@@ -1032,7 +1037,8 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    isFosterCondition: false,
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
@@ -1058,8 +1064,10 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     images: ['/images/animal01.jpg', '/images/animal01.jpg'],
     breed: 'Pomeranian',
     birth_date: new Date('2024-01-01'),
+    euthanasia_date: new Date('2025-10-21'),
     gender: AnimalGender.MALE,
     introduction: '작고 귀여운 강아지, 애교가 많음.',
+    isFosterCondition: false,
     remark: '짖음이 있어 아파트 환경에는 주의 필요.',
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
@@ -1069,7 +1077,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
@@ -1097,7 +1105,9 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     images: ['/images/animal01.jpg', '/images/animal01.jpg'],
     breed: 'Korean Shorthair',
     birth_date: new Date('2024-01-01'),
+    euthanasia_date: new Date('2025-10-21'),
     gender: AnimalGender.FEMALE,
+    isFosterCondition: false,
     introduction: '호기심이 많고 다른 동물과도 잘 지냄.',
     remark: '입양 전 건강검진 필요.',
     isBookmarked: false,
@@ -1106,7 +1116,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
@@ -1130,11 +1140,13 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     type: AnimalType.DOG,
     size: AnimalSize.LARGE,
     current_foster_start_date: new Date('2025-09-01'),
+    euthanasia_date: new Date('2025-10-21'),
     current_foster_end_date: new Date('2026-02-01'),
     images: ['/images/animal01.jpg', '/images/animal01.jpg'],
     breed: 'Golden Retriever',
     birth_date: new Date('2024-01-01'),
     gender: AnimalGender.MALE,
+    isFosterCondition: true,
     introduction: '온순하고 아이들을 좋아하는 대형견.',
     remark: '많은 운동량 필요.',
     isBookmarked: true,
@@ -1143,7 +1155,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
@@ -1167,9 +1179,11 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     type: AnimalType.CAT,
     size: AnimalSize.SMALL,
     current_foster_start_date: new Date('2025-09-01'),
+    euthanasia_date: new Date('2025-10-21'),
     current_foster_end_date: new Date('2026-02-01'),
     images: ['/images/animal01.jpg', '/images/animal01.jpg'],
     breed: 'Scottish Fold',
+    isFosterCondition: true,
     birth_date: new Date('2024-01-01'),
     gender: AnimalGender.FEMALE,
     introduction: '사람에게 다가오는 친근한 고양이.',
@@ -1180,7 +1194,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.FREQUENT_INTERACTION_WITH_PETS,
     ],
@@ -1206,9 +1220,11 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
     images: ['/images/animal01.jpg', '/images/animal01.jpg'],
+    euthanasia_date: new Date('2025-10-21'),
     breed: 'Beagle',
     birth_date: new Date('2024-01-01'),
     gender: AnimalGender.MALE,
+    isFosterCondition: true,
     introduction: '활동적이고 에너지 넘치는 견종.',
     remark: '산책 시간이 부족하면 스트레스가 심함.',
     isBookmarked: false,
@@ -1217,7 +1233,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
@@ -1242,6 +1258,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     size: AnimalSize.SMALL,
     current_foster_start_date: new Date('2025-09-01'),
     current_foster_end_date: new Date('2026-02-01'),
+    euthanasia_date: new Date('2025-10-21'),
     images: ['/images/animal01.jpg', '/images/animal01.jpg'],
     breed: 'Shih Tzu',
     birth_date: new Date('2024-01-01'),
@@ -1249,12 +1266,13 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
     introduction: '나이가 있어 차분하고 순한 강아지.',
     remark: '심장 질환으로 꾸준한 약 복용 필요.',
     isBookmarked: true,
+    isFosterCondition: true,
     animal_healths: [AnimalHealth.NEUTERED, AnimalHealth.VACCINATED],
     animal_personalitys: [
       AnimalPersonality.GOOD_WITH_OTHER_ANIMAL,
       AnimalPersonality.INDEPENDENCE,
     ],
-    foster_environments: [
+    animal_environments: [
       AnimalEnvironment.QUIET_ENVIRONMENT,
       AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS,
     ],

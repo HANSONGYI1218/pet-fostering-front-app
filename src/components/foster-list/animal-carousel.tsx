@@ -33,7 +33,7 @@ export function AnimalCarousel({ images }: { images: string[] }) {
   }, [api]);
 
   return (
-    <div className="flex flex-col">
+    <div className="flex w-full flex-col">
       <Carousel
         setApi={setApi}
         opts={{
@@ -61,47 +61,32 @@ export function AnimalCarousel({ images }: { images: string[] }) {
             </CarouselItem>
           ))}
         </CarouselContent>
-        <CarouselPrevious className="left-8" />
-        <CarouselNext className="right-8" />
+        {images?.length > 1 && (
+          <>
+            <CarouselPrevious className="left-8" />
+            <CarouselNext className="right-8" />
+          </>
+        )}
       </Carousel>
-      <div className="mx-auto flex gap-4 py-3">
-        {Array.from({ length: images?.length ?? 0 }).map((_, index) => {
-          const isActive = current - 1 === index;
+      {images?.length > 1 && (
+        <div className="mx-auto flex gap-4 py-3">
+          {Array.from({ length: images?.length ?? 0 }).map((_, index) => {
+            const isActive = current - 1 === index;
 
-          return (
-            <button
-              key={index}
-              type="button"
-              onClick={() => api?.scrollTo(index)}
-              className={`h-3 w-3 rounded-full transition-colors ${
-                isActive ? 'bg-[#7c7c7c]' : 'bg-[#d4d4d4]'
-              }`}
-              aria-label={`이미지 ${index + 1} 보기`}
-            />
-          );
-        })}
-      </div>
-
-      {/* <div className="grid grid-cols-4 gap-2">
-        {others.map(({ src, i }) => (
-          <button
-            key={i}
-            type="button"
-            onClick={() => api?.scrollTo(i)}
-            className="cursor-pointer overflow-hidden rounded-md border"
-            aria-label={`Go to image ${i + 1}`}
-          >
-            <div className="aspect-[4/3] w-full">
-              <img
-                src={src}
-                alt={`thumbnail-${i}`}
-                className="h-full w-full object-cover object-center"
-                loading="lazy"
+            return (
+              <button
+                key={index}
+                type="button"
+                onClick={() => api?.scrollTo(index)}
+                className={`h-3 w-3 rounded-full transition-colors ${
+                  isActive ? 'bg-[#7c7c7c]' : 'bg-[#d4d4d4]'
+                }`}
+                aria-label={`이미지 ${index + 1} 보기`}
               />
-            </div>
-          </button>
-        ))}
-      </div> */}
+            );
+          })}
+        </div>
+      )}
     </div>
   );
 }

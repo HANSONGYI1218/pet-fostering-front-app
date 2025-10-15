@@ -37,6 +37,7 @@ type PublicFosterAnimalBaseDto = {
   shared: boolean;
   mainImageUrl?: string | null;
   isEmergency: boolean;
+  isFosterCondition: boolean;
   emergencyReason?: string | null;
   organization: PublicFosterOrganizationDto | null;
   healthTags: Array<keyof typeof AnimalHealth>;
@@ -50,6 +51,7 @@ type PublicFosterAnimalListItemDto = PublicFosterAnimalBaseDto & {
 
 type PublicFosterAnimalDetailDto = PublicFosterAnimalBaseDto & {
   introduction?: string | null;
+  euthanasia_date?: Date | null;
   remark?: string | null;
   images: string[];
   specialNoteTags: Array<keyof typeof AnimalSpecialNote>;
@@ -93,7 +95,7 @@ const mapListItem = (
   animal_personalitys: dto.personalityTags.map(
     (value) => AnimalPersonality[value] ?? AnimalPersonality.QUIET,
   ),
-  foster_environments: dto.environmentTags.map(
+  animal_environments: dto.environmentTags.map(
     (value) => AnimalEnvironment[value] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
   ),
   isEmergency: dto.isEmergency,
@@ -119,8 +121,10 @@ const mapDetail = (
   images:
     dto.images.length > 0 ? dto.images : ['/images/animal-placeholder.png'],
   introduction: dto.introduction ?? '',
+  euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
   remark: dto.remark ?? '',
   isBookmarked: false,
+  isFosterCondition: false,
   current_foster_start_date: dto.currentFosterStartDate
     ? toDate(dto.currentFosterStartDate)
     : null,
@@ -133,7 +137,7 @@ const mapDetail = (
   animal_personalitys: dto.personalityTags.map(
     (value) => AnimalPersonality[value] ?? AnimalPersonality.QUIET,
   ),
-  foster_environments: dto.environmentTags.map(
+  animal_environments: dto.environmentTags.map(
     (value) => AnimalEnvironment[value] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
   ),
   special_notes_animals: dto.specialNoteTags.map(

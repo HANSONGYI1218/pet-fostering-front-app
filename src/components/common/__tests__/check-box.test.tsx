@@ -11,7 +11,6 @@ describe('CheckBox', () => {
     render(
       <CheckBox
         label="강아지"
-        id="dog"
         value="DOG"
         selectedValue="ALL"
         onChangeValue={handleChange}
@@ -29,7 +28,6 @@ describe('CheckBox', () => {
     render(
       <CheckBox
         label="고양이"
-        id="cat"
         value="CAT"
         selectedValue="ALL"
         onChangeValue={handleChange}
@@ -47,7 +45,6 @@ describe('CheckBox', () => {
     render(
       <CheckBox
         label="토끼"
-        id="rabbit"
         value="RABBIT"
         selectedValue="ALL"
         onChangeValue={handleChange}

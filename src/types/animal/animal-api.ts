@@ -54,15 +54,17 @@ export type FosterAnimalDetailItem = {
   gender: AnimalGender;
   images: string[];
   introduction: string;
+  euthanasia_date: Date | null;
   remark: string;
   isBookmarked: boolean;
   current_foster_start_date: Date | null;
   current_foster_end_date: Date | null;
   animal_healths: AnimalHealth[];
   animal_personalitys: AnimalPersonality[];
-  foster_environments: AnimalEnvironment[];
+  animal_environments: AnimalEnvironment[];
   special_notes_animals: AnimalSpecialNote[];
   isEmergency: boolean;
+  isFosterCondition: boolean;
   emergency_reason: string;
   organization: {
     id: string;

@@ -65,7 +65,6 @@ export function CheckButton({
           className="flex cursor-pointer items-center gap-3"
         >
           <Checkbox
-            id={`${type}-${optionValue}`}
             checked={valueArray.includes(optionValue)}
             onCheckedChange={() =>
               isExperence ? onChange : handleToggle(optionValue)

@@ -21,7 +21,7 @@ export default function ConnectDialog({
     <Dialog>
       <DialogTrigger asChild>
         <Button
-          className="h-12 w-36 text-lg font-semibold"
+          className="h-12 flex-1 font-semibold md:text-lg"
           variant="outline_black"
         >
           <Phone stroke="#000000" fill="#000000" />

@@ -14,6 +14,7 @@ import FosterConditionCard from './foster-condition-card';
 import FosterTile from './foster-tile';
 import { Button } from '../ui/button';
 import { Card, CardAction, CardHeader } from '../ui/card';
+import EmptyBox from '../common/empty-box';
 
 export default function FosterContainer({
   animals,
@@ -45,44 +46,45 @@ export default function FosterContainer({
 
   return (
     <div className="flex flex-col gap-8">
-      <Card className="cursor-auto border-none p-0 shadow-none">
-        <CardHeader className="gap-4 p-0">
-          <div className="flex flex-wrap items-center gap-2">
-            <Button
-              type="button"
-              size="sm"
-              variant={isEmergencyOnly ? 'destructive' : 'outline'}
-              aria-pressed={isEmergencyOnly}
-              onClick={() => setIsEmergencyOnly((prev) => !prev)}
-              className="gap-2"
-            >
-              <AlertTriangle className="size-4" />
-              긴급
-            </Button>
-            <FosterConditionCard
-              animalType={animalType}
-              animalSize={animalSize}
-              animalGender={animalGender}
-              setAnimalType={setAnimalType}
-              setAnimalSize={setAnimalSize}
-              setAnimalGender={setAnimalGender}
-            />
-          </div>
-          <CardAction className="w-full">
-            <SearchBox
-              placeholder="품종, 기관/동물 이름"
-              onChangeValue={setSearch}
-              className="w-full md:w-72"
-            />
-          </CardAction>
-        </CardHeader>
+      <Card className="flex cursor-auto flex-col border-none p-0 shadow-none md:flex-row">
+        <div className="flex flex-1 items-center gap-2">
+          <Button
+            type="button"
+            size="sm"
+            variant={isEmergencyOnly ? 'destructive' : 'outline'}
+            aria-pressed={isEmergencyOnly}
+            onClick={() => setIsEmergencyOnly((prev) => !prev)}
+            className="gap-2 max-md:text-sm"
+          >
+            <AlertTriangle className="size-4" />
+            긴급
+          </Button>
+          <FosterConditionCard
+            animalType={animalType}
+            animalSize={animalSize}
+            animalGender={animalGender}
+            setAnimalType={setAnimalType}
+            setAnimalSize={setAnimalSize}
+            setAnimalGender={setAnimalGender}
+          />
+        </div>
+        <CardAction>
+          <SearchBox
+            placeholder="품종, 기관/동물 이름"
+            onChangeValue={setSearch}
+            className="md:w-72"
+          />
+        </CardAction>
       </Card>
-
-      <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
-        {filteredAnimals.map((filteredAnimal) => (
-          <FosterTile key={filteredAnimal.id} animal={filteredAnimal} />
-        ))}
-      </div>
+      {filteredAnimals?.length > 0 ? (
+        <div className="grid gap-6 md:grid-cols-2 xl:grid-cols-3">
+          {filteredAnimals.map((filteredAnimal) => (
+            <FosterTile key={filteredAnimal.id} animal={filteredAnimal} />
+          ))}
+        </div>
+      ) : (
+        <EmptyBox className="min-h-96" text="조건에 맞는 보호동물이 없어요." />
+      )}{' '}
     </div>
   );
 }

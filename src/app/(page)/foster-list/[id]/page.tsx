@@ -17,7 +17,7 @@ import ConnectDialog from '@/components/foster-list/connect-dialog';
 import FosterRequestDialog from '@/components/foster-list/foster-requst-dialog';
 import { Badge } from '@/components/ui/badge';
 import KakaoMapLoader from '@/components/common/kakaomap-loader';
-import { formatAnimalAge, fosterTotalDuration } from '@/lib/utils';
+import { formatAnimalAge, fosterTotalDuration, getDDay } from '@/lib/utils';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { format } from 'date-fns';
 import Image from 'next/image';
@@ -111,7 +111,7 @@ export default async function FosterListDetailPage({
 
   return (
     <main className="bg-neutral-50">
-      <div className="container_12 mx-auto flex min-h-screen w-full flex-col gap-6 pt-20 pb-40">
+      <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16">
         <BackButton link="/foster-list" />
         {animal?.isEmergency && (
           <div className="flex w-full items-center gap-10 rounded-lg bg-[#FDE8E8] px-6 py-3">
@@ -135,20 +135,33 @@ export default async function FosterListDetailPage({
             </span>
           </div>
         )}
-        <div className="flex w-full gap-6 rounded-lg bg-white p-10">
-          <div className="relative flex w-3/5 flex-col justify-between">
+        <div className="flex w-full flex-col rounded-lg bg-white md:flex-row">
+          <div className="relative flex w-full flex-col md:w-3/5 md:p-10">
             {animal?.images && animal?.images?.length > 0 ? (
-              <>
+              <div className="relative flex w-full">
                 <AnimalBookmark isBookmarked={animal?.isBookmarked} />
                 <AnimalCarousel images={animal?.images} />
-              </>
+              </div>
             ) : (
-              <div>없어요~!</div>
+              <Card className="flex h-full w-full items-center justify-center bg-neutral-100">
+                <span>사진을 준비중이에요.</span>
+              </Card>
             )}
           </div>
-          <div className="flex w-2/5 flex-col gap-6">
-            <Card className="w-full cursor-default p-10">
-              <span className="text-2xl font-semibold">{animal?.name}</span>
+          <div className="flex w-full flex-col gap-6 p-10 md:w-2/5">
+            <Card className="w-full cursor-default p-0 max-md:border-none max-md:shadow-none md:p-10">
+              <div className="flex items-center gap-6 font-semibold">
+                <span className="text-2xl">{animal?.name}</span>
+                {animal?.euthanasia_date && (
+                  <Badge
+                    variant="outline"
+                    className="flex gap-2 border-red-300 text-xl font-black text-red-500"
+                  >
+                    <span className="text-sm font-medium">안락사</span> D
+                    {getDDay(animal.euthanasia_date)}
+                  </Badge>
+                )}
+              </div>
               <div className="grid w-full grid-cols-2 gap-6">
                 {animalDatas?.slice(0, 6)?.map((a) => (
                   <div key={a?.data} className="flex flex-col gap-1">
@@ -190,16 +203,19 @@ export default async function FosterListDetailPage({
                 </div>
               </div>
             </Card>
-            <div className="flex w-full gap-4">
+            <div className="flex w-full flex-col gap-4 md:flex-row">
               <ConnectDialog
                 name={animal?.organization?.name ?? ''}
                 phone_number={animal?.organization?.phone_number ?? ''}
               />
-              <FosterRequestDialog name={animal?.name ?? ''} />
+              <FosterRequestDialog
+                name={animal?.name ?? ''}
+                isFosterCondition={animal?.isFosterCondition}
+              />
             </div>
           </div>
         </div>
-        <div className="flex min-h-96 gap-6">
+        <div className="flex min-h-96 flex-col gap-6 md:flex-row">
           <div className="flex w-full flex-col gap-6 rounded-lg bg-white p-10">
             <h1 className="flex items-center gap-1 text-lg font-semibold">
               <Image
@@ -260,7 +276,7 @@ export default async function FosterListDetailPage({
               </div>
             </div>
           </div>
-          <div className="flex w-full flex-col justify-between rounded-lg bg-white p-10">
+          <div className="flex w-full flex-col justify-between rounded-lg bg-white p-10 max-md:gap-6">
             <div className="flex w-full flex-col gap-10">
               <div className="flex flex-col gap-6">
                 <h1 className="flex items-center gap-1 text-lg font-semibold">
@@ -273,7 +289,7 @@ export default async function FosterListDetailPage({
                   이런 임보자와 잘 맞을 것 같아요
                 </h1>
                 <div className="flex flex-wrap gap-2 overflow-hidden">
-                  {animal?.foster_environments?.map((environment, index) => {
+                  {animal?.animal_environments?.map((environment, index) => {
                     return (
                       <Badge
                         key={index}
@@ -317,7 +333,7 @@ export default async function FosterListDetailPage({
             </div>
           </div>
         </div>
-        <div className="flex w-full items-center justify-between rounded-lg border border-neutral-200 bg-[#F5F5F5] p-3 shadow-xs">
+        <div className="flex w-full flex-col justify-between gap-2 rounded-lg border border-neutral-200 bg-[#F5F5F5] p-3 shadow-xs md:flex-row md:items-center md:gap-0">
           <span className="flex items-end gap-1 font-medium">
             <Image
               src="/images/support.png"
@@ -349,10 +365,10 @@ export default async function FosterListDetailPage({
               보호기관 정보
             </h1>
           </div>
-          <div className="flex items-center justify-between gap-16">
+          <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-16">
             <KakaoMapLoader address={total_address ?? ''} />
 
-            <div className="grid w-full grid-cols-2 items-end gap-6">
+            <div className="grid w-full grid-cols-2 items-start gap-6">
               {centerDatas?.map((a) => (
                 <div key={a?.data} className="flex flex-col gap-1">
                   <span className="text-sm font-medium text-neutral-400">
