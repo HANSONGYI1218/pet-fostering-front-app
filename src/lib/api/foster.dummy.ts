@@ -82,6 +82,7 @@ const buildDetail = (item: FosterListAnimalItem): FosterAnimalDetailItem => ({
   animal_environments: item.animal_environments,
   special_notes_animals: [AnimalSpecialNote.SEPARATION_ANXIETY],
   isEmergency: item.isEmergency,
+  isFosterCondition: true,
   emergency_reason: item.isEmergency ? '긴급 임보 필요' : '',
   organization: {
     id: item.organization.id,

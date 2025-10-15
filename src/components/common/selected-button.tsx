@@ -33,7 +33,7 @@ export default function SelectedButton<T extends string | number>({
             onClick={() => {
               onChange(second?.key);
             }}
-            className={`w-full cursor-pointer items-center justify-center ${value === second?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'}`}
+            className={`flex w-full cursor-pointer items-center justify-center text-center ${value === second?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'}`}
           >
             {second?.word}
           </div>

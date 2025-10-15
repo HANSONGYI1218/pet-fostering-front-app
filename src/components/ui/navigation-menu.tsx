@@ -77,7 +77,7 @@ NavigationMenuViewport.displayName =
   NavigationMenuPrimitive.Viewport.displayName;
 
 const navigationMenuTriggerStyle = () =>
-  'group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:bg-accent focus:text-accent-foreground hover:font-semibold disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-transparent data-[state=open]:bg-transparent';
+  'group inline-flex h-10 w-max items-center justify-center rounded-md bg-background px-4 py-2 text-sm font-medium transition-colors focus:outline-none focus:bg-transparent focus:text-accent-foreground hover:font-semibold disabled:pointer-events-none disabled:opacity-50 data-[active=true]:bg-transparent data-[state=open]:bg-transparent';
 
 const NavigationMenu = React.forwardRef<
   React.ElementRef<typeof NavigationMenuPrimitive.Root>,
