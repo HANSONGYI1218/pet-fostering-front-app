@@ -671,7 +671,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
     isEmergency: true,
-    isFosterCondition: false,
     organization: {
       id: '1',
       name: '보듬컴퍼니',
@@ -701,7 +700,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
     isEmergency: true,
-    isFosterCondition: false,
     organization: {
       id: '3',
       name: '푸른보호소',
@@ -731,7 +729,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
     isEmergency: false,
-    isFosterCondition: false,
     organization: {
       id: '4',
       name: '달빛 보호센터',
@@ -761,7 +758,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
     isEmergency: false,
-    isFosterCondition: false,
     organization: {
       id: '5',
       name: '콩콩 쉼터',
@@ -791,7 +787,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS,
     ],
     isEmergency: false,
-    isFosterCondition: false,
     organization: {
       id: '6',
       name: '보호의집',
@@ -821,7 +816,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.PRESENCE_OF_OTHER_ANIMAL,
     ],
     isEmergency: false,
-    isFosterCondition: false,
     organization: {
       id: '7',
       name: '사랑의쉼터',
@@ -851,7 +845,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.HOUSEHOLD_WITH_YOUNG_CHILDREN,
     ],
     isEmergency: false,
-    isFosterCondition: false,
     organization: {
       id: '8',
       name: '루나 센터',
@@ -881,7 +874,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.PATIENCE_WITH_BARKING_BITING,
     ],
     isEmergency: true,
-    isFosterCondition: false,
     organization: {
       id: '7',
       name: '사랑의쉼터',
@@ -911,7 +903,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.CARE_FOR_SENSITIVE_OR_FEARFUL_PETS,
     ],
     isEmergency: false,
-    isFosterCondition: false,
     organization: {
       id: '6',
       name: '보호의집',
@@ -941,7 +932,6 @@ export const dummyFosterAnimals: FosterListAnimalItem[] = [
       AnimalEnvironment.FREQUENT_INTERACTION_WITH_PETS,
     ],
     isEmergency: true,
-    isFosterCondition: false,
     organization: {
       id: '5',
       name: '콩콩 쉼터',
