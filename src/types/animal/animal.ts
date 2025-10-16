@@ -38,7 +38,6 @@ export type Animal = {
   current_foster_end_date: Date;
   state: FosterState;
   isEmergency: boolean;
-  isFosterCondition: boolean;
   emergency_reason: string;
   organization_id: string;
   animal_condition_id: string;

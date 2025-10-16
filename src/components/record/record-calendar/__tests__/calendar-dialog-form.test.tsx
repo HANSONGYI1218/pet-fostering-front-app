@@ -86,7 +86,7 @@ describe('CalendarDialogForm', () => {
     await user.type(contentField, '새로운 기록');
     await user.type(healthField, '오늘은 아주 건강했어요');
 
-    const submitButton = screen.getByRole('button', { name: '완료' });
+    const submitButton = screen.getByRole('button', { name: '완료하기' });
     await user.click(submitButton);
 
     await waitFor(() => {
@@ -147,17 +147,24 @@ describe('CalendarDialogForm', () => {
     const triggerButton = screen.getByRole('button', {
       name: new RegExp(props.formattedDate),
     });
-
     await user.click(triggerButton);
 
+    // 여기서 수정 모드로 바꾸기
+    const editButton = screen.getByRole('button', { name: '수정하기' });
+    await user.click(editButton);
+
+    // 이제 Textarea 접근
     const contentField = await screen.findByPlaceholderText(
       /임시보호중인 동물의 기록을 자유롭게 작성해주세요/,
     );
 
-    await user.clear(contentField);
+    await user.click(contentField); // focus
+    await user.keyboard('{Control>}a{/Control}'); // 전체 선택
+    await user.keyboard('{Backspace}'); // 삭제
     await user.type(contentField, '수정된 기록');
 
-    const submitButton = screen.getByRole('button', { name: '수정' });
+    // 완료 버튼 클릭
+    const submitButton = screen.getByRole('button', { name: '완료하기' });
     await user.click(submitButton);
 
     await waitFor(() => {

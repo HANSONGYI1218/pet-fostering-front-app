@@ -21,7 +21,7 @@ describe('foster api mappers', () => {
       birthDate: '2024-01-01T00:00:00.000Z',
       mainImageUrl: null,
       isEmergency: true,
-      isFosterCondition: true,
+      euthanasia_date: new Date('2025-10-21'),
       emergencyReason: 'urgent',
       organization: {
         id: 'org-1',
@@ -46,8 +46,8 @@ describe('foster api mappers', () => {
       gender: AnimalGender.MALE,
       image: '/images/animal-placeholder.png',
       animal_healths: [AnimalHealth.NEUTERED],
+      euthanasia_date: new Date('2025-10-21'),
       animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
-      isFosterCondition: true,
       organization: {
         id: 'org-1',
         address: 'Seoul',
@@ -71,6 +71,7 @@ describe('foster api mappers', () => {
       isFosterCondition: false,
       emergencyReason: null,
       organization: null,
+      euthanasia_date: new Date('2025-10-21'),
       healthTags: [],
       personalityTags: [],
       environmentTags: [],
