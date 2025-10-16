@@ -25,6 +25,7 @@ import { Input } from '@/components/ui/input';
 import { AnimalType, AnimalSize, AnimalGender } from '@/types/animal/animal';
 import { Card } from '@/components/ui/card';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import Image from 'next/image';
 import { Calendar } from '@/components/ui/calendar';
 import {
   Popover,
@@ -237,10 +238,13 @@ export function AniamlCreateDialog() {
                               />
                             </Button>
                             <div className="relative h-32 w-full">
-                              <img
+                              <Image
                                 src={image}
                                 alt={`preview-${index + 1}`}
-                                className="h-full w-full rounded-xl object-cover"
+                                fill
+                                className="rounded-xl object-cover"
+                                sizes="(max-width: 768px) 100vw, 50vw"
+                                unoptimized
                               />
                             </div>
                           </Card>

@@ -11,6 +11,7 @@ import {
   AccordionTrigger,
 } from '@/components/ui/accordion';
 import { useState } from 'react';
+import Image from 'next/image';
 import { ko } from 'date-fns/locale';
 import { RecordImages } from './record-images';
 import { RecordContent } from './record-content';
@@ -104,11 +105,14 @@ export default function RecordDetail() {
               </span>
               <div className="grid w-full grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
                 {record?.images?.map((image, index) => (
-                  <div key={index} className="h-full w-full">
-                    <img
+                  <div key={index} className="relative h-40 w-full">
+                    <Image
                       src={image ?? '/images/placeholder.png'}
                       alt={`record-${record?.created_at}`}
-                      className="h-40 w-full object-cover"
+                      fill
+                      className="object-cover"
+                      sizes="(max-width: 768px) 100vw, 25vw"
+                      unoptimized={!image?.startsWith('/')}
                     />
                   </div>
                 ))}
