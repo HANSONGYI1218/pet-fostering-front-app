@@ -20,7 +20,6 @@ export default async function NoticeDetailPage({
 }) {
   const { id } = await params;
   const notice = noticeDetails.find((notice) => notice.id === id);
-      
 
   if (!notice) {
     return (
@@ -47,7 +46,7 @@ export default async function NoticeDetailPage({
         <div className="flex flex-col rounded-xl bg-white p-4 md:p-12">
           <div className="flex w-full flex-col items-center gap-6 py-6">
             <Badge
-              variant={notice?.isFixed ? 'red' : 'outline'}
+              variant={notice?.isFixed ? 'green' : 'outline'}
               className="h-7 w-15 rounded-full text-sm"
             >
               {notice?.isFixed

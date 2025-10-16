@@ -15,11 +15,11 @@ export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
   return (
     <Link href={`/notice/${notice?.id}`}>
       <div
-        className={`flex w-full cursor-pointer flex-col justify-between gap-2 border-b p-4 md:flex-row md:gap-6 md:px-10 md:py-6 ${notice?.isFixed ? 'border-white bg-[#EA1B1B]/5' : 'bg-white'}`}
+        className={`flex w-full cursor-pointer flex-col justify-between gap-2 border-b p-4 md:flex-row md:gap-6 md:px-10 md:py-6 ${notice?.isFixed ? 'border-white bg-[#00592d]/5' : 'bg-white'}`}
       >
         <div className="flex flex-1 flex-col gap-3 md:flex-row md:gap-14">
           <Badge
-            variant={notice?.isFixed ? 'red' : 'outline'}
+            variant={notice?.isFixed ? 'green' : 'outline'}
             className="h-6 w-12 rounded-full text-xs md:h-7 md:w-15 md:text-sm"
           >
             {notice?.isFixed
@@ -29,7 +29,7 @@ export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
           <span className={`flex gap-3 ${notice?.isFixed && 'font-semibold'}`}>
             {notice?.title}
             {isNew && (
-              <span className="-translate-y-1 text-sm font-bold text-[#EA1B1B]">
+              <span className="-translate-y-1 text-sm font-bold text-[#00592d]">
                 N
               </span>
             )}
