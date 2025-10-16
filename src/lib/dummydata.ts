@@ -23,6 +23,7 @@ import { CommentItem, CommentItemByUserId } from '@/types/comment/comment-api';
 import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
 import { FosterConditionItem } from '@/types/foster-condition/foster-condition-api';
 import { FosterRecordItem } from '@/types/foster-record/foster-record-api';
+import { NoticeType } from '@/types/notcie/notice';
 import { NoticeDetailItem, NoticeListItem } from '@/types/notcie/notice-api';
 import { PostItem, PostItemByUserId } from '@/types/post/post-api';
 import {
@@ -3792,6 +3793,7 @@ export const userFosterCondition: FosterConditionItem = {
 export const noticeList: NoticeListItem[] = [
   {
     id: '1',
+    type: NoticeType.GENERAL,
     title: '입양 절차 안내 공지',
     isFiled: false,
     isFixed: true,
@@ -3800,6 +3802,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '2',
+    type: NoticeType.MAINTENANCE,
     title: '사이트 점검 안내 (10/20 예정)',
     isFiled: true,
     isFixed: false,
@@ -3808,6 +3811,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '3',
+    type: NoticeType.MAINTENANCE,
     title: '추석 연휴 고객센터 휴무 안내',
     isFiled: false,
     isFixed: false,
@@ -3816,6 +3820,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '4',
+    type: NoticeType.EVENT,
     title: '플랫폼 이용약관 개정 안내',
     isFiled: false,
     isFixed: true,
@@ -3824,6 +3829,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '5',
+    type: NoticeType.EVENT,
     title: '보호소 협력 프로그램 오픈 공지',
     isFiled: false,
     isFixed: true,
@@ -3832,6 +3838,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '6',
+    type: NoticeType.POLICY,
     title: '회원 정보 보호 강화 정책 안내',
     isFiled: false,
     isFixed: false,
@@ -3840,6 +3847,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '7',
+    type: NoticeType.EVENT,
     title: '9월 입양 캠페인 종료 안내',
     isFiled: true,
     isFixed: false,
@@ -3848,6 +3856,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '8',
+    type: NoticeType.GENERAL,
     title: '신규 보호소 등록 절차 안내',
     isFiled: false,
     isFixed: true,
@@ -3856,6 +3865,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '9',
+    type: NoticeType.EVENT,
     title: '이벤트 당첨자 발표 안내',
     isFiled: false,
     isFixed: false,
@@ -3864,6 +3874,7 @@ export const noticeList: NoticeListItem[] = [
   },
   {
     id: '10',
+    type: NoticeType.MAINTENANCE,
     title: '시스템 보안 점검 완료 안내',
     isFiled: false,
     isFixed: false,
@@ -3876,6 +3887,7 @@ export const noticeList: NoticeListItem[] = [
 export const noticeDetails: NoticeDetailItem[] = [
   {
     id: '1',
+    type: NoticeType.GENERAL,
     title: '입양 절차 안내 공지',
     content: `안녕하세요 🐾  
 퍼디즈 운영팀입니다.  
@@ -3897,6 +3909,7 @@ export const noticeDetails: NoticeDetailItem[] = [
   },
   {
     id: '2',
+    type: NoticeType.MAINTENANCE,
     title: '사이트 점검 안내 (10/20 예정)',
     content: `안녕하세요.  
 보다 안정적인 서비스를 제공하기 위해  
@@ -3913,6 +3926,7 @@ export const noticeDetails: NoticeDetailItem[] = [
   },
   {
     id: '3',
+    type: NoticeType.EVENT,
     title: '추석 연휴 고객센터 휴무 안내',
     content: `안녕하세요.  
 추석 연휴 기간 동안 고객센터 운영이 중단됩니다.  

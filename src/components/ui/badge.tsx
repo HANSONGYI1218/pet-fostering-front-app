@@ -19,6 +19,7 @@ const badgeVariants = cva(
         outline_none: 'border-none text-black',
         red: 'bg-[#EA1B1B]/80 text-white rounded-lg h-10 border-none text-base',
         black: 'bg-black text-white rounded-full h-6 border-none text-xs',
+        green: 'bg-[#00592d] text-white rounded-full h-6 border-none',
       },
     },
     defaultVariants: {
