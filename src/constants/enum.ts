@@ -13,6 +13,7 @@ import {
   FosterState,
 } from '@/types/animal/animal';
 import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
+import { NoticeType } from '@/types/notcie/notice';
 
 export const ANIMAL_GENDER_LABEL_KO: Record<AnimalGender, string> = {
   [AnimalGender.MALE]: '남',
@@ -105,4 +106,12 @@ export const ANIMAL_SPECIAL_NOTE_LABEL_KO: Record<AnimalSpecialNote, string> = {
   [AnimalSpecialNote.POTTY_ACCIDENTS]: '배변 실수 있음',
   [AnimalSpecialNote.AGGRESSION_TOWARD_OTHER_ANIMALS]: '타 동물 공격성 있음',
   [AnimalSpecialNote.DISABLED_OR_ILL_PETS_ACCEPTED]: '장애/질환 있음',
+};
+
+export const NOTICE_TYPE_LABEL_KO: Record<NoticeType, string> = {
+  [NoticeType.GENERAL]: '공지',
+  [NoticeType.EVENT]: '이벤트',
+  [NoticeType.MAINTENANCE]: '점검',
+  [NoticeType.POLICY]: '정책',
+  [NoticeType.RECRUITMENT]: '채용',
 };
