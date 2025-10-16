@@ -23,6 +23,7 @@ import { CommentItem, CommentItemByUserId } from '@/types/comment/comment-api';
 import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
 import { FosterConditionItem } from '@/types/foster-condition/foster-condition-api';
 import { FosterRecordItem } from '@/types/foster-record/foster-record-api';
+import { NoticeDetailItem, NoticeListItem } from '@/types/notcie/notice-api';
 import { PostItem, PostItemByUserId } from '@/types/post/post-api';
 import {
   UserProfileItem,
@@ -3787,3 +3788,140 @@ export const userFosterCondition: FosterConditionItem = {
     },
   ],
 };
+
+export const noticeList: NoticeListItem[] = [
+  {
+    id: '1',
+    title: '입양 절차 안내 공지',
+    isFiled: false,
+    isFixed: true,
+    index: 1,
+    createdAt: new Date('2025-10-10T09:00:00'),
+  },
+  {
+    id: '2',
+    title: '사이트 점검 안내 (10/20 예정)',
+    isFiled: true,
+    isFixed: false,
+    index: 2,
+    createdAt: new Date('2025-10-15T14:30:00'),
+  },
+  {
+    id: '3',
+    title: '추석 연휴 고객센터 휴무 안내',
+    isFiled: false,
+    isFixed: false,
+    index: 3,
+    createdAt: new Date('2025-09-05T08:00:00'),
+  },
+  {
+    id: '4',
+    title: '플랫폼 이용약관 개정 안내',
+    isFiled: false,
+    isFixed: true,
+    index: 4,
+    createdAt: new Date('2025-10-05T10:00:00'),
+  },
+  {
+    id: '5',
+    title: '보호소 협력 프로그램 오픈 공지',
+    isFiled: false,
+    isFixed: true,
+    index: 5,
+    createdAt: new Date('2025-09-28T09:30:00'),
+  },
+  {
+    id: '6',
+    title: '회원 정보 보호 강화 정책 안내',
+    isFiled: false,
+    isFixed: false,
+    index: 6,
+    createdAt: new Date('2025-08-20T13:15:00'),
+  },
+  {
+    id: '7',
+    title: '9월 입양 캠페인 종료 안내',
+    isFiled: true,
+    isFixed: false,
+    index: 7,
+    createdAt: new Date('2025-09-30T18:00:00'),
+  },
+  {
+    id: '8',
+    title: '신규 보호소 등록 절차 안내',
+    isFiled: false,
+    isFixed: true,
+    index: 8,
+    createdAt: new Date('2025-10-01T11:20:00'),
+  },
+  {
+    id: '9',
+    title: '이벤트 당첨자 발표 안내',
+    isFiled: false,
+    isFixed: false,
+    index: 9,
+    createdAt: new Date('2025-10-12T16:45:00'),
+  },
+  {
+    id: '10',
+    title: '시스템 보안 점검 완료 안내',
+    isFiled: false,
+    isFixed: false,
+    index: 10,
+    createdAt: new Date('2025-10-14T09:00:00'),
+  },
+];
+
+// 공지 상세용 더미 데이터
+export const noticeDetails: NoticeDetailItem[] = [
+  {
+    id: '1',
+    title: '입양 절차 안내 공지',
+    content: `안녕하세요 🐾  
+퍼디즈 운영팀입니다.  
+보다 원활한 입양 절차를 위해 새로운 절차 안내를 드립니다.  
+
+1️⃣ 입양 신청 →  
+2️⃣ 서류 검토 →  
+3️⃣ 보호소 방문 →  
+4️⃣ 최종 입양 확정  
+
+자세한 내용은 첨부파일을 확인해주세요.`,
+    files: [
+      'https://example.com/files/adoption-guide.pdf',
+      'https://example.com/files/adoption-form.docx',
+    ],
+    isFixed: true,
+    index: 1,
+    createdAt: new Date('2025-10-10T09:00:00'),
+  },
+  {
+    id: '2',
+    title: '사이트 점검 안내 (10/20 예정)',
+    content: `안녕하세요.  
+보다 안정적인 서비스를 제공하기 위해  
+아래 일정 동안 시스템 점검이 진행될 예정입니다.
+
+🕒 점검 일시: 2025년 10월 20일(월) 00:00 ~ 06:00  
+⚙️ 점검 내용: 서버 업그레이드 및 DB 최적화
+
+점검 시간 동안 사이트 이용이 제한될 수 있습니다.`,
+    files: [],
+    isFixed: false,
+    index: 2,
+    createdAt: new Date('2025-10-15T14:30:00'),
+  },
+  {
+    id: '3',
+    title: '추석 연휴 고객센터 휴무 안내',
+    content: `안녕하세요.  
+추석 연휴 기간 동안 고객센터 운영이 중단됩니다.  
+
+📅 휴무 기간: 2025년 9월 14일(토) ~ 9월 17일(화)  
+📞 문의사항은 연휴 이후 순차적으로 답변드리겠습니다.`,
+    files: ['https://example.com/files/chuseok_notice.png'],
+    isFixed: false,
+    index: 3,
+    createdAt: new Date('2025-09-05T08:00:00'),
+  },
+];
