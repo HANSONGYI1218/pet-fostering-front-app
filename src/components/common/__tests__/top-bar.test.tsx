@@ -1,5 +1,6 @@
 import { Buffer } from 'node:buffer';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { act } from 'react';
 
 vi.mock('@/lib/auth/kakao', async () => {
   const actual =
@@ -19,6 +20,7 @@ import {
   USER_PROFILE_STORAGE_KEY,
   redirectToKakaoLogout,
 } from '@/lib/auth/kakao';
+import { AUTH_CHANGE_EVENT_NAME } from '@/lib/auth/events';
 import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
@@ -107,6 +109,30 @@ describe('TopBar', () => {
     expect(
       within(mobileNav).queryByRole('link', { name: /로그인/ }),
     ).toBeNull();
+  });
+
+  it('토큰 저장 후 커스텀 이벤트로도 상태를 갱신한다', async () => {
+    const { default: TopBar } = await import('../top-bar');
+
+    render(<TopBar />);
+
+    window.localStorage.setItem(
+      ACCESS_TOKEN_STORAGE_KEY,
+      createToken({
+        sub: 'user-456',
+        displayName: '로그인 완료',
+      }),
+    );
+
+    act(() => {
+      window.dispatchEvent(new Event(AUTH_CHANGE_EVENT_NAME));
+    });
+
+    await waitFor(() =>
+      expect(
+        screen.getByText((content) => content.includes('로그인 완료')),
+      ).toBeDefined(),
+    );
   });
 
   it('로그아웃 버튼 클릭 시 토큰을 제거하고 로그인 페이지로 이동한다', async () => {

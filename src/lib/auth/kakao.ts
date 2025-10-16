@@ -1,4 +1,5 @@
 import { resolveEndpoint } from '@/lib/api/config';
+import { dispatchAuthChangeEvent } from '@/lib/auth/events';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
 const KAKAO_LOGOUT_URL = 'https://kauth.kakao.com/oauth/logout';
@@ -175,6 +176,8 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
       avatarUrl: tokens.avatarUrl ?? null,
     }),
   );
+
+  dispatchAuthChangeEvent();
 
   return tokens;
 };

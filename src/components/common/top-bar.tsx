@@ -20,6 +20,7 @@ import {
   type AuthClaims,
 } from '@/lib/auth/session';
 import { redirectToKakaoLogout } from '@/lib/auth/kakao';
+import { AUTH_CHANGE_EVENT_NAME } from '@/lib/auth/events';
 
 const NAV_ITEMS = [
   {
@@ -52,26 +53,37 @@ const NAV_ITEMS = [
 export default function TopBar() {
   const path = usePathname();
   const router = useRouter();
-  const [authUser, setAuthUser] = useState<AuthClaims | null>(null);
+  const [authUser, setAuthUser] = useState<AuthClaims | null>(() =>
+    typeof window !== 'undefined' ? resolveStoredAuthClaims() : null,
+  );
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {
     const syncAuth = () => {
       setAuthUser(resolveStoredAuthClaims());
     };
+    const handleAuthChange = () => {
+      syncAuth();
+    };
 
     syncAuth();
 
     if (typeof window !== 'undefined') {
       window.addEventListener('storage', syncAuth);
+      window.addEventListener(AUTH_CHANGE_EVENT_NAME, handleAuthChange);
     }
 
     return () => {
       if (typeof window !== 'undefined') {
         window.removeEventListener('storage', syncAuth);
+        window.removeEventListener(AUTH_CHANGE_EVENT_NAME, handleAuthChange);
       }
     };
   }, []);
+
+  useEffect(() => {
+    setAuthUser(resolveStoredAuthClaims());
+  }, [path]);
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);

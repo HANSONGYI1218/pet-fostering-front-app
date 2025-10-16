@@ -14,6 +14,7 @@ import {
   buildKakaoLogoutUrl,
   redirectToKakaoLogout,
 } from './kakao';
+import { AUTH_CHANGE_EVENT_NAME } from './events';
 
 const ORIGINAL_ENV = { ...process.env };
 
@@ -147,6 +148,38 @@ describe('persistAuthTokens', () => {
         displayName: '퍼디',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       }),
+    );
+  });
+
+  it('토큰 저장 후 인증 변경 이벤트를 전파한다', () => {
+    vi.useFakeTimers();
+    const setItem = vi.fn();
+    const storage = { setItem } as Pick<Storage, 'setItem'>;
+    const originalWindow = globalThis.window;
+    const dispatchSpy = vi.fn();
+    (globalThis as typeof globalThis & { window?: Window }).window = {
+      dispatchEvent: dispatchSpy,
+    } as unknown as Window;
+
+    try {
+      persistAuthTokens({
+        storage,
+        tokens: {
+          token: 'access',
+          refreshToken: 'refresh',
+          displayName: null,
+          avatarUrl: null,
+        },
+      });
+      vi.runAllTimers();
+    } finally {
+      (globalThis as typeof globalThis & { window?: Window | undefined }).window =
+        originalWindow;
+      vi.useRealTimers();
+    }
+
+    expect(dispatchSpy).toHaveBeenCalledWith(
+      expect.objectContaining({ type: AUTH_CHANGE_EVENT_NAME }),
     );
   });
 });

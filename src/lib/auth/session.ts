@@ -3,6 +3,7 @@ import {
   REFRESH_TOKEN_STORAGE_KEY,
   USER_PROFILE_STORAGE_KEY,
 } from './kakao';
+import { dispatchAuthChangeEvent } from './events';
 
 type StorageSource = Pick<Storage, 'getItem' | 'removeItem'>;
 
@@ -195,4 +196,5 @@ export const clearStoredAuthTokens = (storage?: StorageSource | null) => {
   source.removeItem(ACCESS_TOKEN_STORAGE_KEY);
   source.removeItem(REFRESH_TOKEN_STORAGE_KEY);
   source.removeItem(USER_PROFILE_STORAGE_KEY);
+  dispatchAuthChangeEvent();
 };
