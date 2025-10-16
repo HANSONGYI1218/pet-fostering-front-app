@@ -33,11 +33,11 @@ type PublicFosterAnimalBaseDto = {
   gender?: keyof typeof AnimalGender | null;
   breed?: string | null;
   birthDate?: string | null;
+  euthanasia_date?: Date | null;
   status: string;
   shared: boolean;
   mainImageUrl?: string | null;
   isEmergency: boolean;
-  isFosterCondition: boolean;
   emergencyReason?: string | null;
   organization: PublicFosterOrganizationDto | null;
   healthTags: Array<keyof typeof AnimalHealth>;
@@ -51,8 +51,8 @@ type PublicFosterAnimalListItemDto = PublicFosterAnimalBaseDto & {
 
 type PublicFosterAnimalDetailDto = PublicFosterAnimalBaseDto & {
   introduction?: string | null;
-  euthanasia_date?: Date | null;
   remark?: string | null;
+  isFosterCondition?: boolean | null;
   images: string[];
   specialNoteTags: Array<keyof typeof AnimalSpecialNote>;
   currentFosterStartDate?: string | null;
@@ -100,7 +100,6 @@ const mapListItem = (
     (value) => AnimalEnvironment[value] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
   ),
   isEmergency: dto.isEmergency,
-  isFosterCondition: dto.isFosterCondition ?? false,
   organization: mapOrganization(dto.organization) ?? {
     id: '',
     name: '',

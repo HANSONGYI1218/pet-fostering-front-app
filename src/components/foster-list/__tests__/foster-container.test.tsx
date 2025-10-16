@@ -20,8 +20,8 @@ const createAnimal = (
   animal_healths: [],
   animal_personalitys: [],
   animal_environments: [],
+  euthanasia_date: new Date('2025-11-01'),
   isEmergency: false,
-  isFosterCondition: false,
   organization: {
     id: 'org-default',
     name: '퍼디 보호소',
@@ -44,6 +44,7 @@ const sampleAnimals: FosterListAnimalItem[] = [
     type: AnimalType.CAT,
     gender: AnimalGender.FEMALE,
     isEmergency: false,
+    euthanasia_date: new Date('2025-11-01'),
     organization: {
       id: 'org-2',
       name: '냥이 쉼터',
