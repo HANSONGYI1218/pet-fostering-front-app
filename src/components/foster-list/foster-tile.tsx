@@ -10,9 +10,8 @@ import {
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
-import { formatAnimalAge } from '@/lib/utils';
+import { formatAnimalAge, getDDay } from '@/lib/utils';
 
-import AnimalBookmark from './animal-bookmark';
 import { Badge } from '../ui/badge';
 import {
   Card,
@@ -23,16 +22,14 @@ import {
 } from '../ui/card';
 import { Button } from '../ui/button';
 import { AspectRatio } from '../ui/aspect-ratio';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
 
 export default function FosterTile({
   animal,
 }: {
   animal: FosterListAnimalItem;
 }) {
-  const token = resolveStoredAccessToken();
   return (
-    <Card className="overflow-hidden p-0 duration-300 hover:shadow-lg">
+    <Card className="cursor-default overflow-hidden p-0 duration-300 hover:shadow-lg">
       <CardHeader className="p-0">
         <div className="relative">
           <AspectRatio ratio={4 / 3}>
@@ -44,12 +41,22 @@ export default function FosterTile({
               sizes="(min-width: 1024px) 33vw, 100vw"
             />
           </AspectRatio>
-          {animal.isEmergency ? (
+          {animal.isEmergency && (
             <Badge variant="red" className="absolute top-4 left-4">
               긴급 동물
             </Badge>
-          ) : null}
-          {token && <AnimalBookmark isBookmarked={animal?.isBookmarked} />}
+          )}
+          {animal?.euthanasia_date && (
+            <Badge
+              variant="outline"
+              className="absolute top-4 right-4 flex gap-2 border-red-300 text-xl font-black text-red-500"
+            >
+              <span className="text-sm font-medium">안락사</span> D-
+              {parseInt(getDDay(animal.euthanasia_date)) <= 0
+                ? '0'
+                : getDDay(animal.euthanasia_date)}
+            </Badge>
+          )}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">
@@ -113,7 +120,7 @@ export default function FosterTile({
         <Button variant="ghost" size="sm" asChild>
           <Link
             href={`/foster-list/${animal?.id}`}
-            className="inline-flex items-center gap-1"
+            className="inline-flex items-center gap-1 hover:rounded-full hover:bg-neutral-100"
           >
             자세히 보기
             <ArrowRight className="size-4" />

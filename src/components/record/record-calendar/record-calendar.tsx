@@ -24,7 +24,7 @@ const RecordCalendar = () => {
   };
 
   return (
-    <Card className="cursor-default border-none p-8">
+    <Card className="cursor-default border-none px-2 py-8 md:p-8">
       <CalendarHeader
         currentMonth={currentMonth}
         prevMonth={prevMonth}

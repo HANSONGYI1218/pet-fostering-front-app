@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns';
 import { WholeDateArray } from './tr';
-import { Loader2, Plus } from 'lucide-react';
+import { Dot, Loader2, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
@@ -18,7 +18,9 @@ import {
 } from '@/components/ui/form';
 import {
   Dialog,
+  DialogClose,
   DialogContent,
+  DialogFooter,
   DialogHeader,
   DialogTitle,
   DialogTrigger,
@@ -32,7 +34,7 @@ import { ko } from 'date-fns/locale';
 import { Card } from '@/components/ui/card';
 import { RecordContent } from '../record-content';
 import { RecordHealthNote } from '../record-health-note';
-import { toDate } from '@/lib/utils';
+import { cn, toDate } from '@/lib/utils';
 
 import type { Dispatch, SetStateAction } from 'react';
 
@@ -69,6 +71,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     new Date(p.date).getDay() === 0 || new Date(p.date).getDay() === 6;
 
   const [open, setOpen] = useState(false);
+  const [isEdit, setIsEdit] = useState(currentRecord ? false : true);
 
   const defaultValues = useMemo(
     () => ({
@@ -130,6 +133,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     });
 
     setOpen(false);
+    setIsEdit(false);
   };
 
   const isSubmitting = form.formState.isSubmitting;
@@ -152,36 +156,40 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
               setCurrentMonth(p.date);
             }
           }}
-          className={`relative flex h-[120px] w-full ${isPasted ? 'cursor-pointer' : 'cursor-default'} flex-col items-center justify-center gap-3 rounded-lg border ${isToday ? 'bg-[#E9FAF1] hover:bg-[#E9FAF1]/70' : currentRecord ? 'bg-neutral-200 hover:bg-neutral-100' : 'bg-white hover:bg-[#00592d]/5'}`}
+          className={`relative flex h-12 w-full p-0 md:h-20 ${isToday && 'max-md:bg-[#15894B]'} ${isPasted ? 'cursor-pointer' : 'cursor-default'} flex-col items-center justify-center gap-3 rounded-lg border ${currentRecord ? 'bg-[#F9F9F9] hover:bg-neutral-100' : 'bg-white hover:bg-neutral-100'}`}
         >
-          {/* {isToday && (
-            <div className="absolute top-0 left-0 h-full w-2 rounded-l-lg bg-[#298C5B]" />
-          )} */}
+          {isToday && (
+            <div className="absolute top-2.5 left-2 h-6 w-6 rounded-full bg-[#15894B] max-md:hidden" />
+          )}
           <span
-            className={`absolute top-3 left-3 font-semibold ${
-              isWeekend
-                ? isThisMonth
-                  ? 'text-red-600'
-                  : 'text-red-600/40'
-                : isThisMonth
-                  ? 'text-neutral-800'
-                  : 'text-neutral-300'
-            }`}
+            className={cn(
+              'absolute top-1.5 left-1.5 text-xs font-normal md:top-3 md:left-3 md:text-sm',
+              isToday
+                ? 'text-white'
+                : isWeekend
+                  ? isThisMonth
+                    ? 'text-red-600'
+                    : 'text-red-600/40'
+                  : isThisMonth
+                    ? 'text-neutral-800'
+                    : 'text-neutral-100',
+            )}
           >
             {p.formattedDate}
           </span>
           {currentRecord && (
-            <Image
+            <img
               src={
                 recordContext.isDog
-                  ? '/icons/dog_stamp.svg'
-                  : '/icons/cat_stamp.svg'
+                  ? '/images/dog_stamp.png'
+                  : '/images/cat_stamp.png'
               }
-              width={100}
-              height={100}
               alt="stamp"
-              className="relative z-10"
+              className="h-[44px] w-[44px] object-cover max-sm:hidden xl:h-[80px] xl:w-[80px]"
             />
+          )}
+          {currentRecord && (
+            <div className="h-2 w-2 translate-y-1 rounded-full bg-[#00592d] stroke-[#00592d] sm:hidden" />
           )}
         </Button>
       </DialogTrigger>
@@ -205,7 +213,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                 </DialogTitle>
                 <div className={`flex w-full flex-col gap-10 px-2`}>
                   <div className="flex w-full flex-col gap-4">
-                    <div className="flex w-full flex-col gap-0.5">
+                    <div className="flex w-full flex-col items-start gap-0.5">
                       <div className="flex items-center gap-2 font-medium">
                         <svg
                           width="16"
@@ -248,8 +256,8 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       name={'images'}
                       render={({ field }) => (
                         <FormItem>
-                          <div className="grid w-full grid-cols-3 gap-2">
-                            {!currentRecord &&
+                          <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
+                            {isEdit &&
                               (!field?.value ||
                                 (field?.value && field?.value?.length < 6)) && (
                                 <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
@@ -335,12 +343,13 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       <FormItem className="w-full">
                         <FormControl>
                           <Textarea
+                            disabled={!isEdit}
                             placeholder={`임시보호중인 동물의 기록을 자유롭게 작성해주세요.
 
 예) 아직은 긴장하는 모습이 있지만, 하루하루 눈에 띄게 적응 중입니다.
 특히 오늘은 제 손에 먼저 다가와서 냄새를 맡아주어 기뻤습니다.
 주말에는 조금 더 오랜 시간 함께 산책하며 친밀감을 쌓아볼 계획입니다.`}
-                            className="min-h-32 resize-none whitespace-pre-wrap disabled:cursor-default disabled:border-none"
+                            className="min-h-32 resize-none whitespace-pre-wrap disabled:cursor-default disabled:opacity-100"
                             {...field}
                           />
                         </FormControl>
@@ -357,13 +366,14 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       <FormItem className="w-full">
                         <FormControl>
                           <Textarea
+                            disabled={!isEdit}
                             placeholder={`임시보호중인 동물의 건강상태를 작성해주세요.
 
 예) 오전에 식욕이 좋아져 사료를 거의 다 먹었습니다.
 오후에는 살짝 설사를 했는데, 한 번 정도였고 이후 상태는 괜찮았습니다.
 귀를 자주 긁어서 귀 상태를 체크해볼 필요가 있을 것 같습니다.
 오전에 다녀온 병원에서 상태가 점점 좋아진다고 말씀해주셨습니다.`}
-                            className="min-h-32 resize-none whitespace-pre-wrap disabled:cursor-default disabled:border-none"
+                            className="min-h-32 resize-none whitespace-pre-wrap disabled:cursor-default disabled:opacity-100"
                             {...field}
                           />
                         </FormControl>
@@ -373,35 +383,49 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                   />
                 </RecordHealthNote>
               </DialogHeader>
-              <div className="mt-10 flex w-full items-center justify-end gap-2">
-                {currentRecord ? (
-                  <Button
-                    type="submit"
-                    variant={'outline_black'}
-                    className="w-24"
-                    disabled={isSubmitting}
-                  >
-                    {isSubmitting ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      '수정'
-                    )}
-                  </Button>
+              <DialogFooter className="mt-6">
+                {isEdit ? (
+                  <>
+                    <DialogClose asChild>
+                      <Button
+                        type="button"
+                        variant={'outline_black'}
+                        onClick={() => {
+                          setIsEdit(false);
+                        }}
+                        className="w-24"
+                      >
+                        취소
+                      </Button>
+                    </DialogClose>
+                    <Button
+                      type="submit"
+                      variant={'default'}
+                      className="w-24"
+                      disabled={isSubmitting}
+                    >
+                      {isSubmitting ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        '완료하기'
+                      )}
+                    </Button>
+                  </>
                 ) : (
                   <Button
-                    type="submit"
-                    variant={'default'}
+                    type="button"
+                    variant={'outline_black'}
+                    onClick={(e) => {
+                      e.preventDefault();
+                      e.stopPropagation();
+                      setIsEdit(true);
+                    }}
                     className="w-24"
-                    disabled={isSubmitting}
                   >
-                    {isSubmitting ? (
-                      <Loader2 className="animate-spin" />
-                    ) : (
-                      '완료'
-                    )}
+                    수정하기
                   </Button>
                 )}
-              </div>
+              </DialogFooter>
             </form>
           </Form>
         </DialogContent>

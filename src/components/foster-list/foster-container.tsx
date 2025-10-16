@@ -46,7 +46,7 @@ export default function FosterContainer({
 
   return (
     <div className="flex flex-col gap-8">
-      <Card className="flex cursor-auto flex-col border-none p-0 shadow-none md:flex-row">
+      <Card className="flex cursor-default flex-col border-none p-0 shadow-none md:flex-row">
         <div className="flex flex-1 items-center gap-2">
           <Button
             type="button"

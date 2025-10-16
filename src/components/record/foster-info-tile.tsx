@@ -12,8 +12,8 @@ export default function FosterInfoCard({
   recordCnt: number;
 }) {
   return (
-    <div className="flex flex-col gap-6">
-      <Card className="h-fit w-72 cursor-default border-none">
+    <div className="flex w-full flex-col gap-6 md:w-md">
+      <Card className="w-full cursor-default border-none">
         <h1 className="text-xl font-bold">{fosterInfo?.animal?.name}</h1>
         <div className="relative h-64 w-full">
           <Image
@@ -56,7 +56,7 @@ export default function FosterInfoCard({
           <span className="font-medium">{fosterInfo?.animal?.remark}</span>
         </div>
       </Card>
-      <Card className="h-fit w-72 cursor-default items-center justify-center gap-2 border-none">
+      <Card className="w-full cursor-default items-center justify-center gap-2 border-none">
         <span className="font-medium">내가 쓴 돌봄기록</span>
         <hr className="w-full" />
         <span className="py-2 text-2xl font-semibold">{recordCnt}개</span>

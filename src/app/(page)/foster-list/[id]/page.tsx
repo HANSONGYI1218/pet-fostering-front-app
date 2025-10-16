@@ -161,8 +161,10 @@ export default async function FosterListDetailPage({
                     variant="outline"
                     className="flex gap-2 border-red-300 text-xl font-black text-red-500"
                   >
-                    <span className="text-sm font-medium">안락사</span> D
-                    {getDDay(animal.euthanasia_date)}
+                    <span className="text-sm font-medium">안락사</span> D-
+                    {parseInt(getDDay(animal.euthanasia_date)) <= 0
+                      ? '0'
+                      : getDDay(animal.euthanasia_date)}
                   </Badge>
                 )}
               </div>

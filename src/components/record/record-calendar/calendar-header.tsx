@@ -19,7 +19,7 @@ const CalendarHeader = ({
   nextMonth,
 }: CalendarHeaderProps) => {
   return (
-    <div className="flex items-center justify-between gap-3">
+    <div className="mx-auto flex items-center gap-3">
       <button onClick={prevMonth}>
         <CircleChevronLeft
           className="h-6 w-6 cursor-pointer rounded-full hover:bg-neutral-100"
