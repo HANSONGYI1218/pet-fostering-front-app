@@ -1,4 +1,4 @@
-import { ANIMAL_GENDER_LABEL_KO } from '@/constants/enum';
+import { ANIMAL_GENDER_LABEL_KO, ANIMAL_TYPE_LABEL_KO } from '@/constants/enum';
 import { Card } from '../ui/card';
 import { FosterRecordAnimalItem } from '@/types/animal/animal-api';
 import { Badge } from '../ui/badge';
@@ -49,10 +49,12 @@ export default function AnimalTile({
       <div className="flex flex-col gap-2 p-6">
         <h1 className="text-xl font-semibold">{animal?.name}</h1>
         <div className="flex gap-1 text-sm text-neutral-500">
-          <span className="">{animal?.type}</span>
+          <span className="">
+            {animal?.type && ANIMAL_TYPE_LABEL_KO[animal.type]}
+          </span>
           <span>·</span>
           <span className="">
-            {animal?.birth_date ? formatAnimalAge(animal?.birth_date) : ''}
+            {animal?.birth_date ? formatAnimalAge(animal.birth_date) : ''}
           </span>
           <span>·</span>
           <span className="">

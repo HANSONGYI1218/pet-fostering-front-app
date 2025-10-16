@@ -138,7 +138,7 @@ export function AniamlCreateDialog() {
           className="flex h-full w-full space-y-8"
         >
           <DialogTrigger asChild>
-            <Card className="group relative mb-6 w-full items-center justify-center overflow-hidden bg-transparent max-md:h-80">
+            <Card className="group relative mb-6 w-full cursor-default items-center justify-center overflow-hidden bg-transparent max-md:h-80">
               <div className="absolute top-0 left-0 z-0 h-full w-full bg-black opacity-0 group-hover:opacity-85" />
               <div className="relative flex flex-col items-center justify-center gap-2">
                 <Plus className="h-10 w-10" stroke="#a3a3a3" strokeWidth={1} />

@@ -22,13 +22,11 @@ export const toDate = (value: Date | string | number): Date => {
 export function getDDay(createdAt: Date | string | number): string {
   const today = new Date();
   const createdDate = toDate(createdAt);
-
-  const plainCreated = new Date(createdDate.toDateString());
-  const todayDate = new Date(today.toDateString());
-
-  const diffMs = todayDate.getTime() - plainCreated.getTime();
-  const diffDays = Math.floor(diffMs / (1000 * 60 * 60 * 24));
-
+  const diffDays = Math.floor(
+    (new Date(createdDate.toDateString()).getTime() -
+      new Date(today.toDateString()).getTime()) /
+      (1000 * 60 * 60 * 24),
+  );
   return diffDays.toString();
 }
 

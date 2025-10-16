@@ -35,6 +35,7 @@ export type FosterListAnimalItem = {
   animal_personalitys: AnimalPersonality[];
   animal_environments: AnimalEnvironment[];
   isEmergency: boolean;
+  euthanasia_date: Date | null;
   isFosterCondition: boolean;
   organization: {
     id: string;

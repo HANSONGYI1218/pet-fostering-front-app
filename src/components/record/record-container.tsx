@@ -33,7 +33,7 @@ export default function RecordContainer({
   };
 
   return (
-    <div className="relative flex w-full flex-col gap-6">
+    <div className="relative flex w-full min-w-0 flex-col gap-6">
       <RecordProvider
         records={records}
         initalValue={records[records.length - 1]}
@@ -46,7 +46,7 @@ export default function RecordContainer({
       {showButton && (
         <button
           onClick={scrollToTop}
-          className="fixed right-12 bottom-12 z-50 flex h-16 w-16 items-center justify-center rounded-full bg-neutral-800 p-3 text-white shadow-lg transition hover:bg-neutral-800/90"
+          className="fixed right-12 bottom-12 z-50 flex h-12 w-12 items-center justify-center rounded-full bg-neutral-800 p-3 text-white shadow-lg transition hover:bg-neutral-800/90"
         >
           <ArrowUp className="h-7 w-7" />
         </button>

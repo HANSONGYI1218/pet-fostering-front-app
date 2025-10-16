@@ -27,6 +27,7 @@ const buildListItem = (
   animal_healths: [AnimalHealth.VACCINATED, AnimalHealth.NEUTERED],
   animal_personalitys: [AnimalPersonality.GOOD_WITH_OTHER_ANIMAL],
   animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
+  euthanasia_date: new Date('2025-10-21'),
   isEmergency: true,
   isFosterCondition: false,
   organization: {

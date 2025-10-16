@@ -49,15 +49,18 @@ export function RecordImages({
       {children ? (
         <>{children}</>
       ) : (
-        <div className="grid w-full grid-cols-3 gap-2">
+        <div className="flex w-full gap-2 overflow-x-auto">
           {images?.map((image, index) => (
-            <Card className="p-0 shadow-none" key={index}>
-              <div className={cn('relative h-40 w-full', className)}>
+            <Card
+              key={index}
+              className="w-64 flex-shrink-0 p-0 shadow-none" // ✅ 고정 너비 + 줄어들지 않게
+            >
+              <div className={cn('relative h-44 w-full md:h-64', className)}>
                 <Image
                   src={image}
                   alt={`record-image-${index + 1}`}
                   fill
-                  className="rounded-xl object-cover"
+                  className="rounded-lg object-cover"
                   sizes="(min-width: 1024px) 20vw, 100vw"
                 />
               </div>
