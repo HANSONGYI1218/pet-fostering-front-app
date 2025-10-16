@@ -1,4 +1,4 @@
-const PROD_API_BASE_URL = 'https://api.impomatch.com/api';
+const PROD_API_BASE_URL = 'https://api.furdiz.com/api';
 const LOCAL_API_BASE_URL = 'http://localhost:3001';
 
 const DEFAULT_API_BASE_URL =

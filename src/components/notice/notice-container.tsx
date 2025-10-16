@@ -26,6 +26,7 @@ export function NoticeContainer({ notices }: { notices: NoticeListItem[] }) {
       <div className="flex w-full flex-col">
         {pagedNotices.map((item: any, index: number) => (
           <NoticeTile notice={item} key={index} />
+
         ))}
       </div>
       <PaginationDynamic

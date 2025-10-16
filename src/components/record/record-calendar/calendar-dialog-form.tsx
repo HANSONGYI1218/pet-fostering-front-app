@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns';
 import { WholeDateArray } from './tr';
-import { Dot, Loader2, Plus } from 'lucide-react';
+import { Loader2, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
@@ -178,15 +178,19 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
             {p.formattedDate}
           </span>
           {currentRecord && (
-            <img
-              src={
-                recordContext.isDog
-                  ? '/images/dog_stamp.png'
-                  : '/images/cat_stamp.png'
-              }
-              alt="stamp"
-              className="h-[44px] w-[44px] object-cover max-sm:hidden xl:h-[80px] xl:w-[80px]"
-            />
+            <div className="relative h-[44px] w-[44px] max-sm:hidden xl:h-[80px] xl:w-[80px]">
+              <Image
+                src={
+                  recordContext.isDog
+                    ? '/images/dog_stamp.png'
+                    : '/images/cat_stamp.png'
+                }
+                alt="stamp"
+                fill
+                className="object-cover"
+                priority
+              />
+            </div>
           )}
           {currentRecord && (
             <div className="h-2 w-2 translate-y-1 rounded-full bg-[#00592d] stroke-[#00592d] sm:hidden" />

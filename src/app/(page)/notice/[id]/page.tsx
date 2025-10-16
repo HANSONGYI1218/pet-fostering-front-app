@@ -1,3 +1,5 @@
+import Link from 'next/link';
+
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { Download } from 'lucide-react';
@@ -7,6 +9,10 @@ import EmptyBox from '@/components/common/empty-box';
 import { Badge } from '@/components/ui/badge';
 import { NOTICE_TYPE_LABEL_KO } from '@/constants/enum';
 
+type NoticeDetailPageProps = {
+  params: Promise<{ id: string }>;
+};
+
 export default async function NoticeDetailPage({
   params,
 }: {
@@ -14,8 +20,25 @@ export default async function NoticeDetailPage({
 }) {
   const { id } = await params;
   const notice = noticeDetails.find((notice) => notice.id === id);
+      
 
-  if (!notice) return <EmptyBox text="공지사항을 찾을 수 없습니다!" />;
+  if (!notice) {
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-neutral-50">
+        <div className="rounded-xl bg-white px-12 py-10 text-center shadow-md">
+          <p className="text-lg font-semibold text-neutral-800">
+            공지사항을 찾을 수 없습니다.
+          </p>
+          <p className="mt-2 text-sm text-neutral-500">
+            목록으로 돌아가 다시 시도해 주세요.
+          </p>
+          <Button className="mt-6" variant="default" asChild>
+            <Link href="/notice">공지 목록 보기</Link>
+          </Button>
+        </div>
+      </main>
+    );
+  }
 
   return (
     <main className="flex flex-col gap-6 bg-neutral-50">

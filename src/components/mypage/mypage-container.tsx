@@ -8,7 +8,6 @@ import ProfileTab from './profile-tab';
 import FosterTab from './foster-tab';
 import RecordTab from './record-tab';
 import SettingTab from './setting-tab';
-import { Card } from '../ui/card';
 import { type MypageStep, isMypageStep } from './mypage-steps';
 import {
   fetchMyComments,
@@ -28,8 +27,6 @@ import type { PostItemByUserId } from '@/types/post/post-api';
 import type { CommentItemByUserId } from '@/types/comment/comment-api';
 import { mergeProfileWithClaims } from './profile-fallback';
 import { tryRefreshAuthTokens } from '@/lib/auth/refresh';
-import { Button } from '../ui/button';
-import Link from 'next/link';
 import LoginNoticeBox from '../common/login-notice-box';
 import FetchErrorBox from '../common/fetch-error-box';
 
