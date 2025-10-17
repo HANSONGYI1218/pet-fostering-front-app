@@ -1,20 +1,19 @@
-import { Suspense } from 'react';
-
 import MypageContainer from '@/components/mypage/mypage-container';
+import { isMypageStep } from '@/components/mypage/mypage-steps';
 
-const MypageFallback = () => (
-  <div className="flex w-full justify-center py-16 text-neutral-500">
-    마이페이지를 불러오는 중입니다...
-  </div>
-);
+type ProfilePageProps = {
+  searchParams?: Record<string, string | string[] | undefined>;
+};
 
-export default function ProfilePage() {
+export default function ProfilePage({ searchParams = {} }: ProfilePageProps) {
+  const rawTab = searchParams.tab;
+  const tabParam = Array.isArray(rawTab) ? rawTab[0] : rawTab;
+  const initialStep = isMypageStep(tabParam) ? tabParam : 'profile';
+
   return (
     <main className="bg-neutral-50">
       <div className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-12 pt-20 pb-40">
-        <Suspense fallback={<MypageFallback />}>
-          <MypageContainer />
-        </Suspense>
+        <MypageContainer initialStep={initialStep} />
       </div>
     </main>
   );

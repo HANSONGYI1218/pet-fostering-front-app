@@ -9,8 +9,8 @@ import type { OgrainzationAnimalDetailItem, OgrainzationAnimalListItem } from '@
 import type { FosterApplicent } from '@/types/foster-apply/foster-apply-api';
 import { resolveEndpoint } from './config';
 import { toDate } from '@/lib/utils';
-import { logFallbackWarning } from './logging';
 import type { FosterRecord } from '@/types/foster-record/foster-record';
+import { logError } from '@/lib/logging';
 
 type OrganizationApplicantDto = {
   id: string;
@@ -128,7 +128,7 @@ export const fetchOrganizationAnimals = async (): Promise<
 
     return payload.items.map(mapOrganizationAnimal);
   } catch (error) {
-    logFallbackWarning('조직 동물 목록을 불러오지 못했습니다.', error);
+    logError('조직 동물 목록을 불러오지 못했습니다.', error);
     throw error;
   }
 };

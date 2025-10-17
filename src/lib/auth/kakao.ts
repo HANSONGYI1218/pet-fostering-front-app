@@ -1,5 +1,6 @@
 import { resolveEndpoint } from '@/lib/api/config';
 import { dispatchAuthChangeEvent } from '@/lib/auth/events';
+import { clearBrowserCookie, setBrowserCookie } from './cookie-utils';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
 const KAKAO_LOGOUT_URL = 'https://kauth.kakao.com/oauth/logout';
@@ -176,6 +177,8 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
       avatarUrl: tokens.avatarUrl ?? null,
     }),
   );
+  setBrowserCookie(ACCESS_TOKEN_STORAGE_KEY, tokens.token);
+  setBrowserCookie(REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken);
 
   dispatchAuthChangeEvent();
 

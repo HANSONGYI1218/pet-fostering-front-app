@@ -7,6 +7,7 @@ import { fetchOrganizationAnimalDetail } from '@/lib/api/organization';
 import { logError } from '@/lib/logging';
 import { Button } from '@/components/ui/button';
 import { notFound } from 'next/navigation';
+import KakaoMapsScript from '@/components/common/kakao-maps-script';
 
 export default async function AnimalListDetailPage({
   params,
@@ -19,12 +20,15 @@ export default async function AnimalListDetailPage({
     const animal = await fetchOrganizationAnimalDetail(id);
 
     return (
-      <main className="bg-neutral-50">
-        <div className="container_12 mx-auto flex min-h-screen w-full flex-col gap-6 pt-20 pb-40">
-          <BackButton link="/organization/animal-list" />
-          <AnimalDetailContainer animal={animal} />
-        </div>
-      </main>
+      <>
+        <KakaoMapsScript />
+        <main className="bg-neutral-50">
+          <div className="container_12 mx-auto flex min-h-screen w-full flex-col gap-6 pt-20 pb-40">
+            <BackButton link="/organization/animal-list" />
+            <AnimalDetailContainer animal={animal} />
+          </div>
+        </main>
+      </>
     );
   } catch (error) {
     logError('조직 동물 상세를 불러오는 데 실패했습니다.', error);

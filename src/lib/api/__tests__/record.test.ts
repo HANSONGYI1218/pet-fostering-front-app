@@ -99,9 +99,35 @@ describe('record api', () => {
     const detail = await fetchRecordDetail('animal-1');
 
     expect(detail.info.id).toBe('animal-1');
-    expect(detail.records[0]).toMatchObject({
-      id: 'record-1',
-      health_note: '정상',
-    });
+   expect(detail.records[0]).toMatchObject({
+     id: 'record-1',
+     health_note: '정상',
+   });
+ });
+
+  it('fetchRecordAnimals가 실패하면 예외를 전달한다', async () => {
+    fetchMock.mockResolvedValueOnce(
+      Promise.resolve({
+        ok: false,
+        status: 500,
+      }) as Response,
+    );
+
+    await expect(fetchRecordAnimals()).rejects.toThrow(
+      '기록 동물 목록 요청 실패: 500',
+    );
+  });
+
+  it('fetchRecordDetail이 실패하면 예외를 전달한다', async () => {
+    fetchMock.mockResolvedValueOnce(
+      Promise.resolve({
+        ok: false,
+        status: 404,
+      }) as Response,
+    );
+
+    await expect(fetchRecordDetail('unknown')).rejects.toThrow(
+      '기록 상세 요청 실패: 404',
+    );
   });
 });

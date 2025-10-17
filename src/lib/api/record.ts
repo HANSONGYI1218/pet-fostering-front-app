@@ -1,5 +1,4 @@
 import { resolveEndpoint } from './config';
-import { fosterRecordDummyData } from '@/lib/dummydata';
 import type { FosterRecordAnimalItem } from '@/types/animal/animal-api';
 import type {
   FosterMatchInfo,
@@ -7,7 +6,7 @@ import type {
 } from '@/types/foster-record/foster-record-api';
 import { AnimalGender, AnimalType, FosterState } from '@/types/animal/animal';
 import { toDate } from '@/lib/utils';
-import { logFallbackWarning } from './logging';
+import { logError } from '@/lib/logging';
 
 type RecordAnimalDto = {
   id: string;
@@ -137,22 +136,12 @@ export const fetchRecordAnimals = async (): Promise<
     const result: RecordListResponseDto = await response.json();
     return result.items.map(mapRecordAnimal);
   } catch (error) {
-    logFallbackWarning(
-      '기록 동물 목록을 불러오지 못해 더미 데이터를 사용합니다.',
-      error,
-    );
-    return fosterRecordDummyData.map((item) => ({
-      id: item.id,
-      name: item.animal.name,
-      type: item.animal.type,
-      breed: item.animal.breed,
-      birth_date: item.animal.birth_date,
-      gender: item.animal.gender,
-      images: item.animal.images,
-      foster_duration: item.foster_records.length,
-      state: item.state,
-      foster_match_id: item.id,
-    }));
+    logError('기록 동물 목록을 불러오지 못했습니다.', error);
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error('기록 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.');
   }
 };
 
@@ -170,23 +159,11 @@ export const fetchRecordDetail = async (
     const result: RecordDetailDto = await response.json();
     return mapRecordDetail(result);
   } catch (error) {
-    logFallbackWarning(
-      '기록 상세를 불러오지 못해 더미 데이터를 사용합니다.',
-      error,
-    );
-    const fallback = fosterRecordDummyData.find((item) => item.id === id);
-    const target = fallback ?? fosterRecordDummyData[0];
-    if (!target) throw error;
+    logError(`기록 상세(${id})를 불러오지 못했습니다.`, error);
+    if (error instanceof Error) {
+      throw error;
+    }
 
-    return {
-      info: {
-        id: target.id,
-        state: target.state,
-        organization: target.organization,
-        animal: target.animal,
-        created_at: target.created_at,
-      },
-      records: target.foster_records,
-    };
+    throw new Error('기록 상세를 불러오는 중 알 수 없는 오류가 발생했습니다.');
   }
 };

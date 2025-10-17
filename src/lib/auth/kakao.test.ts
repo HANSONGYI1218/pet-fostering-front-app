@@ -18,6 +18,58 @@ import { AUTH_CHANGE_EVENT_NAME } from './events';
 
 const ORIGINAL_ENV = { ...process.env };
 
+const stubBrowserEnv = () => {
+  const cookieJar: string[] = [];
+  const documentStub = {
+    get cookie() {
+      return cookieJar.join('; ');
+    },
+    set cookie(value: string) {
+      cookieJar.push(value);
+    },
+  } as unknown as Document;
+  const windowStub = {
+    location: { protocol: 'http:' },
+    dispatchEvent: vi.fn(),
+  } as unknown as Window;
+
+  const originalDocument = (globalThis as { document?: Document }).document;
+  const originalWindow = (globalThis as { window?: Window }).window;
+
+  Object.defineProperty(globalThis, 'document', {
+    configurable: true,
+    value: documentStub,
+  });
+  Object.defineProperty(globalThis, 'window', {
+    configurable: true,
+    value: windowStub,
+  });
+
+  return {
+    cookieJar,
+    windowStub,
+    restore: () => {
+      if (originalDocument) {
+        Object.defineProperty(globalThis, 'document', {
+          configurable: true,
+          value: originalDocument,
+        });
+      } else {
+        delete (globalThis as { document?: Document }).document;
+      }
+
+      if (originalWindow) {
+        Object.defineProperty(globalThis, 'window', {
+          configurable: true,
+          value: originalWindow,
+        });
+      } else {
+        delete (globalThis as { window?: Window }).window;
+      }
+    },
+  };
+};
+
 describe('buildKakaoAuthorizeUrl', () => {
   beforeEach(() => {
     process.env = { ...ORIGINAL_ENV };
@@ -110,6 +162,16 @@ describe('exchangeKakaoAuthorizationCode', () => {
 });
 
 describe('persistAuthTokens', () => {
+  let browserEnv: ReturnType<typeof stubBrowserEnv>;
+
+  beforeEach(() => {
+    browserEnv = stubBrowserEnv();
+  });
+
+  afterEach(() => {
+    browserEnv.restore();
+  });
+
   it('토큰을 Storage에 저장한다', () => {
     const setItem = vi.fn();
     const storage = { setItem } as Pick<Storage, 'setItem'>;
@@ -155,11 +217,6 @@ describe('persistAuthTokens', () => {
     vi.useFakeTimers();
     const setItem = vi.fn();
     const storage = { setItem } as Pick<Storage, 'setItem'>;
-    const originalWindow = globalThis.window;
-    const dispatchSpy = vi.fn();
-    (globalThis as typeof globalThis & { window?: Window }).window = {
-      dispatchEvent: dispatchSpy,
-    } as unknown as Window;
 
     try {
       persistAuthTokens({
@@ -173,14 +230,38 @@ describe('persistAuthTokens', () => {
       });
       vi.runAllTimers();
     } finally {
-      (globalThis as typeof globalThis & { window?: Window | undefined }).window =
-        originalWindow;
       vi.useRealTimers();
     }
 
-    expect(dispatchSpy).toHaveBeenCalledWith(
+    expect(browserEnv.windowStub.dispatchEvent).toHaveBeenCalledWith(
       expect.objectContaining({ type: AUTH_CHANGE_EVENT_NAME }),
     );
+  });
+
+  it('토큰을 쿠키에 저장한다', () => {
+    const setItem = vi.fn();
+    const storage = { setItem } as Pick<Storage, 'setItem'>;
+
+    persistAuthTokens({
+      storage,
+      tokens: {
+        token: 'access-token',
+        refreshToken: 'refresh-token',
+        displayName: null,
+        avatarUrl: null,
+      },
+    });
+
+    expect(
+      browserEnv.cookieJar.some((cookie) =>
+        cookie.startsWith(`${ACCESS_TOKEN_STORAGE_KEY}=`),
+      ),
+    ).toBe(true);
+    expect(
+      browserEnv.cookieJar.some((cookie) =>
+        cookie.startsWith(`${REFRESH_TOKEN_STORAGE_KEY}=`),
+      ),
+    ).toBe(true);
   });
 });
 

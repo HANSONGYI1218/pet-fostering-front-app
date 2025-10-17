@@ -12,8 +12,7 @@ import type {
 import { toDate } from '@/lib/utils';
 
 import { resolveEndpoint } from './config';
-import { fallbackFosterDetails, fallbackFosterList } from './foster.dummy';
-import { logFallbackWarning } from './logging';
+import { logError } from '@/lib/logging';
 
 type PublicFosterOrganizationDto = {
   id: string;
@@ -183,11 +182,12 @@ export const fetchFosterAnimals = async (): Promise<FosterListAnimalItem[]> => {
 
     return result.items.map(mapListItem);
   } catch (error) {
-    logFallbackWarning(
-      '임보 동물 목록을 불러오지 못해 더미 데이터를 사용합니다.',
-      error,
-    );
-    return fallbackFosterList;
+    logError('임보 동물 목록을 불러오지 못했습니다.', error);
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error('임보 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.');
   }
 };
 
@@ -206,19 +206,12 @@ export const fetchFosterAnimalDetail = async (
 
     return mapDetail(result);
   } catch (error) {
-    logFallbackWarning(
-      '임보 동물 상세를 불러오지 못해 더미 데이터를 사용합니다.',
-      error,
-    );
-    const fallback =
-      fallbackFosterDetails[id] ??
-      (fallbackFosterList.length
-        ? fallbackFosterDetails[fallbackFosterList[0].id]
-        : undefined);
-    if (fallback) {
-      return fallback;
+    logError(`임보 동물 상세(${id})를 불러오지 못했습니다.`, error);
+    if (error instanceof Error) {
+      throw error;
     }
-    throw error;
+
+    throw new Error('임보 동물 상세를 불러오는 중 알 수 없는 오류가 발생했습니다.');
   }
 };
 

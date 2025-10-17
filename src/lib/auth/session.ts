@@ -4,6 +4,7 @@ import {
   USER_PROFILE_STORAGE_KEY,
 } from './kakao';
 import { dispatchAuthChangeEvent } from './events';
+import { clearBrowserCookie } from './cookie-utils';
 
 type StorageSource = Pick<Storage, 'getItem' | 'removeItem'>;
 
@@ -189,12 +190,13 @@ export const resolveStoredAuthClaims = (storage?: StorageSource | null) => {
 export const clearStoredAuthTokens = (storage?: StorageSource | null) => {
   const source = resolveStorage(storage);
 
-  if (!source) {
-    return;
+  if (source) {
+    source.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+    source.removeItem(REFRESH_TOKEN_STORAGE_KEY);
+    source.removeItem(USER_PROFILE_STORAGE_KEY);
   }
 
-  source.removeItem(ACCESS_TOKEN_STORAGE_KEY);
-  source.removeItem(REFRESH_TOKEN_STORAGE_KEY);
-  source.removeItem(USER_PROFILE_STORAGE_KEY);
+  clearBrowserCookie(ACCESS_TOKEN_STORAGE_KEY);
+  clearBrowserCookie(REFRESH_TOKEN_STORAGE_KEY);
   dispatchAuthChangeEvent();
 };

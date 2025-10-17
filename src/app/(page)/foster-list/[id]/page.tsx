@@ -22,6 +22,7 @@ import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
+import KakaoMapsScript from '@/components/common/kakao-maps-script';
 
 export default async function FosterListDetailPage({
   params,
@@ -110,8 +111,10 @@ export default async function FosterListDetailPage({
   ];
 
   return (
-    <main className="bg-neutral-50">
-      <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16">
+    <>
+      <KakaoMapsScript />
+      <main className="bg-neutral-50">
+        <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16">
         <BackButton link="/foster-list" />
         {animal?.isEmergency && (
           <div className="flex w-full items-center gap-10 rounded-lg bg-[#FDE8E8] px-6 py-3">
@@ -382,7 +385,7 @@ export default async function FosterListDetailPage({
             </div>
           </div>
         </div>
-      </div>
-    </main>
+      </main>
+    </>
   );
 }

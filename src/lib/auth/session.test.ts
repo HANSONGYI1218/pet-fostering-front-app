@@ -25,6 +25,38 @@ const createToken = (payload: Record<string, unknown>) => {
   return `${header}.${body}.signature`;
 };
 
+const stubBrowserEnv = () => {
+  const cookieJar: string[] = [];
+  const documentStub = {
+    get cookie() {
+      return cookieJar.join('; ');
+    },
+    set cookie(value: string) {
+      cookieJar.push(value);
+    },
+  } as unknown as Document;
+  const originalDocument = (globalThis as { document?: Document }).document;
+
+  Object.defineProperty(globalThis, 'document', {
+    configurable: true,
+    value: documentStub,
+  });
+
+  return {
+    cookieJar,
+    restore: () => {
+      if (originalDocument) {
+        Object.defineProperty(globalThis, 'document', {
+          configurable: true,
+          value: originalDocument,
+        });
+      } else {
+        delete (globalThis as { document?: Document }).document;
+      }
+    },
+  };
+};
+
 describe('session utilities', () => {
   const createStorage = (): StorageLike => {
     const map = new Map<string, string>();
@@ -110,10 +142,30 @@ describe('session utilities', () => {
       JSON.stringify({ displayName: '퍼디', avatarUrl: null }),
     );
 
-    clearStoredAuthTokens(storage);
+    const browserEnv = stubBrowserEnv();
+
+    try {
+      clearStoredAuthTokens(storage);
+    } finally {
+      browserEnv.restore();
+    }
 
     expect(storage.getItem(ACCESS_TOKEN_STORAGE_KEY)).toBeNull();
     expect(storage.getItem(REFRESH_TOKEN_STORAGE_KEY)).toBeNull();
     expect(storage.getItem(USER_PROFILE_STORAGE_KEY)).toBeNull();
+    expect(
+      browserEnv.cookieJar.some(
+        (cookie) =>
+          cookie.startsWith(`${ACCESS_TOKEN_STORAGE_KEY}=`) &&
+          cookie.includes('Max-Age=0'),
+      ),
+    ).toBe(true);
+    expect(
+      browserEnv.cookieJar.some(
+        (cookie) =>
+          cookie.startsWith(`${REFRESH_TOKEN_STORAGE_KEY}=`) &&
+          cookie.includes('Max-Age=0'),
+      ),
+    ).toBe(true);
   });
 });
