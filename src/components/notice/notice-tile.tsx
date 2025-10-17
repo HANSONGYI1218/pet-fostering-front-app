@@ -36,13 +36,17 @@ export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
           </span>
         </div>
         <div className="flex w-fit items-center justify-end gap-2 md:gap-4">
-          {notice?.isFiled && (
-            <Paperclip
-              width={15}
-              height={15}
-              stroke="#a3a3a3"
-              className="max-md:h-3 max-md:w-3"
-            />
+          {notice?.hasAttachments && (
+            <span className="flex items-center gap-1 text-neutral-500">
+              <Paperclip
+                width={15}
+                height={15}
+                stroke="#a3a3a3"
+                className="max-md:h-3 max-md:w-3"
+                aria-hidden="true"
+              />
+              <span className="sr-only">첨부파일</span>
+            </span>
           )}
           <span className="w-20 text-xs text-neutral-600 md:text-base">
             {format(notice?.createdAt, 'yyyy.MM.dd')}

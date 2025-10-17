@@ -1,92 +1,94 @@
-import Link from 'next/link';
-
 import { Button } from '@/components/ui/button';
 import { format } from 'date-fns';
 import { Download } from 'lucide-react';
-import { noticeDetails } from '@/lib/dummydata';
 import BackButton from '@/components/common/back-button';
-import EmptyBox from '@/components/common/empty-box';
 import { Badge } from '@/components/ui/badge';
 import { NOTICE_TYPE_LABEL_KO } from '@/constants/enum';
-
-type NoticeDetailPageProps = {
-  params: Promise<{ id: string }>;
-};
+import FetchErrorBox from '@/components/common/fetch-error-box';
+import { fetchNoticeDetail } from '@/lib/api/notice';
+import { logError } from '@/lib/logging';
+import Link from 'next/link';
+import { notFound } from 'next/navigation';
 
 export default async function NoticeDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
-  const notice = noticeDetails.find((notice) => notice.id === id);
+  const { id } = params;
 
-  if (!notice) {
+  try {
+    const notice = await fetchNoticeDetail(id);
+
     return (
-      <main className="flex min-h-screen items-center justify-center bg-neutral-50">
-        <div className="rounded-xl bg-white px-12 py-10 text-center shadow-md">
-          <p className="text-lg font-semibold text-neutral-800">
-            공지사항을 찾을 수 없습니다.
-          </p>
-          <p className="mt-2 text-sm text-neutral-500">
-            목록으로 돌아가 다시 시도해 주세요.
-          </p>
-          <Button className="mt-6" variant="default" asChild>
-            <Link href="/notice">공지 목록 보기</Link>
-          </Button>
-        </div>
-      </main>
-    );
-  }
-
-  return (
-    <main className="flex flex-col gap-6 bg-neutral-50">
-      <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16">
-        <BackButton link="/notice" />
-        <div className="flex flex-col rounded-xl bg-white p-4 md:p-12">
-          <div className="flex w-full flex-col items-center gap-6 py-6">
-            <Badge
-              variant={notice?.isFixed ? 'green' : 'outline'}
-              className="h-7 w-15 rounded-full text-sm"
-            >
-              {notice?.isFixed
-                ? '중요'
-                : notice?.type && NOTICE_TYPE_LABEL_KO[notice.type]}
-            </Badge>
-            <div className="flex flex-col items-center gap-2">
-              <span className="text-center text-lg font-semibold md:text-xl">
-                {notice?.title}
-              </span>
-              <span className="text-xs text-neutral-600 md:text-sm">
-                {notice?.createdAt && format(notice.createdAt, 'yyyy.MM.dd')}
-              </span>
+      <main className="flex flex-col gap-6 bg-neutral-50">
+        <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16">
+          <BackButton link="/notice" />
+          <div className="flex flex-col rounded-xl bg-white p-4 md:p-12">
+            <div className="flex w-full flex-col items-center gap-6 py-6">
+              <Badge
+                variant={notice.isFixed ? 'green' : 'outline'}
+                className="h-7 w-15 rounded-full text-sm"
+              >
+                {notice.isFixed
+                  ? '중요'
+                  : NOTICE_TYPE_LABEL_KO[notice.type]}
+              </Badge>
+              <div className="flex flex-col items-center gap-2">
+                <span className="text-center text-lg font-semibold md:text-xl">
+                  {notice.title}
+                </span>
+                <span className="text-xs text-neutral-600 md:text-sm">
+                  {format(notice.createdAt, 'yyyy.MM.dd')}
+                </span>
+              </div>
             </div>
-          </div>
 
-          <div className="flex min-h-96 w-full border-y px-6 py-16 text-sm whitespace-pre-line md:text-base">
-            {notice?.content}
-          </div>
+            <div className="flex min-h-96 w-full whitespace-pre-line border-y px-6 py-16 text-sm md:text-base">
+              {notice.content}
+            </div>
 
-          <div className="flex w-full flex-col items-end gap-2 p-6">
-            {notice?.files.map((file: string, index: number) => {
-              return (
-                <div key={index} className="flex items-center gap-2">
+            <div className="flex w-full flex-col items-end gap-2 p-6">
+              {notice.attachments.map((file) => (
+                <div key={file} className="flex items-center gap-2">
                   <span className="line-clamp-1 max-w-20 text-sm text-neutral-600 md:max-w-64">
                     {file}
                   </span>
                   <Download width={15} height={15} className="cursor-pointer" />
-                  <Button
-                    className="ml-4 h-7 text-xs font-medium"
-                    variant={'outline'}
-                  >
+                  <Button className="ml-4 h-7 text-xs font-medium" variant="outline">
                     미리보기
                   </Button>
                 </div>
-              );
-            })}
+              ))}
+              {notice.attachments.length === 0 ? (
+                <span className="text-sm text-neutral-500">
+                  첨부파일이 없습니다.
+                </span>
+              ) : null}
+            </div>
           </div>
         </div>
-      </div>
-    </main>
-  );
+      </main>
+    );
+  } catch (error) {
+    logError('공지 상세를 불러오는 데 실패했습니다.', error);
+    const status = error instanceof Error ? (error as Error & { status?: number }).status : undefined;
+
+    if (status === 404) {
+      notFound();
+    }
+
+    return (
+      <main className="flex min-h-screen items-center justify-center bg-neutral-50">
+        <div className="mx-auto w-full max-w-screen-md px-6">
+          <FetchErrorBox errorMessage="공지 상세를 불러오지 못했습니다." />
+          <div className="mt-6 flex justify-center">
+            <Button variant="default" asChild>
+              <Link href="/notice">공지 목록으로 돌아가기</Link>
+            </Button>
+          </div>
+        </div>
+      </main>
+    );
+  }
 }

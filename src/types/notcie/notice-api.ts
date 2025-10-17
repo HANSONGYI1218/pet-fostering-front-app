@@ -4,10 +4,9 @@ export type NoticeListItem = {
   id: string;
   type: NoticeType;
   title: string;
-  isFiled: boolean;
   isFixed: boolean;
-  index: number;
   createdAt: Date;
+  hasAttachments: boolean;
 };
 
 export type NoticeDetailItem = {
@@ -15,8 +14,7 @@ export type NoticeDetailItem = {
   type: NoticeType;
   title: string;
   content: string;
-  files: string[]; //첨부파일
+  attachments: string[];
   isFixed: boolean;
-  index: number;
   createdAt: Date;
 };

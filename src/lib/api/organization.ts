@@ -1,16 +1,16 @@
-import { AnimalEnvironment, AnimalHealth, AnimalPersonality } from '@/types/animal-condition/animal-condition';
+import { AnimalEnvironment, AnimalHealth, AnimalPersonality, AnimalSpecialNote } from '@/types/animal-condition/animal-condition';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
 } from '@/types/animal/animal';
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import { dummyOgrainzationAnimals } from '@/lib/dummydata';
+import type { OgrainzationAnimalDetailItem, OgrainzationAnimalListItem } from '@/types/animal/animal-api';
 import type { FosterApplicent } from '@/types/foster-apply/foster-apply-api';
 import { resolveEndpoint } from './config';
 import { toDate } from '@/lib/utils';
 import { logFallbackWarning } from './logging';
+import type { FosterRecord } from '@/types/foster-record/foster-record';
 
 type OrganizationApplicantDto = {
   id: string;
@@ -42,6 +42,34 @@ type OrganizationAnimalDto = {
 
 type OrganizationAnimalListResponseDto = {
   items: OrganizationAnimalDto[];
+};
+
+type OrganizationAnimalDetailDto = OrganizationAnimalDto & {
+  introduction?: string | null;
+  remark?: string | null;
+  imageUrls?: string[] | null;
+  emergencyReason?: string | null;
+  currentFosterStartDate?: string | null;
+  currentFosterEndDate?: string | null;
+  specialNoteTags?: Array<keyof typeof AnimalSpecialNote>;
+  organization?: {
+    id: string;
+    name: string;
+    phoneNumber?: string | null;
+    address?: string | null;
+    addressDetail?: string | null;
+    donationBankName?: string | null;
+    donationAccountNumber?: string | null;
+    donationAccountHolder?: string | null;
+  } | null;
+  fosterRecords?: Array<{
+    id: string;
+    content?: string | null;
+    healthNote?: string | null;
+    createdAt: string;
+    updatedAt: string;
+    images?: string[] | null;
+  }>;
 };
 
 const mapApplicant = (dto: OrganizationApplicantDto): FosterApplicent => ({
@@ -100,10 +128,96 @@ export const fetchOrganizationAnimals = async (): Promise<
 
     return payload.items.map(mapOrganizationAnimal);
   } catch (error) {
-    logFallbackWarning(
-      '조직 동물 목록을 불러오지 못해 더미 데이터를 사용합니다.',
-      error,
-    );
-    return dummyOgrainzationAnimals;
+    logFallbackWarning('조직 동물 목록을 불러오지 못했습니다.', error);
+    throw error;
   }
+};
+
+const mapOrganizationRecord = (
+  dto: NonNullable<OrganizationAnimalDetailDto['fosterRecords']>[number],
+): FosterRecord => ({
+  id: dto.id,
+  images: dto.images?.slice() ?? [],
+  content: dto.content ?? '',
+  health_note: dto.healthNote ?? '',
+  created_at: toDate(dto.createdAt),
+  updated_at: toDate(dto.updatedAt),
+});
+
+const mapOrganizationDetail = (
+  dto: OrganizationAnimalDetailDto,
+): OgrainzationAnimalDetailItem => ({
+  id: dto.id,
+  name: dto.name,
+  type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
+  size: dto.size ? AnimalSize[dto.size] : AnimalSize.SMALL,
+  breed: dto.breed ?? '',
+  birth_date: dto.birthDate ? toDate(dto.birthDate) : new Date(),
+  gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
+  images:
+    dto.imageUrls && dto.imageUrls.length > 0
+      ? dto.imageUrls
+      : ['/images/animal-placeholder.png'],
+  introduction: dto.introduction ?? '',
+  remark: dto.remark ?? '',
+  isBookmarked: false,
+  current_foster_start_date: dto.currentFosterStartDate
+    ? toDate(dto.currentFosterStartDate)
+    : new Date(),
+  current_foster_end_date: dto.currentFosterEndDate
+    ? toDate(dto.currentFosterEndDate)
+    : new Date(),
+  foster_records: dto.fosterRecords?.map(mapOrganizationRecord) ?? [],
+  animal_healths:
+    dto.healthTags?.map(
+      (tag) => AnimalHealth[tag] ?? AnimalHealth.NEUTERED,
+    ) ?? [],
+  animal_personalitys:
+    dto.personalityTags?.map(
+      (tag) => AnimalPersonality[tag] ?? AnimalPersonality.QUIET,
+    ) ?? [],
+  foster_environments:
+    dto.environmentTags?.map(
+      (tag) => AnimalEnvironment[tag] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
+    ) ?? [],
+  special_notes_animals:
+    dto.specialNoteTags?.map(
+      (tag) => AnimalSpecialNote[tag] ?? AnimalSpecialNote.SEPARATION_ANXIETY,
+    ) ?? [],
+  isEmergency: Boolean(dto.isEmergency),
+  emergency_reason: dto.emergencyReason ?? '',
+  organization: {
+    id: dto.organization?.id ?? '',
+    name: dto.organization?.name ?? '',
+    address: dto.organization?.address ?? '',
+    address_detail: dto.organization?.addressDetail ?? '',
+    phone_number: dto.organization?.phoneNumber ?? '',
+    donation_bank_name: dto.organization?.donationBankName ?? '',
+    donation_account_number: dto.organization?.donationAccountNumber ?? '',
+    donation_account_holder: dto.organization?.donationAccountHolder ?? '',
+  },
+});
+
+export const fetchOrganizationAnimalDetail = async (
+  id: string,
+): Promise<OgrainzationAnimalDetailItem> => {
+  const response = await fetch(
+    resolveEndpoint(`/organization/animals/${id}`),
+    {
+      cache: 'no-store',
+      headers: { Accept: 'application/json' },
+    },
+  );
+
+  if (!response.ok) {
+    const error = new Error(
+      `조직 동물 상세 요청 실패: ${response.status}`,
+    ) as Error & { status?: number };
+    error.status = response.status;
+    throw error;
+  }
+
+  const payload = (await response.json()) as OrganizationAnimalDetailDto;
+
+  return mapOrganizationDetail(payload);
 };
