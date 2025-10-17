@@ -1,4 +1,3 @@
-import { QueryClient } from '@tanstack/react-query';
 import { render, screen } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
@@ -9,8 +8,6 @@ vi.mock('@tanstack/react-query-devtools', () => ({
 import FosterApplyProviders from '../foster-apply-provider';
 
 describe('FosterApplyProviders', () => {
-  const createClient = () => new QueryClient();
-
   beforeEach(() => {
     vi.resetModules();
   });
@@ -20,7 +17,7 @@ describe('FosterApplyProviders', () => {
     process.env.NODE_ENV = 'production';
 
     render(
-      <FosterApplyProviders queryClient={createClient()}>
+      <FosterApplyProviders>
         <div>child</div>
       </FosterApplyProviders>,
     );
@@ -35,7 +32,7 @@ describe('FosterApplyProviders', () => {
     process.env.NODE_ENV = 'development';
 
     render(
-      <FosterApplyProviders queryClient={createClient()}>
+      <FosterApplyProviders>
         <div>child</div>
       </FosterApplyProviders>,
     );

@@ -1,10 +1,5 @@
-'use client';
-
 import AnimalContainer from '@/components/organization/animal-list/animal-container';
 import FosterApplyProviders from '@/providers/foster-apply-provider';
-import { QueryClient } from '@tanstack/react-query';
-
-const queryClient = new QueryClient();
 
 export default function AnimalListPage() {
   return (
@@ -16,7 +11,7 @@ export default function AnimalListPage() {
             사랑과 보살핌이 필요한 아이들을 관리해 보세요!
           </span>
         </div>
-        <FosterApplyProviders queryClient={queryClient}>
+        <FosterApplyProviders>
           <AnimalContainer />
         </FosterApplyProviders>
       </div>

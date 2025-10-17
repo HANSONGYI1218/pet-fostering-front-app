@@ -1,3 +1,5 @@
+'use client';
+
 import { FosterRecord } from '@/types/foster-record/foster-record';
 import React, {
   createContext,
