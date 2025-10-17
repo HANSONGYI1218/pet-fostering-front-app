@@ -13,6 +13,7 @@ import { toDate } from '@/lib/utils';
 
 import { resolveEndpoint } from './config';
 import { fallbackFosterDetails, fallbackFosterList } from './foster.dummy';
+import { logFallbackWarning } from './logging';
 
 type PublicFosterOrganizationDto = {
   id: string;
@@ -168,13 +169,6 @@ const mapDetail = (
       },
   emergency_reason: dto.emergencyReason ?? '',
 });
-
-const logFallbackWarning = (message: string, error: unknown) => {
-  if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line no-console
-    console.warn(message, error);
-  }
-};
 
 export const fetchFosterAnimals = async (): Promise<FosterListAnimalItem[]> => {
   try {

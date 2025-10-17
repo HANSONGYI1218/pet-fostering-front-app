@@ -10,7 +10,8 @@ import {
 import Image from 'next/image';
 import { ko } from 'date-fns/locale';
 import { Button } from '../ui/button';
-import { PostItem } from '@/types/post/post-api';
+import RetryButton from '@/components/common/retry-button';
+import type { PostItem } from '@/types/post/post-api';
 import { toDate } from '@/lib/utils';
 
 export default function CommunityPost({
@@ -18,6 +19,15 @@ export default function CommunityPost({
 }: {
   post: PostItem | undefined;
 }) {
+  if (!post) {
+    return (
+      <Card className="flex min-h-[220px] w-full flex-col items-center justify-center gap-4 text-center text-neutral-500">
+        <span>게시글을 찾을 수 없습니다.</span>
+        <RetryButton />
+      </Card>
+    );
+  }
+
   const nickname = post?.user?.nickname ?? '익명';
   const createdAt = post?.created_at ? toDate(post.created_at) : undefined;
   const contentLines = post?.content?.split('<br/>') ?? [];

@@ -1,11 +1,7 @@
 import type { FosterFilterValue } from '@/domain/foster-list/filters';
 import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import {
-  AnimalGender,
-  AnimalSize,
-  AnimalType,
-  FosterState,
-} from '@/types/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType, FosterState } from '@/types/animal/animal';
+import { normalizeKeyword } from '@/lib/utils';
 
 export type OrganizationAnimalFilters = {
   emergencyOnly?: boolean;
@@ -24,9 +20,6 @@ const STATUS_PRIORITY: Record<FosterState, number> = {
 
 const isAll = <T>(value?: FosterFilterValue<T>): value is 'ALL' | undefined =>
   !value || value === 'ALL';
-
-const normalizeKeyword = (keyword?: string): string =>
-  keyword?.trim().toLowerCase() ?? '';
 
 const matchesFilter = <T>(value: T, filter?: FosterFilterValue<T>): boolean =>
   isAll(filter) || value === filter;

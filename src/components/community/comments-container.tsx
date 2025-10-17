@@ -1,23 +1,41 @@
 'use client';
 
 import { PaginationDynamic } from '../common/papagination-dynamic';
+import RetryButton from '@/components/common/retry-button';
 import { useState } from 'react';
 import CommunityCommentTile from './community-comment-tile';
 import { Card } from '../ui/card';
 import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
 
+type CommentsContainerProps = {
+  comments: CommentItem[];
+  isError?: boolean;
+};
+
+const EMPTY_MESSAGE = '아직 댓글이 없습니다.';
+const ERROR_MESSAGE = '댓글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
+
 export default function CommentsContainer({
   comments,
-}: {
-  comments: CommentItem[];
-}) {
+  isError = false,
+}: CommentsContainerProps) {
+  if (isError) {
+    return (
+      <Card className="flex w-full flex-col items-center justify-center gap-4 py-16 text-sm text-neutral-500">
+        <span>{ERROR_MESSAGE}</span>
+        <RetryButton />
+      </Card>
+    );
+  }
+
+  const hasComments = comments.length > 0;
   const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수
   const [currentPage, setCurrentPage] = useState(1);
 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
 
-  const pagedComments = comments.slice(startIdx, endIdx);
+  const pagedComments = hasComments ? comments.slice(startIdx, endIdx) : [];
 
   return (
     <div className="flex w-full flex-col gap-10">
@@ -51,47 +69,55 @@ export default function CommentsContainer({
             </defs>
           </svg>
           <span className="font-semibold">
-            {comments?.length}개의 답변이 있어요
+            {hasComments ? `${comments.length}개의 답변이 있어요` : '댓글'}
           </span>
         </div>{' '}
-        <div className="flex w-full flex-col">
-          {pagedComments.map((comment, index) => {
-            const replyComments = comment.reply_comments ?? [];
-            const isLastParent = index === pagedComments.length - 1;
-            const hasReplies = replyComments.length > 0;
+        {hasComments ? (
+          <div className="flex w-full flex-col">
+            {pagedComments.map((comment, index) => {
+              const replyComments = comment.reply_comments ?? [];
+              const isLastParent = index === pagedComments.length - 1;
+              const hasReplies = replyComments.length > 0;
 
-            return (
-              <div key={comment.id}>
-                <CommunityCommentTile
-                  comment={comment}
-                  isLast={!hasReplies && isLastParent}
-                />
-                {hasReplies && (
-                  <div className="flex w-full flex-col pl-14">
-                    {replyComments.map((reply: ReplyCommentItem, replyIdx) => {
-                      const isLastReply =
-                        isLastParent && replyIdx === replyComments.length - 1;
-                      return (
-                        <CommunityCommentTile
-                          key={reply.id}
-                          comment={reply}
-                          isLast={isLastReply}
-                        />
-                      );
-                    })}
-                  </div>
-                )}
-              </div>
-            );
-          })}
-        </div>
+              return (
+                <div key={comment.id}>
+                  <CommunityCommentTile
+                    comment={comment}
+                    isLast={!hasReplies && isLastParent}
+                  />
+                  {hasReplies && (
+                    <div className="flex w-full flex-col pl-14">
+                      {replyComments.map((reply: ReplyCommentItem, replyIdx) => {
+                        const isLastReply =
+                          isLastParent && replyIdx === replyComments.length - 1;
+                        return (
+                          <CommunityCommentTile
+                            key={reply.id}
+                            comment={reply}
+                            isLast={isLastReply}
+                          />
+                        );
+                      })}
+                    </div>
+                  )}
+                </div>
+              );
+            })}
+          </div>
+        ) : (
+          <div className="flex w-full flex-col items-center justify-center gap-3 py-14 text-neutral-500">
+            <span>{EMPTY_MESSAGE}</span>
+          </div>
+        )}
       </Card>
-      <PaginationDynamic
-        totalItems={comments.length}
-        itemsPerPage={itemsPerPage}
-        currentPage={currentPage}
-        onPageChange={setCurrentPage}
-      />
+      {hasComments ? (
+        <PaginationDynamic
+          totalItems={comments.length}
+          itemsPerPage={itemsPerPage}
+          currentPage={currentPage}
+          onPageChange={setCurrentPage}
+        />
+      ) : null}
     </div>
   );
 }

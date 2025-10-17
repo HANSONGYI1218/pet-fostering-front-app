@@ -1,84 +1,30 @@
 'use client';
 
-import { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
 import { useEffect, useState } from 'react';
-import AnimalTile from './animal-tile';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+
 import { Button } from '@/components/ui/button';
-import FosterConditionCard from '../../foster-list/foster-condition-card';
 import SearchBox from '@/components/common/search-box';
+import FosterConditionCard from '../../foster-list/foster-condition-card';
 import { AnimalCreateDialog } from './animal-create-dialog';
-import { useQuery, useQueryClient } from '@tanstack/react-query';
-import { FosterState } from '@/types/animal/animal';
-import { getSocket } from '@/lib/socket';
-import { dummyOgrainzationAnimals } from '@/lib/dummydata';
+import AnimalTile from './animal-tile';
 import type { FosterFilterValue } from '@/domain/foster-list/filters';
+import {
+  filterOrganizationAnimals,
+  sortOrganizationAnimals,
+} from '@/domain/organization/animals';
+import { useOrganizationAnimals } from './hooks/use-organization-animals';
+import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
+import { AnimalGender, AnimalSize, AnimalType, FosterState } from '@/types/animal/animal';
 import { FILTER_ALL_VALUE } from '@/constants/filter';
 
-const statusOrder = {
-  [FosterState.IN_PROGRESS]: 0,
-  [FosterState.FOSTERED]: 1,
-  [FosterState.ADOPTED]: 2,
-};
-
-// async function fetchAnimals() {
-//   const res = await fetch('/api/animals');
-//   return res.json();
-// }
-async function fetchAnimals(): Promise<OgrainzationAnimalListItem[]> {
-  // 실제 fetch 대신 delay를 주고 더미 반환 가능
-  return new Promise((resolve) => {
-    setTimeout(() => resolve(dummyOgrainzationAnimals), 300); // 300ms 딜레이
-  });
-}
+const INITIAL_FILTERED: OgrainzationAnimalListItem[] = [];
 
 export default function AnimalContainer() {
-  const queryClient = useQueryClient();
-
-  // 1️⃣ 동물 데이터 가져오기
   const {
-    data: animals = [],
+    data: animals = INITIAL_FILTERED,
     isLoading,
     isError,
-  } = useQuery<OgrainzationAnimalListItem[]>({
-    queryKey: ['animals'],
-    queryFn: fetchAnimals,
-    // select 옵션으로 서버 데이터 정렬
-    select: (data) =>
-      data
-        .slice()
-        .sort(
-          (a, b) => statusOrder[a.animalStatus] - statusOrder[b.animalStatus],
-        ),
-  });
-
-  // 2️⃣ 소켓 실시간 업데이트 처리
-  useEffect(() => {
-    const socket = getSocket();
-
-    if (!socket) {
-      return;
-    }
-
-    const handler = (updatedAnimal: OgrainzationAnimalListItem) => {
-      queryClient.setQueryData<OgrainzationAnimalListItem[]>(
-        ['animals'],
-        (old = []) =>
-          old
-            .map((a) => (a.id === updatedAnimal.id ? updatedAnimal : a))
-            .sort(
-              (a, b) =>
-                statusOrder[a.animalStatus] - statusOrder[b.animalStatus],
-            ), // 소켓 업데이트 후에도 정렬 유지
-      );
-    };
-
-    socket.on('animalUpdated', handler);
-
-    return () => {
-      socket.off('animalUpdated', handler);
-    };
-  }, [queryClient]);
+  } = useOrganizationAnimals();
 
   const [animalEmergency, setEmergency] = useState(false);
   const [animalType, setAnimalType] =
@@ -90,50 +36,27 @@ export default function AnimalContainer() {
   const [animalStatus, setAnimalStatus] =
     useState<FosterFilterValue<FosterState>>(FILTER_ALL_VALUE);
   const [search, setSearch] = useState('');
-  const [filteredAnimals, setFilteredAnimals] = useState<
-    OgrainzationAnimalListItem[] | null
-  >(null);
+  const [filteredAnimals, setFilteredAnimals] =
+    useState<OgrainzationAnimalListItem[]>(INITIAL_FILTERED);
 
   useEffect(() => {
-    if (animals && animals?.length > 0) {
-      const trimmedSearch = search.trim().toLowerCase();
-
-      const sortedAnimals = animals.filter((animal) => {
-        const matchAnimalEmergency = animalEmergency
-          ? animal.isEmergency
-          : true;
-
-        const matchesGender =
-          animalGender === FILTER_ALL_VALUE || animal.gender === animalGender;
-
-        const matchesType =
-          animalType === FILTER_ALL_VALUE || animal.type === animalType;
-
-        const matchesSize =
-          animalSize === FILTER_ALL_VALUE || animal.size === animalSize;
-
-        const matchesStatus =
-          animalStatus === FILTER_ALL_VALUE ||
-          animal.animalStatus === animalStatus;
-
-        const matchesSearch =
-          trimmedSearch.length === 0 ||
-          [animal.breed, animal.name].some((field) =>
-            field?.toLowerCase().includes(trimmedSearch),
-          );
-
-        return (
-          matchAnimalEmergency &&
-          matchesGender &&
-          matchesType &&
-          matchesSize &&
-          matchesStatus &&
-          matchesSearch
-        );
-      });
-
-      setFilteredAnimals(sortedAnimals);
+    if (!animals.length) {
+      setFilteredAnimals(INITIAL_FILTERED);
+      return;
     }
+
+    const sorted = sortOrganizationAnimals(animals);
+
+    const next = filterOrganizationAnimals(sorted, {
+      emergencyOnly: animalEmergency,
+      type: animalType,
+      size: animalSize,
+      gender: animalGender,
+      status: animalStatus,
+      keyword: search,
+    });
+
+    setFilteredAnimals(next);
   }, [
     animals,
     animalEmergency,
@@ -144,7 +67,6 @@ export default function AnimalContainer() {
     search,
   ]);
 
-  // 3️⃣ 로딩 / 에러 처리
   if (isLoading) return <div>로딩중...</div>;
   if (isError) return <div>데이터를 불러오는 중 오류가 발생했습니다.</div>;
 
@@ -153,7 +75,7 @@ export default function AnimalContainer() {
       <div className="flex items-center justify-between">
         <div className="flex items-center gap-3">
           <Button
-            variant={'outline'}
+            variant="outline"
             onClick={() => {
               setEmergency((prev) => !prev);
             }}
@@ -187,7 +109,7 @@ export default function AnimalContainer() {
         <AnimalCreateDialog />
       </div>
       <div className="grid w-full grid-cols-3 gap-6 bg-white">
-        {filteredAnimals?.map((filteredAnimal) => (
+        {filteredAnimals.map((filteredAnimal) => (
           <AnimalTile key={filteredAnimal.id} animal={filteredAnimal} />
         ))}
       </div>

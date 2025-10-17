@@ -1,4 +1,5 @@
-import { PostItem } from '@/types/post/post-api';
+import type { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
+import type { PostItem } from '@/types/post/post-api';
 import { toDate } from '@/lib/utils';
 
 import { resolveEndpoint } from './config';
@@ -34,6 +35,46 @@ type CommunityListParams = {
   limit?: number;
   cursor?: string;
   token?: string;
+};
+
+type CommunityPostDto = {
+  id: string;
+  authorId: string;
+  author?: PostAuthorDto | null;
+  title: string;
+  content: string;
+  viewCount: number;
+  likeCount?: number | null;
+  images?: string[] | null;
+  commentCount?: number | null;
+  createdAt: string;
+  updatedAt?: string | null;
+};
+
+type CommunityCommentAuthorDto = {
+  id: string;
+  displayName: string | null;
+};
+
+type CommunityReplyDto = {
+  id: string;
+  parentId: string;
+  postId: string;
+  content: string;
+  likeCount: number;
+  createdAt: string;
+  author?: CommunityCommentAuthorDto | null;
+};
+
+type CommunityCommentDto = {
+  id: string;
+  parentId: string | null;
+  postId: string;
+  content: string;
+  likeCount: number;
+  createdAt: string;
+  author?: CommunityCommentAuthorDto | null;
+  replies?: CommunityReplyDto[] | null;
 };
 
 export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
@@ -108,4 +149,100 @@ export const fetchCommunityPosts = async (
     nextCursor: result.nextCursor ?? null,
     limit: result.limit,
   };
+};
+
+const mapAuthor = (
+  author?: PostAuthorDto | CommunityCommentAuthorDto | null,
+) => ({
+  id: author?.id ?? '',
+  nickname: author?.displayName ?? '',
+});
+
+export const mapCommunityPost = (dto: CommunityPostDto): PostItem => ({
+  id: dto.id,
+  authorId: dto.authorId,
+  user: mapAuthor(dto.author),
+  title: dto.title,
+  content: dto.content,
+  views: dto.viewCount,
+  likes: dto.likeCount ?? 0,
+  images: dto.images ?? [],
+  commentCount: dto.commentCount ?? undefined,
+  created_at: toDate(dto.createdAt),
+  updated_at: dto.updatedAt ? toDate(dto.updatedAt) : undefined,
+});
+
+const mapReply = (reply: CommunityReplyDto): ReplyCommentItem => ({
+  id: reply.id,
+  parent_id: reply.parentId,
+  post_id: reply.postId,
+  user: mapAuthor(reply.author),
+  content: reply.content,
+  likes: reply.likeCount,
+  created_at: toDate(reply.createdAt),
+});
+
+export const mapCommunityComments = (
+  items: CommunityCommentDto[],
+): CommentItem[] =>
+  items
+    .map<CommentItem>((item) => {
+      const replies =
+        item.replies?.map(mapReply).sort((a, b) => {
+          return a.created_at.getTime() - b.created_at.getTime();
+        }) ?? [];
+
+      return {
+        id: item.id,
+        parent_id: item.parentId,
+        post_id: item.postId,
+        user: mapAuthor(item.author),
+        content: item.content,
+        likes: item.likeCount,
+        created_at: toDate(item.createdAt),
+        reply_comments: replies,
+      };
+    })
+    .sort(
+      (a, b) => a.created_at.getTime() - b.created_at.getTime(),
+    );
+
+export const fetchCommunityPost = async (id: string, token?: string) => {
+  const endpoint = resolveEndpoint(`/community/posts/${id}`);
+
+  const response = await fetch(endpoint, {
+    headers: {
+      Accept: 'application/json',
+      ...communityHeaders(token),
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`커뮤니티 게시글 상세 요청 실패: ${response.status}`);
+  }
+
+  const dto = (await response.json()) as CommunityPostDto;
+
+  return mapCommunityPost(dto);
+};
+
+export const fetchCommunityComments = async (postId: string, token?: string) => {
+  const endpoint = resolveEndpoint(`/community/posts/${postId}/comments`);
+
+  const response = await fetch(endpoint, {
+    headers: {
+      Accept: 'application/json',
+      ...communityHeaders(token),
+    },
+    cache: 'no-store',
+  });
+
+  if (!response.ok) {
+    throw new Error(`커뮤니티 댓글 목록 요청 실패: ${response.status}`);
+  }
+
+  const dto = (await response.json()) as CommunityCommentDto[];
+
+  return mapCommunityComments(dto);
 };

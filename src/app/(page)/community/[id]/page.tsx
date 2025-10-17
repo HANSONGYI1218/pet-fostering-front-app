@@ -1,28 +1,42 @@
 import CommentsContainer from '@/components/community/comments-container';
 import CommunityPost from '@/components/community/community-post';
-import { dummyComments, dummyPosts } from '@/lib/dummydata';
-import { CommentItem } from '@/types/comment/comment-api';
-import { PostItem } from '@/types/post/post-api';
-import { toDate } from '@/lib/utils';
+import {
+  fetchCommunityComments,
+  fetchCommunityPost,
+} from '@/lib/api/community';
+import { logError } from '@/lib/logging';
+import type { CommentItem } from '@/types/comment/comment-api';
+import type { PostItem } from '@/types/post/post-api';
 
 export default async function CommunityPostPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
-  const post: PostItem | undefined = dummyPosts.find((p) => p.id === id);
-  const comments: CommentItem[] = dummyComments
-    .filter((c) => c.post_id === id && c.parent_id === null)
-    .sort(
-      (a, b) => toDate(a.created_at).getTime() - toDate(b.created_at).getTime(),
-    );
+  const { id } = params;
+
+  let post: PostItem | null = null;
+  let comments: CommentItem[] = [];
+
+  try {
+    post = await fetchCommunityPost(id);
+  } catch (error) {
+    logError('커뮤니티 게시글 상세 불러오기 실패', error);
+  }
+
+  let commentsError = false;
+  try {
+    comments = await fetchCommunityComments(id);
+  } catch (error) {
+    logError('커뮤니티 댓글 불러오기 실패', error);
+    commentsError = true;
+  }
 
   return (
     <main className="bg-neutral-50">
       <div className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-6 pt-20 pb-40">
-        <CommunityPost post={post} />
-        <CommentsContainer comments={comments} />
+        <CommunityPost post={post ?? undefined} />
+        <CommentsContainer comments={comments} isError={commentsError} />
       </div>
     </main>
   );

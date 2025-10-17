@@ -4,16 +4,9 @@ import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { getSocket } from '@/lib/socket';
-import { dummyOgrainzationAnimals } from '@/lib/dummydata';
+import { fetchOrganizationAnimals } from '@/lib/api/organization';
 import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
 import { sortOrganizationAnimals } from '@/domain/organization/animals';
-
-const fetchOrganizationAnimals = async (): Promise<
-  OgrainzationAnimalListItem[]
-> =>
-  new Promise((resolve) => {
-    setTimeout(() => resolve(dummyOgrainzationAnimals), 300);
-  });
 
 export const ORGANIZATION_ANIMALS_QUERY_KEY = ['animals'] as const;
 

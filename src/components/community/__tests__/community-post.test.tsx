@@ -1,9 +1,15 @@
 import React from 'react';
 import { render, screen } from '@testing-library/react';
-import { describe, expect, it } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import type { PostItem } from '@/types/post/post-api';
 import CommunityPost from '../community-post';
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    refresh: vi.fn(),
+  }),
+}));
 
 const samplePost: PostItem = {
   id: '1',
@@ -33,5 +39,14 @@ describe('CommunityPost', () => {
 
     expect(screen.getByText('첫 줄')).toBeInTheDocument();
     expect(screen.getByText('둘째 줄')).toBeInTheDocument();
+  });
+
+  it('게시글이 없을 때 안내 메시지를 표시한다', () => {
+    render(<CommunityPost post={undefined} />);
+
+    expect(screen.getByText('게시글을 찾을 수 없습니다.')).toBeInTheDocument();
+    expect(
+      screen.getByRole('button', { name: '다시 시도' }),
+    ).toBeInTheDocument();
   });
 });

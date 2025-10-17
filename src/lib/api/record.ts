@@ -7,13 +7,7 @@ import type {
 } from '@/types/foster-record/foster-record-api';
 import { AnimalGender, AnimalType, FosterState } from '@/types/animal/animal';
 import { toDate } from '@/lib/utils';
-
-const logFallbackWarning = (message: string, error: unknown) => {
-  if (process.env.NODE_ENV !== 'production') {
-    // eslint-disable-next-line no-console
-    console.warn(message, error);
-  }
-};
+import { logFallbackWarning } from './logging';
 
 type RecordAnimalDto = {
   id: string;
