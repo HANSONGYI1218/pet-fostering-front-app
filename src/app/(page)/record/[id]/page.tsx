@@ -10,9 +10,9 @@ import BackButton from '@/components/common/back-button';
 export default async function RecordDetailPage({
   params,
 }: {
-  params: Promise<{ id: string }>;
+  params: { id: string };
 }) {
-  const { id } = await params;
+  const { id } = params;
 
   const { info, records } = await fetchRecordDetail(id).catch(
     (error: unknown) => {
