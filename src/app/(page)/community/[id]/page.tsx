@@ -1,9 +1,9 @@
-import CommentsContainer from '@/components/community/comments-container';
-import CommunityPost from '@/components/community/community-post';
+import CommentsContainer from '@/features/community/ui/community/comments-container';
+import CommunityPost from '@/features/community/ui/community/community-post';
 import {
   fetchCommunityComments,
   fetchCommunityPost,
-} from '@/lib/api/community';
+} from '@/features/community/api/community';
 import { logError } from '@/lib/logging';
 import type { CommentItem } from '@/types/comment/comment-api';
 import type { PostItem } from '@/types/post/post-api';

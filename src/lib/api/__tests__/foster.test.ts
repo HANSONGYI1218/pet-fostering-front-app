@@ -6,7 +6,7 @@ import {
 } from '@/types/animal-condition/animal-condition';
 import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 
-import { fallbackFosterDetails, fallbackFosterList } from '../foster.dummy';
+import { fallbackFosterDetails, fallbackFosterList } from '@/test/fixtures/foster';
 import {
   fetchFosterAnimalDetail,
   fetchFosterAnimals,

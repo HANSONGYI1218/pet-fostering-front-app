@@ -3,7 +3,7 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useOrganizationAnimals } from './use-organization-animals';
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
 import {
   AnimalGender,
   AnimalSize,
@@ -17,11 +17,11 @@ vi.mock('@/lib/socket', () => ({
 
 const fetchOrganizationAnimals = vi.hoisted(() => vi.fn());
 
-vi.mock('@/lib/api/organization', () => ({
+vi.mock('@/features/organization/api/organization', () => ({
   fetchOrganizationAnimals,
 }));
 
-const createAnimal = (overrides: Partial<OgrainzationAnimalListItem>) =>
+const createAnimal = (overrides: Partial<OrganizationAnimalListItem>) =>
   ({
     id: 'default',
     name: '보리',
@@ -39,7 +39,7 @@ const createAnimal = (overrides: Partial<OgrainzationAnimalListItem>) =>
     isEmergency: false,
     foster_apply_number: 0,
     ...overrides,
-  }) as OgrainzationAnimalListItem;
+  }) as OrganizationAnimalListItem;
 
 describe('useOrganizationAnimals', () => {
   const wrapper = ({ children }: { children: React.ReactNode }) => {

@@ -22,7 +22,7 @@ import {
   fosterTotalDuration,
 } from '@/lib/utils';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
-import { OgrainzationAnimalDetailItem } from '@/types/animal/animal-api';
+import { OrganizationAnimalDetailItem } from '@/types/animal/animal-api';
 import { useState } from 'react';
 import ChartContainer from '@/components/record/record-chart/chart-container';
 import { format } from 'date-fns';
@@ -31,7 +31,7 @@ import RecordFiltered from './record-filtered';
 export default function AnimalDetailContainer({
   animal,
 }: {
-  animal: OgrainzationAnimalDetailItem;
+  animal: OrganizationAnimalDetailItem;
 }) {
   const [currentPage, setCurrentPage] = useState(0);
 

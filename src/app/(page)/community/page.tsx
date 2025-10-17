@@ -1,6 +1,6 @@
-import CommunityBanner from '@/components/community/community-banner';
-import CommunityContainer from '@/components/community/community-container';
-import { fetchCommunityPosts } from '@/lib/api/community';
+import CommunityBanner from '@/features/community/ui/community/community-banner';
+import CommunityContainer from '@/features/community/ui/community/community-container';
+import { fetchCommunityPosts } from '@/features/community/api/community';
 import { logError } from '@/lib/logging';
 import type { PostItem } from '@/types/post/post-api';
 

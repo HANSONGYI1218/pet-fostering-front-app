@@ -1,10 +1,10 @@
 'use client';
 
-import { PaginationDynamic } from '../common/papagination-dynamic';
+import { PaginationDynamic } from '@/components/common/papagination-dynamic';
 import RetryButton from '@/components/common/retry-button';
 import { useState } from 'react';
 import CommunityCommentTile from './community-comment-tile';
-import { Card } from '../ui/card';
+import { Card } from '@/components/ui/card';
 import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
 
 type CommentsContainerProps = {

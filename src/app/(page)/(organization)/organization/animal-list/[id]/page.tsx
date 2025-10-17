@@ -1,9 +1,9 @@
 import Link from 'next/link';
 
 import BackButton from '@/components/common/back-button';
-import AnimalDetailContainer from '@/components/organization/animal-list/animal-detail-container';
+import AnimalDetailContainer from '@/features/organization/ui/animal-list/animal-detail-container';
 import FetchErrorBox from '@/components/common/fetch-error-box';
-import { fetchOrganizationAnimalDetail } from '@/lib/api/organization';
+import { fetchOrganizationAnimalDetail } from '@/features/organization/api/organization';
 import { logError } from '@/lib/logging';
 import { Button } from '@/components/ui/button';
 import { notFound } from 'next/navigation';

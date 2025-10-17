@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { filterOrganizationAnimals, sortOrganizationAnimals } from '../animals';
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
 import {
   AnimalGender,
   AnimalSize,
@@ -10,8 +10,8 @@ import {
 } from '@/types/animal/animal';
 
 const createAnimal = (
-  overrides: Partial<OgrainzationAnimalListItem>,
-): OgrainzationAnimalListItem => ({
+  overrides: Partial<OrganizationAnimalListItem>,
+): OrganizationAnimalListItem => ({
   id: 'default',
   name: '보리',
   type: AnimalType.DOG,
@@ -63,7 +63,7 @@ describe('sortOrganizationAnimals', () => {
 });
 
 describe('filterOrganizationAnimals', () => {
-  const animals: OgrainzationAnimalListItem[] = [
+  const animals: OrganizationAnimalListItem[] = [
     createAnimal({
       id: 'dog-small-male',
       name: '보리',

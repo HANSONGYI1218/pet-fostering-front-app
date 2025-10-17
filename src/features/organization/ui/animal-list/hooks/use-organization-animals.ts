@@ -4,16 +4,16 @@ import { useEffect } from 'react';
 import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { getSocket } from '@/lib/socket';
-import { fetchOrganizationAnimals } from '@/lib/api/organization';
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import { sortOrganizationAnimals } from '@/domain/organization/animals';
+import { fetchOrganizationAnimals } from '@/features/organization/api/organization';
+import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import { sortOrganizationAnimals } from '@/features/organization/domain/animals';
 
 export const ORGANIZATION_ANIMALS_QUERY_KEY = ['animals'] as const;
 
 export function useOrganizationAnimals() {
   const queryClient = useQueryClient();
 
-  const queryResult = useQuery<OgrainzationAnimalListItem[]>({
+  const queryResult = useQuery<OrganizationAnimalListItem[]>({
     queryKey: ORGANIZATION_ANIMALS_QUERY_KEY,
     queryFn: fetchOrganizationAnimals,
     select: sortOrganizationAnimals,
@@ -26,8 +26,8 @@ export function useOrganizationAnimals() {
       return;
     }
 
-    const handleUpdatedAnimal = (updated: OgrainzationAnimalListItem) => {
-      queryClient.setQueryData<OgrainzationAnimalListItem[]>(
+    const handleUpdatedAnimal = (updated: OrganizationAnimalListItem) => {
+      queryClient.setQueryData<OrganizationAnimalListItem[]>(
         ORGANIZATION_ANIMALS_QUERY_KEY,
         (previous = []) =>
           sortOrganizationAnimals(

@@ -1,13 +1,13 @@
 'use client';
 
 import { Pencil } from 'lucide-react';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import CommunityTile from './community-tile';
 import CommunityTopList from './community-top-list';
-import { PaginationDynamic } from '../common/papagination-dynamic';
+import { PaginationDynamic } from '@/components/common/papagination-dynamic';
 import { useMemo, useState } from 'react';
 import { PostItem } from '@/types/post/post-api';
-import { selectRecentPopularPosts } from '@/domain/community/posts';
+import { selectRecentPopularPosts } from '@/features/community/domain/posts';
 
 export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
   const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수

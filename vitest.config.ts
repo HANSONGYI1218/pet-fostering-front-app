@@ -12,6 +12,8 @@ export default defineConfig({
       ['src/components/**/*.test.tsx', 'jsdom'],
       ['src/components/**/*.test.ts', 'jsdom'],
       ['src/providers/**/*.test.tsx', 'jsdom'],
+      ['src/features/**/*.test.tsx', 'jsdom'],
+      ['src/features/**/*.test.ts', 'jsdom'],
       ['src/app/**/*.test.tsx', 'jsdom'],
     ],
   },

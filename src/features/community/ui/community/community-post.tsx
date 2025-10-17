@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Card } from '../ui/card';
+import { Card } from '@/components/ui/card';
 import {
   Bookmark,
   EllipsisVertical,
@@ -9,7 +9,7 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { ko } from 'date-fns/locale';
-import { Button } from '../ui/button';
+import { Button } from '@/components/ui/button';
 import RetryButton from '@/components/common/retry-button';
 import type { PostItem } from '@/types/post/post-api';
 import { toDate } from '@/lib/utils';

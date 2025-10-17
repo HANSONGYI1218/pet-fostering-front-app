@@ -14,7 +14,7 @@ import {
 } from '@/components/ui/select';
 import { format } from 'date-fns';
 import SearchBox from '../common/search-box';
-import { filterPostList } from '@/domain/community/posts';
+import { filterPostList } from '@/features/community/domain/posts';
 import type { PostItemByUserId } from '@/types/post/post-api';
 import Image from 'next/image';
 

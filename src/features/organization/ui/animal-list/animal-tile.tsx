@@ -1,5 +1,5 @@
-import { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import { Card } from '../../ui/card';
+import { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import { Card } from '@/components/ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
@@ -8,7 +8,7 @@ import {
   ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/constants/enum';
 import { Check, MoveRight } from 'lucide-react';
-import { Badge } from '../../ui/badge';
+import { Badge } from '@/components/ui/badge';
 import Link from 'next/link';
 import { FosterApplyListDialog } from './foster-apply-list-dialog';
 import { Button } from '@/components/ui/button';
@@ -19,7 +19,7 @@ import Image from 'next/image';
 export default function FosterTile({
   animal,
 }: {
-  animal: OgrainzationAnimalListItem;
+  animal: OrganizationAnimalListItem;
 }) {
   return (
     <Card

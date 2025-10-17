@@ -1,5 +1,5 @@
 import { PostItem } from '@/types/post/post-api';
-import { Card } from '../ui/card';
+import { Card } from '@/components/ui/card';
 import { Eye, MessageSquareText, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';

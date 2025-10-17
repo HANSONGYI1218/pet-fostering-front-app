@@ -4,20 +4,25 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/components/ui/button';
 import SearchBox from '@/components/common/search-box';
-import FosterConditionCard from '../../foster-list/foster-condition-card';
+import FosterConditionCard from '@/components/foster-list/foster-condition-card';
 import { AnimalCreateDialog } from './animal-create-dialog';
 import AnimalTile from './animal-tile';
 import type { FosterFilterValue } from '@/domain/foster-list/filters';
 import {
   filterOrganizationAnimals,
   sortOrganizationAnimals,
-} from '@/domain/organization/animals';
+} from '@/features/organization/domain/animals';
 import { useOrganizationAnimals } from './hooks/use-organization-animals';
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import { AnimalGender, AnimalSize, AnimalType, FosterState } from '@/types/animal/animal';
+import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import {
+  AnimalGender,
+  AnimalSize,
+  AnimalType,
+  FosterState,
+} from '@/types/animal/animal';
 import { FILTER_ALL_VALUE } from '@/constants/filter';
 
-const INITIAL_FILTERED: OgrainzationAnimalListItem[] = [];
+const INITIAL_FILTERED: OrganizationAnimalListItem[] = [];
 
 export default function AnimalContainer() {
   const {
@@ -37,7 +42,7 @@ export default function AnimalContainer() {
     useState<FosterFilterValue<FosterState>>(FILTER_ALL_VALUE);
   const [search, setSearch] = useState('');
   const [filteredAnimals, setFilteredAnimals] =
-    useState<OgrainzationAnimalListItem[]>(INITIAL_FILTERED);
+    useState<OrganizationAnimalListItem[]>(INITIAL_FILTERED);
 
   useEffect(() => {
     if (!animals.length) {

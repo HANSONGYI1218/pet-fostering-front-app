@@ -16,8 +16,8 @@ import {
   FosterAnimalDetailItem,
   FosterListAnimalItem,
   FosterRecordAnimalItem,
-  OgrainzationAnimalDetailItem,
-  OgrainzationAnimalListItem,
+  OrganizationAnimalDetailItem,
+  OrganizationAnimalListItem,
 } from '@/types/animal/animal-api';
 import { CommentItem, CommentItemByUserId } from '@/types/comment/comment-api';
 import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
@@ -1304,7 +1304,7 @@ export const dummyFosterAnimalDetails: FosterAnimalDetailItem[] = [
   },
 ];
 
-export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
+export const dummyOrganizationAnimals: OrganizationAnimalListItem[] = [
   {
     id: '1',
     name: 'Buddy',
@@ -2154,7 +2154,7 @@ export const dummyOgrainzationAnimals: OgrainzationAnimalListItem[] = [
   },
 ];
 
-export const dummyOgrainzationAnimalDetails: OgrainzationAnimalDetailItem[] = [
+export const dummyOrganizationAnimalDetails: OrganizationAnimalDetailItem[] = [
   {
     id: '10',
     name: 'Yuna',

@@ -1,6 +1,6 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 
-import { fetchOrganizationAnimalDetail } from '@/lib/api/organization';
+import { fetchOrganizationAnimalDetail } from '@/features/organization/api/organization';
 import {
   AnimalEnvironment,
   AnimalHealth,

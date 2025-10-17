@@ -1,5 +1,5 @@
-import AnimalContainer from '@/components/organization/animal-list/animal-container';
-import FosterApplyProviders from '@/providers/foster-apply-provider';
+import AnimalContainer from '@/features/organization/ui/animal-list/animal-container';
+import FosterApplyProviders from '@/features/organization/providers/foster-apply-provider';
 
 export default function AnimalListPage() {
   return (

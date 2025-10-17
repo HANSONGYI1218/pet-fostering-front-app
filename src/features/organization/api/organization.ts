@@ -1,13 +1,21 @@
-import { AnimalEnvironment, AnimalHealth, AnimalPersonality, AnimalSpecialNote } from '@/types/animal-condition/animal-condition';
+import {
+  AnimalEnvironment,
+  AnimalHealth,
+  AnimalPersonality,
+  AnimalSpecialNote,
+} from '@/types/animal-condition/animal-condition';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
 } from '@/types/animal/animal';
-import type { OgrainzationAnimalDetailItem, OgrainzationAnimalListItem } from '@/types/animal/animal-api';
+import type {
+  OrganizationAnimalDetailItem,
+  OrganizationAnimalListItem,
+} from '@/types/animal/animal-api';
 import type { FosterApplicent } from '@/types/foster-apply/foster-apply-api';
-import { resolveEndpoint } from './config';
+import { resolveEndpoint } from '@/lib/api/config';
 import { toDate } from '@/lib/utils';
 import type { FosterRecord } from '@/types/foster-record/foster-record';
 import { logError } from '@/lib/logging';
@@ -84,7 +92,7 @@ const mapApplicant = (dto: OrganizationApplicantDto): FosterApplicent => ({
 
 export const mapOrganizationAnimal = (
   dto: OrganizationAnimalDto,
-): OgrainzationAnimalListItem => ({
+): OrganizationAnimalListItem => ({
   id: dto.id,
   name: dto.name,
   type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
@@ -112,7 +120,7 @@ export const mapOrganizationAnimal = (
 });
 
 export const fetchOrganizationAnimals = async (): Promise<
-  OgrainzationAnimalListItem[]
+  OrganizationAnimalListItem[]
 > => {
   try {
     const response = await fetch(resolveEndpoint('/organization/animals'), {
@@ -146,7 +154,7 @@ const mapOrganizationRecord = (
 
 const mapOrganizationDetail = (
   dto: OrganizationAnimalDetailDto,
-): OgrainzationAnimalDetailItem => ({
+): OrganizationAnimalDetailItem => ({
   id: dto.id,
   name: dto.name,
   type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
@@ -200,7 +208,7 @@ const mapOrganizationDetail = (
 
 export const fetchOrganizationAnimalDetail = async (
   id: string,
-): Promise<OgrainzationAnimalDetailItem> => {
+): Promise<OrganizationAnimalDetailItem> => {
   const response = await fetch(
     resolveEndpoint(`/organization/animals/${id}`),
     {

@@ -1,8 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import { AnimalType, AnimalGender, AnimalSize, FosterState } from '@/types/animal/animal';
+import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import {
+  AnimalType,
+  AnimalGender,
+  AnimalSize,
+  FosterState,
+} from '@/types/animal/animal';
 import { useQuery } from '@tanstack/react-query';
 
 vi.mock('@/lib/socket', () => ({
@@ -17,7 +22,7 @@ vi.mock('@tanstack/react-query', () => ({
   })),
 }));
 
-vi.mock('../../foster-list/foster-condition-card', () => ({
+vi.mock('@/components/foster-list/foster-condition-card', () => ({
   __esModule: true,
   default: () => <div data-testid="foster-condition-card" />,
 }));
@@ -34,13 +39,13 @@ vi.mock('../animal-create-dialog', () => ({
 
 vi.mock('../animal-tile', () => ({
   __esModule: true,
-  default: ({ animal }: { animal: OgrainzationAnimalListItem }) => (
+  default: ({ animal }: { animal: OrganizationAnimalListItem }) => (
     <div data-testid="animal-tile">{animal.name}</div>
   ),
 }));
 
 describe('AnimalContainer', () => {
-  const unsortedAnimals: OgrainzationAnimalListItem[] = [
+  const unsortedAnimals: OrganizationAnimalListItem[] = [
     {
       id: 'beta',
       name: 'Beta',

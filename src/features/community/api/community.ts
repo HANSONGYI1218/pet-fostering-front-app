@@ -1,8 +1,7 @@
 import type { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
 import type { PostItem } from '@/types/post/post-api';
 import { toDate } from '@/lib/utils';
-
-import { resolveEndpoint } from './config';
+import { resolveEndpoint } from '@/lib/api/config';
 
 type PostCountDto = {
   comments: number;

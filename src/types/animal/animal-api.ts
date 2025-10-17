@@ -79,7 +79,7 @@ export type FosterAnimalDetailItem = {
   };
 };
 
-export type OgrainzationAnimalListItem = {
+export type OrganizationAnimalListItem = {
   id: string;
   name: string;
   type: AnimalType;
@@ -97,7 +97,7 @@ export type OgrainzationAnimalListItem = {
   foster_apply_number: number;
 };
 
-export type OgrainzationAnimalDetailItem = {
+export type OrganizationAnimalDetailItem = {
   id: string;
   name: string;
   type: AnimalType;

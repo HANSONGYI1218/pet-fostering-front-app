@@ -1,6 +1,11 @@
 import type { FosterFilterValue } from '@/domain/foster-list/filters';
-import type { OgrainzationAnimalListItem } from '@/types/animal/animal-api';
-import { AnimalGender, AnimalSize, AnimalType, FosterState } from '@/types/animal/animal';
+import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import {
+  AnimalGender,
+  AnimalSize,
+  AnimalType,
+  FosterState,
+} from '@/types/animal/animal';
 import { normalizeKeyword } from '@/lib/utils';
 
 export type OrganizationAnimalFilters = {
@@ -25,7 +30,7 @@ const matchesFilter = <T>(value: T, filter?: FosterFilterValue<T>): boolean =>
   isAll(filter) || value === filter;
 
 const matchesKeyword = (
-  animal: OgrainzationAnimalListItem,
+  animal: OrganizationAnimalListItem,
   keyword: string,
 ): boolean => {
   if (!keyword) return true;
@@ -36,8 +41,8 @@ const matchesKeyword = (
 };
 
 export const sortOrganizationAnimals = (
-  animals: OgrainzationAnimalListItem[],
-): OgrainzationAnimalListItem[] =>
+  animals: OrganizationAnimalListItem[],
+): OrganizationAnimalListItem[] =>
   animals.slice().sort((left, right) => {
     const leftPriority = STATUS_PRIORITY[left.animalStatus];
     const rightPriority = STATUS_PRIORITY[right.animalStatus];
@@ -50,9 +55,9 @@ export const sortOrganizationAnimals = (
   });
 
 export const filterOrganizationAnimals = (
-  animals: OgrainzationAnimalListItem[],
+  animals: OrganizationAnimalListItem[],
   filters: OrganizationAnimalFilters,
-): OgrainzationAnimalListItem[] => {
+): OrganizationAnimalListItem[] => {
   const {
     emergencyOnly = false,
     type,

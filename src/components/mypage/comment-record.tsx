@@ -13,7 +13,7 @@ import {
 } from '@/components/ui/select';
 import { format } from 'date-fns';
 import SearchBox from '../common/search-box';
-import { filterCommentList } from '@/domain/community/comment';
+import { filterCommentList } from '@/features/community/domain/comment';
 import { toDate } from '@/lib/utils';
 import Link from 'next/link';
 import { ko } from 'date-fns/locale/ko';
