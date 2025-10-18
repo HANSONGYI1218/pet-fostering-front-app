@@ -16,20 +16,20 @@ const decodeCookieValue = (value: string | undefined): string | null => {
   }
 };
 
-export const resolveServerAccessToken = (): string | null => {
-  const store = cookies();
+export const resolveServerAccessToken = async (): Promise<string | null> => {
+  const store = await cookies();
 
   return decodeCookieValue(store.get(ACCESS_TOKEN_STORAGE_KEY)?.value);
 };
 
-export const resolveServerRefreshToken = (): string | null => {
-  const store = cookies();
+export const resolveServerRefreshToken = async (): Promise<string | null> => {
+  const store = await cookies();
 
   return decodeCookieValue(store.get(REFRESH_TOKEN_STORAGE_KEY)?.value);
 };
 
-export const resolveServerAuthClaims = (): AuthClaims | null => {
-  const token = resolveServerAccessToken();
+export const resolveServerAuthClaims = async (): Promise<AuthClaims | null> => {
+  const token = await resolveServerAccessToken();
 
   if (!token) {
     return null;

@@ -6,13 +6,12 @@ import { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
 import { fetchRecordDetail } from '@/features/record/api/record';
 import { notFound } from 'next/navigation';
 import BackButton from '@/shared/widgets/navigation/back-button';
+import type { AsyncParams } from '@/shared/types/next';
 
 export default async function RecordDetailPage({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+}: AsyncParams<{ id: string }>) {
+  const { id } = await params;
 
   const { info, records } = await fetchRecordDetail(id).catch(
     (error: unknown) => {

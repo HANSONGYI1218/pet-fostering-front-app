@@ -9,13 +9,12 @@ import { fetchNoticeDetail } from '@/features/notice/api/notice';
 import { logError } from '@/shared/lib/logging';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
+import type { AsyncParams } from '@/shared/types/next';
 
 export default async function NoticeDetailPage({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+}: AsyncParams<{ id: string }>) {
+  const { id } = await params;
 
   try {
     const notice = await fetchNoticeDetail(id);

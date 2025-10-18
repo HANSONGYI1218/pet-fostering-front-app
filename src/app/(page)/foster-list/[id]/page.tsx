@@ -27,13 +27,12 @@ import { format } from 'date-fns';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
+import type { AsyncParams } from '@/shared/types/next';
 
 export default async function FosterListDetailPage({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+}: AsyncParams<{ id: string }>) {
+  const { id } = await params;
 
   const animal = await fetchFosterAnimalDetail(id).catch((error: unknown) => {
     if (error instanceof Error && /404/.test(error.message)) {

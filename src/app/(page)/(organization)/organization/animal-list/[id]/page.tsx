@@ -8,13 +8,12 @@ import { logError } from '@/shared/lib/logging';
 import { Button } from '@/shared/ui/button';
 import { notFound } from 'next/navigation';
 import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
+import type { AsyncParams } from '@/shared/types/next';
 
 export default async function AnimalListDetailPage({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+}: AsyncParams<{ id: string }>) {
+  const { id } = await params;
 
   try {
     const animal = await fetchOrganizationAnimalDetail(id);

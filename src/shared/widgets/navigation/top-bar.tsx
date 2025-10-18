@@ -53,9 +53,7 @@ const NAV_ITEMS = [
 export default function TopBar() {
   const path = usePathname();
   const router = useRouter();
-  const [authUser, setAuthUser] = useState<AuthClaims | null>(() =>
-    typeof window !== 'undefined' ? resolveStoredAuthClaims() : null,
-  );
+  const [authUser, setAuthUser] = useState<AuthClaims | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
 
   useEffect(() => {

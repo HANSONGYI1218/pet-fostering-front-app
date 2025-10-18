@@ -2,11 +2,12 @@ import MypageContainer from '@/features/mypage/ui/mypage-container';
 import { isMypageStep } from '@/features/mypage/lib/mypage-steps';
 
 type ProfilePageProps = {
-  searchParams?: Record<string, string | string[] | undefined>;
+  searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default function ProfilePage({ searchParams = {} }: ProfilePageProps) {
-  const rawTab = searchParams.tab;
+export default async function ProfilePage(props: ProfilePageProps = {}) {
+  const resolvedParams = props.searchParams ? await props.searchParams : {};
+  const rawTab = resolvedParams.tab;
   const tabParam = Array.isArray(rawTab) ? rawTab[0] : rawTab;
   const initialStep = isMypageStep(tabParam) ? tabParam : 'profile';
 

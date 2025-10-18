@@ -27,8 +27,8 @@ type MypageContainerProps = {
 export default async function MypageContainer({
   initialStep,
 }: MypageContainerProps) {
-  const accessToken = resolveServerAccessToken();
-  const claims = resolveServerAuthClaims();
+  const accessToken = await resolveServerAccessToken();
+  const claims = await resolveServerAuthClaims();
 
   if (!accessToken) {
     return <LoginNoticeBox errorMessage={ERROR_MESSAGES.unauthorized} />;

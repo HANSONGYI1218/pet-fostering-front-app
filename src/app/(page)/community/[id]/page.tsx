@@ -7,13 +7,12 @@ import {
 import { logError } from '@/shared/lib/logging';
 import type { CommentItem } from '@/entities/comment/comment-api';
 import type { PostItem } from '@/entities/post/post-api';
+import type { AsyncParams } from '@/shared/types/next';
 
 export default async function CommunityPostPage({
   params,
-}: {
-  params: { id: string };
-}) {
-  const { id } = params;
+}: AsyncParams<{ id: string }>) {
+  const { id } = await params;
 
   let post: PostItem | null = null;
   let comments: CommentItem[] = [];

@@ -245,7 +245,11 @@ export const fetchCommunityComments = async (
     throw new Error(`커뮤니티 댓글 목록 요청 실패: ${response.status}`);
   }
 
-  const dto = (await response.json()) as CommunityCommentDto[];
+  const payload = (await response.json()) as
+    | CommunityCommentDto[]
+    | { items: CommunityCommentDto[] };
 
-  return mapCommunityComments(dto);
+  const items = Array.isArray(payload) ? payload : (payload.items ?? []);
+
+  return mapCommunityComments(items);
 };

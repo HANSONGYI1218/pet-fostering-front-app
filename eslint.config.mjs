@@ -94,6 +94,33 @@ export default [
       'no-underscore-dangle': 'off',
       'no-use-before-define': 'off',
       'jsx-a11y/anchor-is-valid': 'off',
+      'no-restricted-syntax': [
+        'error',
+        {
+          selector:
+            "FunctionDeclaration > ObjectPattern > Identifier[name='params'][typeAnnotation.typeAnnotation.type='TSTypeLiteral']",
+          message:
+            'Next.js 동적 라우트에서는 params를 AsyncParams<T>로 선언하고 await 해야 합니다.',
+        },
+        {
+          selector:
+            "ArrowFunctionExpression > ObjectPattern > Identifier[name='params'][typeAnnotation.typeAnnotation.type='TSTypeLiteral']",
+          message:
+            'Next.js 동적 라우트에서는 params를 AsyncParams<T>로 선언하고 await 해야 합니다.',
+        },
+        {
+          selector:
+            "FunctionDeclaration > ObjectPattern > Identifier[name='searchParams'][typeAnnotation.typeAnnotation.type='TSTypeLiteral']",
+          message:
+            'Next.js 동적 라우트에서는 searchParams를 AsyncSearchParams<T>로 선언하고 await 해야 합니다.',
+        },
+        {
+          selector:
+            "ArrowFunctionExpression > ObjectPattern > Identifier[name='searchParams'][typeAnnotation.typeAnnotation.type='TSTypeLiteral']",
+          message:
+            'Next.js 동적 라우트에서는 searchParams를 AsyncSearchParams<T>로 선언하고 await 해야 합니다.',
+        },
+      ],
     },
     settings: {
       react: {
