@@ -1,4 +1,4 @@
-import { normalizeKeyword, toDate } from '@/lib/utils';
+import { normalizeKeyword, toDate } from '@/shared/lib/utils';
 import type { PostItem, PostItemByUserId } from '@/types/post/post-api';
 
 export type SelectRecentPopularPostsOptions = {

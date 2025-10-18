@@ -6,11 +6,11 @@ import AnimalDetailContainer from '../animal-detail-container';
 import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 
-vi.mock('@/components/common/kakaomap-loader', () => ({
+vi.mock('@/shared/widgets/map/kakaomap-loader', () => ({
   default: () => <div data-testid="mock-map" />,
 }));
 
-vi.mock('@/components/record/record-chart/chart-container', () => ({
+vi.mock('@/shared/widgets/record/record-chart/chart-container', () => ({
   default: () => <div data-testid="mock-chart" />,
 }));
 

@@ -1,12 +1,12 @@
-import FosterContainer from '@/components/foster-list/foster-container';
-import { fetchFosterAnimals } from '@/lib/api/foster';
+import FosterContainer from '@/features/foster/ui/foster-list/foster-container';
+import { fetchFosterAnimals } from '@/features/foster/api/foster';
 import {
   Card,
   CardDescription,
   CardHeader,
   CardTitle,
-} from '@/components/ui/card';
-import FetchErrorBox from '@/components/common/fetch-error-box';
+} from '@/shared/ui/card';
+import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
 
 export default async function FosterListPage() {
   try {

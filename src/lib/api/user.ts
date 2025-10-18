@@ -1,5 +1,5 @@
-import { toDate } from '@/lib/utils';
-import { resolveEndpoint } from './config';
+import { toDate } from '@/shared/lib/utils';
+import { resolveEndpoint } from '@/shared/api/config';
 import type { CommentItemByUserId } from '@/types/comment/comment-api';
 import type { PostItemByUserId } from '@/types/post/post-api';
 import type {

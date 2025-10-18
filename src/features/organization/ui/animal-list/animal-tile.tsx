@@ -1,19 +1,19 @@
 import { OrganizationAnimalListItem } from '@/types/animal/animal-api';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/shared/ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
   ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_ENVIRONMENT_LABEL_KO,
-} from '@/constants/enum';
+} from '@/shared/constants/enum';
 import { Check, MoveRight } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
+import { Badge } from '@/shared/ui/badge';
 import Link from 'next/link';
 import { FosterApplyListDialog } from './foster-apply-list-dialog';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/button';
 import { FosterState } from '@/types/animal/animal';
-import { formatAnimalAge } from '@/lib/utils';
+import { formatAnimalAge } from '@/shared/lib/utils';
 import Image from 'next/image';
 
 export default function FosterTile({

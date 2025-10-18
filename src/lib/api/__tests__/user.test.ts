@@ -6,7 +6,7 @@ import {
   updateMyProfile,
 } from '../user';
 
-vi.mock('../config', () => ({
+vi.mock('@/shared/api/config', () => ({
   resolveEndpoint: (path: string) => `https://example.com${path}`,
 }));
 

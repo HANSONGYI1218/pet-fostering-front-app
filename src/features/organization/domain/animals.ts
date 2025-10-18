@@ -1,4 +1,4 @@
-import type { FosterFilterValue } from '@/domain/foster-list/filters';
+import type { FosterFilterValue } from '@/shared/types/foster';
 import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
 import {
   AnimalGender,
@@ -6,7 +6,7 @@ import {
   AnimalType,
   FosterState,
 } from '@/types/animal/animal';
-import { normalizeKeyword } from '@/lib/utils';
+import { normalizeKeyword } from '@/shared/lib/utils';
 
 export type OrganizationAnimalFilters = {
   emergencyOnly?: boolean;

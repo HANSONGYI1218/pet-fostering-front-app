@@ -1,5 +1,5 @@
 import { format } from 'date-fns';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/shared/ui/card';
 import {
   Bookmark,
   EllipsisVertical,
@@ -9,10 +9,10 @@ import {
 } from 'lucide-react';
 import Image from 'next/image';
 import { ko } from 'date-fns/locale';
-import { Button } from '@/components/ui/button';
-import RetryButton from '@/components/common/retry-button';
+import { Button } from '@/shared/ui/button';
+import RetryButton from '@/shared/widgets/feedback/retry-button';
 import type { PostItem } from '@/types/post/post-api';
-import { toDate } from '@/lib/utils';
+import { toDate } from '@/shared/lib/utils';
 
 export default function CommunityPost({
   post,

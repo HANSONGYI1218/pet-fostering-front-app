@@ -1,8 +1,8 @@
-import { NoticeContainer } from '@/components/notice/notice-container';
-import FetchErrorBox from '@/components/common/fetch-error-box';
-import EmptyBox from '@/components/common/empty-box';
-import { fetchNoticeList } from '@/lib/api/notice';
-import { logError } from '@/lib/logging';
+import { NoticeContainer } from '@/features/notice/ui/list/notice-container';
+import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
+import EmptyBox from '@/shared/widgets/feedback/empty-box';
+import { fetchNoticeList } from '@/features/notice/api/notice';
+import { logError } from '@/shared/lib/logging';
 
 const renderHeading = () => (
   <div className="flex flex-col gap-2">

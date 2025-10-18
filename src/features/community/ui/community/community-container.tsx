@@ -1,10 +1,10 @@
 'use client';
 
 import { Pencil } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/button';
 import CommunityTile from './community-tile';
 import CommunityTopList from './community-top-list';
-import { PaginationDynamic } from '@/components/common/papagination-dynamic';
+import { PaginationDynamic } from '@/shared/widgets/navigation/papagination-dynamic';
 import { useMemo, useState } from 'react';
 import { PostItem } from '@/types/post/post-api';
 import { selectRecentPopularPosts } from '@/features/community/domain/posts';

@@ -1,4 +1,4 @@
-import { resolveEndpoint } from '@/lib/api/config';
+import { resolveEndpoint } from '@/shared/api/config';
 
 import {
   REFRESH_TOKEN_STORAGE_KEY,

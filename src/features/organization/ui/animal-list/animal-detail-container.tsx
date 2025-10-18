@@ -1,8 +1,8 @@
 'use client';
 
-import { AnimalCarousel } from '@/components/foster-list/animal-carousel';
-import { Button } from '@/components/ui/button';
-import { Card } from '@/components/ui/card';
+import { AnimalCarousel } from '@/features/foster/ui/foster-list/animal-carousel';
+import { Button } from '@/shared/ui/button';
+import { Card } from '@/shared/ui/card';
 import Image from 'next/image';
 import {
   ANIMAL_GENDER_LABEL_KO,
@@ -12,19 +12,19 @@ import {
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_ENVIRONMENT_LABEL_KO,
-} from '@/constants/enum';
+} from '@/shared/constants/enum';
 import { Check, Pencil } from 'lucide-react';
-import { Badge } from '@/components/ui/badge';
-import KakaoMapLoader from '@/components/common/kakaomap-loader';
+import { Badge } from '@/shared/ui/badge';
+import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
 import {
   formatAnimalAge,
   fosterRemaingDuration,
   fosterTotalDuration,
-} from '@/lib/utils';
+} from '@/shared/lib/utils';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { OrganizationAnimalDetailItem } from '@/types/animal/animal-api';
 import { useState } from 'react';
-import ChartContainer from '@/components/record/record-chart/chart-container';
+import ChartContainer from '@/shared/widgets/record/record-chart/chart-container';
 import { format } from 'date-fns';
 import RecordFiltered from './record-filtered';
 

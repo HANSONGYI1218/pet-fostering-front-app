@@ -2,12 +2,12 @@
 
 import { useEffect, useState } from 'react';
 
-import { Button } from '@/components/ui/button';
-import SearchBox from '@/components/common/search-box';
-import FosterConditionCard from '@/components/foster-list/foster-condition-card';
+import { Button } from '@/shared/ui/button';
+import SearchBox from '@/shared/widgets/form/search-box';
+import FosterConditionCard from '@/shared/widgets/form/foster-condition-card';
 import { AnimalCreateDialog } from './animal-create-dialog';
 import AnimalTile from './animal-tile';
-import type { FosterFilterValue } from '@/domain/foster-list/filters';
+import type { FosterFilterValue } from '@/shared/types/foster';
 import {
   filterOrganizationAnimals,
   sortOrganizationAnimals,
@@ -20,7 +20,7 @@ import {
   AnimalType,
   FosterState,
 } from '@/types/animal/animal';
-import { FILTER_ALL_VALUE } from '@/constants/filter';
+import { FILTER_ALL_VALUE } from '@/shared/constants/filter';
 
 const INITIAL_FILTERED: OrganizationAnimalListItem[] = [];
 

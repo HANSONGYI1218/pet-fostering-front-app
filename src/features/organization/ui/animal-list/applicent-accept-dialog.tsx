@@ -1,4 +1,4 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/button';
 import {
   Dialog,
   DialogClose,
@@ -7,7 +7,7 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/shared/ui/dialog';
 import Image from 'next/image';
 
 export function ApplyAcceptDialog({

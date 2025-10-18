@@ -6,7 +6,7 @@ import {
   USER_PROFILE_STORAGE_KEY,
 } from './kakao';
 import { tryRefreshAuthTokens } from './refresh';
-import { resolveEndpoint } from '@/lib/api/config';
+import { resolveEndpoint } from '@/shared/api/config';
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem'>;
 

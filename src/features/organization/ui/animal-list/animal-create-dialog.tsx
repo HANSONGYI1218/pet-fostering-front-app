@@ -7,19 +7,19 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from '@/components/ui/dialog';
+} from '@/shared/ui/dialog';
 import {
   Select,
   SelectContent,
   SelectItem,
   SelectTrigger,
   SelectValue,
-} from '@/components/ui/select';
+} from '@/shared/ui/select';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { CalendarIcon, Dot, Plus } from 'lucide-react';
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/button';
 import {
   Form,
   FormControl,
@@ -27,27 +27,27 @@ import {
   FormItem,
   FormLabel,
   FormMessage,
-} from '@/components/ui/form';
-import { Input } from '@/components/ui/input';
+} from '@/shared/ui/form';
+import { Input } from '@/shared/ui/input';
 import {
   AnimalType,
   AnimalSize,
   AnimalGender,
   FosterState,
 } from '@/types/animal/animal';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/shared/ui/card';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
-import { Calendar } from '@/components/ui/calendar';
+import { Calendar } from '@/shared/ui/calendar';
 import Image from 'next/image';
 import {
   Popover,
   PopoverContent,
   PopoverTrigger,
-} from '@/components/ui/popover';
+} from '@/shared/ui/popover';
 import { format, isValid } from 'date-fns';
-import { cn } from '@/lib/utils';
+import { cn } from '@/shared/lib/utils';
 import { ko } from 'date-fns/locale/ko';
-import SelectedButton from '@/components/common/selected-button';
+import SelectedButton from '@/shared/widgets/form/selected-button';
 import {
   ANIMAL_ENVIRONMENT_LABEL_KO,
   ANIMAL_GENDER_LABEL_KO,
@@ -56,16 +56,16 @@ import {
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
-} from '@/constants/enum';
+} from '@/shared/constants/enum';
 import AniamlCreateProgress from './animal-create-progress';
-import { Textarea } from '@/components/ui/textarea';
+import { Textarea } from '@/shared/ui/textarea';
 import {
   AnimalEnvironment,
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
 } from '@/types/animal-condition/animal-condition';
-import Chip from '@/components/common/chip';
+import Chip from '@/shared/widgets/form/chip';
 import { useEmergencyReasonReset } from './hooks/use-emergency-reason-reset';
 
 const AnimalCreateformSchema = z.object({

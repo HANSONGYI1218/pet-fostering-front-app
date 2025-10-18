@@ -23,8 +23,8 @@ import { CommentItem, CommentItemByUserId } from '@/types/comment/comment-api';
 import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
 import { FosterConditionItem } from '@/types/foster-condition/foster-condition-api';
 import { FosterRecordItem } from '@/types/foster-record/foster-record-api';
-import { NoticeType } from '@/types/notcie/notice';
-import { NoticeDetailItem, NoticeListItem } from '@/types/notcie/notice-api';
+import { NoticeType } from '@/shared/types/notice/notice';
+import { NoticeDetailItem, NoticeListItem } from '@/shared/types/notice/notice-api';
 import { PostItem, PostItemByUserId } from '@/types/post/post-api';
 import {
   UserProfileItem,

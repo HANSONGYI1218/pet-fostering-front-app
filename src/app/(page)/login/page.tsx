@@ -1,4 +1,4 @@
-import { KakaoLoginButton } from '@/components/auth/kakao-login-button';
+import { KakaoLoginButton } from '@/features/auth/ui/kakao-login-button';
 
 const containerClassName =
   'flex min-h-screen flex-col items-center justify-center bg-neutral-50 p-6';

@@ -1,9 +1,9 @@
 import { PostItem } from '@/types/post/post-api';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/shared/ui/card';
 import { Eye, MessageSquareText, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import Link from 'next/link';
-import { stripHtml } from '@/lib/utils';
+import { stripHtml } from '@/shared/lib/utils';
 
 export default function CommunityTile({ post }: { post: PostItem }) {
   const preview = stripHtml(post?.content ?? '').trim();

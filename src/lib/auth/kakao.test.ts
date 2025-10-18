@@ -1,6 +1,6 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-import { resolveEndpoint } from '@/lib/api/config';
+import { resolveEndpoint } from '@/shared/api/config';
 
 import {
   ACCESS_TOKEN_STORAGE_KEY,

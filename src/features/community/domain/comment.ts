@@ -1,4 +1,4 @@
-import { normalizeKeyword } from '@/lib/utils';
+import { normalizeKeyword } from '@/shared/lib/utils';
 import { CommentItemByUserId } from '@/types/comment/comment-api';
 
 export type CommentFilterOptions = {

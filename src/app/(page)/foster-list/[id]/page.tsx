@@ -1,7 +1,7 @@
-import BackButton from '@/components/common/back-button';
-import AnimalBookmark from '@/components/foster-list/animal-bookmark';
-import { AnimalCarousel } from '@/components/foster-list/animal-carousel';
-import { Card } from '@/components/ui/card';
+import BackButton from '@/shared/widgets/navigation/back-button';
+import AnimalBookmark from '@/features/foster/ui/foster-list/animal-bookmark';
+import { AnimalCarousel } from '@/features/foster/ui/foster-list/animal-carousel';
+import { Card } from '@/shared/ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
@@ -10,19 +10,19 @@ import {
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_ENVIRONMENT_LABEL_KO,
-} from '@/constants/enum';
-import { fetchFosterAnimalDetail } from '@/lib/api/foster';
+} from '@/shared/constants/enum';
+import { fetchFosterAnimalDetail } from '@/features/foster/api/foster';
 import { Check } from 'lucide-react';
-import ConnectDialog from '@/components/foster-list/connect-dialog';
-import FosterRequestDialog from '@/components/foster-list/foster-requst-dialog';
-import { Badge } from '@/components/ui/badge';
-import KakaoMapLoader from '@/components/common/kakaomap-loader';
-import { formatAnimalAge, fosterTotalDuration, getDDay } from '@/lib/utils';
+import ConnectDialog from '@/features/foster/ui/foster-list/connect-dialog';
+import FosterRequestDialog from '@/features/foster/ui/foster-list/foster-requst-dialog';
+import { Badge } from '@/shared/ui/badge';
+import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
+import { formatAnimalAge, fosterTotalDuration, getDDay } from '@/shared/lib/utils';
 import { AnimalHealth } from '@/types/animal-condition/animal-condition';
 import { format } from 'date-fns';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import KakaoMapsScript from '@/components/common/kakao-maps-script';
+import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
 
 export default async function FosterListDetailPage({
   params,

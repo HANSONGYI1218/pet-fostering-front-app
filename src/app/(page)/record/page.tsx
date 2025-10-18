@@ -1,6 +1,6 @@
-import AnimalContainer from '@/components/record/animal-container';
-import { fetchRecordAnimals } from '@/lib/api/record';
-import FetchErrorBox from '@/components/common/fetch-error-box';
+import AnimalContainer from '@/features/record/ui/record/animal-container';
+import { fetchRecordAnimals } from '@/features/record/api/record';
+import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
 
 export default async function RecordPage() {
   try {

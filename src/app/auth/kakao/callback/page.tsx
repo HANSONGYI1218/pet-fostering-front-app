@@ -1,4 +1,4 @@
-import { KakaoCallbackHandler } from '@/components/auth/kakao-callback-handler';
+import { KakaoCallbackHandler } from '@/features/auth/ui/kakao-callback-handler';
 
 type SearchParams = Record<string, string | string[] | undefined>;
 

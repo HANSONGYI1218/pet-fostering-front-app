@@ -22,12 +22,12 @@ vi.mock('@tanstack/react-query', () => ({
   })),
 }));
 
-vi.mock('@/components/foster-list/foster-condition-card', () => ({
+vi.mock('@/shared/widgets/form/foster-condition-card', () => ({
   __esModule: true,
   default: () => <div data-testid="foster-condition-card" />,
 }));
 
-vi.mock('@/components/common/search-box', () => ({
+vi.mock('@/shared/widgets/form/search-box', () => ({
   __esModule: true,
   default: () => <div data-testid="search-box" />,
 }));

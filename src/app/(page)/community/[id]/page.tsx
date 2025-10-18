@@ -4,7 +4,7 @@ import {
   fetchCommunityComments,
   fetchCommunityPost,
 } from '@/features/community/api/community';
-import { logError } from '@/lib/logging';
+import { logError } from '@/shared/lib/logging';
 import type { CommentItem } from '@/types/comment/comment-api';
 import type { PostItem } from '@/types/post/post-api';
 

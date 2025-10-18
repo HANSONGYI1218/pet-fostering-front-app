@@ -3,7 +3,7 @@ import { ko } from 'date-fns/locale';
 import { ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
 import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
-import { toDate } from '@/lib/utils';
+import { toDate } from '@/shared/lib/utils';
 
 type CommentLike = CommentItem | ReplyCommentItem;
 

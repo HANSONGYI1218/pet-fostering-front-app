@@ -1,5 +1,5 @@
 import { PostItem } from '@/types/post/post-api';
-import { Card } from '@/components/ui/card';
+import { Card } from '@/shared/ui/card';
 import TopListTile from './top-list-tile';
 
 export default function CommunityTopList({

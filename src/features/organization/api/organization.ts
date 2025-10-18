@@ -15,10 +15,10 @@ import type {
   OrganizationAnimalListItem,
 } from '@/types/animal/animal-api';
 import type { FosterApplicent } from '@/types/foster-apply/foster-apply-api';
-import { resolveEndpoint } from '@/lib/api/config';
-import { toDate } from '@/lib/utils';
+import { resolveEndpoint } from '@/shared/api/config';
+import { toDate } from '@/shared/lib/utils';
 import type { FosterRecord } from '@/types/foster-record/foster-record';
-import { logError } from '@/lib/logging';
+import { logError } from '@/shared/lib/logging';
 
 type OrganizationApplicantDto = {
   id: string;

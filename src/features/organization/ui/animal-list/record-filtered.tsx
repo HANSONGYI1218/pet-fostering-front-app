@@ -6,15 +6,15 @@ import {
   AccordionContent,
   AccordionItem,
   AccordionTrigger,
-} from '@/components/ui/accordion';
+} from '@/shared/ui/accordion';
 import { addMonths, format, subMonths } from 'date-fns';
-import CalendarHeader from '@/components/record/record-calendar/calendar-header';
+import CalendarHeader from '@/shared/widgets/record/calendar-header';
 import { FosterRecord } from '@/types/foster-record/foster-record';
 import { ko } from 'date-fns/locale/ko';
-import { RecordImages } from '@/components/record/record-images';
-import { RecordContent } from '@/components/record/record-content';
-import { RecordHealthNote } from '@/components/record/record-health-note';
-import { toDate } from '@/lib/utils';
+import { RecordImages } from '@/shared/widgets/record/record-images';
+import { RecordContent } from '@/shared/widgets/record/record-content';
+import { RecordHealthNote } from '@/shared/widgets/record/record-health-note';
+import { toDate } from '@/shared/lib/utils';
 
 const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
   //현재 보고 있는 달

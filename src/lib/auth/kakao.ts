@@ -1,4 +1,4 @@
-import { resolveEndpoint } from '@/lib/api/config';
+import { resolveEndpoint } from '@/shared/api/config';
 import { dispatchAuthChangeEvent } from '@/lib/auth/events';
 import { clearBrowserCookie, setBrowserCookie } from './cookie-utils';
 

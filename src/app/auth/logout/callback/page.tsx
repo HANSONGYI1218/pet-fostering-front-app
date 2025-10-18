@@ -1,4 +1,4 @@
-import { KakaoLogoutHandler } from '@/components/auth/kakao-logout-handler';
+import { KakaoLogoutHandler } from '@/features/auth/ui/kakao-logout-handler';
 
 type SearchParams = Record<string, string | string[] | undefined>;
 

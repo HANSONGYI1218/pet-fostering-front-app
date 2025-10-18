@@ -1,13 +1,13 @@
 import Link from 'next/link';
 
-import BackButton from '@/components/common/back-button';
+import BackButton from '@/shared/widgets/navigation/back-button';
 import AnimalDetailContainer from '@/features/organization/ui/animal-list/animal-detail-container';
-import FetchErrorBox from '@/components/common/fetch-error-box';
+import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
 import { fetchOrganizationAnimalDetail } from '@/features/organization/api/organization';
-import { logError } from '@/lib/logging';
-import { Button } from '@/components/ui/button';
+import { logError } from '@/shared/lib/logging';
+import { Button } from '@/shared/ui/button';
 import { notFound } from 'next/navigation';
-import KakaoMapsScript from '@/components/common/kakao-maps-script';
+import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
 
 export default async function AnimalListDetailPage({
   params,

@@ -1,12 +1,12 @@
-import { Button } from '@/components/ui/button';
+import { Button } from '@/shared/ui/button';
 import { format } from 'date-fns';
 import { Download } from 'lucide-react';
-import BackButton from '@/components/common/back-button';
-import { Badge } from '@/components/ui/badge';
-import { NOTICE_TYPE_LABEL_KO } from '@/constants/enum';
-import FetchErrorBox from '@/components/common/fetch-error-box';
-import { fetchNoticeDetail } from '@/lib/api/notice';
-import { logError } from '@/lib/logging';
+import BackButton from '@/shared/widgets/navigation/back-button';
+import { Badge } from '@/shared/ui/badge';
+import { NOTICE_TYPE_LABEL_KO } from '@/shared/constants/enum';
+import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
+import { fetchNoticeDetail } from '@/features/notice/api/notice';
+import { logError } from '@/shared/lib/logging';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 

@@ -15,6 +15,8 @@ export default defineConfig({
       ['src/features/**/*.test.tsx', 'jsdom'],
       ['src/features/**/*.test.ts', 'jsdom'],
       ['src/app/**/*.test.tsx', 'jsdom'],
+      ['src/shared/**/*.test.tsx', 'jsdom'],
+      ['src/shared/**/*.test.ts', 'jsdom'],
     ],
   },
   css: {

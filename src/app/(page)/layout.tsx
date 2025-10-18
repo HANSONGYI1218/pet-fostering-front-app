@@ -1,8 +1,8 @@
 import type { ReactNode } from 'react';
 
-import TopBar from '@/components/common/top-bar';
-import BottomBar from '@/components/common/bottom-bar';
-import { Toaster } from '@/components/ui/sonner';
+import TopBar from '@/shared/widgets/navigation/top-bar';
+import BottomBar from '@/shared/widgets/navigation/bottom-bar';
+import { Toaster } from '@/shared/ui/sonner';
 
 export default function PageGroupLayout({
   children,

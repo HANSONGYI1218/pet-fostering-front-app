@@ -5,7 +5,7 @@ import {
   mapCommunityPost,
   mapPostListItems,
 } from '../community';
-import { toDate } from '@/lib/utils';
+import { toDate } from '@/shared/lib/utils';
 
 describe('mapPostListItems', () => {
   it('API 응답을 프런트엔드 게시글 도메인 모델로 변환한다', () => {
