@@ -1,13 +1,13 @@
 import { toDate } from '@/shared/lib/utils';
 import { resolveEndpoint } from '@/shared/api/config';
-import type { CommentItemByUserId } from '@/types/comment/comment-api';
-import type { PostItemByUserId } from '@/types/post/post-api';
+import type { CommentItemByUserId } from '@/entities/comment/comment-api';
+import type { PostItemByUserId } from '@/entities/post/post-api';
 import type {
   UpdateUserNotificationSettingPayload,
   UpdateUserProfilePayload,
   UserNotificationSettingItem,
   UserProfileItem,
-} from '@/types/user/user-api';
+} from '@/entities/user/user-api';
 
 const userHeaders = (token?: string): Record<string, string> => {
   const headers: Record<string, string> = {

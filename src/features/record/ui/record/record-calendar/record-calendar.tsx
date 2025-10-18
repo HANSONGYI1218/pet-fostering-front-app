@@ -1,7 +1,7 @@
 'use client';
 
 import type { Dispatch, SetStateAction } from 'react';
-import CalendarHeader from '@/shared/widgets/record/calendar-header';
+import CalendarHeader from '@/shared/widgets/navigation/calendar-header';
 import CalendarTable from './calendar-table';
 import { Card } from '@/shared/ui/card';
 import { addMonths, subMonths } from 'date-fns';

@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
-import type { FosterListAnimalItem } from '@/types/animal/animal-api';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
+import type { FosterListAnimalItem } from '@/entities/animal/animal-api';
 import { filterFosterList } from '../filters';
 
 const organization = {

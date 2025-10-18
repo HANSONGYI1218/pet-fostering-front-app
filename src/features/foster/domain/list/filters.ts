@@ -1,10 +1,18 @@
 import { normalizeKeyword } from '@/shared/lib/utils';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
-import type { FosterListAnimalItem } from '@/types/animal/animal-api';
-import type {
-  FosterFilterOptions,
-  FosterFilterValue,
-} from '@/shared/types/foster';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
+import type { FosterListAnimalItem } from '@/entities/animal/animal-api';
+export type FosterFilterValue<T> = T | 'ALL';
+
+export type FosterFilterOptions<
+  TType extends string,
+  TSize extends string,
+  TGender extends string,
+> = {
+  type: FosterFilterValue<TType>;
+  size: FosterFilterValue<TSize>;
+  gender: FosterFilterValue<TGender>;
+  keyword: string;
+};
 
 type FosterListFilterOptions = FosterFilterOptions<
   AnimalType,

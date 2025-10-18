@@ -1,9 +1,13 @@
 'use client';
 
-import { ChartBarLabel } from '@/shared/widgets/record/record-chart/bar-chart';
-import { ChartRadialStacked } from '@/shared/widgets/record/record-chart/radial-chart';
-import { fosterDuration, fosterTotalDuration, toDate } from '@/shared/lib/utils';
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import { ChartBarLabel } from '@/features/record/widgets/record-chart/bar-chart';
+import { ChartRadialStacked } from '@/features/record/widgets/record-chart/radial-chart';
+import {
+  fosterDuration,
+  fosterTotalDuration,
+  toDate,
+} from '@/shared/lib/utils';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 import CircleChart from './circle-chart';
 
 const monthNames = [

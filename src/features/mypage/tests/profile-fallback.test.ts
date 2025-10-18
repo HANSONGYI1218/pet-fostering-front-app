@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import type { AuthClaims } from '@/lib/auth/session';
-import type { UserProfileItem } from '@/types/user/user-api';
+import type { UserProfileItem } from '@/entities/user/user-api';
 import { mergeProfileWithClaims } from '@/features/mypage/lib/profile-fallback';
 
 const createProfile = (

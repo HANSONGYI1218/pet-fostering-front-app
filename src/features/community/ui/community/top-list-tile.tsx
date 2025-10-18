@@ -1,4 +1,4 @@
-import { PostItem } from '@/types/post/post-api';
+import { PostItem } from '@/entities/post/post-api';
 import { Eye, MessageSquareText } from 'lucide-react';
 
 export default function TopListTile({

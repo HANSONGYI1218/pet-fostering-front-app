@@ -1,11 +1,11 @@
-import { Button } from '../ui/button';
+import { Button } from '@/shared/ui/button';
 import {
   MYPAGE_STEPS,
   MYPAGE_STEP_LABEL,
   type MypageStep,
 } from '@/features/mypage/lib/mypage-steps';
 
-export default function MypageMeue({
+export default function MypageMenu({
   currentStep,
   setCurrentStep,
 }: {
@@ -25,7 +25,7 @@ export default function MypageMeue({
               onClick={() => {
                 setCurrentStep(step);
               }}
-              variant={'ghost'}
+              variant="ghost"
               className={`h-12 w-full justify-start text-lg ${isActive ? 'bg-[#D0EFE0] font-semibold text-[#00592d] hover:bg-[#D0EFE0] hover:text-[#00592d]' : 'font-normal text-neutral-700'}`}
             >
               {MYPAGE_STEP_LABEL[step]}

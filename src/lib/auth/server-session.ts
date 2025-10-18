@@ -1,9 +1,6 @@
 import { cookies } from 'next/headers';
 
-import {
-  ACCESS_TOKEN_STORAGE_KEY,
-  REFRESH_TOKEN_STORAGE_KEY,
-} from './kakao';
+import { ACCESS_TOKEN_STORAGE_KEY, REFRESH_TOKEN_STORAGE_KEY } from './kakao';
 import { parseAuthClaims } from './session';
 import type { AuthClaims } from './session';
 

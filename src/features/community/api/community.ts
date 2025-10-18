@@ -1,5 +1,8 @@
-import type { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
-import type { PostItem } from '@/types/post/post-api';
+import type {
+  CommentItem,
+  ReplyCommentItem,
+} from '@/entities/comment/comment-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { toDate } from '@/shared/lib/utils';
 import { resolveEndpoint } from '@/shared/api/config';
 
@@ -202,9 +205,7 @@ export const mapCommunityComments = (
         reply_comments: replies,
       };
     })
-    .sort(
-      (a, b) => a.created_at.getTime() - b.created_at.getTime(),
-    );
+    .sort((a, b) => a.created_at.getTime() - b.created_at.getTime());
 
 export const fetchCommunityPost = async (id: string, token?: string) => {
   const endpoint = resolveEndpoint(`/community/posts/${id}`);
@@ -226,7 +227,10 @@ export const fetchCommunityPost = async (id: string, token?: string) => {
   return mapCommunityPost(dto);
 };
 
-export const fetchCommunityComments = async (postId: string, token?: string) => {
+export const fetchCommunityComments = async (
+  postId: string,
+  token?: string,
+) => {
   const endpoint = resolveEndpoint(`/community/posts/${postId}/comments`);
 
   const response = await fetch(endpoint, {

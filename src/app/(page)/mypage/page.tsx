@@ -1,5 +1,5 @@
 import MypageContainer from '@/features/mypage/ui/mypage-container';
-import { isMypageStep } from '@/features/mypage/ui/mypage-steps';
+import { isMypageStep } from '@/features/mypage/lib/mypage-steps';
 
 type ProfilePageProps = {
   searchParams?: Record<string, string | string[] | undefined>;

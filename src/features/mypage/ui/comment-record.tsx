@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Card, CardAction, CardHeader } from '../ui/card';
+import { Card, CardAction, CardHeader } from '@/shared/ui/card';
 import { MessageSquareText, ThumbsUp } from 'lucide-react';
 import {
   Select,
@@ -12,13 +12,13 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { format } from 'date-fns';
-import SearchBox from '../common/search-box';
+import SearchBox from '@/shared/widgets/form/search-box';
 import { filterCommentList } from '@/features/community/domain/comment';
 import { toDate } from '@/shared/lib/utils';
 import Link from 'next/link';
 import { ko } from 'date-fns/locale/ko';
 import { toast } from 'sonner';
-import type { CommentItemByUserId } from '@/types/comment/comment-api';
+import type { CommentItemByUserId } from '@/entities/comment/comment-api';
 
 type CommentRecordProps = {
   comments: CommentItemByUserId[];

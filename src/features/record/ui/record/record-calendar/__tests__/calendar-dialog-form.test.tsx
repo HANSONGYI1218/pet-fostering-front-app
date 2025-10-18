@@ -4,8 +4,11 @@ import { describe, expect, it, vi } from 'vitest';
 import { useEffect, useState } from 'react';
 
 import CalendarDialogForm from '../calendar-dialog-form';
-import { RecordProvider, useRecord } from '@/features/record/context/record-provider';
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import {
+  RecordProvider,
+  useRecord,
+} from '@/features/record/context/record-provider';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 import { WholeDateArray } from '../tr';
 
 const createRecord = (

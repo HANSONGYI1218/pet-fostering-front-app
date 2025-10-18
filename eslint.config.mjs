@@ -61,6 +61,19 @@ export default [
           jsx: 'never',
         },
       ],
+      'import/no-restricted-paths': [
+        'error',
+        {
+          zones: [
+            {
+              target: './src/shared',
+              from: './src/features',
+              message:
+                'shared 계층에서 feature 코드를 직접 참조할 수 없습니다. alias나 엔터티 레이어를 사용하세요.',
+            },
+          ],
+        },
+      ],
       'import/no-extraneous-dependencies': [
         'error',
         {

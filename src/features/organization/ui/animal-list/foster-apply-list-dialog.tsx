@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
-import { FosterApplicent } from '@/types/foster-apply/foster-apply-api';
+import { FosterApplicent } from '@/entities/foster-apply/foster-apply-api';
 import Image from 'next/image';
 import { ApplyAcceptDialog } from './applicent-accept-dialog';
 

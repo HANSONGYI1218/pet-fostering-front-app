@@ -1,7 +1,7 @@
 import { describe, expect, it } from 'vitest';
 
 import { mapNoticeDetail, mapNoticeListItems } from '../notice';
-import { NoticeType } from '@/shared/types/notice/notice';
+import { NoticeType } from '@/entities/notice/notice';
 
 describe('notice api mappers', () => {
   it('mapNoticeListItems는 목록 DTO를 도메인 모델로 변환한다', () => {

@@ -5,8 +5,8 @@ import {
   fetchCommunityPost,
 } from '@/features/community/api/community';
 import { logError } from '@/shared/lib/logging';
-import type { CommentItem } from '@/types/comment/comment-api';
-import type { PostItem } from '@/types/post/post-api';
+import type { CommentItem } from '@/entities/comment/comment-api';
+import type { PostItem } from '@/entities/post/post-api';
 
 export default async function CommunityPostPage({
   params,

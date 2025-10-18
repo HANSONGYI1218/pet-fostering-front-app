@@ -1,5 +1,5 @@
-import { Checkbox } from '../../ui/checkbox';
-import { Label } from '../../ui/label';
+import { Checkbox } from '@/shared/ui/checkbox';
+import { Label } from '@/shared/ui/label';
 import {
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_AGE_LABEL_KO,
@@ -22,7 +22,7 @@ type LabelMapKey = keyof typeof LABEL_MAP;
 
 interface CheckButtonProps {
   isOnly?: boolean;
-  isExperence?: boolean;
+  isExperience?: boolean;
   type: LabelMapKey;
   value: string[] | string;
   onChange: (value: string[] | string) => void;
@@ -30,7 +30,7 @@ interface CheckButtonProps {
 
 export function CheckButton({
   isOnly,
-  isExperence,
+  isExperience,
   type,
   value,
   onChange,
@@ -67,9 +67,14 @@ export function CheckButton({
           <Checkbox
             id={`${type}-${optionValue}`}
             checked={valueArray.includes(optionValue)}
-            onCheckedChange={() =>
-              isExperence ? onChange : handleToggle(optionValue)
-            }
+            onCheckedChange={() => {
+              if (isExperience) {
+                onChange(optionValue);
+                return;
+              }
+
+              handleToggle(optionValue);
+            }}
             isCircleicon
             className="rounded-full data-[state=checked]:bg-transparent"
           />

@@ -1,13 +1,13 @@
 import { describe, expect, it } from 'vitest';
 
 import { filterOrganizationAnimals, sortOrganizationAnimals } from '../animals';
-import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 
 const createAnimal = (
   overrides: Partial<OrganizationAnimalListItem>,

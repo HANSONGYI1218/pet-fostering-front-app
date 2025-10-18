@@ -1,4 +1,4 @@
-import { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import { Card } from '@/shared/ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
@@ -12,7 +12,7 @@ import { Badge } from '@/shared/ui/badge';
 import Link from 'next/link';
 import { FosterApplyListDialog } from './foster-apply-list-dialog';
 import { Button } from '@/shared/ui/button';
-import { FosterState } from '@/types/animal/animal';
+import { FosterState } from '@/entities/animal/animal';
 import { formatAnimalAge } from '@/shared/lib/utils';
 import Image from 'next/image';
 

@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import NoticeTile from './notice-tile';
-import type { NoticeListItem } from '@/shared/types/notice/notice-api';
+import type { NoticeListItem } from '@/entities/notice/notice-api';
 import { PaginationDynamic } from '@/shared/widgets/navigation/papagination-dynamic';
 
 export function NoticeContainer({ notices }: { notices: NoticeListItem[] }) {

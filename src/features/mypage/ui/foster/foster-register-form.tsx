@@ -9,16 +9,16 @@ import {
   FormLabel,
   FormMessage,
 } from '@/shared/ui/form';
-import { AnimalType, AnimalSize } from '@/types/animal/animal';
+import { AnimalType, AnimalSize } from '@/entities/animal/animal';
 import {
   AnimalAge,
   AnimalSpecialNote,
   AnimalPeriod,
-} from '@/types/animal-condition/animal-condition';
-import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
+} from '@/entities/animal-condition/animal-condition';
+import { FosterEnvironment } from '@/entities/foster-condition/foster-condition';
 import { zodResolver } from '@hookform/resolvers/zod';
 import { Resolver, useForm } from 'react-hook-form';
-import { FosterConditionItem } from '@/types/foster-condition/foster-condition-api';
+import { FosterConditionItem } from '@/entities/foster-condition/foster-condition-api';
 import { ChevronRight } from 'lucide-react';
 import {
   ANIMAL_AGE_LABEL_KO,

@@ -1,8 +1,8 @@
 import FosterInfoCard from '@/features/record/ui/record/foster-info-tile';
 import RecordContainer from '@/features/record/ui/record/record-container';
-import { AnimalType } from '@/types/animal/animal';
-import { FosterRecord } from '@/types/foster-record/foster-record';
-import { FosterMatchInfo } from '@/types/foster-record/foster-record-api';
+import { AnimalType } from '@/entities/animal/animal';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
+import { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
 import { fetchRecordDetail } from '@/features/record/api/record';
 import { notFound } from 'next/navigation';
 import BackButton from '@/shared/widgets/navigation/back-button';

@@ -20,7 +20,9 @@ describe('CommentsContainer', () => {
     render(<CommentsContainer comments={[]} isError />);
 
     expect(
-      screen.getByText('댓글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.'),
+      screen.getByText(
+        '댓글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.',
+      ),
     ).toBeInTheDocument();
     expect(
       screen.getByRole('button', { name: '다시 시도' }),

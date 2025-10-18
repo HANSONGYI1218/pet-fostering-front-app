@@ -3,21 +3,21 @@ import {
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '@/types/animal-condition/animal-condition';
+} from '@/entities/animal-condition/animal-condition';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 import type {
   OrganizationAnimalDetailItem,
   OrganizationAnimalListItem,
-} from '@/types/animal/animal-api';
-import type { FosterApplicent } from '@/types/foster-apply/foster-apply-api';
+} from '@/entities/animal/animal-api';
+import type { FosterApplicent } from '@/entities/foster-apply/foster-apply-api';
 import { resolveEndpoint } from '@/shared/api/config';
 import { toDate } from '@/shared/lib/utils';
-import type { FosterRecord } from '@/types/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import { logError } from '@/shared/lib/logging';
 
 type OrganizationApplicantDto = {
@@ -104,9 +104,8 @@ export const mapOrganizationAnimal = (
   image: dto.imageUrl ?? '/images/animal-placeholder.png',
   applicants: dto.applicants?.map(mapApplicant) ?? [],
   animal_healths:
-    dto.healthTags?.map(
-      (tag) => AnimalHealth[tag] ?? AnimalHealth.NEUTERED,
-    ) ?? [],
+    dto.healthTags?.map((tag) => AnimalHealth[tag] ?? AnimalHealth.NEUTERED) ??
+    [],
   animal_personalitys:
     dto.personalityTags?.map(
       (tag) => AnimalPersonality[tag] ?? AnimalPersonality.QUIET,
@@ -132,7 +131,8 @@ export const fetchOrganizationAnimals = async (): Promise<
       throw new Error(`조직 동물 목록 요청 실패: ${response.status}`);
     }
 
-    const payload = (await response.json()) as OrganizationAnimalListResponseDto;
+    const payload =
+      (await response.json()) as OrganizationAnimalListResponseDto;
 
     return payload.items.map(mapOrganizationAnimal);
   } catch (error) {
@@ -177,9 +177,8 @@ const mapOrganizationDetail = (
     : new Date(),
   foster_records: dto.fosterRecords?.map(mapOrganizationRecord) ?? [],
   animal_healths:
-    dto.healthTags?.map(
-      (tag) => AnimalHealth[tag] ?? AnimalHealth.NEUTERED,
-    ) ?? [],
+    dto.healthTags?.map((tag) => AnimalHealth[tag] ?? AnimalHealth.NEUTERED) ??
+    [],
   animal_personalitys:
     dto.personalityTags?.map(
       (tag) => AnimalPersonality[tag] ?? AnimalPersonality.QUIET,
@@ -209,13 +208,10 @@ const mapOrganizationDetail = (
 export const fetchOrganizationAnimalDetail = async (
   id: string,
 ): Promise<OrganizationAnimalDetailItem> => {
-  const response = await fetch(
-    resolveEndpoint(`/organization/animals/${id}`),
-    {
-      cache: 'no-store',
-      headers: { Accept: 'application/json' },
-    },
-  );
+  const response = await fetch(resolveEndpoint(`/organization/animals/${id}`), {
+    cache: 'no-store',
+    headers: { Accept: 'application/json' },
+  });
 
   if (!response.ok) {
     const error = new Error(

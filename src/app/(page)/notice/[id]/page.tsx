@@ -30,9 +30,7 @@ export default async function NoticeDetailPage({
                 variant={notice.isFixed ? 'green' : 'outline'}
                 className="h-7 w-15 rounded-full text-sm"
               >
-                {notice.isFixed
-                  ? '중요'
-                  : NOTICE_TYPE_LABEL_KO[notice.type]}
+                {notice.isFixed ? '중요' : NOTICE_TYPE_LABEL_KO[notice.type]}
               </Badge>
               <div className="flex flex-col items-center gap-2">
                 <span className="text-center text-lg font-semibold md:text-xl">
@@ -44,7 +42,7 @@ export default async function NoticeDetailPage({
               </div>
             </div>
 
-            <div className="flex min-h-96 w-full whitespace-pre-line border-y px-6 py-16 text-sm md:text-base">
+            <div className="flex min-h-96 w-full border-y px-6 py-16 text-sm whitespace-pre-line md:text-base">
               {notice.content}
             </div>
 
@@ -55,7 +53,10 @@ export default async function NoticeDetailPage({
                     {file}
                   </span>
                   <Download width={15} height={15} className="cursor-pointer" />
-                  <Button className="ml-4 h-7 text-xs font-medium" variant="outline">
+                  <Button
+                    className="ml-4 h-7 text-xs font-medium"
+                    variant="outline"
+                  >
                     미리보기
                   </Button>
                 </div>
@@ -72,7 +73,10 @@ export default async function NoticeDetailPage({
     );
   } catch (error) {
     logError('공지 상세를 불러오는 데 실패했습니다.', error);
-    const status = error instanceof Error ? (error as Error & { status?: number }).status : undefined;
+    const status =
+      error instanceof Error
+        ? (error as Error & { status?: number }).status
+        : undefined;
 
     if (status === 404) {
       notFound();

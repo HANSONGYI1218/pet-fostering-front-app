@@ -6,13 +6,9 @@ import { FosterformSchema } from './foster-register-form';
 import { Card } from '@/shared/ui/card';
 import { Controller } from 'react-hook-form';
 import { CheckButton } from '@/features/mypage/ui/foster/check-button';
-import { AnimalSize, AnimalType } from '@/types/animal/animal';
-import { AnimalAge } from '@/types/animal-condition/animal-condition';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/shared/ui/popover';
+import { AnimalSize, AnimalType } from '@/entities/animal/animal';
+import { AnimalAge } from '@/entities/animal-condition/animal-condition';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { FormControl } from '@/shared/ui/form';
 import { Button } from '@/shared/ui/button';
 import { format } from 'date-fns';
@@ -85,7 +81,7 @@ export default function RegisterStep03({
                     </span>
                     <CheckButton
                       type="type"
-                      isExperence
+                      isExperience
                       value={experience?.animal_type ?? ''}
                       onChange={(val) => {
                         const newExperiences = [...(field.value ?? [])];
@@ -104,7 +100,7 @@ export default function RegisterStep03({
                     </span>
                     <CheckButton
                       type="size"
-                      isExperence
+                      isExperience
                       value={experience?.animal_size ?? ''}
                       onChange={(val) => {
                         const newExperiences = [...(field.value ?? [])];
@@ -123,7 +119,7 @@ export default function RegisterStep03({
                     </span>
                     <CheckButton
                       type="age"
-                      isExperence
+                      isExperience
                       value={experience?.animal_age ?? ''}
                       onChange={(val) => {
                         const newExperiences = [...(field.value ?? [])];

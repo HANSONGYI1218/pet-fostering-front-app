@@ -1,11 +1,11 @@
 'use client';
 
 import { useState } from 'react';
-import { Button } from '../ui/button';
+import { Button } from '@/shared/ui/button';
 import PostRecord from './post-record';
 import CommentRecord from './comment-record';
-import type { PostItemByUserId } from '@/types/post/post-api';
-import type { CommentItemByUserId } from '@/types/comment/comment-api';
+import type { PostItemByUserId } from '@/entities/post/post-api';
+import type { CommentItemByUserId } from '@/entities/comment/comment-api';
 
 type RecordTabProps = {
   posts: PostItemByUserId[];

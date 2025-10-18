@@ -1,6 +1,6 @@
 'use client';
 
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 import React, {
   createContext,
   useCallback,

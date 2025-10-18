@@ -2,8 +2,8 @@ import { describe, expect, it } from 'vitest';
 import { render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
-import type { FosterListAnimalItem } from '@/types/animal/animal-api';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
+import type { FosterListAnimalItem } from '@/entities/animal/animal-api';
 
 const createAnimal = (
   overrides: Partial<FosterListAnimalItem>,

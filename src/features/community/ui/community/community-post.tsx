@@ -11,7 +11,7 @@ import Image from 'next/image';
 import { ko } from 'date-fns/locale';
 import { Button } from '@/shared/ui/button';
 import RetryButton from '@/shared/widgets/feedback/retry-button';
-import type { PostItem } from '@/types/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { toDate } from '@/shared/lib/utils';
 
 export default function CommunityPost({

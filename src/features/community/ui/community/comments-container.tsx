@@ -5,7 +5,7 @@ import RetryButton from '@/shared/widgets/feedback/retry-button';
 import { useState } from 'react';
 import CommunityCommentTile from './community-comment-tile';
 import { Card } from '@/shared/ui/card';
-import { CommentItem, ReplyCommentItem } from '@/types/comment/comment-api';
+import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
 
 type CommentsContainerProps = {
   comments: CommentItem[];
@@ -19,6 +19,9 @@ export default function CommentsContainer({
   comments,
   isError = false,
 }: CommentsContainerProps) {
+  const itemsPerPage = 10;
+  const [currentPage, setCurrentPage] = useState(1);
+
   if (isError) {
     return (
       <Card className="flex w-full flex-col items-center justify-center gap-4 py-16 text-sm text-neutral-500">
@@ -29,8 +32,6 @@ export default function CommentsContainer({
   }
 
   const hasComments = comments.length > 0;
-  const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수
-  const [currentPage, setCurrentPage] = useState(1);
 
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
@@ -87,17 +88,20 @@ export default function CommentsContainer({
                   />
                   {hasReplies && (
                     <div className="flex w-full flex-col pl-14">
-                      {replyComments.map((reply: ReplyCommentItem, replyIdx) => {
-                        const isLastReply =
-                          isLastParent && replyIdx === replyComments.length - 1;
-                        return (
-                          <CommunityCommentTile
-                            key={reply.id}
-                            comment={reply}
-                            isLast={isLastReply}
-                          />
-                        );
-                      })}
+                      {replyComments.map(
+                        (reply: ReplyCommentItem, replyIdx) => {
+                          const isLastReply =
+                            isLastParent &&
+                            replyIdx === replyComments.length - 1;
+                          return (
+                            <CommunityCommentTile
+                              key={reply.id}
+                              comment={reply}
+                              isLast={isLastReply}
+                            />
+                          );
+                        },
+                      )}
                     </div>
                   )}
                 </div>

@@ -1,7 +1,7 @@
 import { format } from 'date-fns';
 import Link from 'next/link';
 import { Paperclip } from 'lucide-react';
-import type { NoticeListItem } from '@/shared/types/notice/notice-api';
+import type { NoticeListItem } from '@/entities/notice/notice-api';
 import { Badge } from '@/shared/ui/badge';
 import { NOTICE_TYPE_LABEL_KO } from '@/shared/constants/enum';
 import { getDDay } from '@/shared/lib/utils';

@@ -13,5 +13,5 @@ export default function KakaoMapsScript() {
     return null;
   }
 
-  return <Script strategy="beforeInteractive" src={kakaoSdkUrl} />;
+  return <Script strategy="afterInteractive" src={kakaoSdkUrl} />;
 }

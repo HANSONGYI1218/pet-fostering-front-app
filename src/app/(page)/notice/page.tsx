@@ -22,7 +22,10 @@ export default async function NoticePage() {
         <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16 md:gap-12">
           {renderHeading()}
           {notices.length === 0 ? (
-            <EmptyBox className="min-h-[320px]" text="등록된 공지가 없습니다." />
+            <EmptyBox
+              className="min-h-[320px]"
+              text="등록된 공지가 없습니다."
+            />
           ) : (
             <NoticeContainer notices={notices} />
           )}

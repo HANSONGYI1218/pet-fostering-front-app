@@ -3,7 +3,7 @@ import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 import FosterConditionCard from '../foster-condition-card';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
 import { FILTER_ALL_VALUE } from '@/shared/constants/filter';
 
 beforeAll(() => {

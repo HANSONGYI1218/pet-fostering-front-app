@@ -5,7 +5,7 @@ import { useQuery, useQueryClient } from '@tanstack/react-query';
 
 import { getSocket } from '@/lib/socket';
 import { fetchOrganizationAnimals } from '@/features/organization/api/organization';
-import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import { sortOrganizationAnimals } from '@/features/organization/domain/animals';
 
 export const ORGANIZATION_ANIMALS_QUERY_KEY = ['animals'] as const;

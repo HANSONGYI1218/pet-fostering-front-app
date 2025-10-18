@@ -1,9 +1,17 @@
-import FetchErrorBox from '../common/fetch-error-box';
-import LoginNoticeBox from '../common/login-notice-box';
+import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
+import LoginNoticeBox from '@/shared/widgets/feedback/login-notice-box';
 import MypageContent from './mypage-content';
-import { fetchMyComments, fetchMyNotificationSetting, fetchMyPosts, fetchMyProfile } from '@/lib/api/user';
+import {
+  fetchMyComments,
+  fetchMyNotificationSetting,
+  fetchMyPosts,
+  fetchMyProfile,
+} from '@/features/mypage/api/user';
 import { mergeProfileWithClaims } from '@/features/mypage/lib/profile-fallback';
-import { resolveServerAccessToken, resolveServerAuthClaims } from '@/lib/auth/server-session';
+import {
+  resolveServerAccessToken,
+  resolveServerAuthClaims,
+} from '@/lib/auth/server-session';
 import type { MypageStep } from '@/features/mypage/lib/mypage-steps';
 import { logError } from '@/shared/lib/logging';
 

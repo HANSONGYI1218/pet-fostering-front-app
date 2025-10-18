@@ -22,16 +22,12 @@ import {
   FormMessage,
 } from '@/shared/ui/form';
 import { Input } from '@/shared/ui/input';
-import { AnimalType, AnimalSize, AnimalGender } from '@/types/animal/animal';
+import { AnimalType, AnimalSize, AnimalGender } from '@/entities/animal/animal';
 import { Card } from '@/shared/ui/card';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import Image from 'next/image';
 import { Calendar } from '@/shared/ui/calendar';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/shared/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { format, isValid } from 'date-fns';
 import { cn } from '@/shared/lib/utils';
 import { ko } from 'date-fns/locale/ko';
@@ -51,10 +47,10 @@ import {
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '@/types/animal-condition/animal-condition';
+} from '@/entities/animal-condition/animal-condition';
 import Chip from '@/shared/widgets/form/chip';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
-import AniamlCreateProgress from '../organization/animal-list/animal-create-progress';
+import AniamlCreateProgress from '@/features/organization/ui/animal-list/animal-create-progress';
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {

@@ -1,7 +1,7 @@
 'use client';
 
-import { FosterConditionItem } from '@/types/foster-condition/foster-condition-api';
-import { Card } from '../ui/card';
+import { FosterConditionItem } from '@/entities/foster-condition/foster-condition-api';
+import { Card } from '@/shared/ui/card';
 import FosterRegisterForm from './foster/foster-register-form';
 
 export default function FosterTab() {

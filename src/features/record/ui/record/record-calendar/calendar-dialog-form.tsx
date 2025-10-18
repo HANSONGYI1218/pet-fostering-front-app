@@ -28,12 +28,12 @@ import {
 import { useRecord } from '@/features/record/context/record-provider';
 import { Button } from '@/shared/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 import { Badge } from '@/shared/ui/badge';
 import { ko } from 'date-fns/locale';
 import { Card } from '@/shared/ui/card';
-import { RecordContent } from '@/shared/widgets/record/record-content';
-import { RecordHealthNote } from '@/shared/widgets/record/record-health-note';
+import { RecordContent } from '@/features/record/widgets/record-content';
+import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
 import { cn, toDate } from '@/shared/lib/utils';
 
 import type { Dispatch, SetStateAction } from 'react';

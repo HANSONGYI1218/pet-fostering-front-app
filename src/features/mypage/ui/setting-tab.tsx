@@ -7,7 +7,7 @@ import { useForm } from 'react-hook-form';
 import { z } from 'zod';
 import { toast } from 'sonner';
 
-import { Card } from '../ui/card';
+import { Card } from '@/shared/ui/card';
 import {
   Dialog,
   DialogClose,
@@ -25,13 +25,13 @@ import {
   FormLabel,
   FormMessage,
 } from '@/shared/ui/form';
-import { Switch } from '../ui/switch';
-import { Button } from '../ui/button';
+import { Switch } from '@/shared/ui/switch';
+import { Button } from '@/shared/ui/button';
 import {
   deleteMyAccount,
   fetchMyNotificationSetting,
   updateMyNotificationSetting,
-} from '@/lib/api/user';
+} from '@/features/mypage/api/user';
 import {
   clearStoredAuthTokens,
   resolveStoredAccessToken,
@@ -39,7 +39,7 @@ import {
 import type {
   UpdateUserNotificationSettingPayload,
   UserNotificationSettingItem,
-} from '@/types/user/user-api';
+} from '@/entities/user/user-api';
 
 const SettingFormSchema = z.object({
   commentEmail: z.boolean().optional(),

@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { PropsWithChildren } from 'react';
 
 import { RecordProvider, useRecord } from '../record-provider';
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 
 const createRecord = (
   id: string,

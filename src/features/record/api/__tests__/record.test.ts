@@ -1,5 +1,5 @@
 import { vi } from 'vitest';
-import { FosterState } from '@/types/animal/animal';
+import { FosterState } from '@/entities/animal/animal';
 
 import { fetchRecordAnimals, fetchRecordDetail } from '../record';
 
@@ -99,11 +99,11 @@ describe('record api', () => {
     const detail = await fetchRecordDetail('animal-1');
 
     expect(detail.info.id).toBe('animal-1');
-   expect(detail.records[0]).toMatchObject({
-     id: 'record-1',
-     health_note: '정상',
-   });
- });
+    expect(detail.records[0]).toMatchObject({
+      id: 'record-1',
+      health_note: '정상',
+    });
+  });
 
   it('fetchRecordAnimals가 실패하면 예외를 전달한다', async () => {
     fetchMock.mockResolvedValueOnce(

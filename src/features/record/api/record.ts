@@ -1,10 +1,14 @@
 import { resolveEndpoint } from '@/shared/api/config';
-import type { FosterRecordAnimalItem } from '@/types/animal/animal-api';
+import type { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 import type {
   FosterMatchInfo,
   FosterRecord,
-} from '@/types/foster-record/foster-record-api';
-import { AnimalGender, AnimalType, FosterState } from '@/types/animal/animal';
+} from '@/entities/foster-record/foster-record-api';
+import {
+  AnimalGender,
+  AnimalType,
+  FosterState,
+} from '@/entities/animal/animal';
 import { toDate } from '@/shared/lib/utils';
 import { logError } from '@/shared/lib/logging';
 
@@ -141,7 +145,9 @@ export const fetchRecordAnimals = async (): Promise<
       throw error;
     }
 
-    throw new Error('기록 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.');
+    throw new Error(
+      '기록 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.',
+    );
   }
 };
 

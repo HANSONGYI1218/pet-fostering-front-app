@@ -3,12 +3,12 @@ import {
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '@/types/animal-condition/animal-condition';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+} from '@/entities/animal-condition/animal-condition';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
 import type {
   FosterAnimalDetailItem,
   FosterListAnimalItem,
-} from '@/types/animal/animal-api';
+} from '@/entities/animal/animal-api';
 import { toDate } from '@/shared/lib/utils';
 
 import { resolveEndpoint } from '@/shared/api/config';
@@ -187,7 +187,9 @@ export const fetchFosterAnimals = async (): Promise<FosterListAnimalItem[]> => {
       throw error;
     }
 
-    throw new Error('임보 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.');
+    throw new Error(
+      '임보 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.',
+    );
   }
 };
 
@@ -211,7 +213,9 @@ export const fetchFosterAnimalDetail = async (
       throw error;
     }
 
-    throw new Error('임보 동물 상세를 불러오는 중 알 수 없는 오류가 발생했습니다.');
+    throw new Error(
+      '임보 동물 상세를 불러오는 중 알 수 없는 오류가 발생했습니다.',
+    );
   }
 };
 

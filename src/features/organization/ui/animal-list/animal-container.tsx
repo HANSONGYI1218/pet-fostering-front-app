@@ -4,22 +4,22 @@ import { useEffect, useState } from 'react';
 
 import { Button } from '@/shared/ui/button';
 import SearchBox from '@/shared/widgets/form/search-box';
-import FosterConditionCard from '@/shared/widgets/form/foster-condition-card';
+import FosterConditionCard from '@/features/foster/ui/foster-condition-card';
 import { AnimalCreateDialog } from './animal-create-dialog';
 import AnimalTile from './animal-tile';
-import type { FosterFilterValue } from '@/shared/types/foster';
+import type { FosterFilterValue } from '@/features/foster/domain/list/filters';
 import {
   filterOrganizationAnimals,
   sortOrganizationAnimals,
 } from '@/features/organization/domain/animals';
 import { useOrganizationAnimals } from './hooks/use-organization-animals';
-import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 import { FILTER_ALL_VALUE } from '@/shared/constants/filter';
 
 const INITIAL_FILTERED: OrganizationAnimalListItem[] = [];

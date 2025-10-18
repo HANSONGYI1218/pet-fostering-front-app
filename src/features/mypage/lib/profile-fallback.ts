@@ -1,5 +1,5 @@
 import type { AuthClaims } from '@/lib/auth/session';
-import type { UserProfileItem } from '@/types/user/user-api';
+import type { UserProfileItem } from '@/entities/user/user-api';
 
 const trimToNull = (value: string | null | undefined) => {
   const trimmed = value?.trim();

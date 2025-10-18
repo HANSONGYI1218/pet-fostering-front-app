@@ -1,4 +1,4 @@
-import { PostItem } from '@/types/post/post-api';
+import { PostItem } from '@/entities/post/post-api';
 import { Card } from '@/shared/ui/card';
 import { Eye, MessageSquareText, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';

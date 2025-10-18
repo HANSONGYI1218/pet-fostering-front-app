@@ -3,13 +3,13 @@ import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { useOrganizationAnimals } from './use-organization-animals';
-import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 
 vi.mock('@/lib/socket', () => ({
   getSocket: () => null,

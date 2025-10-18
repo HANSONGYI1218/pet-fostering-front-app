@@ -1,4 +1,4 @@
-import { FosterListAnimalItem } from '@/types/animal/animal-api';
+import { FosterListAnimalItem } from '@/entities/animal/animal-api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, MapPin } from 'lucide-react';

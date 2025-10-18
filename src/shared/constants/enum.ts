@@ -5,15 +5,15 @@ import {
   AnimalPeriod,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '@/types/animal-condition/animal-condition';
+} from '@/entities/animal-condition/animal-condition';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
-import { FosterEnvironment } from '@/types/foster-condition/foster-condition';
-import { NoticeType } from '@/shared/types/notice/notice';
+} from '@/entities/animal/animal';
+import { FosterEnvironment } from '@/entities/foster-condition/foster-condition';
+import { NoticeType } from '@/entities/notice/notice';
 
 export const ANIMAL_GENDER_LABEL_KO: Record<AnimalGender, string> = {
   [AnimalGender.MALE]: '남',

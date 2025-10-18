@@ -32,7 +32,10 @@ export default async function AnimalListDetailPage({
     );
   } catch (error) {
     logError('조직 동물 상세를 불러오는 데 실패했습니다.', error);
-    const status = error instanceof Error ? (error as Error & { status?: number }).status : undefined;
+    const status =
+      error instanceof Error
+        ? (error as Error & { status?: number }).status
+        : undefined;
 
     if (status === 404) {
       notFound();

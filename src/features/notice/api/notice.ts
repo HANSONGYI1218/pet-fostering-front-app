@@ -1,10 +1,10 @@
 import { resolveEndpoint } from '@/shared/api/config';
 import { toDate } from '@/shared/lib/utils';
-import { NoticeType } from '@/shared/types/notice/notice';
+import { NoticeType } from '@/entities/notice/notice';
 import type {
   NoticeDetailItem,
   NoticeListItem,
-} from '@/shared/types/notice/notice-api';
+} from '@/entities/notice/notice-api';
 
 type NoticeListItemDto = {
   id: string;

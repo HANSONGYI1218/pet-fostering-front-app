@@ -3,10 +3,13 @@ import { vi } from 'vitest';
 import {
   AnimalEnvironment,
   AnimalHealth,
-} from '@/types/animal-condition/animal-condition';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+} from '@/entities/animal-condition/animal-condition';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
 
-import { fallbackFosterDetails, fallbackFosterList } from '@/test/fixtures/foster';
+import {
+  fallbackFosterDetails,
+  fallbackFosterList,
+} from '@/test/fixtures/foster';
 import {
   fetchFosterAnimalDetail,
   fetchFosterAnimals,

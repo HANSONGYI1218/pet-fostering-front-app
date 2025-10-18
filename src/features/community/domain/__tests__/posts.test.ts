@@ -1,6 +1,6 @@
 import { describe, expect, it } from 'vitest';
 
-import type { PostItem } from '@/types/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { selectRecentPopularPosts } from '../posts';
 
 const createPost = (overrides: Partial<PostItem>): PostItem => ({

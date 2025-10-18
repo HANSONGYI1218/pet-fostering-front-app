@@ -13,9 +13,9 @@ import {
 import { useState } from 'react';
 import Image from 'next/image';
 import { ko } from 'date-fns/locale';
-import { RecordImages } from '@/shared/widgets/record/record-images';
-import { RecordContent } from '@/shared/widgets/record/record-content';
-import { RecordHealthNote } from '@/shared/widgets/record/record-health-note';
+import { RecordImages } from '@/features/record/widgets/record-images';
+import { RecordContent } from '@/features/record/widgets/record-content';
+import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
 import { toDate } from '@/shared/lib/utils';
 import EmptyBox from '@/shared/widgets/feedback/empty-box';
 

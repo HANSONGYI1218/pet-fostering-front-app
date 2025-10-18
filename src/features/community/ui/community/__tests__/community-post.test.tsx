@@ -2,7 +2,7 @@ import React from 'react';
 import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
-import type { PostItem } from '@/types/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import CommunityPost from '../community-post';
 
 vi.mock('next/navigation', () => ({

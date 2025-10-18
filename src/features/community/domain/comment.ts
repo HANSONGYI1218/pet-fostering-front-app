@@ -1,5 +1,5 @@
 import { normalizeKeyword } from '@/shared/lib/utils';
-import { CommentItemByUserId } from '@/types/comment/comment-api';
+import { CommentItemByUserId } from '@/entities/comment/comment-api';
 
 export type CommentFilterOptions = {
   sort?: string;

@@ -1,7 +1,7 @@
 'use client';
 
 import { useMemo, useState } from 'react';
-import { Card, CardAction, CardHeader } from '../ui/card';
+import { Card, CardAction, CardHeader } from '@/shared/ui/card';
 import { MessageSquareText, ThumbsUp, Eye } from 'lucide-react';
 import Link from 'next/link';
 import {
@@ -13,9 +13,9 @@ import {
   SelectValue,
 } from '@/shared/ui/select';
 import { format } from 'date-fns';
-import SearchBox from '../common/search-box';
+import SearchBox from '@/shared/widgets/form/search-box';
 import { filterPostList } from '@/features/community/domain/posts';
-import type { PostItemByUserId } from '@/types/post/post-api';
+import type { PostItemByUserId } from '@/entities/post/post-api';
 import Image from 'next/image';
 
 type PostRecordProps = {

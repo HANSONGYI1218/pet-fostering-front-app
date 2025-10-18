@@ -3,15 +3,21 @@
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
-import MypageMeue from './mypage-menu';
+import MypageMenu from './mypage-menu';
 import ProfileTab from './profile-tab';
 import FosterTab from './foster-tab';
 import RecordTab from './record-tab';
 import SettingTab from './setting-tab';
-import { isMypageStep, type MypageStep } from '@/features/mypage/lib/mypage-steps';
-import type { UserProfileItem, UserNotificationSettingItem } from '@/types/user/user-api';
-import type { PostItemByUserId } from '@/types/post/post-api';
-import type { CommentItemByUserId } from '@/types/comment/comment-api';
+import {
+  isMypageStep,
+  type MypageStep,
+} from '@/features/mypage/lib/mypage-steps';
+import type {
+  UserProfileItem,
+  UserNotificationSettingItem,
+} from '@/entities/user/user-api';
+import type { PostItemByUserId } from '@/entities/post/post-api';
+import type { CommentItemByUserId } from '@/entities/comment/comment-api';
 import { mergeProfileWithClaims } from '@/features/mypage/lib/profile-fallback';
 import { resolveStoredAuthClaims } from '@/lib/auth/session';
 
@@ -91,9 +97,7 @@ export default function MypageContent({
   );
 
   const handleProfileUpdate = useCallback((next: UserProfileItem) => {
-    setProfileState(
-      mergeProfileWithClaims(next, resolveStoredAuthClaims()),
-    );
+    setProfileState(mergeProfileWithClaims(next, resolveStoredAuthClaims()));
   }, []);
 
   const handleNotificationUpdate = useCallback(
@@ -147,7 +151,7 @@ export default function MypageContent({
 
   return (
     <div className="flex w-full gap-10">
-      <MypageMeue currentStep={currentStep} setCurrentStep={handleStepChange} />
+      <MypageMenu currentStep={currentStep} setCurrentStep={handleStepChange} />
       <div className="flex w-full flex-1">{content}</div>
     </div>
   );

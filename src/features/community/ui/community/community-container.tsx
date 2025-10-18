@@ -6,7 +6,7 @@ import CommunityTile from './community-tile';
 import CommunityTopList from './community-top-list';
 import { PaginationDynamic } from '@/shared/widgets/navigation/papagination-dynamic';
 import { useMemo, useState } from 'react';
-import { PostItem } from '@/types/post/post-api';
+import { PostItem } from '@/entities/post/post-api';
 import { selectRecentPopularPosts } from '@/features/community/domain/posts';
 
 export default function CommunityContainer({ posts }: { posts: PostItem[] }) {

@@ -6,12 +6,8 @@ import {
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '@/types/animal-condition/animal-condition';
-import {
-  AnimalGender,
-  AnimalSize,
-  AnimalType,
-} from '@/types/animal/animal';
+} from '@/entities/animal-condition/animal-condition';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
 
 const originalFetch = globalThis.fetch;
 
@@ -105,10 +101,10 @@ describe('fetchOrganizationAnimalDetail', () => {
       status: 404,
     } as Response);
 
-    await expect(fetchOrganizationAnimalDetail('missing')).rejects.toMatchObject(
-      {
-        status: 404,
-      },
-    );
+    await expect(
+      fetchOrganizationAnimalDetail('missing'),
+    ).rejects.toMatchObject({
+      status: 404,
+    });
   });
 });

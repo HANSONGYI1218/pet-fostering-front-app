@@ -1,6 +1,6 @@
 'use client';
 
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 import RecordCalendar from './record-calendar/record-calendar';
 import { RecordProvider } from '@/features/record/context/record-provider';
 import RecordDetail from './record-detail';

@@ -2,7 +2,7 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import TopListTile from '../top-list-tile';
-import type { PostItem } from '@/types/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 
 describe('TopListTile', () => {
   it('댓글 수를 실제 데이터에 맞춰 보여준다', () => {

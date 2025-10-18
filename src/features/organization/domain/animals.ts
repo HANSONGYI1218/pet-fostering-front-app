@@ -1,11 +1,11 @@
-import type { FosterFilterValue } from '@/shared/types/foster';
-import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import type { FosterFilterValue } from '@/features/foster/domain/list/filters';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 import { normalizeKeyword } from '@/shared/lib/utils';
 
 export type OrganizationAnimalFilters = {

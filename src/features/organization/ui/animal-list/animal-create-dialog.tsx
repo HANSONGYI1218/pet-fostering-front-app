@@ -34,16 +34,12 @@ import {
   AnimalSize,
   AnimalGender,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 import { Card } from '@/shared/ui/card';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
 import { Calendar } from '@/shared/ui/calendar';
 import Image from 'next/image';
-import {
-  Popover,
-  PopoverContent,
-  PopoverTrigger,
-} from '@/shared/ui/popover';
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { format, isValid } from 'date-fns';
 import { cn } from '@/shared/lib/utils';
 import { ko } from 'date-fns/locale/ko';
@@ -64,7 +60,7 @@ import {
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '@/types/animal-condition/animal-condition';
+} from '@/entities/animal-condition/animal-condition';
 import Chip from '@/shared/widgets/form/chip';
 import { useEmergencyReasonReset } from './hooks/use-emergency-reason-reset';
 

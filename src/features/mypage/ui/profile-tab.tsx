@@ -7,8 +7,8 @@ import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { toast } from 'sonner';
 
-import { Card } from '../ui/card';
-import { Button } from '../ui/button';
+import { Card } from '@/shared/ui/card';
+import { Button } from '@/shared/ui/button';
 import {
   Form,
   FormControl,
@@ -18,15 +18,15 @@ import {
   FormMessage,
 } from '@/shared/ui/form';
 import { Input } from '@/shared/ui/input';
-import { Label } from '../ui/label';
-import { Textarea } from '../ui/textarea';
-import AddressPopUp from '../common/address-popup';
-import { updateMyProfile } from '@/lib/api/user';
+import { Label } from '@/shared/ui/label';
+import { Textarea } from '@/shared/ui/textarea';
+import AddressPopUp from '@/shared/widgets/map/address-popup';
+import { updateMyProfile } from '@/features/mypage/api/user';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import type {
   UpdateUserProfilePayload,
   UserProfileItem,
-} from '@/types/user/user-api';
+} from '@/entities/user/user-api';
 
 const ProfileFormSchema = z.object({
   name: z.string().optional(),

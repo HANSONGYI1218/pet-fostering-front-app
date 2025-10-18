@@ -1,4 +1,4 @@
-import { AnimalType, AnimalGender, AnimalSize } from '@/types/animal/animal';
+import { AnimalType, AnimalGender, AnimalSize } from '@/entities/animal/animal';
 
 export enum AnimalAge {
   JUVENILE = 'JUVENILE', //2살 미만

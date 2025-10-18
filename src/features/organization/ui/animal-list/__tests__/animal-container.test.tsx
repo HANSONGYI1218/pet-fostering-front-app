@@ -1,13 +1,13 @@
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 
-import type { OrganizationAnimalListItem } from '@/types/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import {
   AnimalType,
   AnimalGender,
   AnimalSize,
   FosterState,
-} from '@/types/animal/animal';
+} from '@/entities/animal/animal';
 import { useQuery } from '@tanstack/react-query';
 
 vi.mock('@/lib/socket', () => ({
@@ -22,7 +22,7 @@ vi.mock('@tanstack/react-query', () => ({
   })),
 }));
 
-vi.mock('@/shared/widgets/form/foster-condition-card', () => ({
+vi.mock('@/features/foster/ui/foster-condition-card', () => ({
   __esModule: true,
   default: () => <div data-testid="foster-condition-card" />,
 }));

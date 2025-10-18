@@ -1,6 +1,9 @@
-import { ANIMAL_GENDER_LABEL_KO, ANIMAL_TYPE_LABEL_KO } from '@/shared/constants/enum';
+import {
+  ANIMAL_GENDER_LABEL_KO,
+  ANIMAL_TYPE_LABEL_KO,
+} from '@/shared/constants/enum';
 import { Card } from '@/shared/ui/card';
-import { FosterRecordAnimalItem } from '@/types/animal/animal-api';
+import { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 import { Badge } from '@/shared/ui/badge';
 import { ChevronRight, Ellipsis, Pencil, Share2 } from 'lucide-react';
 import { Popover } from '@/shared/ui/popover';

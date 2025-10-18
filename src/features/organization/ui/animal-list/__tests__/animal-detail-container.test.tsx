@@ -3,14 +3,14 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import AnimalDetailContainer from '../animal-detail-container';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
-import { AnimalHealth } from '@/types/animal-condition/animal-condition';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
+import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
 
 vi.mock('@/shared/widgets/map/kakaomap-loader', () => ({
   default: () => <div data-testid="mock-map" />,
 }));
 
-vi.mock('@/shared/widgets/record/record-chart/chart-container', () => ({
+vi.mock('@/features/record/widgets/record-chart/chart-container', () => ({
   default: () => <div data-testid="mock-chart" />,
 }));
 

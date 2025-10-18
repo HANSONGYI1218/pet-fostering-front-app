@@ -1,4 +1,4 @@
-import { AnimalType, AnimalSize } from '@/types/animal/animal';
+import { AnimalType, AnimalSize } from '@/entities/animal/animal';
 import {
   AnimalAge,
   AnimalHealth,

@@ -2,7 +2,7 @@ import CommunityBanner from '@/features/community/ui/community/community-banner'
 import CommunityContainer from '@/features/community/ui/community/community-container';
 import { fetchCommunityPosts } from '@/features/community/api/community';
 import { logError } from '@/shared/lib/logging';
-import type { PostItem } from '@/types/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 
 const DEFAULT_POST_LIMIT = 20;
 

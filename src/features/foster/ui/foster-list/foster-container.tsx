@@ -1,16 +1,16 @@
 'use client';
 
-import { FosterListAnimalItem } from '@/types/animal/animal-api';
+import { FosterListAnimalItem } from '@/entities/animal/animal-api';
 import { useMemo, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 
 import { filterFosterList } from '@/features/foster/domain/list/filters';
-import type { FosterFilterValue } from '@/shared/types/foster';
+import type { FosterFilterValue } from '@/features/foster/domain/list/filters';
 import { FILTER_ALL_VALUE } from '@/shared/constants/filter';
-import { AnimalGender, AnimalSize, AnimalType } from '@/types/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
 
 import SearchBox from '@/shared/widgets/form/search-box';
-import FosterConditionCard from '@/shared/widgets/form/foster-condition-card';
+import FosterConditionCard from '@/features/foster/ui/foster-condition-card';
 import FosterTile from './foster-tile';
 import { Button } from '@/shared/ui/button';
 import { Card, CardAction } from '@/shared/ui/card';

@@ -8,12 +8,12 @@ import {
   AccordionTrigger,
 } from '@/shared/ui/accordion';
 import { addMonths, format, subMonths } from 'date-fns';
-import CalendarHeader from '@/shared/widgets/record/calendar-header';
-import { FosterRecord } from '@/types/foster-record/foster-record';
+import CalendarHeader from '@/shared/widgets/navigation/calendar-header';
+import { FosterRecord } from '@/entities/foster-record/foster-record';
 import { ko } from 'date-fns/locale/ko';
-import { RecordImages } from '@/shared/widgets/record/record-images';
-import { RecordContent } from '@/shared/widgets/record/record-content';
-import { RecordHealthNote } from '@/shared/widgets/record/record-health-note';
+import { RecordImages } from '@/features/record/widgets/record-images';
+import { RecordContent } from '@/features/record/widgets/record-content';
+import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
 import { toDate } from '@/shared/lib/utils';
 
 const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {

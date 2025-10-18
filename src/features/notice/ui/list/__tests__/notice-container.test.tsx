@@ -2,9 +2,11 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it } from 'vitest';
 
 import { NoticeContainer } from '../notice-container';
-import { NoticeType } from '@/shared/types/notice/notice';
+import { NoticeType } from '@/entities/notice/notice';
 
-const createNotice = (overrides: Partial<Parameters<typeof NoticeContainer>[0]['notices'][number]>) => ({
+const createNotice = (
+  overrides: Partial<Parameters<typeof NoticeContainer>[0]['notices'][number]>,
+) => ({
   id: 'notice-id',
   title: '공지 제목',
   type: NoticeType.GENERAL,

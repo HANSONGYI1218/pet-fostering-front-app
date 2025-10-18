@@ -21,10 +21,10 @@ import {
   fosterRemaingDuration,
   fosterTotalDuration,
 } from '@/shared/lib/utils';
-import { AnimalHealth } from '@/types/animal-condition/animal-condition';
-import { OrganizationAnimalDetailItem } from '@/types/animal/animal-api';
+import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
+import { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
 import { useState } from 'react';
-import ChartContainer from '@/shared/widgets/record/record-chart/chart-container';
+import ChartContainer from '@/features/record/widgets/record-chart/chart-container';
 import { format } from 'date-fns';
 import RecordFiltered from './record-filtered';
 

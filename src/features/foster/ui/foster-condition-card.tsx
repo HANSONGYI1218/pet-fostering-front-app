@@ -10,9 +10,12 @@ import {
   AnimalSize,
   AnimalType,
   FosterState,
-} from '@/types/animal/animal';
-import type { FosterFilterValue } from '@/shared/types/foster';
-import { FILTER_ALL_LABEL_KO, FILTER_ALL_VALUE } from '@/shared/constants/filter';
+} from '@/entities/animal/animal';
+import type { FosterFilterValue } from '@/features/foster/domain/list/filters';
+import {
+  FILTER_ALL_LABEL_KO,
+  FILTER_ALL_VALUE,
+} from '@/shared/constants/filter';
 import { Button } from '@/shared/ui/button';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
 import { RotateCcwIcon, SlidersHorizontal } from 'lucide-react';
