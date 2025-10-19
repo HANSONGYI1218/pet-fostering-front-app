@@ -1,5 +1,6 @@
 import { clsx, type ClassValue } from 'clsx';
 import { twMerge } from 'tailwind-merge';
+import { toast } from 'sonner';
 
 export function cn(...inputs: ClassValue[]) {
   return twMerge(clsx(inputs));
@@ -101,3 +102,18 @@ export function stripHtml(value: string): string {
 
 export const normalizeKeyword = (keyword?: string): string =>
   keyword?.trim().toLowerCase() ?? '';
+
+export const handleCopyLink = async (text: string) => {
+  if (typeof window === 'undefined' || !window.navigator?.clipboard) {
+    toast('잠시만요!! 다시 한번 더 시도해주세요.');
+    return;
+  }
+
+  try {
+    await window.navigator.clipboard.writeText(text);
+    toast('링크를 복사했어요!');
+  } catch (error) {
+    console.error(error);
+    toast('잠시만요!! 다시 한번 더 시도해주세요.');
+  }
+};

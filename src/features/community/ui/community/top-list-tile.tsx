@@ -9,9 +9,9 @@ export default function TopListTile({
   recentPopularPost: PostItem;
 }) {
   return (
-    <div className="group flex w-64 gap-3 rounded-2xl">
-      <div className="flex h-7 w-7 items-center justify-center rounded-full bg-[#D0EFE0] group-hover:bg-[#00592D]">
-        <span className="text-sm font-semibold text-[#00592D] group-hover:text-white">
+    <div className="group flex w-full gap-2 rounded-2xl">
+      <div className="flex h-6 w-6 items-center justify-center rounded-full bg-[#D0EFE0] group-hover:bg-[#00592D]">
+        <span className="text-xs text-[#00592D] group-hover:text-white">
           {index + 1}
         </span>
       </div>
@@ -20,18 +20,20 @@ export default function TopListTile({
           {recentPopularPost?.title}
         </span>
         <div className="flex w-full gap-5">
-          <span className="text-[#525252]">
+          <span className="text-sm text-[#525252]">
             {recentPopularPost?.user?.nickname}
           </span>
           <div className="flex items-center gap-1">
-            <MessageSquareText className="h-4 w-4" stroke="#525252" />
-            <span className="text-[#525252]">
+            <MessageSquareText className="h-3.5 w-3.5" stroke="#525252" />
+            <span className="text-sm text-[#525252]">
               {recentPopularPost?.commentCount ?? 0}
             </span>
           </div>
           <div className="flex items-center gap-1">
-            <Eye className="h-4 w-4" stroke="#525252" />
-            <span className="text-[#525252]">{recentPopularPost?.views}</span>
+            <Eye className="h-3.5 w-3.5" stroke="#525252" />
+            <span className="text-sm text-[#525252]">
+              {recentPopularPost?.views}
+            </span>
           </div>
         </div>{' '}
       </div>

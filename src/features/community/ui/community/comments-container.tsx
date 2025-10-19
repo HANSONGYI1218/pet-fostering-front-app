@@ -1,11 +1,13 @@
 'use client';
 
+import { useEffect, useMemo, useState } from 'react';
 import { PaginationDynamic } from '@/shared/widgets/navigation/papagination-dynamic';
 import RetryButton from '@/shared/widgets/feedback/retry-button';
-import { useState } from 'react';
 import CommunityCommentTile from './community-comment-tile';
 import { Card } from '@/shared/ui/card';
 import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
+import CommentsForm from './comments-form';
+import { CommentSelection } from './types';
 
 type CommentsContainerProps = {
   comments: CommentItem[];
@@ -15,12 +17,24 @@ type CommentsContainerProps = {
 const EMPTY_MESSAGE = '아직 댓글이 없습니다.';
 const ERROR_MESSAGE = '댓글을 불러오지 못했습니다. 잠시 후 다시 시도해주세요.';
 
+const sortByCreatedAtDesc = <T extends { created_at: Date }>(items: T[]) =>
+  [...items].sort(
+    (a, b) =>
+      new Date(b.created_at).getTime() - new Date(a.created_at).getTime(),
+  );
+
 export default function CommentsContainer({
   comments,
   isError = false,
 }: CommentsContainerProps) {
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
+  const [selectedComment, setSelectedComment] =
+    useState<CommentSelection | null>(null);
+
+  useEffect(() => {
+    setSelectedComment(null);
+  }, [currentPage]);
 
   if (isError) {
     return (
@@ -33,14 +47,17 @@ export default function CommentsContainer({
 
   const hasComments = comments.length > 0;
 
+  const sortedComments = useMemo(() => sortByCreatedAtDesc(comments), [comments]);
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
-
-  const pagedComments = hasComments ? comments.slice(startIdx, endIdx) : [];
+  const pagedComments = useMemo(
+    () => sortedComments.slice(startIdx, endIdx),
+    [sortedComments, startIdx, endIdx],
+  );
 
   return (
     <div className="flex w-full flex-col gap-10">
-      <Card className="flex w-full cursor-default flex-col gap-0">
+      <Card className="flex w-full cursor-default flex-col gap-6 px-3 py-4 md:p-10">
         <div className="flex w-full items-center gap-2">
           <svg
             width="24"
@@ -72,36 +89,46 @@ export default function CommentsContainer({
           <span className="font-semibold">
             {hasComments ? `${comments.length}개의 답변이 있어요` : '댓글'}
           </span>
-        </div>{' '}
+        </div>
+        <CommentsForm
+          draft={{ mode: 'create' }}
+          heightClassName="min-h-40"
+          onClose={() => setSelectedComment(null)}
+        />
         {hasComments ? (
           <div className="flex w-full flex-col">
-            {pagedComments.map((comment, index) => {
-              const replyComments = comment.reply_comments ?? [];
-              const isLastParent = index === pagedComments.length - 1;
-              const hasReplies = replyComments.length > 0;
+            {pagedComments.map((comment) => {
+              const replies = sortByCreatedAtDesc(
+                comment.reply_comments ?? [],
+              );
 
               return (
-                <div key={comment.id}>
+                <div key={comment.id} className="flex w-full flex-col">
                   <CommunityCommentTile
                     comment={comment}
-                    isLast={!hasReplies && isLastParent}
+                    selectedComment={selectedComment}
+                    onSelectComment={setSelectedComment}
                   />
-                  {hasReplies && (
-                    <div className="flex w-full flex-col pl-14">
-                      {replyComments.map(
-                        (reply: ReplyCommentItem, replyIdx) => {
-                          const isLastReply =
-                            isLastParent &&
-                            replyIdx === replyComments.length - 1;
-                          return (
-                            <CommunityCommentTile
-                              key={reply.id}
-                              comment={reply}
-                              isLast={isLastReply}
-                            />
-                          );
-                        },
-                      )}
+                  {selectedComment?.type === 'new' &&
+                    selectedComment.id === comment.id && (
+                      <CommentsForm
+                        draft={{ mode: 'reply', parentId: comment.id }}
+                        onClose={() => setSelectedComment(null)}
+                      />
+                    )}
+                  <hr className="w-full" />
+                  {replies.length > 0 && (
+                    <div className="flex w-full flex-col">
+                      {replies.map((reply: ReplyCommentItem) => (
+                        <div key={reply.id} className="flex w-full flex-col">
+                          <CommunityCommentTile
+                            comment={reply}
+                            selectedComment={selectedComment}
+                            onSelectComment={setSelectedComment}
+                          />
+                          <hr className="w-full" />
+                        </div>
+                      ))}
                     </div>
                   )}
                 </div>

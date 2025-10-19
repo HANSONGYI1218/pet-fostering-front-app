@@ -8,7 +8,7 @@ type ProfilePageProps = {
 export default async function ProfilePage(props: ProfilePageProps = {}) {
   const resolvedParams = props.searchParams ? await props.searchParams : {};
   const rawTab = resolvedParams.tab;
-  const tabParam = Array.isArray(rawTab) ? rawTab[0] : rawTab;
+  const tabParam = Array.isArray(rawTab) ? rawTab[0] ?? null : rawTab ?? null;
   const initialStep = isMypageStep(tabParam) ? tabParam : 'profile';
 
   return (

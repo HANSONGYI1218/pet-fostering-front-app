@@ -11,17 +11,15 @@ export default function CommunityTile({ post }: { post: PostItem }) {
   const commentCount = post?.commentCount ?? 0;
 
   return (
-    <Link
-      href={`/community/${post?.id}`}
-      target="_blank"
-      rel="noopener noreferrer"
-    >
+    <Link href={`/community/${post?.id}`}>
       <Card className="transition-all duration-500 hover:shadow-lg">
-        <div className="flex w-full flex-1 flex-col gap-3">
-          <span className="line-clamp-1 text-lg font-semibold">
+        <div className="flex w-full flex-1 flex-col gap-5">
+          <span className="line-clamp-1 font-semibold md:text-lg">
             {post?.title}
           </span>
-          <span className="line-clamp-2 text-neutral-500">{preview}</span>
+          <span className="line-clamp-2 text-sm text-neutral-500 md:text-base">
+            {preview}
+          </span>
           <div className="flex w-full justify-between gap-5">
             <div className="flex items-center gap-3">
               <Image
@@ -30,20 +28,20 @@ export default function CommunityTile({ post }: { post: PostItem }) {
                 height={32}
                 alt="profile"
               />
-              <span className="text-[#525252]">By {nickname}</span>
+              <span className="text-sm text-neutral-500">By {nickname}</span>
             </div>
             <div className="flex items-center gap-5">
               <div className="flex items-center gap-1">
-                <MessageSquareText className="h-4 w-4" stroke="#525252" />
-                <span className="text-[#525252]">{commentCount}</span>
+                <MessageSquareText className="h-3.5 w-3.5" stroke="#a1a1a1" />
+                <span className="text-sm text-neutral-400">{commentCount}</span>
               </div>
               <div className="flex items-center gap-1">
-                <ThumbsUp className="h-4 w-4" stroke="#525252" />
-                <span className="text-[#525252]">{post?.likes}</span>
+                <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
+                <span className="text-sm text-neutral-400">{post?.likes}</span>
               </div>
               <div className="flex items-center gap-1">
-                <Eye className="h-4 w-4" stroke="#525252" />
-                <span className="text-[#525252]">{post?.views}</span>
+                <Eye className="h-3.5 w-3.5" stroke="#a1a1a1" />
+                <span className="text-sm text-neutral-400">{post?.views}</span>
               </div>
             </div>
           </div>
