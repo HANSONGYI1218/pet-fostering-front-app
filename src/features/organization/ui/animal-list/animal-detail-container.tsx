@@ -223,7 +223,7 @@ export default function AnimalDetailContainer({
               </div>
             </div>
             <Badge variant={'destructive'} className="h-8 px-3 text-base">
-              입양중
+              임시보호 상세
             </Badge>
           </div>
           <div className="flex w-full gap-6 rounded-lg bg-white p-10">

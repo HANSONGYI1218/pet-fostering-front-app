@@ -24,7 +24,7 @@ export default [
     files: ['**/*.ts', '**/*.tsx'],
     languageOptions: {
       parserOptions: {
-        project: './tsconfig.json',
+        project: './tsconfig.eslint.json',
       },
       ecmaVersion: 2021,
       sourceType: 'module',

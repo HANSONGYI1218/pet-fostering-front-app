@@ -50,7 +50,20 @@ export default function CommunityPost({
 }: {
   post: PostItem | undefined;
 }) {
-  if (!post) {
+  const claims = resolveStoredAuthClaims();
+  const userId = claims?.userId;
+  const token = resolveStoredAccessToken();
+
+  const resolvedPost = post ?? null;
+  const initialBookmark = useMemo(
+    () => (resolvedPost as PostWithBookmark | null)?.isBookmarked ?? false,
+    [resolvedPost],
+  );
+  const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
+  const [open, setOpen] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+
+  if (!resolvedPost) {
     return (
       <Card className="flex min-h-[220px] w-full flex-col items-center justify-center gap-4 text-center text-neutral-500">
         <span>게시글을 찾을 수 없습니다.</span>
@@ -59,22 +72,12 @@ export default function CommunityPost({
     );
   }
 
-  const claims = resolveStoredAuthClaims();
-  const userId = claims?.userId;
-  const token = resolveStoredAccessToken();
-
-  const initialBookmark = useMemo(
-    () => (post as PostWithBookmark)?.isBookmarked ?? false,
-    [post],
-  );
-  const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
-  const [open, setOpen] = useState(false);
-  const [isLoading, setIsLoading] = useState(false);
-
-  const nickname = post.user?.nickname ?? '익명';
-  const createdAt = post.created_at ? toDate(post.created_at) : undefined;
-  const contentLines = post.content?.split('<br/>') ?? [];
-  const isOwner = token && userId === post?.authorId;
+  const nickname = resolvedPost.user?.nickname ?? '익명';
+  const createdAt = resolvedPost.created_at
+    ? toDate(resolvedPost.created_at)
+    : undefined;
+  const contentLines = resolvedPost.content?.split('<br/>') ?? [];
+  const isOwner = token && userId === resolvedPost.authorId;
 
   const handleBookmarkToggle = async () => {
     if (!token) {
@@ -93,8 +96,7 @@ export default function CommunityPost({
       await new Promise((resolve) => setTimeout(resolve, 400));
       toast('게시글을 삭제했어요.');
       setOpen(false);
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast('게시글 삭제에 실패했어요. 잠시 뒤 다시 시도해 주세요.');
     } finally {
       setIsLoading(false);
@@ -114,7 +116,7 @@ export default function CommunityPost({
     <Card className="relative cursor-default px-3 py-4 md:p-10">
       <div className="flex w-full flex-1 flex-col">
         <div className="flex w-full items-center justify-between">
-          <span className="text-xl font-semibold">{post.title}</span>
+          <span className="text-xl font-semibold">{resolvedPost.title}</span>
           <Bookmark
             className={`h-9 w-9 ${isOwner ? 'flex' : 'hidden'}`}
             onClick={handleBookmarkToggle}
@@ -141,11 +143,15 @@ export default function CommunityPost({
             <div className="flex items-center gap-2 md:gap-5">
               <div className="flex cursor-pointer items-center gap-1">
                 <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
-                <span className="text-sm text-neutral-400">{post.likes}</span>
+                <span className="text-sm text-neutral-400">
+                  {resolvedPost.likes}
+                </span>
               </div>
               <div className="flex items-center gap-1">
                 <Eye className="h-3.5 w-3.5" stroke="#a1a1a1" />
-                <span className="text-sm text-neutral-400">{post.views}</span>
+                <span className="text-sm text-neutral-400">
+                  {resolvedPost.views}
+                </span>
               </div>
               <Menubar className="border-none p-0">
                 <MenubarMenu>
@@ -167,7 +173,10 @@ export default function CommunityPost({
                     {isOwner ? (
                       <>
                         <MenubarSeparator />
-                        <PostFormDialog post={post} trigger={editTrigger} />
+                        <PostFormDialog
+                          post={resolvedPost}
+                          trigger={editTrigger}
+                        />
                         <MenubarSeparator />
                         <MenubarItem onClick={() => setOpen(true)}>
                           삭제하기
@@ -207,7 +216,7 @@ export default function CommunityPost({
         {contentLines.length > 0 ? (
           <span className="py-10">
             {contentLines.map((line, i) => (
-              <span key={`${post.id}-line-${i}`}>
+              <span key={`${resolvedPost.id}-line-${i}`}>
                 {line}
                 {i < contentLines.length - 1 ? <br /> : null}
               </span>

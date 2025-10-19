@@ -112,8 +112,7 @@ export const handleCopyLink = async (text: string) => {
   try {
     await window.navigator.clipboard.writeText(text);
     toast('링크를 복사했어요!');
-  } catch (error) {
-    console.error(error);
+  } catch {
     toast('잠시만요!! 다시 한번 더 시도해주세요.');
   }
 };

@@ -5,10 +5,12 @@ type ProfilePageProps = {
   searchParams?: Promise<Record<string, string | string[] | undefined>>;
 };
 
-export default async function ProfilePage(props: ProfilePageProps = {}) {
-  const resolvedParams = props.searchParams ? await props.searchParams : {};
+export default async function ProfilePage({ searchParams }: ProfilePageProps) {
+  const resolvedParams = searchParams ? await searchParams : {};
   const rawTab = resolvedParams.tab;
-  const tabParam = Array.isArray(rawTab) ? rawTab[0] ?? null : rawTab ?? null;
+  const tabParam = Array.isArray(rawTab)
+    ? (rawTab[0] ?? null)
+    : (rawTab ?? null);
   const initialStep = isMypageStep(tabParam) ? tabParam : 'profile';
 
   return (

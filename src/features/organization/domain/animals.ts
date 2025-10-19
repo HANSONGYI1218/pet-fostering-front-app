@@ -20,7 +20,6 @@ export type OrganizationAnimalFilters = {
 const STATUS_PRIORITY: Record<FosterState, number> = {
   [FosterState.IN_PROGRESS]: 0,
   [FosterState.FOSTERED]: 1,
-  [FosterState.ADOPTED]: 2,
 };
 
 const isAll = <T>(value?: FosterFilterValue<T>): value is 'ALL' | undefined =>

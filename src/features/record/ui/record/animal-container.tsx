@@ -27,7 +27,6 @@ export default function AnimalContainer({
   const filters: { label: string; value: FosterState }[] = [
     { label: '임시보호 중', value: FosterState.IN_PROGRESS },
     { label: '임시보호 완료', value: FosterState.FOSTERED },
-    { label: '입양 중', value: FosterState.ADOPTED },
   ];
 
   return (

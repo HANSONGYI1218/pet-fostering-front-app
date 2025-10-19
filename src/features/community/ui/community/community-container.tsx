@@ -47,7 +47,7 @@ export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
               />
             </>
           ) : (
-            <EmptyBox text="게시글의 첫번째 주인공이 되어보세요." />
+            <EmptyBox text="게시글이 아직 없습니다. 첫 글을 남겨보세요!" />
           )}
         </div>
 

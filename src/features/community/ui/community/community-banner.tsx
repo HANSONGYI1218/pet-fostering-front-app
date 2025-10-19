@@ -29,7 +29,7 @@ export default function CommunityBanner() {
           width={264}
           height={304}
           alt="dog"
-          className="max-md:h-44 max-md:w-40 max-sm:absolute max-sm:-bottom-24 max-sm:right-0 max-sm:w-36"
+          className="max-md:h-44 max-md:w-40 max-sm:absolute max-sm:right-0 max-sm:-bottom-24 max-sm:w-36"
         />
       </div>
     </div>

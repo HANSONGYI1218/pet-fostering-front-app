@@ -21,9 +21,11 @@ export default function FosterTile({
 }: {
   animal: OrganizationAnimalListItem;
 }) {
+  const isFosterCompleted = animal?.animalStatus === FosterState.FOSTERED;
+
   return (
     <Card
-      className={`relative mb-6 flex w-full cursor-default gap-0 overflow-hidden p-0 transition-all duration-500 hover:shadow-lg ${animal?.animalStatus === FosterState.FOSTERED || animal?.animalStatus === FosterState.ADOPTED ? 'opacity-70' : 'opacity-100'}`}
+      className={`relative mb-6 flex w-full cursor-default gap-0 overflow-hidden p-0 transition-all duration-500 hover:shadow-lg ${isFosterCompleted ? 'opacity-70' : 'opacity-100'}`}
     >
       <div className="relative h-64 w-full">
         <Image
@@ -34,7 +36,7 @@ export default function FosterTile({
           sizes="(min-width: 1024px) 25vw, 100vw"
         />
       </div>
-      {animal?.animalStatus === FosterState.FOSTERED ? (
+      {isFosterCompleted ? (
         <div
           className={`absolute top-4 left-4 flex h-9 cursor-default items-center gap-1.5 rounded-md bg-[#FFE081]/70 px-4 text-base font-semibold text-white`}
         >
@@ -60,24 +62,6 @@ export default function FosterTile({
           </svg>
 
           <span className="flex-1">임보중</span>
-        </div>
-      ) : animal?.animalStatus === FosterState.ADOPTED ? (
-        <div
-          className={`absolute top-4 left-4 flex h-9 cursor-default items-center gap-1.5 rounded-md bg-[#0068D9]/70 px-4 text-base font-semibold text-white`}
-        >
-          <svg
-            width="22"
-            height="22"
-            viewBox="0 0 24 24"
-            fill="none"
-            xmlns="http://www.w3.org/2000/svg"
-          >
-            <path
-              d="M23 11.995L20.56 9.21503L20.9 5.53503L17.29 4.71503L15.4 1.53503L12 2.99503L8.6 1.53503L6.71 4.71503L3.1 5.52503L3.44 9.20503L1 11.995L3.44 14.775L3.1 18.465L6.71 19.285L8.6 22.465L12 20.995L15.4 22.455L17.29 19.275L20.9 18.455L20.56 14.775L23 11.995ZM18.49 14.105L18.75 16.895L16.01 17.515L14.58 19.925L12 18.815L9.42 19.925L7.99 17.515L5.25 16.895L5.51 14.095L3.66 11.995L5.51 9.87503L5.25 7.09503L7.99 6.48503L9.42 4.07503L12 5.17503L14.58 4.06503L16.01 6.47503L18.75 7.09503L18.49 9.88503L20.34 11.995L18.49 14.105ZM11 14.995H13V16.995H11V14.995ZM11 6.99503H13V12.995H11V6.99503Z"
-              fill="white"
-            />
-          </svg>
-          <span className="flex-1">입양중</span>
         </div>
       ) : (
         <div

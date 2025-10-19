@@ -28,12 +28,9 @@ type CommentDraft = {
 };
 
 const CommentsFormSchema = z.object({
-  comment: z
-    .string()
-    .trim()
-    .min(1, {
-      message: '댓글을 작성해 주세요.',
-    }),
+  comment: z.string().trim().min(1, {
+    message: '댓글을 작성해 주세요.',
+  }),
 });
 
 type CommentsFormValues = z.infer<typeof CommentsFormSchema>;
@@ -84,8 +81,7 @@ export default function CommentsForm({
       toast(resolveToastMessage(mode));
       form.reset({ comment: '' });
       onClose?.();
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast('잠시 뒤 다시 시도해 주세요.');
     } finally {
       setIsLoading(false);
@@ -102,9 +98,7 @@ export default function CommentsForm({
         className="relative mb-4 flex w-full flex-col items-center gap-5 md:flex-row"
       >
         {!token && (
-          <NeedLoginBadge
-            className="absolute max-md:bottom-10 max-md:left-1/2 max-md:-translate-x-1/2 md:-right-10 md:top-6"
-          />
+          <NeedLoginBadge className="absolute max-md:bottom-10 max-md:left-1/2 max-md:-translate-x-1/2 md:top-6 md:-right-10" />
         )}
         <FormField
           control={form.control}

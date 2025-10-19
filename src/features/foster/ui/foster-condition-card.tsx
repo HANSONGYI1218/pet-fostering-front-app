@@ -145,10 +145,6 @@ export default function FosterConditionCard({
                 label: FOSTER_STATE_LABEL_KO[FosterState.FOSTERED],
                 value: FosterState.FOSTERED,
               },
-              {
-                label: FOSTER_STATE_LABEL_KO[FosterState.ADOPTED],
-                value: FosterState.ADOPTED,
-              },
             ],
             selected: animalStatus,
             onChange: handleChangeAnimalStatus,

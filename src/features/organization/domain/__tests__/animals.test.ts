@@ -33,12 +33,11 @@ const createAnimal = (
 describe('sortOrganizationAnimals', () => {
   it('임시보호 상태 우선순위에 맞게 정렬한다', () => {
     const animals = [
-      createAnimal({ id: 'adopted', animalStatus: FosterState.ADOPTED }),
+      createAnimal({ id: 'fostered', animalStatus: FosterState.FOSTERED }),
       createAnimal({
         id: 'in-progress',
         animalStatus: FosterState.IN_PROGRESS,
       }),
-      createAnimal({ id: 'fostered', animalStatus: FosterState.FOSTERED }),
     ];
 
     const result = sortOrganizationAnimals(animals);
@@ -46,14 +45,13 @@ describe('sortOrganizationAnimals', () => {
     expect(result.map((animal) => animal.id)).toEqual([
       'in-progress',
       'fostered',
-      'adopted',
     ]);
   });
 
   it('정렬 시 원본 배열을 변경하지 않는다', () => {
     const animals = [
-      createAnimal({ id: 'first', animalStatus: FosterState.ADOPTED }),
-      createAnimal({ id: 'second', animalStatus: FosterState.FOSTERED }),
+      createAnimal({ id: 'first', animalStatus: FosterState.FOSTERED }),
+      createAnimal({ id: 'second', animalStatus: FosterState.IN_PROGRESS }),
     ];
 
     sortOrganizationAnimals(animals);
@@ -88,7 +86,7 @@ describe('filterOrganizationAnimals', () => {
       type: AnimalType.DOG,
       size: AnimalSize.LARGE,
       gender: AnimalGender.FEMALE,
-      animalStatus: FosterState.ADOPTED,
+      animalStatus: FosterState.FOSTERED,
       breed: 'Poodle Mix',
     }),
   ];
@@ -123,7 +121,7 @@ describe('filterOrganizationAnimals', () => {
       type: AnimalType.DOG,
       size: AnimalSize.LARGE,
       gender: AnimalGender.FEMALE,
-      status: FosterState.ADOPTED,
+      status: FosterState.FOSTERED,
     });
 
     expect(result.map((animal) => animal.id)).toEqual(['dog-large-female']);

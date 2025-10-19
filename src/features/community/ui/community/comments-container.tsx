@@ -36,6 +36,18 @@ export default function CommentsContainer({
     setSelectedComment(null);
   }, [currentPage]);
 
+  const sortedComments = useMemo(
+    () => sortByCreatedAtDesc(comments),
+    [comments],
+  );
+  const startIdx = (currentPage - 1) * itemsPerPage;
+  const endIdx = startIdx + itemsPerPage;
+  const pagedComments = useMemo(
+    () => sortedComments.slice(startIdx, endIdx),
+    [sortedComments, startIdx, endIdx],
+  );
+  const hasComments = comments.length > 0;
+
   if (isError) {
     return (
       <Card className="flex w-full flex-col items-center justify-center gap-4 py-16 text-sm text-neutral-500">
@@ -44,16 +56,6 @@ export default function CommentsContainer({
       </Card>
     );
   }
-
-  const hasComments = comments.length > 0;
-
-  const sortedComments = useMemo(() => sortByCreatedAtDesc(comments), [comments]);
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  const pagedComments = useMemo(
-    () => sortedComments.slice(startIdx, endIdx),
-    [sortedComments, startIdx, endIdx],
-  );
 
   return (
     <div className="flex w-full flex-col gap-10">
@@ -98,9 +100,7 @@ export default function CommentsContainer({
         {hasComments ? (
           <div className="flex w-full flex-col">
             {pagedComments.map((comment) => {
-              const replies = sortByCreatedAtDesc(
-                comment.reply_comments ?? [],
-              );
+              const replies = sortByCreatedAtDesc(comment.reply_comments ?? []);
 
               return (
                 <div key={comment.id} className="flex w-full flex-col">

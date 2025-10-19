@@ -32,18 +32,12 @@ import { resolveStoredAccessToken } from '@/lib/auth/session';
 import { toast } from 'sonner';
 
 const PostFormSchema = z.object({
-  title: z
-    .string()
-    .trim()
-    .min(1, {
-      message: '게시글의 제목을 작성해 주세요.',
-    }),
-  content: z
-    .string()
-    .trim()
-    .min(1, {
-      message: '내용을 작성해 주세요.',
-    }),
+  title: z.string().trim().min(1, {
+    message: '게시글의 제목을 작성해 주세요.',
+  }),
+  content: z.string().trim().min(1, {
+    message: '내용을 작성해 주세요.',
+  }),
   images: z.array(z.string()).max(5).optional(),
 });
 
@@ -70,17 +64,13 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
 
   const isEditMode = Boolean(post);
   const triggerNode = useMemo(() => {
-    if (trigger) {
-      return trigger;
-    }
-
+    if (trigger) return trigger;
     return (
       <Button
         variant="destructive"
         className="w-24 rounded-2xl max-md:text-sm md:w-32"
       >
-        <Pencil className="max-md:h-3 max-md:w-3" />
-        글 작성
+        <Pencil className="max-md:h-3 max-md:w-3" />글 작성
       </Button>
     );
   }, [trigger]);
@@ -102,8 +92,7 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
       await new Promise((resolve) => setTimeout(resolve, 400));
       toast(isEditMode ? '게시글을 수정했어요!' : '게시글을 작성했어요!');
       closeDialog();
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast('잠시 뒤 다시 시도해 주세요.');
     } finally {
       setIsLoading(false);
@@ -227,9 +216,9 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
                               type="file"
                               accept="image/*"
                               multiple
-                              onChange={(event) =>
-                                handleImageChange(field.onChange, event)
-                              }
+                              onChange={(event) => {
+                                handleImageChange(field.onChange, event);
+                              }}
                               className="hidden"
                             />
                           </div>
@@ -239,12 +228,19 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
                         <Card className="relative p-0 shadow-none" key={image}>
                           <Button
                             type="button"
-                            onClick={() =>
-                              handleRemoveImage(field.onChange, field.value, image)
-                            }
+                            onClick={() => {
+                              handleRemoveImage(
+                                field.onChange,
+                                field.value,
+                                image,
+                              );
+                            }}
                             className="absolute -top-2 -right-2 z-10 flex h-6 w-6 rounded-full bg-neutral-300 p-0"
                           >
-                            <Plus className="h-4 w-4 rotate-45 text-white" strokeWidth={2.5} />
+                            <Plus
+                              className="h-4 w-4 rotate-45 text-white"
+                              strokeWidth={2.5}
+                            />
                           </Button>
                           <div className="relative h-32 w-full">
                             <Image

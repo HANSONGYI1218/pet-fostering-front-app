@@ -61,10 +61,7 @@ export default function CommunityCommentTile({
   const handleToggleReply = () => {
     if (!comment?.id) return;
 
-    if (
-      selectedComment?.type === 'new' &&
-      selectedComment.id === comment.id
-    ) {
+    if (selectedComment?.type === 'new' && selectedComment.id === comment.id) {
       onSelectComment?.(null);
       return;
     }
@@ -103,8 +100,7 @@ export default function CommunityCommentTile({
       toast('댓글을 삭제했어요.');
       setOpen(false);
       onSelectComment?.(null);
-    } catch (error) {
-      console.error(error);
+    } catch {
       toast('댓글 삭제에 실패했어요. 잠시 뒤 다시 시도해 주세요.');
     } finally {
       setIsLoading(false);

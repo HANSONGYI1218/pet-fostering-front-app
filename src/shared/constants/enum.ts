@@ -34,7 +34,6 @@ export const ANIMAL_SIZE_LABEL_KO: Record<AnimalSize, string> = {
 export const FOSTER_STATE_LABEL_KO: Record<FosterState, string> = {
   [FosterState.IN_PROGRESS]: '임시보호 중',
   [FosterState.FOSTERED]: '임시보호 완료',
-  [FosterState.ADOPTED]: '입양 중',
 };
 
 export const ANIMAL_AGE_LABEL_KO: Record<AnimalAge, string> = {
