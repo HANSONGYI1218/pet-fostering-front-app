@@ -30,3 +30,8 @@ export type PostItemByUserId = {
   commentCount?: number;
   updated_at?: Date;
 };
+
+export type PostUpsertPayload = {
+  title: string;
+  content: string;
+};

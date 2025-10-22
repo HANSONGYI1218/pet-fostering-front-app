@@ -1,4 +1,4 @@
-import { normalizeKeyword, toDate } from '@/shared/lib/utils';
+import { normalizeKeyword } from '@/shared/lib/utils';
 import type { PostItem, PostItemByUserId } from '@/entities/post/post-api';
 
 export type SelectRecentPopularPostsOptions = {
@@ -11,38 +11,24 @@ export type PostFilterOptions = {
   keyword?: string;
 };
 
-const ONE_MONTH = 1;
-
-const createRange = (now: Date): { from: Date; to: Date } => {
-  const to = new Date(now);
-  const from = new Date(now);
-  from.setMonth(from.getMonth() - ONE_MONTH);
-
-  return { from, to };
-};
-
 export const selectRecentPopularPosts = (
   posts: PostItem[],
   options: SelectRecentPopularPostsOptions = {},
 ): PostItem[] => {
-  const { now = new Date(), limit = 10 } = options;
-  const { from, to } = createRange(now);
+  const { limit = 10 } = options;
 
   return posts
-    .map((post) => ({
-      post,
-      createdAt: toDate(post.created_at),
-    }))
-    .filter(({ createdAt }) => createdAt >= from && createdAt <= to)
+    .slice() // 원본 배열 보호
     .sort((a, b) => {
-      if (b.post.views !== a.post.views) {
-        return b.post.views - a.post.views;
-      }
+      const aScore = (a.views || 0) + (a.likes || 0);
+      const bScore = (b.views || 0) + (b.likes || 0);
 
-      return b.createdAt.getTime() - a.createdAt.getTime();
+      if (bScore !== aScore) return bScore - aScore; // 인기순
+      return (
+        new Date(b.created_at).getTime() - new Date(a.created_at).getTime()
+      ); // 최신순
     })
-    .slice(0, limit)
-    .map(({ post }) => post);
+    .slice(0, limit);
 };
 
 const sortPosts = (

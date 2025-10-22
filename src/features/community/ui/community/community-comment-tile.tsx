@@ -1,6 +1,6 @@
 'use client';
 
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import { EllipsisVertical, Loader2, ThumbsUp } from 'lucide-react';
@@ -33,6 +33,8 @@ import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
 import { toDate } from '@/shared/lib/utils';
 import CommentsForm from './comments-form';
 import { CommentSelection } from './types';
+import { createCommentLike, deleteCommentLike } from '../../api/community';
+import { logError } from '@/shared/lib/logging';
 
 type CommentLike = CommentItem | ReplyCommentItem;
 
@@ -49,14 +51,23 @@ export default function CommunityCommentTile({
 }: CommunityCommentTileProps) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
-  const token = resolveStoredAccessToken();
-
+  const [token, setToken] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isCommentLike, setIsCommentLike] = useState(comment?.liked ?? false);
+  const [commentLikeCnt, setCommentLikeCnt] = useState(comment?.likes ?? 0);
+  const [isOwner, setIsOwner] = useState<boolean>(false);
 
-  const isOwner = userId && userId === comment?.user?.id;
   const isEditing =
     selectedComment?.type === 'edit' && selectedComment.id === comment.id;
+
+  // 브라우저에서만 access token 읽기
+  useEffect(() => {
+    const stored = resolveStoredAccessToken();
+    setToken(stored);
+    const isOwnerResult = userId ? userId === comment?.user?.id : false;
+    setIsOwner(isOwnerResult);
+  }, []);
 
   const handleToggleReply = () => {
     if (!comment?.id) return;
@@ -107,6 +118,30 @@ export default function CommunityCommentTile({
     }
   };
 
+  const handleCommentLike = async () => {
+    if (!comment?.id) {
+      return toast('다시 한번 새로고침 해주세요.');
+    }
+
+    if (token) {
+      try {
+        if (isCommentLike) {
+          await deleteCommentLike(token, comment.id);
+          setIsCommentLike(false);
+          setCommentLikeCnt((prev) => prev - 1);
+        } else {
+          await createCommentLike(token, comment.id);
+          setIsCommentLike(true);
+          setCommentLikeCnt((prev) => prev + 1);
+        }
+      } catch (error) {
+        logError('댓글 업데이트 실패', error);
+      }
+    } else {
+      toast('로그인 후 이용해주세요.');
+    }
+  };
+
   const contentLines = (comment.content ?? '').split('<br />');
 
   return (
@@ -138,7 +173,7 @@ export default function CommunityCommentTile({
               <button
                 type="button"
                 onClick={handleToggleReply}
-                className="flex items-center gap-1 text-sm text-neutral-600"
+                className="flex cursor-pointer items-center gap-1 text-sm text-neutral-600"
               >
                 <svg
                   width="16"
@@ -155,32 +190,29 @@ export default function CommunityCommentTile({
                 답글
               </button>
             )}
+            {isOwner && (
+              <Menubar className="border-none bg-transparent p-0">
+                <MenubarMenu>
+                  <MenubarTrigger className="p-0">
+                    <EllipsisVertical
+                      className="h-3.5 w-3.5 cursor-pointer"
+                      stroke="#a1a1a1"
+                    />
+                  </MenubarTrigger>
+                  <MenubarContent align="end" className="min-w-[8rem]">
+                    {/* <MenubarItem>신고하기</MenubarItem> <MenubarSeparator />*/}
 
-            <Menubar className="border-none bg-transparent p-0">
-              <MenubarMenu>
-                <MenubarTrigger className="p-0">
-                  <EllipsisVertical
-                    className="h-3.5 w-3.5 cursor-pointer"
-                    stroke="#a1a1a1"
-                  />
-                </MenubarTrigger>
-                <MenubarContent align="end" className="min-w-[8rem]">
-                  <MenubarItem>신고하기</MenubarItem>
-                  {isOwner ? (
-                    <>
-                      <MenubarSeparator />
-                      <MenubarItem onClick={handleToggleEdit}>
-                        수정하기
-                      </MenubarItem>
-                      <MenubarSeparator />
-                      <MenubarItem onClick={() => setOpen(true)}>
-                        삭제하기
-                      </MenubarItem>
-                    </>
-                  ) : null}
-                </MenubarContent>
-              </MenubarMenu>
-            </Menubar>
+                    <MenubarItem onClick={handleToggleEdit}>
+                      수정하기
+                    </MenubarItem>
+                    <MenubarSeparator />
+                    <MenubarItem onClick={() => setOpen(true)}>
+                      삭제하기
+                    </MenubarItem>
+                  </MenubarContent>
+                </MenubarMenu>
+              </Menubar>
+            )}
             <Dialog open={open} onOpenChange={setOpen}>
               <DialogContent>
                 <DialogHeader>
@@ -217,6 +249,7 @@ export default function CommunityCommentTile({
               content: comment.content ?? '',
               mode: 'edit',
             }}
+            postId={comment?.post_id}
             onClose={() => onSelectComment?.(null)}
           />
         </div>
@@ -236,9 +269,17 @@ export default function CommunityCommentTile({
             locale: ko,
           })}
         </span>
-        <div className="flex cursor-pointer items-center gap-1">
-          <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
-          <span className="text-sm text-neutral-400">{comment?.likes}</span>
+        <div
+          className={`flex items-center gap-1 ${token ? 'cursor-pointer' : 'cursor-default'}`}
+        >
+          <ThumbsUp
+            onClick={handleCommentLike}
+            className={`h-3.5 w-3.5 ${isCommentLike && 'scale-105 fill-[#00592d]'}`}
+            stroke={`${isCommentLike ? '#00592d' : '#a1a1a1'}`}
+          />
+          <span className="text-sm text-neutral-400">
+            {commentLikeCnt ?? '0'}
+          </span>
         </div>
       </div>
     </div>
