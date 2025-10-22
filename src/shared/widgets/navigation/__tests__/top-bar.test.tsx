@@ -25,7 +25,7 @@ import { render, screen, waitFor, within } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 
 const pushMock = vi.fn();
-const usePathnameMock = vi.fn(() => '/main');
+const usePathnameMock = vi.fn(() => '/');
 
 vi.mock('next/navigation', () => ({
   usePathname: () => usePathnameMock(),
@@ -39,7 +39,7 @@ describe('TopBar', () => {
     vi.clearAllMocks();
     window.localStorage.clear();
     vi.mocked(redirectToKakaoLogout).mockReset();
-    usePathnameMock.mockReturnValue('/main');
+    usePathnameMock.mockReturnValue('/');
   });
 
   const createToken = (payload: Record<string, unknown>) => {

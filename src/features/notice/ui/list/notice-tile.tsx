@@ -15,7 +15,7 @@ export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
   return (
     <Link href={`/notice/${notice?.id}`}>
       <div
-        className={`flex w-full cursor-pointer flex-col justify-between gap-2 border-b p-4 md:flex-row md:gap-6 md:px-10 md:py-6 ${notice?.isFixed ? 'border-white bg-[#00592d]/5' : 'bg-white'}`}
+        className={`flex w-full cursor-pointer flex-col justify-between gap-2 border-b p-4 md:flex-row md:gap-6 md:px-10 md:py-6 ${notice?.isFixed ? 'border-white bg-[#00592d]/5 hover:bg-[#00592d]/10' : 'bg-white hover:bg-neutral-100'}`}
       >
         <div className="flex flex-1 flex-col gap-3 md:flex-row md:gap-14">
           <Badge

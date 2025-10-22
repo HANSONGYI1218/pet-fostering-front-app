@@ -35,7 +35,7 @@ export default async function CommunityPostPage({
 
   return (
     <main className="bg-neutral-50">
-      <div className="mx-auto flex min-h-screen w-full max-w-[1280px] flex-col gap-6 pt-20 pb-40">
+      <div className="mx-auto flex min-h-screen w-full max-w-screen-xl flex-col gap-6 px-6 py-16">
         <CommunityPost post={post ?? undefined} />
         <CommentsContainer initialComments={comments} isError={commentsError} />
       </div>

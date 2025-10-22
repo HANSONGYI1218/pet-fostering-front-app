@@ -75,7 +75,7 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
         }
 
         setStatus('success');
-        router.replace('/main');
+        router.replace('/');
       })
       .catch((error) => {
         if (cancelled) {

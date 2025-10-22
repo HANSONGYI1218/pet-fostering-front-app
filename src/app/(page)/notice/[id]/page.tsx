@@ -60,11 +60,6 @@ export default async function NoticeDetailPage({
                   </Button>
                 </div>
               ))}
-              {notice.attachments.length === 0 ? (
-                <span className="text-sm text-neutral-500">
-                  첨부파일이 없습니다.
-                </span>
-              ) : null}
             </div>
           </div>
         </div>

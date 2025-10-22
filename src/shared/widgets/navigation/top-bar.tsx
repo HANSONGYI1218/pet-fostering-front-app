@@ -210,11 +210,7 @@ export default function TopBar() {
   return (
     <header className="bg-background sticky top-0 z-30 border-b">
       <div className="container_12 mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 md:px-6">
-        <Link
-          href="/main"
-          className="flex shrink-0 items-center"
-          aria-label="홈"
-        >
+        <Link href="/" className="flex shrink-0 items-center" aria-label="홈">
           <Image
             src="/main-logo.png"
             width={140}
