@@ -6,7 +6,7 @@ import type {
 import type { PostUpsertPayload, PostItem } from '@/entities/post/post-api';
 import { toDate } from '@/shared/lib/utils';
 import { resolveEndpoint } from '@/shared/api/config';
-import { expectOk, userHeaders } from '@/features/mypage/api/user';
+import { userHeaders } from '@/features/mypage/api/user';
 import { communityDetailPageRevalid, communityPageRevalid } from './redirect';
 
 type PostCountDto = {

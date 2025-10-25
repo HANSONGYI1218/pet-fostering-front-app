@@ -24,7 +24,7 @@ const sortByCreatedAtDesc = <T extends { created_at: Date }>(items: T[]) =>
   );
 
 export default function CommentsContainer({
-  initialComments,
+  initialComments = [],
   isError = false,
 }: CommentsContainerProps) {
   const postId = initialComments[0]?.post_id;

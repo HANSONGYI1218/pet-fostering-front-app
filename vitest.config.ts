@@ -1,3 +1,4 @@
+/* eslint-disable import/no-extraneous-dependencies */
 process.env.VITE_CJS_IGNORE_WARNING = 'true';
 
 import { defineConfig } from 'vitest/config';

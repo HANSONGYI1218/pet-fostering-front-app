@@ -1,5 +1,5 @@
 import { AnimalListItem } from '@/entities/animal/animal-api';
-import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
+import { AnimalGender, AnimalType } from '@/entities/animal/animal';
 import { toDate } from '@/shared/lib/utils';
 import { resolveEndpoint } from '@/shared/api/config';
 import { logError } from '@/shared/lib/logging';

@@ -26,25 +26,30 @@ const items: ProcessType[] = [
 
 function PorcessTile({ value }: { value: ProcessType }) {
   return (
-    <div className="flex flex-col items-center gap-6 rounded-xl">
-      <div className="flex h-40 w-40 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg">
+    <div className="flex w-full max-w-[146px] flex-col items-center gap-6 rounded-xl">
+      <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg lg:h-40 lg:w-40">
         <img
           src={value?.img}
           alt="dog-image"
-          className="h-auto w-auto object-contain"
+          className="h-2/3 w-2/3 object-contain lg:h-auto lg:w-auto"
         />
       </div>
-      <h1 className="text-lg text-neutral-800">{value?.title}</h1>
+      <h1 className="text-center text-base break-keep text-neutral-800 lg:text-lg">
+        {value?.title}
+      </h1>
     </div>
   );
 }
 
 export default function PorcessContainer() {
   return (
-    <div className="flex w-full items-center justify-center">
+    <div className="mx-auto flex w-full max-w-screen-lg flex-col flex-wrap gap-y-4 sm:flex-row sm:gap-y-6">
       {items.map((item: ProcessType, index: number) => {
         return (
-          <div key={index} className="flex w-fit items-center">
+          <div
+            key={index}
+            className="mx-auto flex w-fit flex-col items-center max-sm:gap-6 sm:flex-row md:text-xl"
+          >
             <PorcessTile value={item} />
             {index !== items?.length - 1 && (
               <svg
@@ -53,7 +58,7 @@ export default function PorcessContainer() {
                 viewBox="0 0 19 33"
                 fill="none"
                 xmlns="http://www.w3.org/2000/svg"
-                className="mx-14"
+                className="mx-4 h-[33px] w-[33px] max-sm:rotate-90 xl:mx-14"
               >
                 <path
                   d="M18.75 16.0215L3.98367e-07 32.043L1.79901e-06 1.44392e-05L18.75 16.0215Z"

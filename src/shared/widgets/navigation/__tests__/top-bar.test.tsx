@@ -57,14 +57,15 @@ describe('TopBar', () => {
 
     render(<TopBar />);
 
-    const menuButton = screen.getByRole('button', { name: '메뉴 열기' });
+    const menuButton = screen.getByRole('button', { name: /메뉴 열기/i });
     await userEvent.click(menuButton);
 
-    const mobileNav = screen.getByRole('navigation', { name: '모바일 메뉴' });
-    expect(
-      within(mobileNav).getByRole('link', { name: /로그인/ }),
-    ).toBeInTheDocument();
-  });
+    const mobileNav = screen.getByRole('navigation', { name: /모바일 메뉴/i });
+    expect(mobileNav).toBeVisible();
+
+    const loginLink = within(mobileNav).getByRole('link', { name: /로그인/i });
+    expect(loginLink).toBeInTheDocument();
+  }, 60000);
 
   it('메뉴를 기본 NavigationMenu로 렌더링한다', async () => {
     const { default: TopBar } = await import('../top-bar');

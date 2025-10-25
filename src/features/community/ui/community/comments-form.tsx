@@ -18,7 +18,7 @@ import { useEffect, useState } from 'react';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
 import { updateComment, createComment } from '../../api/community';
-import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
+import { CommentItem } from '@/entities/comment/comment-api';
 
 type CommentFormMode = 'create' | 'reply' | 'edit';
 
@@ -61,7 +61,6 @@ export default function CommentsForm({
   postId,
   heightClassName,
   onClose,
-  handleComments,
 }: CommentsFormProps) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);

@@ -67,7 +67,7 @@ export default function CommunityCommentTile({
     setToken(stored);
     const isOwnerResult = userId ? userId === comment?.user?.id : false;
     setIsOwner(isOwnerResult);
-  }, []);
+  }, [comment?.user?.id]);
 
   const handleToggleReply = () => {
     if (!comment?.id) return;

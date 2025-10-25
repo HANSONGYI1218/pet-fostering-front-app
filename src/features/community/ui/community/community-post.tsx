@@ -256,7 +256,7 @@ export default function CommunityPost({
           </div>
         </div>
         {contentLines.length > 0 ? (
-          <span className="py-10">
+          <span className="py-10" data-testid="post-content">
             {contentLines.map((line, i) => (
               <span key={`${resolvedPost.id}-line-${i}`}>
                 {line}

@@ -10,7 +10,7 @@ const items: SnsType[] = [
   {
     img: '/icons/main/instagram.svg',
     title: 'SNS',
-    discription: '퍼디 소식을 빠르게 확인하세요',
+    discription: `퍼디 소식을 빠르게 확인하세요`,
   },
   {
     img: '/icons/main/community.svg',
@@ -31,38 +31,43 @@ const items: SnsType[] = [
 
 function SnsTile({ value }: { value: SnsType }) {
   return (
-    <div className="mx-auto flex h-72 w-72 flex-col items-center justify-center gap-6 rounded-xl border shadow-md">
+    <div className="mx-auto flex aspect-square h-full w-full max-w-[268px] flex-col items-center justify-center gap-6 rounded-xl border bg-white p-6 shadow-md">
       <Image
         src={value?.img}
         width={72}
         height={72}
         alt="dog-image"
-        className="aspect-square object-cover"
+        className="aspect-square object-cover max-lg:h-[54px] max-lg:w-[54px]"
       />
-      <h1 className="text-xl font-semibold text-neutral-800">{value?.title}</h1>
-      <span className="text-lg text-neutral-800">{value?.discription}</span>
+      <h1 className="text-lg font-semibold text-neutral-800 lg:text-xl">
+        {value?.title}
+      </h1>
+      <span className="text-center text-base break-keep text-neutral-800 lg:text-lg">
+        {value?.discription}
+      </span>
     </div>
   );
 }
 
 export default function SnsContainer() {
   return (
-    <div className="relative grid w-full grid-cols-2 items-center gap-6 px-28 py-10">
+    <div className="relative flex w-full px-16 py-10">
       <svg
         width="95"
         height="175"
         viewBox="0 0 95 175"
         fill="none"
         xmlns="http://www.w3.org/2000/svg"
-        className="absolute top-0 right-0"
+        className="absolute top-0 right-0 z-0"
       >
         <circle cx="84.5" cy="13.5" r="84.5" fill="#FA8988" />
         <circle cx="28.5" cy="159.5" r="15.5" fill="#FDAAAA" />
       </svg>
-
-      {items.map((item: SnsType, index: number) => {
-        return <SnsTile key={index} value={item} />;
-      })}
+      <div className="relative z-10 mx-auto grid w-full max-w-xl grid-cols-1 gap-10 sm:grid-cols-2">
+        {items.map((item: SnsType, index: number) => {
+          return <SnsTile key={index} value={item} />;
+        })}
+      </div>
     </div>
   );
 }

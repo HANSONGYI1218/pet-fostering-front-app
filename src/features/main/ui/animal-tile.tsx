@@ -8,7 +8,7 @@ import { Badge } from '@/shared/ui/badge';
 export default function AnimalTile({ animal }: { animal: AnimalListItem }) {
   return (
     <Link href={`/foster-list/${animal?.id}`}>
-      <div className="relative flex w-[315px] flex-shrink-0 flex-col overflow-hidden rounded-xl">
+      <div className="relative flex w-72 flex-shrink-0 flex-col overflow-hidden rounded-xl">
         <Badge className="absolute top-3 right-3 h-14 w-14 rounded-full bg-[#FF5F4D] text-lg text-white">
           긴급
         </Badge>
