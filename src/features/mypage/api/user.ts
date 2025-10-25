@@ -9,7 +9,7 @@ import type {
   UserProfileItem,
 } from '@/entities/user/user-api';
 
-const userHeaders = (token?: string): Record<string, string> => {
+export const userHeaders = (token?: string): Record<string, string> => {
   const headers: Record<string, string> = {
     Accept: 'application/json',
   };
@@ -21,7 +21,7 @@ const userHeaders = (token?: string): Record<string, string> => {
   return headers;
 };
 
-const expectOk = async (response: Response) => {
+export const expectOk = async (response: Response) => {
   if (!response.ok) {
     const error = new Error(`사용자 API 요청 실패: ${response.status}`);
     (error as Error & { status?: number }).status = response.status;

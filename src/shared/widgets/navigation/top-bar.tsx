@@ -136,10 +136,6 @@ export default function TopBar() {
     return path.split('/')[1] ?? null;
   }, [path]);
 
-  useEffect(() => {
-    closeMobileMenu();
-  }, [closeMobileMenu, path]);
-
   const renderNavItems = (itemClassName?: string, onSelect?: () => void) =>
     NAV_ITEMS.map((item) => {
       const isActive = item.segment === currentSegment;
@@ -209,12 +205,8 @@ export default function TopBar() {
 
   return (
     <header className="bg-background sticky top-0 z-30 border-b">
-      <div className="container_12 mx-auto flex h-16 w-full items-center justify-between gap-4 px-4 md:px-6">
-        <Link
-          href="/main"
-          className="flex shrink-0 items-center"
-          aria-label="홈"
-        >
+      <div className="mx-auto flex h-16 w-full max-w-screen-xl items-center justify-between gap-4 px-4 md:px-6">
+        <Link href="/" className="flex shrink-0 items-center" aria-label="홈">
           <Image
             src="/main-logo.png"
             width={140}
@@ -223,7 +215,7 @@ export default function TopBar() {
             priority
           />
         </Link>
-        <div className="hidden flex-1 justify-center md:flex">
+        <div className="hidden flex-1 justify-center lg:flex">
           <NavigationMenu aria-label="주요 메뉴">
             <NavigationMenuList>{renderNavItems()}</NavigationMenuList>
           </NavigationMenu>
@@ -241,7 +233,7 @@ export default function TopBar() {
                   unoptimized
                 />
               ) : null}
-              <span className="hidden text-sm font-medium text-neutral-600 sm:block">
+              <span className="hidden text-sm font-medium break-keep text-neutral-600 sm:block">
                 {userLabel}
               </span>
               <Button
@@ -263,7 +255,7 @@ export default function TopBar() {
           <Button
             variant="ghost"
             size="icon"
-            className="sm:hidden"
+            className="lg:hidden"
             aria-label={isMobileMenuOpen ? '메뉴 닫기' : '메뉴 열기'}
             aria-expanded={isMobileMenuOpen}
             onClick={() => setIsMobileMenuOpen((prev) => !prev)}
@@ -277,7 +269,7 @@ export default function TopBar() {
         </div>
       </div>
       {isMobileMenuOpen ? (
-        <div className="md:hidden">
+        <div className="lg:hidden">
           <div
             role="presentation"
             className="fixed inset-0 z-40 bg-black/40"

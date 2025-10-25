@@ -30,6 +30,7 @@ import { ChangeEvent, ReactElement, useMemo, useState } from 'react';
 import { PostItem } from '@/entities/post/post-api';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import { toast } from 'sonner';
+import { createPost, updatePost } from '../../api/community';
 
 const PostFormSchema = z.object({
   title: z.string().trim().min(1, {
@@ -86,10 +87,20 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
       return;
     }
 
+    const payload = {
+      title: _values?.title,
+      content: _values?.content,
+    };
+
     setIsLoading(true);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 400));
+      if (post) {
+        await updatePost(token, post?.id, payload);
+      } else {
+        await createPost(token, payload);
+      }
       toast(isEditMode ? '게시글을 수정했어요!' : '게시글을 작성했어요!');
       closeDialog();
     } catch {
@@ -136,13 +147,13 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
-      <Form {...form}>
-        <form
-          onSubmit={form.handleSubmit(handleSubmit)}
-          className="flex h-full w-full justify-end space-y-8"
-        >
-          <DialogTrigger asChild>{triggerNode}</DialogTrigger>
-          <DialogContent className="gap-10 sm:max-w-xl">
+      <DialogTrigger asChild>{triggerNode}</DialogTrigger>
+      <DialogContent className="sm:max-w-xl">
+        <Form {...form}>
+          <form
+            onSubmit={form.handleSubmit(handleSubmit)}
+            className="flex w-full flex-col space-y-8"
+          >
             <DialogHeader>
               <DialogTitle>게시글 {isEditMode ? '수정' : '작성'}</DialogTitle>
             </DialogHeader>
@@ -276,9 +287,9 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
                 {isLoading ? <Loader2 className="animate-spin" /> : '작성'}
               </Button>
             </DialogFooter>
-          </DialogContent>
-        </form>
-      </Form>
+          </form>
+        </Form>
+      </DialogContent>
     </Dialog>
   );
 }

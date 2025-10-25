@@ -59,11 +59,7 @@ export function formatAnimalAge(birthDate: Date | string | number): string {
     return `${months}개월`;
   }
 
-  if (months === 0) {
-    return `${years}년`;
-  }
-
-  return `${years}년 ${months}개월`;
+  return `${years}살`;
 }
 
 export function fosterTotalDuration(

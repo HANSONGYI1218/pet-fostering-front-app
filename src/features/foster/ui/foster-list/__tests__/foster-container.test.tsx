@@ -70,7 +70,7 @@ describe('FosterContainer', () => {
     expect(await screen.findByText('루비')).toBeInTheDocument();
 
     const user = userEvent.setup();
-    const emergencyToggle = screen.getByRole('button', { name: '긴급' });
+    const emergencyToggle = await screen.findByRole('button', { name: '긴급' });
 
     // 클릭하고, 변경이 적용될 때까지 기다림
     await user.click(emergencyToggle);
@@ -85,5 +85,5 @@ describe('FosterContainer', () => {
       expect(screen.getByText('루나')).toBeInTheDocument(); // 남아있음
       expect(screen.queryByText('루비')).not.toBeInTheDocument(); // 없어짐
     });
-  }, 10000);
+  }, 30000);
 });

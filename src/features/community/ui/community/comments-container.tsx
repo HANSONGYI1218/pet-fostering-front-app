@@ -10,7 +10,7 @@ import CommentsForm from './comments-form';
 import { CommentSelection } from './types';
 
 type CommentsContainerProps = {
-  comments: CommentItem[];
+  initialComments: CommentItem[];
   isError?: boolean;
 };
 
@@ -24,13 +24,15 @@ const sortByCreatedAtDesc = <T extends { created_at: Date }>(items: T[]) =>
   );
 
 export default function CommentsContainer({
-  comments,
+  initialComments = [],
   isError = false,
 }: CommentsContainerProps) {
+  const postId = initialComments[0]?.post_id;
   const itemsPerPage = 10;
   const [currentPage, setCurrentPage] = useState(1);
   const [selectedComment, setSelectedComment] =
     useState<CommentSelection | null>(null);
+  const [comments, setComments] = useState<CommentItem[]>(initialComments);
 
   useEffect(() => {
     setSelectedComment(null);
@@ -43,9 +45,14 @@ export default function CommentsContainer({
   const startIdx = (currentPage - 1) * itemsPerPage;
   const endIdx = startIdx + itemsPerPage;
   const pagedComments = useMemo(
-    () => sortedComments.slice(startIdx, endIdx),
+    () =>
+      sortedComments.slice(startIdx, endIdx).map((comment) => ({
+        ...comment,
+        reply_comments: [...(comment.reply_comments ?? [])], // reply_comments도 새 배열 참조
+      })),
     [sortedComments, startIdx, endIdx],
   );
+
   const hasComments = comments.length > 0;
 
   if (isError) {
@@ -93,9 +100,11 @@ export default function CommentsContainer({
           </span>
         </div>
         <CommentsForm
+          postId={postId}
           draft={{ mode: 'create' }}
           heightClassName="min-h-40"
           onClose={() => setSelectedComment(null)}
+          handleComments={setComments}
         />
         {hasComments ? (
           <div className="flex w-full flex-col">
@@ -112,6 +121,7 @@ export default function CommentsContainer({
                   {selectedComment?.type === 'new' &&
                     selectedComment.id === comment.id && (
                       <CommentsForm
+                        postId={postId}
                         draft={{ mode: 'reply', parentId: comment.id }}
                         onClose={() => setSelectedComment(null)}
                       />

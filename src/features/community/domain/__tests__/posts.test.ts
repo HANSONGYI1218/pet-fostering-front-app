@@ -18,7 +18,7 @@ const createPost = (overrides: Partial<PostItem>): PostItem => ({
 describe('selectRecentPopularPosts', () => {
   const now = new Date('2025-02-01T00:00:00Z');
 
-  it('최근 한 달 내 게시글만 조회수 내림차순으로 최대 10개를 반환한다', () => {
+  it('게시글을 조회수+좋아요 합계 내림차순으로 최대 10개를 반환한다', () => {
     const posts: PostItem[] = [
       createPost({
         id: 'old',
@@ -39,8 +39,8 @@ describe('selectRecentPopularPosts', () => {
 
     const result = selectRecentPopularPosts(posts, { now });
 
-    expect(result).toHaveLength(2);
-    expect(result.map((post) => post.id)).toEqual(['top', 'second']);
+    expect(result).toHaveLength(3);
+    expect(result.map((post) => post.id)).toEqual(['old', 'top', 'second']);
   });
 
   it('조회수 동률일 때는 최신 게시글이 먼저 온다', () => {

@@ -10,6 +10,7 @@ export type ReplyCommentItem = {
   user: CommentUserItem;
   content: string;
   likes: number;
+  liked: boolean;
   created_at: Date;
 };
 
@@ -20,6 +21,7 @@ export type CommentItem = {
   user: CommentUserItem;
   content: string;
   likes: number;
+  liked: boolean;
   created_at: Date;
   reply_comments: ReplyCommentItem[] | null;
 };
@@ -34,4 +36,9 @@ export type CommentItemByUserId = {
   likes: number;
   created_at: Date;
   reply_length: number;
+};
+
+export type CreateCommentPayload = {
+  content: string;
+  parentId: string | undefined;
 };

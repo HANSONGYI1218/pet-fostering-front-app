@@ -129,3 +129,15 @@ export type OrganizationAnimalDetailItem = {
     donation_account_holder: string;
   };
 };
+
+export type AnimalListItem = {
+  id: string;
+  name: string;
+  type: AnimalType;
+  breed: string;
+  birth_date: Date | null;
+  gender: AnimalGender;
+  image: string;
+  isEmergency: boolean;
+  euthanasia_date: Date | null;
+};

@@ -1,6 +1,10 @@
+/* eslint-disable @next/next/no-css-tags */
 import type { Metadata } from 'next';
 import './globals.css';
 import localFont from 'next/font/local';
+import TopBar from '@/shared/widgets/navigation/top-bar';
+import { Toaster } from '@/shared/ui/sonner';
+import BottomBar from '@/shared/widgets/navigation/bottom-bar';
 
 const pretendard = localFont({
   src: '../../public/fonts/PretendardVariable.woff2',
@@ -21,7 +25,20 @@ export default function RootLayout({
 }>) {
   return (
     <html lang="ko">
-      <body className={pretendard.className}>{children}</body>
+      <head>
+        <link
+          rel="stylesheet"
+          href="//fonts.googleapis.com/earlyaccess/nanumpenscript.css"
+        />
+      </head>
+      <body className={pretendard.className}>
+        <div className="flex min-h-screen flex-col">
+          <TopBar />
+          <div className="flex-1">{children}</div>
+          <Toaster />
+          <BottomBar />
+        </div>
+      </body>
     </html>
   );
 }

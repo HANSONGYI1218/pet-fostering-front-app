@@ -1,6 +1,6 @@
 'use client';
 
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
 import { ko } from 'date-fns/locale';
 import {
@@ -42,6 +42,12 @@ import {
 } from '@/lib/auth/session';
 import PostFormDialog from './post-form-dialog';
 import { toast } from 'sonner';
+import {
+  deleteBookmark,
+  createBookmark,
+  deletePost,
+} from '../../api/community';
+import { logError } from '@/shared/lib/logging';
 
 type PostWithBookmark = PostItem & { isBookmarked?: boolean };
 
@@ -52,7 +58,7 @@ export default function CommunityPost({
 }) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
-  const token = resolveStoredAccessToken();
+  const [token, setToken] = useState<string | null>(null);
 
   const resolvedPost = post ?? null;
   const initialBookmark = useMemo(
@@ -62,8 +68,15 @@ export default function CommunityPost({
   const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [postLikeCnt, setPostLikeCnt] = useState(post?.likes ?? 0);
 
-  if (!resolvedPost) {
+  // 브라우저에서만 access token 읽기
+  useEffect(() => {
+    const stored = resolveStoredAccessToken();
+    setToken(stored);
+  }, []);
+
+  if (!resolvedPost || token === null) {
     return (
       <Card className="flex min-h-[220px] w-full flex-col items-center justify-center gap-4 text-center text-neutral-500">
         <span>게시글을 찾을 수 없습니다.</span>
@@ -80,20 +93,42 @@ export default function CommunityPost({
   const isOwner = token && userId === resolvedPost.authorId;
 
   const handleBookmarkToggle = async () => {
+    if (!resolvedPost?.id) {
+      return toast('다시 한번 새로고침 해주세요.');
+    }
+    if (token) {
+      try {
+        if (isBookmarked) {
+          await deleteBookmark(token, resolvedPost.id);
+          setIsBookmarked(false);
+          setPostLikeCnt((prev) => prev - 1);
+        } else {
+          await createBookmark(token, resolvedPost.id);
+          setIsBookmarked(true);
+          setPostLikeCnt((prev) => prev + 1);
+        }
+      } catch (error) {
+        logError('댓글 업데이트 실패', error);
+      }
+    } else {
+      toast('로그인 후 이용해주세요.');
+    }
+  };
+
+  const handleDeletePost = async () => {
     if (!token) {
       toast('로그인 후 이용해 주세요.');
       return;
     }
 
-    setIsBookmarked((prev) => !prev);
-    toast(isBookmarked ? '북마크를 해제했어요.' : '북마크에 추가했어요.');
-  };
-
-  const handleDeletePost = async () => {
+    if (!post?.id) {
+      return toast('다시 한번 새로고침 해주세요.');
+    }
     setIsLoading(true);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 400));
+      await deletePost(token, post.id);
       toast('게시글을 삭제했어요.');
       setOpen(false);
     } catch {
@@ -109,7 +144,13 @@ export default function CommunityPost({
   };
 
   const editTrigger = (
-    <MenubarItem className="justify-start">수정하기</MenubarItem>
+    <Button
+      type="button"
+      variant={'ghost'}
+      className="w-full cursor-default justify-start px-[6px] text-left text-sm font-normal hover:bg-neutral-100 hover:font-normal"
+    >
+      수정하기
+    </Button>
   );
 
   return (
@@ -118,7 +159,7 @@ export default function CommunityPost({
         <div className="flex w-full items-center justify-between">
           <span className="text-xl font-semibold">{resolvedPost.title}</span>
           <Bookmark
-            className={`h-9 w-9 ${isOwner ? 'flex' : 'hidden'}`}
+            className={`h-9 w-9 cursor-pointer`}
             onClick={handleBookmarkToggle}
             fill={isBookmarked ? '#00592d' : '#ffffff'}
             stroke="#00592d"
@@ -141,11 +182,9 @@ export default function CommunityPost({
                 format(createdAt, 'yyyy.MM.dd a hh:mm', { locale: ko })}
             </span>
             <div className="flex items-center gap-2 md:gap-5">
-              <div className="flex cursor-pointer items-center gap-1">
+              <div className="flex items-center gap-1">
                 <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
-                <span className="text-sm text-neutral-400">
-                  {resolvedPost.likes}
-                </span>
+                <span className="text-sm text-neutral-400">{postLikeCnt}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Eye className="h-3.5 w-3.5" stroke="#a1a1a1" />
@@ -178,7 +217,10 @@ export default function CommunityPost({
                           trigger={editTrigger}
                         />
                         <MenubarSeparator />
-                        <MenubarItem onClick={() => setOpen(true)}>
+                        <MenubarItem
+                          onClick={() => setOpen(true)}
+                          className="hover:bg-neutral-100"
+                        >
                           삭제하기
                         </MenubarItem>
                       </>
@@ -214,7 +256,7 @@ export default function CommunityPost({
           </div>
         </div>
         {contentLines.length > 0 ? (
-          <span className="py-10">
+          <span className="py-10" data-testid="post-content">
             {contentLines.map((line, i) => (
               <span key={`${resolvedPost.id}-line-${i}`}>
                 {line}

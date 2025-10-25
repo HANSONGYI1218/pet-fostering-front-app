@@ -53,7 +53,7 @@ describe('KakaoCallbackHandler', () => {
       expect(screen.getByText(/로그인이 완료되었어요/i)).toBeInTheDocument(),
     );
 
-    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith('/main'));
+    await waitFor(() => expect(replaceMock).toHaveBeenCalledWith('/'));
   });
 
   it('에러 시 에러 메시지를 표기한다', async () => {
@@ -82,7 +82,7 @@ describe('KakaoCallbackHandler', () => {
       expect(completeKakaoLogin).toHaveBeenCalledTimes(1);
     });
     await waitFor(() => {
-      expect(replaceMock).toHaveBeenCalledWith('/main');
+      expect(replaceMock).toHaveBeenCalledWith('/');
     });
     await waitFor(() => {
       expect(screen.getByText(/로그인이 완료되었어요/i)).toBeInTheDocument();

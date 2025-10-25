@@ -14,9 +14,11 @@ import { z } from 'zod';
 import { Textarea } from '@/shared/ui/textarea';
 import { Button } from '@/shared/ui/button';
 import { toast } from 'sonner';
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
+import { updateComment, createComment } from '../../api/community';
+import { CommentItem } from '@/entities/comment/comment-api';
 
 type CommentFormMode = 'create' | 'reply' | 'edit';
 
@@ -38,7 +40,9 @@ type CommentsFormValues = z.infer<typeof CommentsFormSchema>;
 type CommentsFormProps = {
   draft?: CommentDraft | null;
   heightClassName?: string;
+  postId: string;
   onClose?: () => void;
+  handleComments?: (updater: (prev: CommentItem[]) => CommentItem[]) => void;
 };
 
 const resolveToastMessage = (mode: CommentFormMode) => {
@@ -54,10 +58,11 @@ const resolveToastMessage = (mode: CommentFormMode) => {
 
 export default function CommentsForm({
   draft,
+  postId,
   heightClassName,
   onClose,
 }: CommentsFormProps) {
-  const token = resolveStoredAccessToken();
+  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<CommentsFormValues>({
     resolver: zodResolver(CommentsFormSchema),
@@ -65,20 +70,57 @@ export default function CommentsForm({
       comment: draft?.content ?? '',
     },
   });
-
   const mode = draft?.mode ?? 'create';
+
+  // 브라우저에서만 access token 읽기
+  useEffect(() => {
+    const stored = resolveStoredAccessToken();
+    setToken(stored);
+  }, []);
 
   const handleSubmit = async (_values: CommentsFormValues) => {
     if (!token) {
       toast('로그인 후 이용해 주세요.');
       return;
     }
-
+    if (!postId) {
+      return toast('다시 한번 새로고침 해주세요.');
+    }
+    const payload = {
+      content: _values?.comment,
+      parentId: draft?.parentId ?? undefined,
+    };
     setIsLoading(true);
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 200));
+      // let result: ReplyCommentItem;
+      if (draft?.id) {
+        await updateComment(token, postId, payload);
+      } else {
+        await createComment(token, postId, payload);
+      }
+
       toast(resolveToastMessage(mode));
+
+      // if (draft?.parentId) {
+      //   handleComments?.((prev) =>
+      //     prev.map((comment) => {
+      //       if (comment.id === draft?.parentId) {
+      //         return {
+      //           ...comment,
+      //           reply_comments: [result, ...(comment.reply_comments ?? [])],
+      //         };
+      //       }
+      //       return { ...comment };
+      //     }),
+      //   );
+      // } else {
+      //   handleComments?.((prev) => [
+      //     { ...result, reply_comments: null },
+      //     ...prev,
+      //   ]);
+      // }
       form.reset({ comment: '' });
       onClose?.();
     } catch {
