@@ -275,7 +275,7 @@ export const createPost = async (
   });
 
   if (!response.ok) {
-    throw new Error(`댓글 좋아요 요청 실패: ${response.status}`);
+    throw new Error(`게시글 생성 요청 실패: ${response.status}`);
   }
 
   communityPageRevalid();
@@ -286,7 +286,7 @@ export const updatePost = async (
   postId: string,
   payload: PostUpsertPayload,
 ) => {
-  const response = await fetch(resolveEndpoint(`/community/posts`), {
+  const response = await fetch(resolveEndpoint(`/community/posts/${postId}`), {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
@@ -299,7 +299,7 @@ export const updatePost = async (
     throw new Error(`게시물 업데이트 요청 실패: ${response.status}`);
   }
 
-  communityDetailPageRevalid({ postId: postId });
+  communityDetailPageRevalid({ postId });
 };
 
 export const deletePost = async (token: string | undefined, id: string) => {
@@ -404,14 +404,18 @@ export const createComment = async (
 
 export const updateComment = async (
   token: string | undefined,
-  id: string,
+  postId: string,
+  commentId: string,
   payload: CreateCommentPayload,
 ) => {
   const response = await fetch(
-    resolveEndpoint(`/community/posts/${id}/comments`),
+    resolveEndpoint(`/community/posts/${postId}/comments/${commentId}`),
     {
-      method: 'POST',
-      headers: userHeaders(token),
+      method: 'PATCH',
+      headers: {
+        'Content-Type': 'application/json',
+        ...userHeaders(token),
+      },
       body: JSON.stringify(payload),
     },
   );
@@ -423,6 +427,26 @@ export const updateComment = async (
   const dto = (await response.json()) as CommunityReplyDto;
 
   return mapReply(dto);
+};
+
+export const deleteComment = async (
+  token: string | undefined,
+  postId: string,
+  commentId: string,
+) => {
+  const response = await fetch(
+    resolveEndpoint(`/community/posts/${postId}/comments/${commentId}`),
+    {
+      method: 'DELETE',
+      headers: userHeaders(token),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`댓글 삭제 요청 실패: ${response.status}`);
+  }
+
+  communityDetailPageRevalid({ postId });
 };
 
 export const updatePostView = async (id: string) => {

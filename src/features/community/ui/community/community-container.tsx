@@ -1,25 +1,20 @@
 'use client';
 
-import CommunityTile from './community-tile';
-import CommunityTopList from './community-top-list';
-import { PaginationDynamic } from '@/shared/widgets/navigation/papagination-dynamic';
-import { useMemo, useState } from 'react';
+import { useMemo } from 'react';
+
 import { PostItem } from '@/entities/post/post-api';
 import { selectRecentPopularPosts } from '@/features/community/domain/posts';
+import { usePagination } from '@/shared/hooks/use-pagination';
+import { PaginationDynamic } from '@/shared/widgets/navigation/pagination-dynamic';
 import EmptyBox from '@/shared/widgets/feedback/empty-box';
+import CommunityTile from './community-tile';
+import CommunityTopList from './community-top-list';
 import PostFormDialog from './post-form-dialog';
 
 export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
-  const itemsPerPage = 10; // 한 페이지에 보여줄 항목 수
-  const [currentPage, setCurrentPage] = useState(1);
-
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
-  const hasPosts = posts.length > 0;
-  const paginatedPosts = useMemo(
-    () => (hasPosts ? posts.slice(startIdx, endIdx) : []),
-    [endIdx, hasPosts, posts, startIdx],
-  );
+  const { pageItems, currentPage, goToPage, totalItems, itemsPerPage } =
+    usePagination(posts, { itemsPerPage: 10 });
+  const hasPosts = totalItems > 0;
 
   const recentPopularPosts = useMemo(
     () => selectRecentPopularPosts(posts),
@@ -36,14 +31,14 @@ export default function CommunityContainer({ posts }: { posts: PostItem[] }) {
         <div className="flex w-full flex-1 flex-col justify-center gap-6">
           {hasPosts ? (
             <>
-              {paginatedPosts.map((post: PostItem) => (
+              {pageItems.map((post: PostItem) => (
                 <CommunityTile key={post.id} post={post} />
               ))}
               <PaginationDynamic
-                totalItems={posts.length}
+                totalItems={totalItems}
                 itemsPerPage={itemsPerPage}
                 currentPage={currentPage}
-                onPageChange={setCurrentPage}
+                onPageChange={goToPage}
               />
             </>
           ) : (

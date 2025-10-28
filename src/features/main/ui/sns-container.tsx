@@ -1,50 +1,50 @@
 import Image from 'next/image';
 
-type SnsType = {
+type SnsItem = {
   img: string;
   title: string;
-  discription: string;
+  description: string;
 };
 
-const items: SnsType[] = [
+const SNS_ITEMS: SnsItem[] = [
   {
     img: '/icons/main/instagram.svg',
     title: 'SNS',
-    discription: `퍼디 소식을 빠르게 확인하세요`,
+    description: '퍼디 소식을 빠르게 확인하세요',
   },
   {
     img: '/icons/main/community.svg',
     title: '퍼디 커뮤니티',
-    discription: '임보자들과 소통해보세요',
+    description: '임보자들과 소통해보세요',
   },
   {
     img: '/icons/main/faq.svg',
     title: 'FAQ',
-    discription: '자주 묻는 질문을 알려드립니다',
+    description: '자주 묻는 질문을 알려드립니다',
   },
   {
     img: '/icons/main/comment.svg',
     title: '바라는 점',
-    discription: '개선할 점을 알려주세요',
+    description: '개선할 점을 알려주세요',
   },
 ];
 
-function SnsTile({ value }: { value: SnsType }) {
+function SnsTile({ value }: { value: SnsItem }) {
   return (
     <div className="mx-auto flex aspect-square h-full w-full max-w-[268px] flex-col items-center justify-center gap-6 rounded-xl border bg-white p-6 shadow-md">
       <Image
-        src={value?.img}
+        src={value.img}
         width={72}
         height={72}
-        alt="dog-image"
+        alt={value.title}
         className="aspect-square object-cover max-lg:h-[54px] max-lg:w-[54px]"
       />
-      <h1 className="text-lg font-semibold text-neutral-800 lg:text-xl">
-        {value?.title}
-      </h1>
-      <span className="text-center text-base break-keep text-neutral-800 lg:text-lg">
-        {value?.discription}
-      </span>
+      <h3 className="text-lg font-semibold text-neutral-800 lg:text-xl">
+        {value.title}
+      </h3>
+      <p className="text-center text-base break-keep text-neutral-800 lg:text-lg">
+        {value.description}
+      </p>
     </div>
   );
 }
@@ -64,8 +64,8 @@ export default function SnsContainer() {
         <circle cx="28.5" cy="159.5" r="15.5" fill="#FDAAAA" />
       </svg>
       <div className="relative z-10 mx-auto grid w-full max-w-xl grid-cols-1 gap-10 sm:grid-cols-2">
-        {items.map((item: SnsType, index: number) => {
-          return <SnsTile key={index} value={item} />;
+        {SNS_ITEMS.map((item) => {
+          return <SnsTile key={item.title} value={item} />;
         })}
       </div>
     </div>

@@ -33,7 +33,11 @@ import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
 import { toDate } from '@/shared/lib/utils';
 import CommentsForm from './comments-form';
 import { CommentSelection } from './types';
-import { createCommentLike, deleteCommentLike } from '../../api/community';
+import {
+  createCommentLike,
+  deleteCommentLike,
+  deleteComment,
+} from '../../api/community';
 import { logError } from '@/shared/lib/logging';
 
 type CommentLike = CommentItem | ReplyCommentItem;
@@ -42,12 +46,14 @@ type CommunityCommentTileProps = {
   comment: CommentLike;
   selectedComment?: CommentSelection | null;
   onSelectComment?: (next: CommentSelection | null) => void;
+  onUpdateComments?: (updater: (prev: CommentItem[]) => CommentItem[]) => void;
 };
 
 export default function CommunityCommentTile({
   comment,
   selectedComment,
   onSelectComment,
+  onUpdateComments,
 }: CommunityCommentTileProps) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
@@ -64,7 +70,7 @@ export default function CommunityCommentTile({
   // 브라우저에서만 access token 읽기
   useEffect(() => {
     const stored = resolveStoredAccessToken();
-    setToken(stored);
+    setToken(stored ?? null);
     const isOwnerResult = userId ? userId === comment?.user?.id : false;
     setIsOwner(isOwnerResult);
   }, [comment?.user?.id]);
@@ -106,8 +112,33 @@ export default function CommunityCommentTile({
 
     setIsLoading(true);
 
+    if (!token) {
+      toast('로그인 후 이용해 주세요.');
+      setIsLoading(false);
+      return;
+    }
+
     try {
-      await new Promise((resolve) => setTimeout(resolve, 200));
+      await deleteComment(token, comment.post_id, comment.id);
+
+      onUpdateComments?.((prev) => {
+        if (comment.parent_id) {
+          return prev.map((item) => {
+            if (item.id !== comment.parent_id) {
+              return item;
+            }
+            const nextReplies = (item.reply_comments ?? []).filter(
+              (reply) => reply.id !== comment.id,
+            );
+            return {
+              ...item,
+              reply_comments: nextReplies.length > 0 ? nextReplies : null,
+            };
+          });
+        }
+        return prev.filter((item) => item.id !== comment.id);
+      });
+
       toast('댓글을 삭제했어요.');
       setOpen(false);
       onSelectComment?.(null);
@@ -193,7 +224,7 @@ export default function CommunityCommentTile({
             {isOwner && (
               <Menubar className="border-none bg-transparent p-0">
                 <MenubarMenu>
-                  <MenubarTrigger className="p-0">
+                  <MenubarTrigger className="p-0" aria-label="댓글 옵션">
                     <EllipsisVertical
                       className="h-3.5 w-3.5 cursor-pointer"
                       stroke="#a1a1a1"
@@ -241,18 +272,19 @@ export default function CommunityCommentTile({
         ) : null}
       </div>
       {isEditing ? (
-        <div className="mt-4 flex w-full">
-          <CommentsForm
-            draft={{
-              id: comment.id,
-              parentId: comment.parent_id ?? '',
-              content: comment.content ?? '',
-              mode: 'edit',
-            }}
-            postId={comment?.post_id}
-            onClose={() => onSelectComment?.(null)}
-          />
-        </div>
+                <div className="mt-4 flex w-full">
+                  <CommentsForm
+                    draft={{
+                      id: comment.id,
+                      parentId: comment.parent_id ?? '',
+                      content: comment.content ?? '',
+                      mode: 'edit',
+                    }}
+                    postId={comment?.post_id}
+                    onClose={() => onSelectComment?.(null)}
+                    handleComments={onUpdateComments}
+                  />
+                </div>
       ) : (
         <span className="py-4 text-neutral-600">
           {contentLines.map((line, index) => (
