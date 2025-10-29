@@ -1,11 +1,11 @@
 /* eslint-disable @next/next/no-img-element */
 
-type ProcessType = {
+type ProcessItem = {
   img: string;
   title: string;
 };
 
-const items: ProcessType[] = [
+const PROCESS_ITEMS: ProcessItem[] = [
   {
     img: '/icons/main/process-01.svg',
     title: '임보자 프로필 등록하기',
@@ -24,34 +24,36 @@ const items: ProcessType[] = [
   },
 ];
 
-function PorcessTile({ value }: { value: ProcessType }) {
+function ProcessTile({ value }: { value: ProcessItem }) {
   return (
     <div className="flex w-full max-w-[146px] flex-col items-center gap-6 rounded-xl">
       <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg lg:h-40 lg:w-40">
         <img
-          src={value?.img}
-          alt="dog-image"
+          src={value.img}
+          alt={value.title}
           className="h-2/3 w-2/3 object-contain lg:h-auto lg:w-auto"
         />
       </div>
       <h1 className="text-center text-base break-keep text-neutral-800 lg:text-lg">
-        {value?.title}
+        {value.title}
       </h1>
     </div>
   );
 }
 
-export default function PorcessContainer() {
+export default function ProcessContainer() {
   return (
     <div className="mx-auto flex w-full max-w-screen-lg flex-col flex-wrap gap-y-4 sm:flex-row sm:gap-y-6">
-      {items.map((item: ProcessType, index: number) => {
+      {PROCESS_ITEMS.map((item, index) => {
+        const isLast = index === PROCESS_ITEMS.length - 1;
+
         return (
           <div
-            key={index}
+            key={item.title}
             className="mx-auto flex w-fit flex-col items-center max-sm:gap-6 sm:flex-row md:text-xl"
           >
-            <PorcessTile value={item} />
-            {index !== items?.length - 1 && (
+            <ProcessTile value={item} />
+            {!isLast && (
               <svg
                 width="19"
                 height="33"

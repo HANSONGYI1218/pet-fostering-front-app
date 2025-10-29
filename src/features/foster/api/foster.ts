@@ -89,7 +89,7 @@ const mapListItem = (
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
   image: dto.mainImageUrl ?? '/images/animal-placeholder.png',
   isBookmarked: false,
-  euthanasia_date: new Date('2025-10-21'),
+  euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
   animal_healths: dto.healthTags.map(
     (value) => AnimalHealth[value] ?? AnimalHealth.NEUTERED,
   ),

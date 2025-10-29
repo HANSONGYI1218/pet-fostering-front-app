@@ -1,7 +1,8 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { PaginationDynamic } from '@/shared/widgets/navigation/papagination-dynamic';
+import { usePagination } from '@/shared/hooks/use-pagination';
+import { PaginationDynamic } from '@/shared/widgets/navigation/pagination-dynamic';
 import RetryButton from '@/shared/widgets/feedback/retry-button';
 import CommunityCommentTile from './community-comment-tile';
 import { Card } from '@/shared/ui/card';
@@ -28,32 +29,35 @@ export default function CommentsContainer({
   isError = false,
 }: CommentsContainerProps) {
   const postId = initialComments[0]?.post_id;
-  const itemsPerPage = 10;
-  const [currentPage, setCurrentPage] = useState(1);
   const [selectedComment, setSelectedComment] =
     useState<CommentSelection | null>(null);
   const [comments, setComments] = useState<CommentItem[]>(initialComments);
+  const sortedComments = useMemo(
+    () => sortByCreatedAtDesc(comments),
+    [comments],
+  );
+  const {
+    currentPage,
+    goToPage,
+    pageItems,
+    totalItems,
+    itemsPerPage,
+  } = usePagination(sortedComments, { itemsPerPage: 10 });
 
   useEffect(() => {
     setSelectedComment(null);
   }, [currentPage]);
 
-  const sortedComments = useMemo(
-    () => sortByCreatedAtDesc(comments),
-    [comments],
-  );
-  const startIdx = (currentPage - 1) * itemsPerPage;
-  const endIdx = startIdx + itemsPerPage;
   const pagedComments = useMemo(
     () =>
-      sortedComments.slice(startIdx, endIdx).map((comment) => ({
+      pageItems.map((comment) => ({
         ...comment,
         reply_comments: [...(comment.reply_comments ?? [])], // reply_comments도 새 배열 참조
       })),
-    [sortedComments, startIdx, endIdx],
+    [pageItems],
   );
 
-  const hasComments = comments.length > 0;
+  const hasComments = totalItems > 0;
 
   if (isError) {
     return (
@@ -117,6 +121,7 @@ export default function CommentsContainer({
                     comment={comment}
                     selectedComment={selectedComment}
                     onSelectComment={setSelectedComment}
+                    onUpdateComments={setComments}
                   />
                   {selectedComment?.type === 'new' &&
                     selectedComment.id === comment.id && (
@@ -124,6 +129,7 @@ export default function CommentsContainer({
                         postId={postId}
                         draft={{ mode: 'reply', parentId: comment.id }}
                         onClose={() => setSelectedComment(null)}
+                        handleComments={setComments}
                       />
                     )}
                   <hr className="w-full" />
@@ -135,6 +141,7 @@ export default function CommentsContainer({
                             comment={reply}
                             selectedComment={selectedComment}
                             onSelectComment={setSelectedComment}
+                            onUpdateComments={setComments}
                           />
                           <hr className="w-full" />
                         </div>
@@ -153,10 +160,10 @@ export default function CommentsContainer({
       </Card>
       {hasComments ? (
         <PaginationDynamic
-          totalItems={comments.length}
+          totalItems={totalItems}
           itemsPerPage={itemsPerPage}
           currentPage={currentPage}
-          onPageChange={setCurrentPage}
+          onPageChange={goToPage}
         />
       ) : null}
     </div>

@@ -1,11 +1,26 @@
-import { describe, expect, it } from 'vitest';
-
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { toDate } from '@/shared/lib/utils';
 import {
+  createPost,
   mapCommunityComments,
   mapCommunityPost,
   mapPostListItems,
+  deleteComment,
+  updateComment,
+  updatePost,
 } from '../community';
-import { toDate } from '@/shared/lib/utils';
+
+vi.mock('@/shared/api/config', () => ({
+  resolveEndpoint: (path: string) => path,
+}));
+
+const pageRevalidateSpy = vi.fn();
+const detailRevalidateSpy = vi.fn();
+
+vi.mock('../redirect', () => ({
+  communityPageRevalid: () => pageRevalidateSpy(),
+  communityDetailPageRevalid: (args: unknown) => detailRevalidateSpy(args),
+}));
 
 describe('mapPostListItems', () => {
   it('API 응답을 프런트엔드 게시글 도메인 모델로 변환한다', () => {
@@ -192,5 +207,180 @@ describe('mapCommunityComments', () => {
         reply_comments: [],
       },
     ]);
+  });
+});
+
+describe('createPost', () => {
+  const fetchMock = vi.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    vi.stubGlobal('fetch', fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    pageRevalidateSpy.mockClear();
+  });
+
+  it('정상 응답이면 게시글 생성 API를 호출하고 페이지를 재검증한다', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+    });
+
+    const payload = { title: 'hello', content: 'world' };
+    await createPost('token-1', payload);
+
+    expect(fetchMock).toHaveBeenCalledWith('/community/posts', {
+      method: 'POST',
+      headers: expect.objectContaining({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer token-1',
+      }),
+      body: JSON.stringify(payload),
+    });
+    expect(pageRevalidateSpy).toHaveBeenCalledTimes(1);
+  });
+
+  it('실패하면 명확한 에러 메시지를 던진다', async () => {
+    fetchMock.mockResolvedValue({
+      ok: false,
+      status: 500,
+    });
+
+    await expect(
+      createPost('token-1', { title: 'bad', content: 'payload' }),
+    ).rejects.toThrow('게시글 생성 요청 실패: 500');
+  });
+});
+
+describe('updatePost', () => {
+  const fetchMock = vi.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    vi.stubGlobal('fetch', fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    detailRevalidateSpy.mockClear();
+  });
+
+  it('게시글 업데이트 요청을 PATCH 메서드로 보낸다', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+    });
+
+    await updatePost('token-1', 'post-1', {
+      title: '수정',
+      content: '본문',
+    });
+
+    expect(fetchMock).toHaveBeenCalledWith('/community/posts/post-1', {
+      method: 'PATCH',
+      headers: expect.objectContaining({
+        'Content-Type': 'application/json',
+        Authorization: 'Bearer token-1',
+      }),
+      body: JSON.stringify({ title: '수정', content: '본문' }),
+    });
+    expect(detailRevalidateSpy).toHaveBeenCalledWith({ postId: 'post-1' });
+  });
+});
+
+describe('updateComment', () => {
+  const fetchMock = vi.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    vi.stubGlobal('fetch', fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+  });
+
+  it('댓글 업데이트 요청을 PATCH 메서드로 보내고 응답을 매핑한다', async () => {
+    fetchMock.mockResolvedValue({
+      ok: true,
+      json: async () => ({
+        id: 'comment-1',
+        parentId: 'parent-1',
+        postId: 'post-1',
+        content: 'updated',
+        likeCount: 3,
+        liked: true,
+        createdAt: '2025-01-01T00:00:00.000Z',
+        author: {
+          id: 'user-1',
+          displayName: 'tester',
+        },
+      }),
+    });
+
+    const result = await updateComment(
+      'token-1',
+      'post-1',
+      'comment-1',
+      { content: 'updated', parentId: undefined },
+    );
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/community/posts/post-1/comments/comment-1',
+      {
+        method: 'PATCH',
+        headers: expect.objectContaining({
+          'Content-Type': 'application/json',
+          Authorization: 'Bearer token-1',
+        }),
+        body: JSON.stringify({ content: 'updated', parentId: undefined }),
+      },
+    );
+
+    expect(result).toEqual({
+      id: 'comment-1',
+      parent_id: 'parent-1',
+      post_id: 'post-1',
+      user: {
+        id: 'user-1',
+        nickname: 'tester',
+      },
+      content: 'updated',
+      likes: 3,
+      liked: true,
+      created_at: new Date('2025-01-01T00:00:00.000Z'),
+    });
+  });
+});
+
+describe('deleteComment', () => {
+  const fetchMock = vi.fn();
+
+  beforeEach(() => {
+    fetchMock.mockReset();
+    vi.stubGlobal('fetch', fetchMock);
+  });
+
+  afterEach(() => {
+    vi.unstubAllGlobals();
+    detailRevalidateSpy.mockClear();
+  });
+
+  it('댓글 삭제 요청을 DELETE 메서드로 보낸다', async () => {
+    fetchMock.mockResolvedValue({ ok: true });
+
+    await deleteComment('token-1', 'post-1', 'comment-1');
+
+    expect(fetchMock).toHaveBeenCalledWith(
+      '/community/posts/post-1/comments/comment-1',
+      {
+        method: 'DELETE',
+        headers: expect.objectContaining({
+          Authorization: 'Bearer token-1',
+        }),
+      },
+    );
+    expect(detailRevalidateSpy).toHaveBeenCalledWith({ postId: 'post-1' });
   });
 });

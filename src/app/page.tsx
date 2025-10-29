@@ -8,7 +8,7 @@ import { logError } from '@/shared/lib/logging';
 import AnimalTile from '@/features/main/ui/animal-tile';
 import { dummyAnimals } from '@/features/main/api/dummy';
 import ValueContainer from '@/features/main/ui/value-container';
-import PorcessContainer from '@/features/main/ui/process-container';
+import ProcessContainer from '@/features/main/ui/process-container';
 import SnsContainer from '@/features/main/ui/sns-container';
 
 const DEFAULT_ANIMAL_LIMIT = 10;
@@ -148,7 +148,7 @@ export default async function Home() {
               더 자세한 내용은 퍼디즈 임보 절차 페이지를 참조하세요.
             </span>
           </div>
-          <PorcessContainer />
+          <ProcessContainer />
         </div>
       </section>
       <section className="relative flex w-full flex-col justify-center xl:flex-row">

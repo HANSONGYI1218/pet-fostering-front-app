@@ -24,7 +24,7 @@ const mapListItem = (dto: AnimalListDto): AnimalListItem => ({
   birth_date: dto.birthDate ? toDate(dto.birthDate) : null,
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
   image: dto.image ?? '/images/animal-placeholder.png',
-  euthanasia_date: new Date('2025-10-21'),
+  euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
   isEmergency: dto.isEmergency,
 });
 
@@ -34,8 +34,13 @@ export const fetchAnimalLists = async ({
   limit: number;
 }): Promise<AnimalListItem[]> => {
   try {
-    const endpoint = resolveEndpoint('/public/foster/animals');
-    const response = await fetch(endpoint, { cache: 'no-store' });
+    const endpoint = new URL(resolveEndpoint('/public/foster/animals'));
+
+    if (Number.isFinite(limit) && limit > 0) {
+      endpoint.searchParams.set('limit', String(limit));
+    }
+
+    const response = await fetch(endpoint.toString(), { cache: 'no-store' });
 
     if (!response.ok) {
       throw new Error(`보호동물 목록 요청 실패: ${response.status}`);

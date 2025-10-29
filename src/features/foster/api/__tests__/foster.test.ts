@@ -46,7 +46,7 @@ describe('foster api mappers', () => {
       birthDate: '2024-01-01T00:00:00.000Z',
       mainImageUrl: null,
       isEmergency: true,
-      euthanasia_date: new Date('2025-10-21'),
+      euthanasia_date: '2025-10-21T00:00:00.000Z',
       emergencyReason: 'urgent',
       organization: {
         id: 'org-1',
@@ -71,7 +71,7 @@ describe('foster api mappers', () => {
       gender: AnimalGender.MALE,
       image: '/images/animal-placeholder.png',
       animal_healths: [AnimalHealth.NEUTERED],
-      euthanasia_date: new Date('2025-10-21'),
+      euthanasia_date: new Date('2025-10-21T00:00:00.000Z'),
       animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
       organization: {
         id: 'org-1',

@@ -17,7 +17,11 @@ import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
-import { updateComment, createComment } from '../../api/community';
+import {
+  updateComment,
+  createComment,
+  fetchCommunityComments,
+} from '../../api/community';
 import { CommentItem } from '@/entities/comment/comment-api';
 
 type CommentFormMode = 'create' | 'reply' | 'edit';
@@ -61,6 +65,7 @@ export default function CommentsForm({
   postId,
   heightClassName,
   onClose,
+  handleComments,
 }: CommentsFormProps) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,34 +98,18 @@ export default function CommentsForm({
     setIsLoading(true);
 
     try {
-      await new Promise((resolve) => setTimeout(resolve, 200));
-      // let result: ReplyCommentItem;
       if (draft?.id) {
-        await updateComment(token, postId, payload);
+        await updateComment(token, postId, draft.id, payload);
       } else {
         await createComment(token, postId, payload);
       }
 
-      toast(resolveToastMessage(mode));
+      if (handleComments) {
+        const refreshed = await fetchCommunityComments(postId, token);
+        handleComments(() => refreshed);
+      }
 
-      // if (draft?.parentId) {
-      //   handleComments?.((prev) =>
-      //     prev.map((comment) => {
-      //       if (comment.id === draft?.parentId) {
-      //         return {
-      //           ...comment,
-      //           reply_comments: [result, ...(comment.reply_comments ?? [])],
-      //         };
-      //       }
-      //       return { ...comment };
-      //     }),
-      //   );
-      // } else {
-      //   handleComments?.((prev) => [
-      //     { ...result, reply_comments: null },
-      //     ...prev,
-      //   ]);
-      // }
+      toast(resolveToastMessage(mode));
       form.reset({ comment: '' });
       onClose?.();
     } catch {

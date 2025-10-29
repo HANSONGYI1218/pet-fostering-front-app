@@ -58,7 +58,7 @@ export default function CommunityPost({
 }) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
-  const [token, setToken] = useState<string | null>(null);
+  const [token, setToken] = useState<string | null | undefined>(undefined);
 
   const resolvedPost = post ?? null;
   const initialBookmark = useMemo(
@@ -68,15 +68,14 @@ export default function CommunityPost({
   const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
-  const [postLikeCnt, setPostLikeCnt] = useState(post?.likes ?? 0);
 
   // 브라우저에서만 access token 읽기
   useEffect(() => {
     const stored = resolveStoredAccessToken();
-    setToken(stored);
+    setToken(stored ?? null);
   }, []);
 
-  if (!resolvedPost || token === null) {
+  if (!resolvedPost) {
     return (
       <Card className="flex min-h-[220px] w-full flex-col items-center justify-center gap-4 text-center text-neutral-500">
         <span>게시글을 찾을 수 없습니다.</span>
@@ -90,28 +89,31 @@ export default function CommunityPost({
     ? toDate(resolvedPost.created_at)
     : undefined;
   const contentLines = resolvedPost.content?.split('<br/>') ?? [];
-  const isOwner = token && userId === resolvedPost.authorId;
+  const isOwner = Boolean(userId && userId === resolvedPost.authorId);
+  const likeCount = resolvedPost.likes ?? 0;
+  const bookmarkAriaLabel = isBookmarked ? '북마크 해제' : '북마크 추가';
 
   const handleBookmarkToggle = async () => {
     if (!resolvedPost?.id) {
-      return toast('다시 한번 새로고침 해주세요.');
+      toast('다시 한번 새로고침 해주세요.');
+      return;
     }
-    if (token) {
-      try {
-        if (isBookmarked) {
-          await deleteBookmark(token, resolvedPost.id);
-          setIsBookmarked(false);
-          setPostLikeCnt((prev) => prev - 1);
-        } else {
-          await createBookmark(token, resolvedPost.id);
-          setIsBookmarked(true);
-          setPostLikeCnt((prev) => prev + 1);
-        }
-      } catch (error) {
-        logError('댓글 업데이트 실패', error);
-      }
-    } else {
+
+    if (!token) {
       toast('로그인 후 이용해주세요.');
+      return;
+    }
+
+    try {
+      if (isBookmarked) {
+        await deleteBookmark(token, resolvedPost.id);
+        setIsBookmarked(false);
+      } else {
+        await createBookmark(token, resolvedPost.id);
+        setIsBookmarked(true);
+      }
+    } catch (error) {
+      logError('게시글 북마크 토글 실패', error);
     }
   };
 
@@ -155,17 +157,25 @@ export default function CommunityPost({
 
   return (
     <Card className="relative cursor-default px-3 py-4 md:p-10">
-      <div className="flex w-full flex-1 flex-col">
-        <div className="flex w-full items-center justify-between">
-          <span className="text-xl font-semibold">{resolvedPost.title}</span>
-          <Bookmark
-            className={`h-9 w-9 cursor-pointer`}
-            onClick={handleBookmarkToggle}
-            fill={isBookmarked ? '#00592d' : '#ffffff'}
-            stroke="#00592d"
-            strokeWidth={1.5}
-          />
-        </div>
+        <div className="flex w-full flex-1 flex-col">
+          <div className="flex w-full items-center justify-between">
+            <span className="text-xl font-semibold">{resolvedPost.title}</span>
+            <button
+              type="button"
+              onClick={handleBookmarkToggle}
+              className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent transition hover:border-[#00592d]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00592d]/30 focus-visible:ring-offset-2"
+              aria-label={bookmarkAriaLabel}
+              aria-pressed={isBookmarked}
+              data-testid="bookmark-toggle"
+            >
+              <Bookmark
+                className="h-6 w-6"
+                fill={isBookmarked ? '#00592d' : '#ffffff'}
+                stroke="#00592d"
+                strokeWidth={1.5}
+              />
+            </button>
+          </div>
         <div className="flex w-full flex-col">
           <div className="flex items-center gap-3 py-3">
             <Image
@@ -184,7 +194,12 @@ export default function CommunityPost({
             <div className="flex items-center gap-2 md:gap-5">
               <div className="flex items-center gap-1">
                 <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
-                <span className="text-sm text-neutral-400">{postLikeCnt}</span>
+                <span
+                  className="text-sm text-neutral-400"
+                  data-testid="post-like-count"
+                >
+                  {likeCount}
+                </span>
               </div>
               <div className="flex items-center gap-1">
                 <Eye className="h-3.5 w-3.5" stroke="#a1a1a1" />
