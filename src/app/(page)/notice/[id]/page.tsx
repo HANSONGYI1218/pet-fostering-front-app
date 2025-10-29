@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { cache } from 'react';
 import { Button } from '@/shared/ui/button';
 import { format } from 'date-fns';
 import { Download } from 'lucide-react';
@@ -10,6 +12,41 @@ import { logError } from '@/shared/lib/logging';
 import Link from 'next/link';
 import { notFound } from 'next/navigation';
 import type { AsyncParams } from '@/shared/types/next';
+import { createAppMetadata } from '@/shared/config/seo';
+
+const getNoticeDetail = cache((id: string) => fetchNoticeDetail(id));
+
+const toNoticeExcerpt = (content: string) => {
+  const text = content.replace(/\s+/g, ' ').trim();
+
+  if (text.length === 0) {
+    return '퍼디즈의 공지사항 상세 내용을 확인하세요.';
+  }
+
+  return text.length > 120 ? `${text.slice(0, 120)}...` : text;
+};
+
+export async function generateMetadata({
+  params,
+}: AsyncParams<{ id: string }>): Promise<Metadata> {
+  const { id } = await params;
+
+  try {
+    const notice = await getNoticeDetail(id);
+
+    return createAppMetadata({
+      title: `${notice.title} | 공지사항 - 퍼디즈`,
+      description: toNoticeExcerpt(notice.content),
+      path: `/notice/${id}`,
+    });
+  } catch {
+    return createAppMetadata({
+      title: '공지사항 상세 | 퍼디즈',
+      description: '퍼디즈의 공지사항 상세 내용을 확인하세요.',
+      path: `/notice/${id}`,
+    });
+  }
+}
 
 export default async function NoticeDetailPage({
   params,
@@ -17,7 +54,7 @@ export default async function NoticeDetailPage({
   const { id } = await params;
 
   try {
-    const notice = await fetchNoticeDetail(id);
+    const notice = await getNoticeDetail(id);
 
     return (
       <main className="flex flex-col gap-6 bg-neutral-50">

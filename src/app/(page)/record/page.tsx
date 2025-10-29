@@ -1,6 +1,14 @@
 import AnimalContainer from '@/features/record/ui/record/animal-container';
 import { fetchRecordAnimals } from '@/features/record/api/record';
 import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
+import { createAppMetadata } from '@/shared/config/seo';
+
+export const metadata = createAppMetadata({
+  title: '임시보호 돌봄 기록 | 퍼디즈',
+  description:
+    '임시보호 중인 동물들의 돌봄 기록을 모아보고 따뜻한 케어 여정을 관리하세요.',
+  path: '/record',
+});
 
 export default async function RecordPage() {
   try {

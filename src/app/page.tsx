@@ -10,8 +10,16 @@ import { dummyAnimals } from '@/features/main/api/dummy';
 import ValueContainer from '@/features/main/ui/value-container';
 import ProcessContainer from '@/features/main/ui/process-container';
 import SnsContainer from '@/features/main/ui/sns-container';
+import { createAppMetadata } from '@/shared/config/seo';
 
 const DEFAULT_ANIMAL_LIMIT = 10;
+
+export const metadata = createAppMetadata({
+  title: '퍼디즈 | 임시보호 매칭 플랫폼',
+  description:
+    '퍼디즈와 함께 임시보호자와 보호소를 빠르게 연결하고 따뜻한 돌봄 여정을 시작하세요.',
+  path: '/',
+});
 
 export default async function Home() {
   let animals: AnimalListItem[] = [];

@@ -1,3 +1,5 @@
+import type { Metadata } from 'next';
+import { cache } from 'react';
 import BackButton from '@/shared/widgets/navigation/back-button';
 import AnimalBookmark from '@/features/foster/ui/foster-list/animal-bookmark';
 import { AnimalCarousel } from '@/features/foster/ui/foster-list/animal-carousel';
@@ -28,12 +30,49 @@ import Image from 'next/image';
 import { notFound } from 'next/navigation';
 import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
 import type { AsyncParams } from '@/shared/types/next';
+import { createAppMetadata } from '@/shared/config/seo';
+
+const getFosterAnimalDetail = cache((id: string) =>
+  fetchFosterAnimalDetail(id),
+);
+
+export async function generateMetadata({
+  params,
+}: AsyncParams<{ id: string }>): Promise<Metadata> {
+  const { id } = await params;
+
+  try {
+    const animal = await getFosterAnimalDetail(id);
+    const organizationName = animal.organization.name || '보호소';
+    const breedLabel = animal.breed ? ` ${animal.breed}` : '';
+    const description = `${organizationName}에서 보호 중인${breedLabel} ${animal.name}의 임시보호 정보를 확인하세요.`;
+    const primaryImage = animal.images?.[0];
+
+    return createAppMetadata({
+      title: `${animal.name} | 임시보호 동물 상세 - 퍼디즈`,
+      description,
+      path: `/foster-list/${id}`,
+      image: primaryImage
+        ? {
+            url: primaryImage,
+            alt: `${animal.name}의 사진`,
+          }
+        : undefined,
+    });
+  } catch {
+    return createAppMetadata({
+      title: '임시보호 동물 상세 | 퍼디즈',
+      description: '임시보호 동물 상세 정보를 확인하세요.',
+      path: `/foster-list/${id}`,
+    });
+  }
+}
 
 export default async function FosterListDetailPage({
   params,
 }: AsyncParams<{ id: string }>) {
   const { id } = await params;
-  const animal = await fetchFosterAnimalDetail(id).catch((error: unknown) => {
+  const animal = await getFosterAnimalDetail(id).catch((error: unknown) => {
     if (error instanceof Error && /404/.test(error.message)) {
       notFound();
     }

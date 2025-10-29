@@ -3,6 +3,13 @@ import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
 import EmptyBox from '@/shared/widgets/feedback/empty-box';
 import { fetchNoticeList } from '@/features/notice/api/notice';
 import { logError } from '@/shared/lib/logging';
+import { createAppMetadata } from '@/shared/config/seo';
+
+export const metadata = createAppMetadata({
+  title: '공지사항 | 퍼디즈',
+  description: '퍼디즈의 최신 소식과 공지사항을 확인하세요.',
+  path: '/notice',
+});
 
 const renderHeading = () => (
   <div className="flex flex-col gap-2">

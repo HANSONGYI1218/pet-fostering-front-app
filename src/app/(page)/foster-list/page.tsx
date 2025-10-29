@@ -2,6 +2,14 @@ import FosterContainer from '@/features/foster/ui/foster-list/foster-container';
 import { fetchFosterAnimals } from '@/features/foster/api/foster';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
+import { createAppMetadata } from '@/shared/config/seo';
+
+export const metadata = createAppMetadata({
+  title: '임시보호 동물 목록 | 퍼디즈',
+  description:
+    '임시보호자를 기다리는 반려동물을 확인하고 새로운 인연을 찾아보세요.',
+  path: '/foster-list',
+});
 
 export default async function FosterListPage() {
   try {

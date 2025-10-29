@@ -6,6 +6,7 @@ import { findMissingKeys } from './env-check';
 import { parseEnvFile } from './env-utils';
 
 const REQUIRED_KEYS = [
+  'NEXT_PUBLIC_SITE_URL',
   'NEXT_PUBLIC_KAKAO_CLIENT_ID',
   'NEXT_PUBLIC_KAKAO_REDIRECT_URI',
   'NEXT_PUBLIC_KAKAO_LOGOUT_REDIRECT_URI',
