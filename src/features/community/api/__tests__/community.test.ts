@@ -319,12 +319,10 @@ describe('updateComment', () => {
       }),
     });
 
-    const result = await updateComment(
-      'token-1',
-      'post-1',
-      'comment-1',
-      { content: 'updated', parentId: undefined },
-    );
+    const result = await updateComment('token-1', 'post-1', 'comment-1', {
+      content: 'updated',
+      parentId: undefined,
+    });
 
     expect(fetchMock).toHaveBeenCalledWith(
       '/community/posts/post-1/comments/comment-1',

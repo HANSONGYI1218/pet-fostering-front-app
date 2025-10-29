@@ -36,13 +36,8 @@ export default function CommentsContainer({
     () => sortByCreatedAtDesc(comments),
     [comments],
   );
-  const {
-    currentPage,
-    goToPage,
-    pageItems,
-    totalItems,
-    itemsPerPage,
-  } = usePagination(sortedComments, { itemsPerPage: 10 });
+  const { currentPage, goToPage, pageItems, totalItems, itemsPerPage } =
+    usePagination(sortedComments, { itemsPerPage: 10 });
 
   useEffect(() => {
     setSelectedComment(null);

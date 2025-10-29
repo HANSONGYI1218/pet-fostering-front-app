@@ -3,7 +3,10 @@ import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import React from 'react';
 
-import type { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
+import type {
+  CommentItem,
+  ReplyCommentItem,
+} from '@/entities/comment/comment-api';
 import CommunityCommentTile from '../community-comment-tile';
 import { toast } from 'sonner';
 
@@ -36,10 +39,9 @@ vi.mock('@/lib/auth/session', async () => {
 });
 
 vi.mock('../../api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('../../api/community')>(
-      '../../api/community',
-    );
+  const actual = await vi.importActual<typeof import('../../api/community')>(
+    '../../api/community',
+  );
 
   return {
     ...actual,
@@ -50,10 +52,9 @@ vi.mock('../../api/community', async () => {
 });
 
 vi.mock('@/features/community/api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/features/community/api/community')>(
-      '@/features/community/api/community',
-    );
+  const actual = await vi.importActual<
+    typeof import('@/features/community/api/community')
+  >('@/features/community/api/community');
 
   return {
     ...actual,
@@ -76,23 +77,23 @@ const baseComment: CommentItem = {
 };
 
 describe('CommunityCommentTile', () => {
-beforeEach(async () => {
-  sessionMocks.resolveStoredAccessTokenMock.mockReset();
-  sessionMocks.resolveStoredAuthClaimsMock.mockReset();
-  sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
-  sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
-    userId: 'author-1',
+  beforeEach(async () => {
+    sessionMocks.resolveStoredAccessTokenMock.mockReset();
+    sessionMocks.resolveStoredAuthClaimsMock.mockReset();
+    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
+    sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
+      userId: 'author-1',
       displayName: '작성자',
       avatarUrl: null,
     });
     communityApiMocks.deleteComment.mockReset();
     communityApiMocks.deleteComment.mockResolvedValue(undefined);
-  communityApiMocks.createCommentLike.mockResolvedValue(undefined);
-  communityApiMocks.deleteCommentLike.mockResolvedValue(undefined);
-  vi.mocked(toast).mockClear();
-  const module = await import('@/features/community/api/community');
-  expect(module.deleteComment).toBe(communityApiMocks.deleteComment);
-});
+    communityApiMocks.createCommentLike.mockResolvedValue(undefined);
+    communityApiMocks.deleteCommentLike.mockResolvedValue(undefined);
+    vi.mocked(toast).mockClear();
+    const module = await import('@/features/community/api/community');
+    expect(module.deleteComment).toBe(communityApiMocks.deleteComment);
+  });
 
   it('상위 댓글을 삭제하고 상태를 갱신한다', async () => {
     const user = userEvent.setup();
@@ -113,13 +114,13 @@ beforeEach(async () => {
     const menuTrigger = screen.getByRole('menuitem', { name: '댓글 옵션' });
     await user.click(menuTrigger);
 
-    const deleteItem = await screen.findByRole('menuitem', { name: '삭제하기' });
+    const deleteItem = await screen.findByRole('menuitem', {
+      name: '삭제하기',
+    });
     await user.click(deleteItem);
 
     const dialog = await screen.findByRole('dialog');
-    await user.click(
-      within(dialog).getByRole('button', { name: '지우기' }),
-    );
+    await user.click(within(dialog).getByRole('button', { name: '지우기' }));
 
     await waitFor(() =>
       expect(communityApiMocks.deleteComment).toHaveBeenCalledWith(

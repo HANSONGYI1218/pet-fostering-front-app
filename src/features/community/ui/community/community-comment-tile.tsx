@@ -271,19 +271,19 @@ export default function CommunityCommentTile({
         ) : null}
       </div>
       {isEditing ? (
-                <div className="mt-4 flex w-full">
-                  <CommentsForm
-                    draft={{
-                      id: comment.id,
-                      parentId: comment.parent_id ?? '',
-                      content: comment.content ?? '',
-                      mode: 'edit',
-                    }}
-                    postId={comment?.post_id}
-                    onClose={() => onSelectComment?.(null)}
-                    handleComments={onUpdateComments}
-                  />
-                </div>
+        <div className="mt-4 flex w-full">
+          <CommentsForm
+            draft={{
+              id: comment.id,
+              parentId: comment.parent_id ?? '',
+              content: comment.content ?? '',
+              mode: 'edit',
+            }}
+            postId={comment?.post_id}
+            onClose={() => onSelectComment?.(null)}
+            handleComments={onUpdateComments}
+          />
+        </div>
       ) : (
         <span className="py-4 text-neutral-600">
           {contentLines.map((line, index) => (

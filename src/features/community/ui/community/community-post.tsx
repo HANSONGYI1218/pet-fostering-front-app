@@ -157,25 +157,25 @@ export default function CommunityPost({
 
   return (
     <Card className="relative cursor-default px-3 py-4 md:p-10">
-        <div className="flex w-full flex-1 flex-col">
-          <div className="flex w-full items-center justify-between">
-            <span className="text-xl font-semibold">{resolvedPost.title}</span>
-            <button
-              type="button"
-              onClick={handleBookmarkToggle}
-              className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent transition hover:border-[#00592d]/60 focus-visible:outline-none focus-visible:ring-2 focus-visible:ring-[#00592d]/30 focus-visible:ring-offset-2"
-              aria-label={bookmarkAriaLabel}
-              aria-pressed={isBookmarked}
-              data-testid="bookmark-toggle"
-            >
-              <Bookmark
-                className="h-6 w-6"
-                fill={isBookmarked ? '#00592d' : '#ffffff'}
-                stroke="#00592d"
-                strokeWidth={1.5}
-              />
-            </button>
-          </div>
+      <div className="flex w-full flex-1 flex-col">
+        <div className="flex w-full items-center justify-between">
+          <span className="text-xl font-semibold">{resolvedPost.title}</span>
+          <button
+            type="button"
+            onClick={handleBookmarkToggle}
+            className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent transition hover:border-[#00592d]/60 focus-visible:ring-2 focus-visible:ring-[#00592d]/30 focus-visible:ring-offset-2 focus-visible:outline-none"
+            aria-label={bookmarkAriaLabel}
+            aria-pressed={isBookmarked}
+            data-testid="bookmark-toggle"
+          >
+            <Bookmark
+              className="h-6 w-6"
+              fill={isBookmarked ? '#00592d' : '#ffffff'}
+              stroke="#00592d"
+              strokeWidth={1.5}
+            />
+          </button>
+        </div>
         <div className="flex w-full flex-col">
           <div className="flex items-center gap-3 py-3">
             <Image

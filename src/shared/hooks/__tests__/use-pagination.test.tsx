@@ -13,7 +13,9 @@ describe('usePagination', () => {
     expect(result.current.currentPage).toBe(1);
     expect(result.current.totalItems).toBe(25);
     expect(result.current.totalPages).toBe(3);
-    expect(result.current.pageItems).toEqual(Array.from({ length: 10 }, (_, idx) => idx + 1));
+    expect(result.current.pageItems).toEqual(
+      Array.from({ length: 10 }, (_, idx) => idx + 1),
+    );
     expect(result.current.startIndex).toBe(0);
     expect(result.current.endIndex).toBe(10);
   });

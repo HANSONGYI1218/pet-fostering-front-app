@@ -1,7 +1,6 @@
 import { fireEvent, render, screen, waitFor } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
-import React from 'react';
 
 import type { CommentItem } from '@/entities/comment/comment-api';
 import CommentsForm from '../comments-form';
@@ -34,10 +33,9 @@ vi.mock('@/lib/auth/session', async () => {
 });
 
 vi.mock('@/features/community/api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/features/community/api/community')>(
-      '@/features/community/api/community',
-    );
+  const actual = await vi.importActual<
+    typeof import('@/features/community/api/community')
+  >('@/features/community/api/community');
 
   return {
     ...actual,
@@ -48,10 +46,9 @@ vi.mock('@/features/community/api/community', async () => {
 });
 
 vi.mock('../../api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('../../api/community')>(
-      '../../api/community',
-    );
+  const actual = await vi.importActual<typeof import('../../api/community')>(
+    '../../api/community',
+  );
 
   return {
     ...actual,
@@ -62,10 +59,9 @@ vi.mock('../../api/community', async () => {
 });
 
 vi.mock('../../api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('../../api/community')>(
-      '../../api/community',
-    );
+  const actual = await vi.importActual<typeof import('../../api/community')>(
+    '../../api/community',
+  );
 
   return {
     ...actual,
@@ -88,21 +84,21 @@ const sampleComment: CommentItem = {
 };
 
 describe('CommentsForm', () => {
-beforeEach(async () => {
-  sessionMocks.resolveStoredAccessTokenMock.mockReset();
-  sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
-  communityApiMocks.createComment.mockReset();
-  communityApiMocks.updateComment.mockReset();
-  communityApiMocks.fetchCommunityComments.mockReset();
-  communityApiMocks.createComment.mockResolvedValue(undefined);
-  communityApiMocks.updateComment.mockResolvedValue(sampleComment);
-  communityApiMocks.fetchCommunityComments.mockResolvedValue([sampleComment]);
-  const module = await import('@/features/community/api/community');
-  expect(module.createComment).toBe(communityApiMocks.createComment);
-  expect(module.fetchCommunityComments).toBe(
-    communityApiMocks.fetchCommunityComments,
-  );
-});
+  beforeEach(async () => {
+    sessionMocks.resolveStoredAccessTokenMock.mockReset();
+    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
+    communityApiMocks.createComment.mockReset();
+    communityApiMocks.updateComment.mockReset();
+    communityApiMocks.fetchCommunityComments.mockReset();
+    communityApiMocks.createComment.mockResolvedValue(undefined);
+    communityApiMocks.updateComment.mockResolvedValue(sampleComment);
+    communityApiMocks.fetchCommunityComments.mockResolvedValue([sampleComment]);
+    const module = await import('@/features/community/api/community');
+    expect(module.createComment).toBe(communityApiMocks.createComment);
+    expect(module.fetchCommunityComments).toBe(
+      communityApiMocks.fetchCommunityComments,
+    );
+  });
 
   it('댓글을 생성하고 최신 목록으로 갱신한다', async () => {
     const user = userEvent.setup();

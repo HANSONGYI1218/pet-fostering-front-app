@@ -104,9 +104,11 @@ describe('CommunityPost', () => {
   });
 
   it('북마크를 토글해도 좋아요 수는 변하지 않는다', async () => {
-    const fetchMock = vi
-      .fn()
-      .mockResolvedValue({ ok: true, json: async () => ({}), text: async () => '' });
+    const fetchMock = vi.fn().mockResolvedValue({
+      ok: true,
+      json: async () => ({}),
+      text: async () => '',
+    });
     vi.stubGlobal('fetch', fetchMock);
     const user = userEvent.setup();
     sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
@@ -127,7 +129,9 @@ describe('CommunityPost', () => {
 
     expect(screen.getByTestId('post-like-count')).toHaveTextContent('7');
 
-    const bookmarkButton = await screen.findByRole('button', { name: '북마크 추가' });
+    const bookmarkButton = await screen.findByRole('button', {
+      name: '북마크 추가',
+    });
 
     await user.click(bookmarkButton);
 

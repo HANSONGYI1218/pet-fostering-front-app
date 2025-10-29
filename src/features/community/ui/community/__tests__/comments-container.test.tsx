@@ -30,10 +30,9 @@ vi.mock('@/lib/auth/session', async () => {
 });
 
 vi.mock('../../api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('../../api/community')>(
-      '../../api/community',
-    );
+  const actual = await vi.importActual<typeof import('../../api/community')>(
+    '../../api/community',
+  );
 
   return {
     ...actual,
@@ -43,10 +42,9 @@ vi.mock('../../api/community', async () => {
 });
 
 vi.mock('@/features/community/api/community', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/features/community/api/community')>(
-      '@/features/community/api/community',
-    );
+  const actual = await vi.importActual<
+    typeof import('@/features/community/api/community')
+  >('@/features/community/api/community');
 
   return {
     ...actual,
@@ -68,22 +66,22 @@ const baseComment: CommentItem = {
 };
 
 describe('CommentsContainer', () => {
-beforeEach(async () => {
-  sessionMocks.resolveStoredAccessTokenMock.mockReset();
-  sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
-  sessionMocks.resolveStoredAuthClaimsMock.mockReset();
-  sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
-    userId: 'author-1',
+  beforeEach(async () => {
+    sessionMocks.resolveStoredAccessTokenMock.mockReset();
+    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
+    sessionMocks.resolveStoredAuthClaimsMock.mockReset();
+    sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
+      userId: 'author-1',
       displayName: '작성자',
       avatarUrl: null,
     });
     communityApiMocks.createComment.mockReset();
     communityApiMocks.createComment.mockResolvedValue(undefined);
-  communityApiMocks.fetchCommunityComments.mockReset();
-  communityApiMocks.fetchCommunityComments.mockResolvedValue([baseComment]);
-  const module = await import('@/features/community/api/community');
-  expect(module.createComment).toBe(communityApiMocks.createComment);
-});
+    communityApiMocks.fetchCommunityComments.mockReset();
+    communityApiMocks.fetchCommunityComments.mockResolvedValue([baseComment]);
+    const module = await import('@/features/community/api/community');
+    expect(module.createComment).toBe(communityApiMocks.createComment);
+  });
 
   it('댓글을 작성한 뒤 최신 목록을 표시한다', async () => {
     const user = userEvent.setup();
