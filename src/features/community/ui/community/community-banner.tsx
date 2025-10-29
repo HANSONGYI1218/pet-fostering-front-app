@@ -6,12 +6,12 @@ export default function CommunityBanner() {
       <div className="relative mx-auto my-auto flex w-full max-w-screen-xl items-center px-6">
         <div className="flex w-full flex-col gap-10">
           <h1 className="text-2xl font-extrabold sm:text-4xl">
-            퍼디의 이야기 놀이터에
+            퍼디즈의 이야기 놀이터에
             <br className="lg:hidden" /> 오신걸 환영합니다
           </h1>
           <div className="flex flex-col gap-1 lg:text-lg">
             <span>
-              퍼디의 이야기 놀이터에서는 <br className="sm:hidden" />
+              퍼디즈의 이야기 놀이터에서는 <br className="sm:hidden" />
               &apos;임시보호&apos;에 관한 이야기만 나눠주세요!
             </span>
             <span>

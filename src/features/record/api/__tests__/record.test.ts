@@ -65,7 +65,7 @@ describe('record api', () => {
             createdAt: '2025-09-01T00:00:00.000Z',
             organization: {
               id: 'org-1',
-              name: '퍼디 센터',
+              name: '퍼디즈 센터',
               phoneNumber: '02-000-0000',
               zipcode: '01234',
               address: '서울',

@@ -34,10 +34,10 @@ export function ApplyAcceptDialog({
           </DialogHeader>
           <div className="flex flex-col items-center justify-center gap-2 py-6">
             <Image
-              src="/images/apply-accept.png"
+              src="/images/white-poodle-dog6.png"
               height={160}
               width={160}
-              alt="apply-accept"
+              alt="white-poodle-dog6"
             />
           </div>
           <DialogFooter className="w-full sm:justify-start">

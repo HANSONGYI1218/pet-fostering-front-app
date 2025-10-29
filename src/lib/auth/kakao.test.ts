@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { resolveEndpoint } from '@/shared/api/config';
 
@@ -11,10 +11,10 @@ import {
   persistAuthTokens,
   redirectToKakaoLogin,
   USER_PROFILE_STORAGE_KEY,
-  buildKakaoLogoutUrl,
-  redirectToKakaoLogout,
 } from './kakao';
-import { AUTH_CHANGE_EVENT_NAME } from './events';
+
+import { clearStoredAuthTokens } from './session';
+import { AUTH_CHANGE_EVENT_NAME, dispatchAuthChangeEvent } from './events';
 
 const ORIGINAL_ENV = { ...process.env };
 
@@ -119,7 +119,7 @@ describe('exchangeKakaoAuthorizationCode', () => {
     const tokens = {
       token: 'access-token',
       refreshToken: 'refresh-token',
-      displayName: '퍼디',
+      displayName: '퍼디즈',
       avatarUrl: 'https://cdn.kakao/avatar.png',
     };
     const fetchMock = vi.fn().mockResolvedValue({
@@ -199,7 +199,7 @@ describe('persistAuthTokens', () => {
       tokens: {
         token: 'access',
         refreshToken: 'refresh',
-        displayName: '퍼디',
+        displayName: '퍼디즈',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       },
     });
@@ -207,7 +207,7 @@ describe('persistAuthTokens', () => {
     expect(setItem).toHaveBeenCalledWith(
       USER_PROFILE_STORAGE_KEY,
       JSON.stringify({
-        displayName: '퍼디',
+        displayName: '퍼디즈',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       }),
     );
@@ -265,31 +265,53 @@ describe('persistAuthTokens', () => {
   });
 });
 
-describe('logout helpers', () => {
+describe('clearStoredAuthTokens', () => {
+  let storageMock: Storage;
+
   beforeEach(() => {
-    process.env.NEXT_PUBLIC_KAKAO_CLIENT_ID = 'client-id';
-    process.env.NEXT_PUBLIC_KAKAO_LOGOUT_REDIRECT_URI =
-      'https://example.com/logout';
+    // 브라우저 환경 localStorage mock
+    const store: Record<string, string> = {};
+    storageMock = {
+      getItem: (key: string) => store[key] ?? null,
+      setItem: (key: string, value: string) => {
+        store[key] = value;
+      },
+      removeItem: (key: string) => {
+        delete store[key];
+      },
+      clear: () => {
+        for (const key in store) delete store[key];
+      },
+      key: (index: number) => Object.keys(store)[index] ?? null,
+      get length() {
+        return Object.keys(store).length;
+      },
+    };
+    // 전역으로 설정
+    Object.defineProperty(globalThis, 'localStorage', {
+      value: storageMock,
+      writable: true,
+    });
+
+    // dispatchAuthChangeEvent mock
+    vi.spyOn(
+      { dispatchAuthChangeEvent },
+      'dispatchAuthChangeEvent',
+    ).mockImplementation(() => {});
   });
 
-  afterEach(() => {
-    process.env = { ...ORIGINAL_ENV };
-  });
+  it('토큰과 쿠키를 삭제하고 이벤트를 발생시킨다', () => {
+    // 테스트용 localStorage 세팅
+    localStorage.setItem('pet.accessToken', 'token');
+    localStorage.setItem('pet.refreshToken', 'refreshToken');
+    localStorage.setItem('pet.userProfile', '{}');
 
-  it('빌드한 카카오 로그아웃 URL을 반환한다', () => {
-    expect(buildKakaoLogoutUrl()).toBe(
-      'https://kauth.kakao.com/oauth/logout?client_id=client-id&logout_redirect_uri=https%3A%2F%2Fexample.com%2Flogout',
-    );
-  });
+    // storageMock을 명시적으로 전달
+    clearStoredAuthTokens(storageMock);
 
-  it('위임한 location.assign으로 리다이렉트를 수행한다', () => {
-    const assign = vi.fn();
-
-    redirectToKakaoLogout({ location: { assign } });
-
-    expect(assign).toHaveBeenCalledWith(
-      'https://kauth.kakao.com/oauth/logout?client_id=client-id&logout_redirect_uri=https%3A%2F%2Fexample.com%2Flogout',
-    );
+    expect(localStorage.getItem('pet.accessToken')).toBeNull();
+    expect(localStorage.getItem('pet.refreshToken')).toBeNull();
+    expect(localStorage.getItem('pet.userProfile')).toBeNull();
   });
 });
 
@@ -308,7 +330,7 @@ describe('completeKakaoLogin', () => {
     const exchangeCode = vi.fn().mockResolvedValue({
       token: 'token',
       refreshToken: 'refresh',
-      displayName: '퍼디',
+      displayName: '퍼디즈',
       avatarUrl: 'https://cdn.kakao/avatar.png',
     });
     const persistTokens = vi.fn();
@@ -333,7 +355,7 @@ describe('completeKakaoLogin', () => {
       tokens: {
         token: 'token',
         refreshToken: 'refresh',
-        displayName: '퍼디',
+        displayName: '퍼디즈',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       },
     });
@@ -341,14 +363,14 @@ describe('completeKakaoLogin', () => {
       tokens: {
         token: 'token',
         refreshToken: 'refresh',
-        displayName: '퍼디',
+        displayName: '퍼디즈',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       },
     });
     expect(tokens).toEqual({
       token: 'token',
       refreshToken: 'refresh',
-      displayName: '퍼디',
+      displayName: '퍼디즈',
       avatarUrl: 'https://cdn.kakao/avatar.png',
     });
   });

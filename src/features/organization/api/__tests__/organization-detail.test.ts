@@ -20,7 +20,7 @@ describe('fetchOrganizationAnimalDetail', () => {
   it('조직 동물 상세 DTO를 도메인 모델로 변환한다', async () => {
     const dto = {
       id: 'animal-1',
-      name: '퍼디',
+      name: '퍼디즈',
       type: 'DOG',
       size: 'SMALL',
       breed: '믹스',
@@ -48,13 +48,13 @@ describe('fetchOrganizationAnimalDetail', () => {
       ],
       organization: {
         id: 'org-1',
-        name: '퍼디 보호소',
+        name: '퍼디즈 보호소',
         phoneNumber: '010-0000-0000',
         address: '서울시',
         addressDetail: '강남구',
         donationBankName: '은행',
         donationAccountNumber: '123-456',
-        donationAccountHolder: '퍼디',
+        donationAccountHolder: '퍼디즈',
       },
     };
 
@@ -68,7 +68,7 @@ describe('fetchOrganizationAnimalDetail', () => {
     expect(result).toEqual(
       expect.objectContaining({
         id: 'animal-1',
-        name: '퍼디',
+        name: '퍼디즈',
         type: AnimalType.DOG,
         size: AnimalSize.SMALL,
         breed: '믹스',
@@ -89,7 +89,7 @@ describe('fetchOrganizationAnimalDetail', () => {
         ],
         organization: expect.objectContaining({
           id: 'org-1',
-          name: '퍼디 보호소',
+          name: '퍼디즈 보호소',
         }),
       }),
     );

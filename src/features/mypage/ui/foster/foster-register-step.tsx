@@ -136,7 +136,7 @@ export default function FosterRegisterStep({
       component: (
         <Card className="cursor-default items-center gap-2 px-8 py-10">
           <Image
-            src="/images/apply-accept.png"
+            src="/images/white-poodle-dog6.png"
             width={160}
             height={160}
             alt="foster-register"

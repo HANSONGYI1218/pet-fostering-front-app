@@ -16,7 +16,7 @@ const buildListItem = (
   overrides: Partial<FosterListAnimalItem>,
 ): FosterListAnimalItem => ({
   id: 'foster-dummy',
-  name: '퍼디',
+  name: '퍼디즈',
   type: AnimalType.DOG,
   size: AnimalSize.MEDIUM,
   breed: '믹스',
@@ -31,7 +31,7 @@ const buildListItem = (
   isEmergency: true,
   organization: {
     id: 'org-dummy',
-    name: '퍼디 보호소',
+    name: '퍼디즈 보호소',
     address: '서울시 강남구',
     address_detail: '00길 12-1',
     phone_number: '010-0000-0000',
@@ -93,7 +93,7 @@ const buildDetail = (item: FosterListAnimalItem): FosterAnimalDetailItem => ({
     phone_number: item.organization.phone_number,
     donation_bank_name: '국민은행',
     donation_account_number: '123456-01-123456',
-    donation_account_holder: '퍼디 보호소',
+    donation_account_holder: '퍼디즈 보호소',
   },
 });
 

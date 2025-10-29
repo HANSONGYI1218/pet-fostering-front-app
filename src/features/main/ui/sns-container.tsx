@@ -10,11 +10,11 @@ const items: SnsType[] = [
   {
     img: '/icons/main/instagram.svg',
     title: 'SNS',
-    discription: `퍼디 소식을 빠르게 확인하세요`,
+    discription: `퍼디즈 소식을 빠르게 확인하세요`,
   },
   {
     img: '/icons/main/community.svg',
-    title: '퍼디 커뮤니티',
+    title: '퍼디즈 커뮤니티',
     discription: '임보자들과 소통해보세요',
   },
   {

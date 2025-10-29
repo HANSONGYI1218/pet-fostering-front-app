@@ -24,7 +24,7 @@ const createAnimal = (
   isEmergency: false,
   organization: {
     id: 'org-default',
-    name: '퍼디 보호소',
+    name: '퍼디즈 보호소',
     address: '서울',
     address_detail: '중구',
     phone_number: '010-0000-0000',

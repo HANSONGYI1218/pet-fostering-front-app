@@ -1,3 +1,5 @@
+'use client';
+
 import { Button } from '@/shared/ui/button';
 import {
   Dialog,
@@ -11,8 +13,9 @@ import {
 import { PawPrint } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { useEffect } from 'react';
 
 export default function FosterRequestDialog({
   name,
@@ -23,9 +26,15 @@ export default function FosterRequestDialog({
 }) {
   const token = resolveStoredAccessToken();
 
+  useEffect(() => {
+    if (!token) {
+      // 로그인 필요 처리
+    }
+  }, [token]);
+
   return (
     <div className="relative flex flex-1 justify-center">
-      <NeedLoginBadge className="absolute -top-9" />
+      {!token && <NeedLoginBadge className="absolute -top-9" />}
       <Dialog>
         <DialogTrigger asChild disabled={!token}>
           <Button
@@ -44,10 +53,10 @@ export default function FosterRequestDialog({
           </DialogHeader>
           <div className="flex flex-col items-center gap-2">
             <Image
-              src="/images/fostser-request.png"
+              src="/images/bear-dog3.png"
               width={160}
               height={160}
-              alt="foster-request"
+              alt="bear-dog3"
               className="py-6 max-md:h-1/2 max-md:w-1/2"
             />
             {isFosterCondition ? (

@@ -11,7 +11,7 @@ import {
   parseAuthClaims,
   resolveStoredAuthClaims,
 } from './session';
-import { USER_PROFILE_STORAGE_KEY } from './kakao';
+import { ACCESS_TOKEN_EXPIRE_KEY, USER_PROFILE_STORAGE_KEY } from './kakao';
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
@@ -75,7 +75,7 @@ describe('session utilities', () => {
     const token = createToken({
       sub: 'user-123',
       role: 'USER',
-      displayName: ' 퍼디 ',
+      displayName: ' 퍼디즈 ',
       avatarUrl: ' https://cdn.kakao/avatar.png ',
     });
 
@@ -84,7 +84,7 @@ describe('session utilities', () => {
     expect(claims).toMatchObject({
       userId: 'user-123',
       role: 'USER',
-      displayName: '퍼디',
+      displayName: '퍼디즈',
       avatarUrl: 'https://cdn.kakao/avatar.png',
     });
   });
@@ -97,15 +97,19 @@ describe('session utilities', () => {
 
   it('저장소에서 토큰을 읽어 클레임을 반환한다', () => {
     const storage = createStorage();
-    const token = createToken({ sub: 'user-id', displayName: '퍼디' });
+    const token = createToken({ sub: 'user-id', displayName: '퍼디즈' });
 
     storage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
+    storage.setItem(
+      ACCESS_TOKEN_EXPIRE_KEY,
+      (Date.now() + 1000 * 60).toString(),
+    ); // 만료 시간 1분 후
 
     const claims = resolveStoredAuthClaims(storage);
 
     expect(claims).toMatchObject({
       userId: 'user-id',
-      displayName: '퍼디',
+      displayName: '퍼디즈',
       avatarUrl: null,
     });
   });
@@ -116,18 +120,21 @@ describe('session utilities', () => {
 
     storage.setItem(ACCESS_TOKEN_STORAGE_KEY, token);
     storage.setItem(
+      ACCESS_TOKEN_EXPIRE_KEY,
+      (Date.now() + 1000 * 60).toString(),
+    ); // 만료 시간 1분 후
+    storage.setItem(
       USER_PROFILE_STORAGE_KEY,
       JSON.stringify({
-        displayName: '퍼디',
+        displayName: '퍼디즈',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       }),
     );
-
     const claims = resolveStoredAuthClaims(storage);
 
     expect(claims).toMatchObject({
       userId: 'user-id',
-      displayName: '퍼디',
+      displayName: '퍼디즈',
       avatarUrl: 'https://cdn.kakao/avatar.png',
     });
   });
@@ -139,7 +146,7 @@ describe('session utilities', () => {
     storage.setItem(REFRESH_TOKEN_STORAGE_KEY, 'refresh');
     storage.setItem(
       USER_PROFILE_STORAGE_KEY,
-      JSON.stringify({ displayName: '퍼디', avatarUrl: null }),
+      JSON.stringify({ displayName: '퍼디즈', avatarUrl: null }),
     );
 
     const browserEnv = stubBrowserEnv();

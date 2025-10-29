@@ -1,6 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import {
+  ACCESS_TOKEN_EXPIRE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
   USER_PROFILE_STORAGE_KEY,
@@ -75,6 +76,7 @@ describe('tryRefreshAuthTokens', () => {
         USER_PROFILE_STORAGE_KEY,
         JSON.stringify({ displayName: 'Muna', avatarUrl: null }),
       ],
+      [ACCESS_TOKEN_EXPIRE_KEY, expect.any(String)],
     ]);
   });
 

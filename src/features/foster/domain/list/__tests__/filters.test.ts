@@ -6,7 +6,7 @@ import { filterFosterList } from '../filters';
 
 const organization = {
   id: 'org-1',
-  name: '퍼디 쉼터',
+  name: '퍼디즈 쉼터',
   address: '서울',
   address_detail: '강남구',
   phone_number: '010-0000-0000',

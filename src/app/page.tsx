@@ -55,7 +55,7 @@ export default async function Home() {
           </h1>
           <hr className="w-full border-white sm:w-1/3" />
           <span className="text-xl text-white lg:text-3xl">
-            퍼디와 함께 아이들의 희망이 되어주세요
+            퍼디즈와 함께 아이들의 희망이 되어주세요
           </span>
         </div>
       </section>
@@ -70,7 +70,7 @@ export default async function Home() {
             </span>
           </div>
           <span className="text-lg lg:text-xl">
-            퍼디는 ‘임시보호’를 넘어,
+            퍼디즈는 ‘임시보호’를 넘어,
             <br />
             마음과 마음이 이어지는 따뜻한 보호의 고리를 만듭니다.
           </span>
@@ -115,10 +115,12 @@ export default async function Home() {
             </Button>
           </Link>
         </div>
-        <div className="custom-scrollbar absolute right-0 bottom-4 flex w-full max-w-screen-lg gap-6 overflow-x-auto rounded-xl pb-6 2xl:top-1/2 2xl:-translate-y-1/2">
-          {animals?.map((animal) => {
-            return <AnimalTile key={animal?.id} animal={animal} />;
-          })}
+        <div className="scroll-wrapper h-fit overflow-x-auto">
+          <div className="flex h-fit w-full max-w-screen-lg gap-6 rounded-xl pb-4">
+            {animals?.map((animal) => {
+              return <AnimalTile key={animal?.id} animal={animal} />;
+            })}
+          </div>
         </div>
       </section>
       <section className="relative flex h-[920px] w-full flex-col justify-center bg-[#00592d] sm:h-[445px]">
@@ -130,7 +132,7 @@ export default async function Home() {
             <span className="text-lg font-semibold max-lg:text-center lg:text-xl">
               좋은 마음이 이어지도록,
               <br />
-              퍼디가 임시보호를 쉽고 따뜻하게 만듭니다.
+              퍼디즈가 임시보호를 쉽고 따뜻하게 만듭니다.
             </span>
           </div>
           <ValueContainer />
@@ -143,7 +145,7 @@ export default async function Home() {
               임시보호는 어떻게 이루어지나요?
             </h1>
             <span className="text-center text-base break-keep text-neutral-600 lg:text-lg">
-              더 자세한 내용은 퍼디 임보 절차 페이지를 참조하세요.
+              더 자세한 내용은 퍼디즈 임보 절차 페이지를 참조하세요.
             </span>
           </div>
           <PorcessContainer />
@@ -158,7 +160,7 @@ export default async function Home() {
           <span className="relative z-10 text-lg leading-9 font-[500] text-neutral-800 lg:text-2xl">
             작지만 소중한 연결의 이야기.
             <br />
-            퍼디가 만들어온 따뜻한 순간들을 기록합니다.
+            퍼디즈가 만들어온 따뜻한 순간들을 기록합니다.
           </span>
           <svg
             width="254"

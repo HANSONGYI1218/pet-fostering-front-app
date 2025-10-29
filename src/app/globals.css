@@ -141,21 +141,34 @@
   margin-right: auto;
 }
 
-/* 특정 클래스에서만 스크롤바 스타일 */
-.custom-scrollbar::-webkit-scrollbar {
-  width: 6px;
-  height: 3px;
-}
-
-.custom-scrollbar::-webkit-scrollbar-track {
+.scroll-wrapper {
+  position: absolute;
+  right: 0;
+  max-width: 2xl; /* Tailwind max-2xl 기준 */
+  bottom: 1rem; /* 예: max-2xl:bottom-4 */
+  top: 50%; /* 2xl:top-1/2 */
+  height: fit-content;
+  transform: translateY(-50%); /* 2xl:-translate-y-1/2 */
+  overflow: auto;
   background: #f2f2f2;
-  border-radius: 0px;
+  scroll-margin: 50px;
 }
 
-.custom-scrollbar::-webkit-scrollbar-thumb {
+.scroll-wrapper::-webkit-scrollbar {
+  width: 4px;
+}
+
+.scroll-wrapper::-webkit-scrollbar-track {
+  background: transparent; /* 가짜 트랙에서 색 처리 */
+}
+
+.scroll-wrapper::-webkit-scrollbar-thumb {
   background-color: #00592d;
-  border-radius: 10px;
-  box-shadow:
-    inset -50px 0 #f2f2f2,
-    inset 50px 0 #f2f2f2;
+  background-clip: padding-box;
+  border-top: 7px solid #f2f2f2;
+  border-right: 40px solid #f2f2f2;
+  border-bottom: 2px solid #f2f2f2;
+  border-left: 40px solid #f2f2f2;
+  border-radius: 20px;
+  /* 양 끝 여백 효과 */
 }

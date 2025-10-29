@@ -108,13 +108,13 @@ const baseAnimal = {
   emergency_reason: '',
   organization: {
     id: 'org-1',
-    name: '퍼디센터',
+    name: '퍼디즈센터',
     address: '서울시',
     address_detail: '어딘가',
     phone_number: '010-0000-0000',
     donation_bank_name: '은행',
     donation_account_number: '123-456',
-    donation_account_holder: '퍼디',
+    donation_account_holder: '퍼디즈',
   },
 };
 

@@ -1,4 +1,5 @@
 import {
+  ACCESS_TOKEN_EXPIRE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
   USER_PROFILE_STORAGE_KEY,
@@ -159,7 +160,22 @@ export const parseAuthClaims = (token: string): AuthClaims | null => {
 export const resolveStoredAccessToken = (storage?: StorageSource | null) => {
   const source = resolveStorage(storage);
 
-  return source?.getItem(ACCESS_TOKEN_STORAGE_KEY) ?? null;
+  if (!source) return null;
+
+  const token = source.getItem(ACCESS_TOKEN_STORAGE_KEY);
+  const expireAt = Number(source.getItem(ACCESS_TOKEN_EXPIRE_KEY) ?? 0);
+  const now = Date.now();
+
+  if (!token || now > expireAt) {
+    // 만료된 토큰 삭제
+    source.removeItem(ACCESS_TOKEN_STORAGE_KEY);
+    source.removeItem(ACCESS_TOKEN_EXPIRE_KEY);
+    source.removeItem(REFRESH_TOKEN_STORAGE_KEY);
+    source.removeItem(USER_PROFILE_STORAGE_KEY);
+    return null;
+  }
+
+  return token;
 };
 
 export const resolveStoredAuthClaims = (storage?: StorageSource | null) => {

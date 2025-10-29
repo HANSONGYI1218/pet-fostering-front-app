@@ -1,4 +1,4 @@
-const DEFAULT_MAX_AGE_SECONDS = 60 * 60 * 6;
+export const DEFAULT_MAX_AGE_SECONDS = 60 * 60 * 6;
 
 const isHttps = () =>
   typeof window !== 'undefined' && window.location?.protocol === 'https:';

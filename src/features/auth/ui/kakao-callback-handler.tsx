@@ -4,6 +4,7 @@ import { useEffect, useRef, useState } from 'react';
 import { useRouter } from 'next/navigation';
 
 import { completeKakaoLogin } from '@/lib/auth/kakao';
+import { Loader2 } from 'lucide-react';
 
 type KakaoCallbackHandlerProps = {
   code: string | null;
@@ -32,6 +33,7 @@ const reportGlobalError = (error: unknown) => {
 export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
   const router = useRouter();
   const [status, setStatus] = useState<Status>('loading');
+
   const loginAttemptRef = useRef<{
     code: string;
     promise: Promise<unknown>;
@@ -39,8 +41,6 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
 
   useEffect(() => {
     if (!code) {
-      setStatus('error');
-
       reportGlobalError(new Error('카카오 인가 코드가 필요합니다.'));
 
       return;
@@ -59,6 +59,8 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
       };
     }
 
+    const savedUrl = sessionStorage.getItem('RETURN_URL') ?? '/';
+
     const loginPromise = loginAttemptRef.current?.promise;
 
     if (!loginPromise) {
@@ -75,7 +77,8 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
         }
 
         setStatus('success');
-        router.replace('/');
+        router.replace(savedUrl);
+        sessionStorage.removeItem('RETURN_URL');
       })
       .catch((error) => {
         if (cancelled) {
@@ -94,11 +97,19 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
 
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 p-6 text-center">
-      <div className="flex w-full max-w-md flex-col items-center gap-4 rounded-2xl bg-white p-10 shadow-lg">
-        <h1 className="text-xl font-semibold text-neutral-900">
-          카카오 로그인
-        </h1>
-        <p className="text-neutral-600">{messages[status]}</p>
+      <div
+        className={`flex w-full max-w-md flex-col items-center gap-4 rounded-2xl p-10 ${status === 'error' ? 'bg-white' : 'bg-neutral-50'}`}
+      >
+        {status === 'error' ? (
+          <>
+            <h1 className="text-xl font-semibold text-neutral-900">
+              카카오 로그인
+            </h1>
+            <p className="text-neutral-600">{messages[status]}</p>
+          </>
+        ) : (
+          <Loader2 role="status" className="animate-spin" />
+        )}
       </div>
     </div>
   );

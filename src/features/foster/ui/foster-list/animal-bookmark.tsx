@@ -10,6 +10,8 @@ export default function AnimalBookmark({
 }: {
   isBookmarked: boolean;
 }) {
+  const token = resolveStoredAccessToken();
+
   const [isChecked, setIsChecked] = useState(isBookmarked);
   const [isVisible, setIsVisible] = useState(false);
 
@@ -20,6 +22,12 @@ export default function AnimalBookmark({
   useEffect(() => {
     setIsVisible(Boolean(resolveStoredAccessToken()));
   }, []);
+
+  useEffect(() => {
+    if (!token) {
+      // 로그인 필요 처리
+    }
+  }, [token]);
 
   if (!isVisible) {
     return null;

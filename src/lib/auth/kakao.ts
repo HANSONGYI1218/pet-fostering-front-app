@@ -1,6 +1,6 @@
 import { resolveEndpoint } from '@/shared/api/config';
 import { dispatchAuthChangeEvent } from '@/lib/auth/events';
-import { setBrowserCookie } from './cookie-utils';
+import { DEFAULT_MAX_AGE_SECONDS, setBrowserCookie } from './cookie-utils';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
 const KAKAO_LOGOUT_URL = 'https://kauth.kakao.com/oauth/logout';
@@ -10,6 +10,7 @@ const ENV_ERROR_MESSAGE =
 export const ACCESS_TOKEN_STORAGE_KEY = 'pet.accessToken';
 export const REFRESH_TOKEN_STORAGE_KEY = 'pet.refreshToken';
 export const USER_PROFILE_STORAGE_KEY = 'pet.userProfile';
+export const ACCESS_TOKEN_EXPIRE_KEY = 'pet.accessTokenExpire';
 
 type Maybe<T> = T | null | undefined;
 
@@ -106,26 +107,6 @@ export const buildKakaoLogoutUrl = () => {
   return `${KAKAO_LOGOUT_URL}?${params.toString()}`;
 };
 
-type LogoutDependencies = {
-  location?: Pick<Location, 'assign'>;
-  buildLogoutUrl?: () => string;
-};
-
-export const redirectToKakaoLogout = ({
-  location = typeof window !== 'undefined' ? window.location : undefined,
-  buildLogoutUrl = buildKakaoLogoutUrl,
-}: LogoutDependencies = {}) => {
-  if (!location) {
-    throw new Error(
-      '브라우저 환경에서만 카카오 로그아웃을 시작할 수 있습니다.',
-    );
-  }
-
-  const logoutUrl = buildLogoutUrl();
-
-  location.assign(logoutUrl);
-};
-
 export const exchangeKakaoAuthorizationCode = async ({
   code,
   fetcher = fetch,
@@ -160,7 +141,6 @@ const resolveStorage = (candidate?: Pick<Storage, 'setItem'>) => {
 
   return null;
 };
-
 export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
   const targetStorage = resolveStorage(storage);
 
@@ -168,6 +148,10 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
     throw new Error('토큰을 저장할 Storage가 필요합니다.');
   }
 
+  const now = Date.now();
+  const expireAt = now + DEFAULT_MAX_AGE_SECONDS * 1000; // 만료 시각(ms)
+
+  // localStorage에 저장
   targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, tokens.token);
   targetStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken);
   targetStorage.setItem(
@@ -177,9 +161,21 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
       avatarUrl: tokens.avatarUrl ?? null,
     }),
   );
-  setBrowserCookie(ACCESS_TOKEN_STORAGE_KEY, tokens.token);
-  setBrowserCookie(REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken);
+  targetStorage.setItem(ACCESS_TOKEN_EXPIRE_KEY, expireAt.toString());
 
+  // 쿠키에도 저장 (만료 시간 적용)
+  setBrowserCookie(
+    ACCESS_TOKEN_STORAGE_KEY,
+    tokens.token,
+    DEFAULT_MAX_AGE_SECONDS,
+  );
+  setBrowserCookie(
+    REFRESH_TOKEN_STORAGE_KEY,
+    tokens.refreshToken,
+    DEFAULT_MAX_AGE_SECONDS,
+  );
+
+  // 로그인 상태 변경 이벤트 발생
   dispatchAuthChangeEvent();
 
   return tokens;

@@ -62,11 +62,13 @@ export default function FosterTile({
       <CardContent className="space-y-4">
         <div className="flex flex-col gap-2">
           <div className="flex flex-col gap-2">
-            <div className="flex items-center justify-between">
-              <CardTitle className="text-xl">{animal?.name}</CardTitle>
-              <div className="flex flex-wrap justify-end gap-1 text-xs font-medium">
-                {animal?.animal_healths?.slice(0, 3)?.map((health) => (
-                  <Badge key={health} variant="outline_none">
+            <div className="flex items-start justify-between">
+              <CardTitle className="flex-shrink-0 text-xl">
+                {animal?.name}
+              </CardTitle>
+              <div className="flex flex-wrap justify-end text-xs font-medium">
+                {animal?.animal_healths?.slice(0, 2)?.map((health) => (
+                  <Badge key={health} variant="outline_none" className="px-1">
                     #{ANIMAL_HEALTH_LABEL_KO[health]}
                   </Badge>
                 ))}
@@ -81,51 +83,53 @@ export default function FosterTile({
             </p>
           </div>
         </div>
-        {animal?.animal_personalitys?.length > 0 ? (
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold">성격 특성</h3>
-            <div className="flex flex-wrap gap-2">
-              {animal.animal_personalitys.map((personality) => (
-                <Badge key={personality} variant="secondary">
-                  {ANIMAL_PERSONALITY_LABEL_KO[personality]}
-                </Badge>
-              ))}
-            </div>
+
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">성격 특성</h3>
+          <div className="flex h-[4.1rem] flex-wrap gap-2 overflow-hidden">
+            {animal?.animal_environments?.length > 0
+              ? animal?.animal_personalitys?.map((personality) => (
+                  <Badge key={personality} variant="secondary">
+                    {ANIMAL_PERSONALITY_LABEL_KO[personality]}
+                  </Badge>
+                ))
+              : null}
           </div>
-        ) : null}
-        {animal?.animal_environments?.length > 0 ? (
-          <div className="space-y-2">
-            <h3 className="text-sm font-semibold">추천하는 임보자</h3>
-            <div className="flex flex-wrap gap-2">
-              {animal.animal_environments.map((environment) => (
-                <Badge key={environment} variant="default">
-                  {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
-                </Badge>
-              ))}
-            </div>
-          </div>
-        ) : null}
-      </CardContent>
-      <CardFooter className="justify-between border-t py-4">
-        <div className="space-y-1 text-sm">
-          <div className="text-muted-foreground flex items-center gap-1">
-            <MapPin className="size-4" />
-            <span>
-              {animal?.organization?.address}
-              {animal?.organization?.address_detail}
-            </span>
-          </div>
-          <p className="font-medium">{animal?.organization?.name}</p>
         </div>
-        <Button variant="ghost" size="sm" asChild>
-          <Link
-            href={`/foster-list/${animal?.id}`}
-            className="inline-flex items-center gap-1 hover:rounded-full hover:bg-neutral-100"
-          >
-            자세히 보기
-            <ArrowRight className="size-4" />
-          </Link>
-        </Button>
+
+        <div className="space-y-2">
+          <h3 className="text-sm font-semibold">추천하는 임보자</h3>
+          <div className="flex h-[4.1rem] flex-wrap gap-2 overflow-hidden">
+            {animal?.animal_environments?.length > 0
+              ? animal.animal_environments.map((environment) => (
+                  <Badge key={environment} variant="default">
+                    {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
+                  </Badge>
+                ))
+              : null}
+          </div>
+        </div>
+      </CardContent>
+      <CardFooter className="flex flex-col items-start gap-1 border-t py-4">
+        <div className="text-muted-foreground flex items-center gap-1">
+          <MapPin className="size-4" />
+          <span className="line-clamp-1 flex flex-1 gap-1 text-sm">
+            {animal?.organization?.address}
+            {animal?.organization?.address_detail}
+          </span>
+        </div>
+        <div className="flex w-full items-center justify-between">
+          <p className="text-sm font-medium">{animal?.organization?.name}</p>
+          <Button variant="ghost" size="sm" asChild>
+            <Link
+              href={`/foster-list/${animal?.id}`}
+              className="inline-flex items-center gap-1 hover:rounded-full hover:bg-neutral-100"
+            >
+              자세히 보기
+              <ArrowRight className="size-4" />
+            </Link>
+          </Button>
+        </div>
       </CardFooter>
     </Card>
   );

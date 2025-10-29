@@ -37,10 +37,10 @@ export default function ConnectDialog({
         </DialogHeader>
         <div className="flex flex-col items-center gap-2">
           <Image
-            src="/images/call-center.png"
+            src="/images/pink-dog.png"
             width={160}
             height={160}
-            alt="call-center"
+            alt="pink-dog"
             className="py-6"
           />
           <span className="text-center">

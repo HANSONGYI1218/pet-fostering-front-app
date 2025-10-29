@@ -14,12 +14,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/shared/ui/navigation-menu';
-import {
-  clearStoredAuthTokens,
-  resolveStoredAuthClaims,
-  type AuthClaims,
-} from '@/lib/auth/session';
-import { redirectToKakaoLogout } from '@/lib/auth/kakao';
+import { resolveStoredAuthClaims, type AuthClaims } from '@/lib/auth/session';
 import { AUTH_CHANGE_EVENT_NAME } from '@/lib/auth/events';
 
 const NAV_ITEMS = [
@@ -88,14 +83,7 @@ export default function TopBar() {
   }, []);
 
   const handleLogout = useCallback(() => {
-    clearStoredAuthTokens();
-    setAuthUser(null);
-
-    try {
-      redirectToKakaoLogout();
-    } catch {
-      router.push('/login');
-    }
+    router.push('/auth/logout/callback');
     closeMobileMenu();
   }, [closeMobileMenu, router]);
 
@@ -135,6 +123,12 @@ export default function TopBar() {
 
     return path.split('/')[1] ?? null;
   }, [path]);
+
+  const handleLoginClick = () => {
+    const currentUrl = window.location.pathname + window.location.search;
+    sessionStorage.setItem('RETURN_URL', currentUrl);
+    router.push('/login');
+  };
 
   const renderNavItems = (itemClassName?: string, onSelect?: () => void) =>
     NAV_ITEMS.map((item) => {
@@ -233,7 +227,10 @@ export default function TopBar() {
                   unoptimized
                 />
               ) : null}
-              <span className="hidden text-sm font-medium break-keep text-neutral-600 sm:block">
+              <span
+                data-testid="user-label"
+                className="hidden text-sm font-medium break-keep text-neutral-600 sm:block"
+              >
                 {userLabel}
               </span>
               <Button
@@ -246,11 +243,14 @@ export default function TopBar() {
               </Button>
             </div>
           ) : (
-            <Link href="/login" className="hidden sm:block">
-              <Button variant="outline" size="sm">
-                로그인
-              </Button>
-            </Link>
+            <Button
+              variant="outline"
+              size="sm"
+              onClick={handleLoginClick}
+              className="hidden sm:block"
+            >
+              로그인
+            </Button>
           )}
           <Button
             variant="ghost"
@@ -308,7 +308,10 @@ export default function TopBar() {
                           unoptimized
                         />
                       ) : null}
-                      <span className="text-sm font-medium text-neutral-600">
+                      <span
+                        data-testid="user-label"
+                        className="text-sm font-medium text-neutral-600"
+                      >
                         {userLabel}
                       </span>
                     </div>

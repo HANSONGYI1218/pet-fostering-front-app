@@ -11,10 +11,10 @@ export default function EmptyBox({
   return (
     <Card className={`w-full items-center justify-center ${className} `}>
       <Image
-        src="/images/foster-register.png"
+        src="/images/white-dog1.png"
         width={145}
         height={145}
-        alt="foster-register"
+        alt="white-dog1"
       />
       <span>{text}</span>
     </Card>

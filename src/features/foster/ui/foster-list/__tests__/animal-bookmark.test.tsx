@@ -1,25 +1,45 @@
-import { describe, expect, it, beforeEach } from 'vitest';
 import { render, screen } from '@testing-library/react';
-
+import userEvent from '@testing-library/user-event';
 import AnimalBookmark from '../animal-bookmark';
-import { ACCESS_TOKEN_STORAGE_KEY } from '@/lib/auth/kakao';
+import * as authSession from '@/lib/auth/session';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 describe('AnimalBookmark', () => {
   beforeEach(() => {
-    window.localStorage.clear();
+    // 로그인 토큰이 있는 상태로 mock
+    vi.spyOn(authSession, 'resolveStoredAccessToken').mockReturnValue(
+      'mock-token',
+    );
   });
 
-  it('로그인 토큰이 없으면 버튼을 렌더링하지 않는다', () => {
+  afterEach(() => {
+    vi.restoreAllMocks();
+  });
+
+  it('즐겨찾기 버튼이 보이고 클릭 시 상태가 변경된다', async () => {
     render(<AnimalBookmark isBookmarked={false} />);
 
-    expect(screen.queryByRole('button', { name: '즐겨찾기 토글' })).toBeNull();
+    // 버튼이 렌더링될 때까지 대기
+    const bookmarkButton = await screen.findByRole('button', {
+      name: '즐겨찾기 토글',
+    });
+
+    // 초기 상태 확인
+    expect(bookmarkButton).toHaveAttribute('aria-pressed', 'false');
+
+    // 클릭
+    await userEvent.click(bookmarkButton);
+
+    // 클릭 후 상태 확인
+    expect(bookmarkButton).toHaveAttribute('aria-pressed', 'true');
   });
 
-  it('로그인 토큰이 있으면 버튼을 렌더링한다', async () => {
-    window.localStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, 'token');
+  it('초기 즐겨찾기 상태가 true이면 버튼이 눌린 상태로 렌더링된다', async () => {
+    render(<AnimalBookmark isBookmarked={true} />);
 
-    render(<AnimalBookmark isBookmarked />);
-
-    await screen.findByRole('button', { name: '즐겨찾기 토글' });
+    const bookmarkButton = await screen.findByRole('button', {
+      name: '즐겨찾기 토글',
+    });
+    expect(bookmarkButton).toHaveAttribute('aria-pressed', 'true');
   });
 });

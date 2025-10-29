@@ -61,13 +61,12 @@ export default function CommunityCommentTile({
   const isEditing =
     selectedComment?.type === 'edit' && selectedComment.id === comment.id;
 
-  // 브라우저에서만 access token 읽기
   useEffect(() => {
     const stored = resolveStoredAccessToken();
     setToken(stored);
     const isOwnerResult = userId ? userId === comment?.user?.id : false;
     setIsOwner(isOwnerResult);
-  }, [comment?.user?.id]);
+  }, [comment?.user?.id, userId]);
 
   const handleToggleReply = () => {
     if (!comment?.id) return;

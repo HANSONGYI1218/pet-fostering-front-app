@@ -33,7 +33,6 @@ export default async function FosterListDetailPage({
   params,
 }: AsyncParams<{ id: string }>) {
   const { id } = await params;
-
   const animal = await fetchFosterAnimalDetail(id).catch((error: unknown) => {
     if (error instanceof Error && /404/.test(error.message)) {
       notFound();
@@ -288,7 +287,7 @@ export default async function FosterListDetailPage({
                 </div>
               </div>
             </div>
-            <div className="flex w-full flex-col justify-between rounded-lg bg-white p-10 max-md:gap-6">
+            <div className="flex w-full flex-col justify-between gap-6 rounded-lg bg-white p-10">
               <div className="flex w-full flex-col gap-10">
                 <div className="flex flex-col gap-6">
                   <h1 className="flex items-center gap-1 text-lg font-semibold">
