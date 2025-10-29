@@ -1,4 +1,4 @@
-import { GoogleLoginButton } from '@/features/auth/ui/googlo-login-button';
+import { GoogleLoginButton } from '@/features/auth/ui/google-login-button';
 import { KakaoLoginButton } from '@/features/auth/ui/kakao-login-button';
 import Image from 'next/image';
 

@@ -1,45 +1,42 @@
-import { render, screen } from '@testing-library/react';
-import userEvent from '@testing-library/user-event';
+import { fireEvent, render, screen } from '@testing-library/react';
+import { describe, expect, it, vi, beforeEach } from 'vitest';
+
+vi.mock('@/lib/auth/use-auth-claims', () => ({
+  useAuthClaims: vi.fn(),
+}));
+
 import AnimalBookmark from '../animal-bookmark';
-import * as authSession from '@/lib/auth/session';
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { useAuthClaims } from '@/lib/auth/use-auth-claims';
+
+const mockUseAuthClaims = useAuthClaims as unknown as vi.Mock;
 
 describe('AnimalBookmark', () => {
   beforeEach(() => {
-    // 로그인 토큰이 있는 상태로 mock
-    vi.spyOn(authSession, 'resolveStoredAccessToken').mockReturnValue(
-      'mock-token',
-    );
+    mockUseAuthClaims.mockReset();
   });
 
-  afterEach(() => {
-    vi.restoreAllMocks();
+  it('로그인하지 않았다면 버튼을 렌더링하지 않는다', () => {
+    mockUseAuthClaims.mockReturnValue({ claims: null, isAuthenticated: false });
+
+    const { container } = render(<AnimalBookmark isBookmarked={false} />);
+
+    expect(container).toBeEmptyDOMElement();
   });
 
-  it('즐겨찾기 버튼이 보이고 클릭 시 상태가 변경된다', async () => {
+  it('로그인한 경우 즐겨찾기 토글을 제공하고 상태를 토글한다', () => {
+    mockUseAuthClaims.mockReturnValue({
+      claims: { userId: 'user-1', displayName: null, avatarUrl: null },
+      isAuthenticated: true,
+    });
+
     render(<AnimalBookmark isBookmarked={false} />);
 
-    // 버튼이 렌더링될 때까지 대기
-    const bookmarkButton = await screen.findByRole('button', {
-      name: '즐겨찾기 토글',
-    });
+    const button = screen.getByRole('button', { name: /즐겨찾기 토글/i });
 
-    // 초기 상태 확인
-    expect(bookmarkButton).toHaveAttribute('aria-pressed', 'false');
+    expect(button).toHaveAttribute('aria-pressed', 'false');
 
-    // 클릭
-    await userEvent.click(bookmarkButton);
+    fireEvent.click(button);
 
-    // 클릭 후 상태 확인
-    expect(bookmarkButton).toHaveAttribute('aria-pressed', 'true');
-  });
-
-  it('초기 즐겨찾기 상태가 true이면 버튼이 눌린 상태로 렌더링된다', async () => {
-    render(<AnimalBookmark isBookmarked={true} />);
-
-    const bookmarkButton = await screen.findByRole('button', {
-      name: '즐겨찾기 토글',
-    });
-    expect(bookmarkButton).toHaveAttribute('aria-pressed', 'true');
+    expect(button).toHaveAttribute('aria-pressed', 'true');
   });
 });

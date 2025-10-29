@@ -19,7 +19,7 @@ export default async function Home() {
   try {
     animals = await fetchAnimalLists({ limit: DEFAULT_ANIMAL_LIMIT });
   } catch (error) {
-    logError('커뮤니티 게시글 불러오기 실패', error);
+    logError('보호동물 목록 불러오기 실패', error);
     animals = dummyAnimals;
   }
 

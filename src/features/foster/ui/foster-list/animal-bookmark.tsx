@@ -3,33 +3,21 @@
 import { Heart } from 'lucide-react';
 import { useEffect, useState } from 'react';
 import { Button } from '@/shared/ui/button';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { useAuthClaims } from '@/lib/auth/use-auth-claims';
 
 export default function AnimalBookmark({
   isBookmarked,
 }: {
   isBookmarked: boolean;
 }) {
-  const token = resolveStoredAccessToken();
-
+  const { isAuthenticated } = useAuthClaims();
   const [isChecked, setIsChecked] = useState(isBookmarked);
-  const [isVisible, setIsVisible] = useState(false);
 
   useEffect(() => {
     setIsChecked(isBookmarked);
   }, [isBookmarked]);
 
-  useEffect(() => {
-    setIsVisible(Boolean(resolveStoredAccessToken()));
-  }, []);
-
-  useEffect(() => {
-    if (!token) {
-      // 로그인 필요 처리
-    }
-  }, [token]);
-
-  if (!isVisible) {
+  if (!isAuthenticated) {
     return null;
   }
 

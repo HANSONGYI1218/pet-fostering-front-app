@@ -14,7 +14,7 @@ import {
 import { fetchFosterAnimalDetail } from '@/features/foster/api/foster';
 import { Check } from 'lucide-react';
 import ConnectDialog from '@/features/foster/ui/foster-list/connect-dialog';
-import FosterRequestDialog from '@/features/foster/ui/foster-list/foster-requst-dialog';
+import FosterRequestDialog from '@/features/foster/ui/foster-list/foster-request-dialog';
 import { Badge } from '@/shared/ui/badge';
 import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
 import {

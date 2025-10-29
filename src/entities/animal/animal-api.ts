@@ -4,7 +4,7 @@ import {
   AnimalPersonality,
   AnimalSpecialNote,
 } from '../animal-condition/animal-condition';
-import { FosterApplicent } from '../foster-apply/foster-apply-api';
+import { FosterApplicant } from '../foster-apply/foster-apply-api';
 import { FosterRecord } from '../foster-record/foster-record';
 import { AnimalType, AnimalGender, FosterState, AnimalSize } from './animal';
 
@@ -89,7 +89,7 @@ export type OrganizationAnimalListItem = {
   gender: AnimalGender;
   animalStatus: FosterState;
   image: string;
-  applicants: FosterApplicent[];
+  applicants: FosterApplicant[];
   animal_healths: AnimalHealth[];
   animal_personalitys: AnimalPersonality[];
   foster_environments: AnimalEnvironment[];

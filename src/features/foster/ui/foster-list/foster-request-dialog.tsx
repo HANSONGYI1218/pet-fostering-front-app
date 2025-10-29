@@ -14,8 +14,7 @@ import { PawPrint } from 'lucide-react';
 import Link from 'next/link';
 import Image from 'next/image';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
-import { useEffect } from 'react';
+import { useAuthClaims } from '@/lib/auth/use-auth-claims';
 
 export default function FosterRequestDialog({
   name,
@@ -24,19 +23,13 @@ export default function FosterRequestDialog({
   name: string;
   isFosterCondition: boolean;
 }) {
-  const token = resolveStoredAccessToken();
-
-  useEffect(() => {
-    if (!token) {
-      // 로그인 필요 처리
-    }
-  }, [token]);
+  const { isAuthenticated } = useAuthClaims();
 
   return (
     <div className="relative flex flex-1 justify-center">
-      {!token && <NeedLoginBadge className="absolute -top-9" />}
+      {!isAuthenticated && <NeedLoginBadge className="absolute -top-9" />}
       <Dialog>
-        <DialogTrigger asChild disabled={!token}>
+        <DialogTrigger asChild disabled={!isAuthenticated}>
           <Button
             className="h-12 w-full font-semibold md:text-lg"
             variant="destructive"

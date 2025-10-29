@@ -9,7 +9,7 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
-import { FosterApplicent } from '@/entities/foster-apply/foster-apply-api';
+import { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
 import Image from 'next/image';
 import { ApplyAcceptDialog } from './applicent-accept-dialog';
 
@@ -19,7 +19,7 @@ export function FosterApplyListDialog({
   apply_number,
 }: {
   animal_name: string;
-  applicants: FosterApplicent[];
+  applicants: FosterApplicant[];
   apply_number: number;
 }) {
   return (

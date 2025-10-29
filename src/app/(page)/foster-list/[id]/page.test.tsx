@@ -72,7 +72,7 @@ vi.mock('@/features/foster/ui/foster-list/connect-dialog', () => ({
   default: stubComponent,
 }));
 
-vi.mock('@/features/foster/ui/foster-list/foster-requst-dialog', () => ({
+vi.mock('@/features/foster/ui/foster-list/foster-request-dialog', () => ({
   __esModule: true,
   default: stubComponent,
 }));

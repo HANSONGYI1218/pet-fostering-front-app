@@ -79,8 +79,8 @@ describe('CommentsContainer', () => {
     communityApiMocks.createComment.mockResolvedValue(undefined);
     communityApiMocks.fetchCommunityComments.mockReset();
     communityApiMocks.fetchCommunityComments.mockResolvedValue([baseComment]);
-    const module = await import('@/features/community/api/community');
-    expect(module.createComment).toBe(communityApiMocks.createComment);
+    const communityModule = await import('@/features/community/api/community');
+    expect(communityModule.createComment).toBe(communityApiMocks.createComment);
   });
 
   it('댓글을 작성한 뒤 최신 목록을 표시한다', async () => {

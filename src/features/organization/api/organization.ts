@@ -14,7 +14,7 @@ import type {
   OrganizationAnimalDetailItem,
   OrganizationAnimalListItem,
 } from '@/entities/animal/animal-api';
-import type { FosterApplicent } from '@/entities/foster-apply/foster-apply-api';
+import type { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
 import { resolveEndpoint } from '@/shared/api/config';
 import { toDate } from '@/shared/lib/utils';
 import type { FosterRecord } from '@/entities/foster-record/foster-record';
@@ -80,7 +80,7 @@ type OrganizationAnimalDetailDto = OrganizationAnimalDto & {
   }>;
 };
 
-const mapApplicant = (dto: OrganizationApplicantDto): FosterApplicent => ({
+const mapApplicant = (dto: OrganizationApplicantDto): FosterApplicant => ({
   id: dto.id,
   name: dto.name,
   email: dto.email ?? '',

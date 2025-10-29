@@ -91,8 +91,8 @@ describe('CommunityCommentTile', () => {
     communityApiMocks.createCommentLike.mockResolvedValue(undefined);
     communityApiMocks.deleteCommentLike.mockResolvedValue(undefined);
     vi.mocked(toast).mockClear();
-    const module = await import('@/features/community/api/community');
-    expect(module.deleteComment).toBe(communityApiMocks.deleteComment);
+    const communityModule = await import('@/features/community/api/community');
+    expect(communityModule.deleteComment).toBe(communityApiMocks.deleteComment);
   });
 
   it('상위 댓글을 삭제하고 상태를 갱신한다', async () => {

@@ -24,12 +24,6 @@ import CheckBox from '@/shared/widgets/form/check-box';
 const OPTION_BUTTON_TEXT = '옵션';
 const RESET_BUTTON_TEXT = '초기화';
 
-/**
- * @file [training-center] training-center 파일 안에 Training-center_Condition Card 컴포넌트
- * @description 훈련소의 조건을 필터링하는 컴포넌트입니다.
- * @author 'HANSONGYI'
- */
-
 export default function FosterConditionCard({
   animalType,
   animalSize,

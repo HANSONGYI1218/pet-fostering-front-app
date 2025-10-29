@@ -87,8 +87,8 @@ export default function FosterTile({
         <div className="space-y-2">
           <h3 className="text-sm font-semibold">성격 특성</h3>
           <div className="flex h-[4.1rem] flex-wrap gap-2 overflow-hidden">
-            {animal?.animal_environments?.length > 0
-              ? animal?.animal_personalitys?.map((personality) => (
+            {animal.animal_personalitys.length > 0
+              ? animal.animal_personalitys.map((personality) => (
                   <Badge key={personality} variant="secondary">
                     {ANIMAL_PERSONALITY_LABEL_KO[personality]}
                   </Badge>
@@ -100,7 +100,7 @@ export default function FosterTile({
         <div className="space-y-2">
           <h3 className="text-sm font-semibold">추천하는 임보자</h3>
           <div className="flex h-[4.1rem] flex-wrap gap-2 overflow-hidden">
-            {animal?.animal_environments?.length > 0
+            {animal.animal_environments.length > 0
               ? animal.animal_environments.map((environment) => (
                   <Badge key={environment} variant="default">
                     {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}

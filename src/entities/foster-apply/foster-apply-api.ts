@@ -1,4 +1,4 @@
-export type FosterApplicent = {
+export type FosterApplicant = {
   id: string;
   name: string;
   email: string;

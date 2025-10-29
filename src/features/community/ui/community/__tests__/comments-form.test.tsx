@@ -93,9 +93,9 @@ describe('CommentsForm', () => {
     communityApiMocks.createComment.mockResolvedValue(undefined);
     communityApiMocks.updateComment.mockResolvedValue(sampleComment);
     communityApiMocks.fetchCommunityComments.mockResolvedValue([sampleComment]);
-    const module = await import('@/features/community/api/community');
-    expect(module.createComment).toBe(communityApiMocks.createComment);
-    expect(module.fetchCommunityComments).toBe(
+    const communityModule = await import('@/features/community/api/community');
+    expect(communityModule.createComment).toBe(communityApiMocks.createComment);
+    expect(communityModule.fetchCommunityComments).toBe(
       communityApiMocks.fetchCommunityComments,
     );
   });

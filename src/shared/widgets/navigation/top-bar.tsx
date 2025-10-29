@@ -14,8 +14,7 @@ import {
   NavigationMenuList,
   navigationMenuTriggerStyle,
 } from '@/shared/ui/navigation-menu';
-import { resolveStoredAuthClaims, type AuthClaims } from '@/lib/auth/session';
-import { AUTH_CHANGE_EVENT_NAME } from '@/lib/auth/events';
+import { useAuthClaims } from '@/lib/auth/use-auth-claims';
 
 const NAV_ITEMS = [
   {
@@ -48,35 +47,8 @@ const NAV_ITEMS = [
 export default function TopBar() {
   const path = usePathname();
   const router = useRouter();
-  const [authUser, setAuthUser] = useState<AuthClaims | null>(null);
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
-
-  useEffect(() => {
-    const syncAuth = () => {
-      setAuthUser(resolveStoredAuthClaims());
-    };
-    const handleAuthChange = () => {
-      syncAuth();
-    };
-
-    syncAuth();
-
-    if (typeof window !== 'undefined') {
-      window.addEventListener('storage', syncAuth);
-      window.addEventListener(AUTH_CHANGE_EVENT_NAME, handleAuthChange);
-    }
-
-    return () => {
-      if (typeof window !== 'undefined') {
-        window.removeEventListener('storage', syncAuth);
-        window.removeEventListener(AUTH_CHANGE_EVENT_NAME, handleAuthChange);
-      }
-    };
-  }, []);
-
-  useEffect(() => {
-    setAuthUser(resolveStoredAuthClaims());
-  }, [path]);
+  const { claims: authUser } = useAuthClaims();
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
