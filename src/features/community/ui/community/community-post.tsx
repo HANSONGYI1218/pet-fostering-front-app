@@ -33,6 +33,7 @@ import {
 } from '@/shared/ui/dialog';
 import { Card } from '@/shared/ui/card';
 import { Button } from '@/shared/ui/button';
+import { Textarea } from '@/shared/ui/textarea';
 import RetryButton from '@/shared/widgets/feedback/retry-button';
 import type { PostItem } from '@/entities/post/post-api';
 import { toDate, handleCopyLink } from '@/shared/lib/utils';
@@ -47,6 +48,7 @@ import {
   createBookmark,
   deletePost,
 } from '../../api/community';
+import { createReport } from '../../api/report';
 import { logError } from '@/shared/lib/logging';
 
 type PostWithBookmark = PostItem & { isBookmarked?: boolean };
@@ -68,6 +70,9 @@ export default function CommunityPost({
   const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [isReportLoading, setIsReportLoading] = useState(false);
 
   // 브라우저에서만 access token 읽기
   useEffect(() => {
@@ -137,6 +142,41 @@ export default function CommunityPost({
       toast('게시글 삭제에 실패했어요. 잠시 뒤 다시 시도해 주세요.');
     } finally {
       setIsLoading(false);
+    }
+  };
+
+  const handleReportPost = async () => {
+    if (!resolvedPost?.id) {
+      toast('다시 한번 새로고침 해주세요.');
+      return;
+    }
+
+    if (!token) {
+      toast('로그인 후 이용해 주세요.');
+      return;
+    }
+
+    if (!reportReason.trim()) {
+      toast('신고 사유를 작성해 주세요.');
+      return;
+    }
+
+    setIsReportLoading(true);
+
+    try {
+      await createReport(token ?? undefined, {
+        targetType: 'POST',
+        targetId: resolvedPost.id,
+        reason: reportReason.trim(),
+      });
+      toast('신고가 접수되었어요.');
+      setReportReason('');
+      setIsReportOpen(false);
+    } catch (error) {
+      logError('게시글 신고 실패', error);
+      toast('신고 접수에 실패했어요. 잠시 뒤 다시 시도해 주세요.');
+    } finally {
+      setIsReportLoading(false);
     }
   };
 
@@ -239,6 +279,13 @@ export default function CommunityPost({
                           삭제하기
                         </MenubarItem>
                       </>
+                    ) : token ? (
+                      <>
+                        <MenubarSeparator />
+                        <MenubarItem onClick={() => setIsReportOpen(true)}>
+                          신고하기
+                        </MenubarItem>
+                      </>
                     ) : null}
                   </MenubarContent>
                 </MenubarMenu>
@@ -262,6 +309,56 @@ export default function CommunityPost({
                         <Loader2 className="animate-spin" />
                       ) : (
                         '지우기'
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+              <Dialog
+                open={isReportOpen}
+                onOpenChange={(next) => {
+                  setIsReportOpen(next);
+                  if (!next) {
+                    setReportReason('');
+                    setIsReportLoading(false);
+                  }
+                }}
+              >
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>게시글을 신고할까요?</DialogTitle>
+                    <DialogDescription>
+                      신고 사유를 구체적으로 작성해 주세요.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <Textarea
+                    value={reportReason}
+                    onChange={(event) => setReportReason(event.target.value)}
+                    placeholder="신고 사유를 입력해 주세요."
+                    maxLength={500}
+                    className="min-h-32"
+                  />
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button
+                        type="button"
+                        variant="outline"
+                        onClick={() => setReportReason('')}
+                      >
+                        취소
+                      </Button>
+                    </DialogClose>
+                    <Button
+                      type="button"
+                      onClick={handleReportPost}
+                      disabled={
+                        isReportLoading || reportReason.trim().length === 0
+                      }
+                    >
+                      {isReportLoading ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        '신고하기'
                       )}
                     </Button>
                   </DialogFooter>

@@ -35,6 +35,8 @@ interface RecordContextType {
   setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
   isDog: boolean;
   upsertRecord: (record: FosterRecord) => void;
+  removeRecord: (id: string) => void;
+  animalId: string;
 }
 
 const RecordContext = createContext<RecordContextType | null>(null);
@@ -44,8 +46,9 @@ export const RecordProvider: React.FC<{
   records: FosterRecord[];
   initalValue: FosterRecord;
   isDog: boolean;
+  animalId: string;
   children: React.ReactNode;
-}> = ({ records, initalValue, isDog, children }) => {
+}> = ({ records, initalValue, isDog, animalId, children }) => {
   const normalizedRecords = useMemo(
     () => records.map((record) => normalizeRecord(record)),
     [records],
@@ -101,6 +104,15 @@ export const RecordProvider: React.FC<{
     );
   }, []);
 
+  const removeRecord = useCallback((recordId: string) => {
+    setRecordsState((prev) =>
+      prev.filter((record) => record.id !== recordId),
+    );
+    setSelectedRecord((current) =>
+      current?.id === recordId ? null : current,
+    );
+  }, []);
+
   return (
     <RecordContext.Provider
       value={{
@@ -111,6 +123,8 @@ export const RecordProvider: React.FC<{
         setCurrentMonth,
         isDog,
         upsertRecord,
+        removeRecord,
+        animalId,
       }}
     >
       {children}

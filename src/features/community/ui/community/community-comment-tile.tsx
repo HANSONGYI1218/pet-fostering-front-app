@@ -24,6 +24,7 @@ import {
 } from '@/shared/ui/dialog';
 import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
+import { Textarea } from '@/shared/ui/textarea';
 import { toast } from 'sonner';
 import {
   resolveStoredAccessToken,
@@ -38,6 +39,7 @@ import {
   deleteCommentLike,
   deleteComment,
 } from '../../api/community';
+import { createReport } from '../../api/report';
 import { logError } from '@/shared/lib/logging';
 
 type CommentLike = CommentItem | ReplyCommentItem;
@@ -63,6 +65,9 @@ export default function CommunityCommentTile({
   const [isCommentLike, setIsCommentLike] = useState(comment?.liked ?? false);
   const [commentLikeCnt, setCommentLikeCnt] = useState(comment?.likes ?? 0);
   const [isOwner, setIsOwner] = useState<boolean>(false);
+  const [isReportOpen, setIsReportOpen] = useState(false);
+  const [reportReason, setReportReason] = useState('');
+  const [isReportLoading, setIsReportLoading] = useState(false);
 
   const isEditing =
     selectedComment?.type === 'edit' && selectedComment.id === comment.id;
@@ -172,6 +177,40 @@ export default function CommunityCommentTile({
     }
   };
 
+  const handleReportComment = async () => {
+    if (!comment?.id) {
+      return toast('다시 한번 새로고침 해주세요.');
+    }
+
+    if (!token) {
+      toast('로그인 후 이용해 주세요.');
+      return;
+    }
+
+    if (!reportReason.trim()) {
+      toast('신고 사유를 작성해 주세요.');
+      return;
+    }
+
+    setIsReportLoading(true);
+
+    try {
+      await createReport(token ?? undefined, {
+        targetType: 'COMMENT',
+        targetId: comment.id,
+        reason: reportReason.trim(),
+      });
+      toast('신고가 접수되었어요.');
+      setReportReason('');
+      setIsReportOpen(false);
+    } catch (error) {
+      logError('댓글 신고 실패', error);
+      toast('신고 접수에 실패했어요. 잠시 뒤 다시 시도해 주세요.');
+    } finally {
+      setIsReportLoading(false);
+    }
+  };
+
   const contentLines = (comment.content ?? '').split('<br />');
 
   return (
@@ -220,48 +259,102 @@ export default function CommunityCommentTile({
                 답글
               </button>
             )}
-            {isOwner && (
-              <Menubar className="border-none bg-transparent p-0">
-                <MenubarMenu>
-                  <MenubarTrigger className="p-0" aria-label="댓글 옵션">
-                    <EllipsisVertical
-                      className="h-3.5 w-3.5 cursor-pointer"
-                      stroke="#a1a1a1"
-                    />
-                  </MenubarTrigger>
-                  <MenubarContent align="end" className="min-w-[8rem]">
-                    {/* <MenubarItem>신고하기</MenubarItem> <MenubarSeparator />*/}
-
-                    <MenubarItem onClick={handleToggleEdit}>
-                      수정하기
+            <Menubar className="border-none bg-transparent p-0">
+              <MenubarMenu>
+                <MenubarTrigger className="p-0" aria-label="댓글 옵션">
+                  <EllipsisVertical
+                    className="h-3.5 w-3.5 cursor-pointer"
+                    stroke="#a1a1a1"
+                  />
+                </MenubarTrigger>
+                <MenubarContent align="end" className="min-w-[8rem]">
+                  {isOwner ? (
+                    <>
+                      <MenubarItem onClick={handleToggleEdit}>
+                        수정하기
+                      </MenubarItem>
+                      <MenubarSeparator />
+                      <MenubarItem onClick={() => setOpen(true)}>
+                        삭제하기
+                      </MenubarItem>
+                    </>
+                  ) : (
+                    <MenubarItem onClick={() => setIsReportOpen(true)}>
+                      신고하기
                     </MenubarItem>
-                    <MenubarSeparator />
-                    <MenubarItem onClick={() => setOpen(true)}>
-                      삭제하기
-                    </MenubarItem>
-                  </MenubarContent>
-                </MenubarMenu>
-              </Menubar>
-            )}
-            <Dialog open={open} onOpenChange={setOpen}>
+                  )}
+                </MenubarContent>
+              </MenubarMenu>
+            </Menubar>
+            {isOwner ? (
+              <Dialog open={open} onOpenChange={setOpen}>
+                <DialogContent>
+                  <DialogHeader>
+                    <DialogTitle>정말 댓글을 지울까요?</DialogTitle>
+                    <DialogDescription>
+                      댓글을 지우면 다시 복구할 수 없습니다.
+                    </DialogDescription>
+                  </DialogHeader>
+                  <DialogFooter>
+                    <DialogClose asChild>
+                      <Button type="button" variant="outline">
+                        취소
+                      </Button>
+                    </DialogClose>
+                    <Button type="button" onClick={handleDeleteComment}>
+                      {isLoading ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        '지우기'
+                      )}
+                    </Button>
+                  </DialogFooter>
+                </DialogContent>
+              </Dialog>
+            ) : null}
+            <Dialog
+              open={isReportOpen}
+              onOpenChange={(next) => {
+                setIsReportOpen(next);
+                if (!next) {
+                  setReportReason('');
+                  setIsReportLoading(false);
+                }
+              }}
+            >
               <DialogContent>
                 <DialogHeader>
-                  <DialogTitle>정말 댓글을 지울까요?</DialogTitle>
+                  <DialogTitle>댓글을 신고할까요?</DialogTitle>
                   <DialogDescription>
-                    댓글을 지우면 다시 복구할 수 없습니다.
+                    신고 사유를 구체적으로 작성해 주세요.
                   </DialogDescription>
                 </DialogHeader>
+                <Textarea
+                  value={reportReason}
+                  onChange={(event) => setReportReason(event.target.value)}
+                  placeholder="신고 사유를 입력해 주세요."
+                  maxLength={500}
+                  className="min-h-32"
+                />
                 <DialogFooter>
                   <DialogClose asChild>
-                    <Button type="button" variant="outline">
+                    <Button
+                      type="button"
+                      variant="outline"
+                      onClick={() => setReportReason('')}
+                    >
                       취소
                     </Button>
                   </DialogClose>
-                  <Button type="button" onClick={handleDeleteComment}>
-                    {isLoading ? (
+                  <Button
+                    type="button"
+                    onClick={handleReportComment}
+                    disabled={isReportLoading || reportReason.trim().length === 0}
+                  >
+                    {isReportLoading ? (
                       <Loader2 className="animate-spin" />
                     ) : (
-                      '지우기'
+                      '신고하기'
                     )}
                   </Button>
                 </DialogFooter>

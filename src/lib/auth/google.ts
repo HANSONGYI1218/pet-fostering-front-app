@@ -1,9 +1,5 @@
 'use client';
 
-import { resolveEndpoint } from '@/shared/api/config';
-
-const DEFAULT_GOOGLE_LOGIN_PATH = '/auth/google';
-
 type Maybe<T> = T | null | undefined;
 
 const resolveBrowserLocation = (
@@ -27,7 +23,7 @@ export const buildGoogleLoginUrl = (): string => {
     return explicit;
   }
 
-  return resolveEndpoint(DEFAULT_GOOGLE_LOGIN_PATH);
+  throw new Error('NEXT_PUBLIC_GOOGLE_LOGIN_URL 환경 변수가 필요합니다.');
 };
 
 export const redirectToGoogleLogin = ({

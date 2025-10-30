@@ -24,7 +24,12 @@ const createWrapper = (
 ): ((props: PropsWithChildren) => JSX.Element) =>
   function Wrapper({ children }: PropsWithChildren) {
     return (
-      <RecordProvider records={records} initalValue={initial} isDog>
+      <RecordProvider
+        records={records}
+        initalValue={initial}
+        isDog
+        animalId="animal-ctx"
+      >
         {children}
       </RecordProvider>
     );
@@ -71,5 +76,23 @@ describe('RecordProvider', () => {
     expect(result.current.selectedRecord).toEqual(
       expect.objectContaining({ content: 'updated' }),
     );
+  });
+
+  it('removeRecord는 기록과 선택 상태를 제거한다', () => {
+    const initialRecords = [
+      createRecord('1', '2024-01-01'),
+      createRecord('2', '2024-02-01'),
+    ];
+
+    const { result } = renderHook(() => useRecord(), {
+      wrapper: createWrapper(initialRecords, initialRecords[0]),
+    });
+
+    act(() => {
+      result.current.removeRecord('1');
+    });
+
+    expect(result.current.records.map((record) => record.id)).toEqual(['2']);
+    expect(result.current.selectedRecord).toBeNull();
   });
 });

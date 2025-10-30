@@ -22,6 +22,7 @@ vi.mock('@/features/record/api/record', () => ({
         email: '',
       },
       animal: {
+        id: 'animal-1',
         name: '나비',
         type: 'CAT',
         breed: '',

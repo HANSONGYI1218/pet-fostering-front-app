@@ -3,21 +3,46 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { clearStoredAuthTokens } from '@/lib/auth/session';
+import { clearStoredAuthTokens, resolveStoredAccessToken } from '@/lib/auth/session';
 import { Loader2 } from 'lucide-react';
+import { resolveEndpoint } from '@/shared/api/config';
+import { logError } from '@/shared/lib/logging';
 
 export const KakaoLogoutHandler = () => {
   const router = useRouter();
 
   useEffect(() => {
-    clearStoredAuthTokens();
+    let timer: ReturnType<typeof setTimeout> | null = null;
 
-    const timer = setTimeout(() => {
-      router.replace('/');
-    }, 1200);
+    const performLogout = async () => {
+      const token = resolveStoredAccessToken();
+
+      try {
+        const headers: Record<string, string> = { Accept: 'application/json' };
+        if (token) {
+          headers.Authorization = `Bearer ${token}`;
+        }
+
+        await fetch(resolveEndpoint('/auth/logout'), {
+          method: 'POST',
+          headers,
+        });
+      } catch (error) {
+        logError('백엔드 로그아웃에 실패했습니다.', error);
+      } finally {
+        clearStoredAuthTokens();
+        timer = setTimeout(() => {
+          router.replace('/');
+        }, 1200);
+      }
+    };
+
+    void performLogout();
 
     return () => {
-      clearTimeout(timer);
+      if (timer) {
+        clearTimeout(timer);
+      }
     };
   }, [router]);
 

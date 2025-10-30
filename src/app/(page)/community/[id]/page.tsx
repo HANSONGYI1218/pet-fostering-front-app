@@ -5,7 +5,7 @@ import CommunityPost from '@/features/community/ui/community/community-post';
 import {
   fetchCommunityComments,
   fetchCommunityPost,
-  // updatePostView,
+  updatePostView,
 } from '@/features/community/api/community';
 import { logError } from '@/shared/lib/logging';
 import type { CommentItem } from '@/entities/comment/comment-api';
@@ -62,7 +62,11 @@ export default async function CommunityPostPage({
 
   try {
     post = await getCommunityPost(id);
-    // await updatePostView(id);
+    try {
+      await updatePostView(id);
+    } catch (error) {
+      logError('커뮤니티 게시글 조회수 증가 실패', error);
+    }
   } catch (error) {
     logError('커뮤니티 게시글 상세 불러오기 실패', error);
   }

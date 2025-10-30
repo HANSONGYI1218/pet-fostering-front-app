@@ -2,11 +2,17 @@
 
 import { format } from 'date-fns';
 import { WholeDateArray } from './tr';
-import { ImageOff, Loader2, Plus } from 'lucide-react';
+import { ImageOff, Loader2, Plus, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import { useEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useId,
+} from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -37,9 +43,12 @@ import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
 import { cn, toDate } from '@/shared/lib/utils';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import { toast } from 'sonner';
+import {
+  createOrganizationFosterRecord,
+  deleteOrganizationFosterRecord,
+  updateOrganizationFosterRecord,
+} from '@/features/organization/api/foster-admin';
 import type { Dispatch, SetStateAction } from 'react';
-import { createRecord, updateRecord } from '@/features/record/api/record';
-import { useParams } from 'next/navigation';
 
 interface TdProps {
   p: WholeDateArray;
@@ -57,20 +66,18 @@ type RecordFormValues = z.infer<typeof RecordSchema>;
 
 const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const recordContext = useRecord();
-  const params = useParams();
-  const animalId = params.id as string;
 
   const currentRecord =
-    recordContext?.records.length > 0
-      ? recordContext?.records.find(
+    recordContext.records.length > 0
+      ? recordContext.records.find(
           (record: FosterRecord) =>
             format(toDate(record.created_at), 'yyyy-M-d') ===
             format(p.date, 'yyyy-M-d'),
-        )
+        ) ?? null
       : null;
 
   const isToday = format(new Date(), 'yyyy-M-d') === format(p.date, 'yyyy-M-d');
-  const isPasted = new Date(p.date) <= new Date();
+  const isPastDate = new Date(p.date) <= new Date();
   const isThisMonth =
     format(currentMonth, 'yyyy-M') === format(p.date, 'yyyy-M');
 
@@ -78,9 +85,20 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     new Date(p.date).getDay() === 0 || new Date(p.date).getDay() === 6;
 
   const [open, setOpen] = useState(false);
-  const [isEdit, setIsEdit] = useState(currentRecord ? false : true);
-  const [token, setToken] = useState<string | null>(null);
-  const [isLoading, setIsLoading] = useState(false);
+  const [isEdit, setIsEdit] = useState(!currentRecord);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const ensureToken = useCallback(() => {
+    const next = resolveStoredAccessToken();
+    if (!next) {
+      toast('로그인이 필요합니다.');
+    }
+    return next;
+  }, []);
+
+  useEffect(() => {
+    setIsEdit(!currentRecord);
+  }, [currentRecord]);
 
   const defaultValues = useMemo(
     () => ({
@@ -91,146 +109,142 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     [currentRecord],
   );
 
-  const form = useForm<z.infer<typeof RecordSchema>>({
+  const form = useForm<RecordFormValues>({
     resolver: zodResolver(RecordSchema),
     defaultValues,
     mode: 'onChange',
   });
 
-  const closeDialog = () => {
-    form.reset();
-    setOpen(false);
-    setIsEdit(false);
-    setIsLoading(false);
-  };
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
+
+  const isSubmitting = form.formState.isSubmitting;
+  const fileInputId = useId();
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen && !token) {
-      toast('로그인 후 이용해 주세요.');
-      return;
-    }
-    if (!nextOpen) {
-      // Dialog 닫을 때
-      form.reset(
-        currentRecord
-          ? {
-              images: currentRecord.images ?? [],
-              content: currentRecord.content ?? '',
-              health_note: currentRecord.health_note ?? '',
-            }
-          : defaultValues,
-      );
-      setIsEdit(false); // 닫을 때는 항상 false
+    if (nextOpen) {
+      const activeToken = ensureToken();
+      if (!activeToken) {
+        return;
+      }
+      setIsEdit(!currentRecord);
+      form.reset(defaultValues);
     } else {
-      // Dialog 열 때
-      setIsEdit(!currentRecord); // currentRecord 없으면 true, 있으면 false
+      form.reset(defaultValues);
+      setIsEdit(false);
+      setIsDeleting(false);
     }
-    setIsLoading(false);
     setOpen(nextOpen);
   };
 
-  const resolveRecordId = () => {
-    if (currentRecord?.id) {
-      return currentRecord.id;
+  const handleDeleteRecord = async () => {
+    if (!recordContext || !currentRecord) {
+      return;
     }
 
-    if (
-      typeof crypto !== 'undefined' &&
-      typeof crypto.randomUUID === 'function'
-    ) {
-      return crypto.randomUUID();
+    const activeToken = ensureToken();
+    if (!activeToken) {
+      return;
     }
 
-    return `record-${Date.now()}`;
+    setIsDeleting(true);
+    try {
+      await deleteOrganizationFosterRecord(
+        activeToken,
+        recordContext.animalId,
+        currentRecord.id,
+      );
+      recordContext.removeRecord(currentRecord.id);
+      toast.success('돌봄 기록을 삭제했어요.');
+      form.reset({
+        images: [],
+        content: '',
+        health_note: '',
+      });
+      setOpen(false);
+      setIsEdit(false);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : '삭제에 실패했어요. 잠시 뒤 다시 시도해 주세요.';
+      toast.error(message);
+    } finally {
+      setIsDeleting(false);
+    }
   };
 
-  const onSubmit = async (_values: RecordFormValues) => {
-    if (!token) {
-      toast('로그인 후 이용해 주세요.');
+  const onSubmit = async (values: RecordFormValues) => {
+    if (!recordContext) {
       return;
     }
 
-    if (!recordContext || !animalId) {
-      toast('다시 한번 새로고침 해주세요.');
+    const activeToken = ensureToken();
+    if (!activeToken) {
       return;
     }
-
-    const recordId = resolveRecordId();
-    const createdAt = currentRecord?.created_at ?? p.date;
-    const nextRecord: FosterRecord = {
-      id: recordId,
-      images: _values.images ?? [],
-      content: _values.content,
-      health_note: _values.health_note,
-      created_at: toDate(createdAt),
-      updated_at: new Date(),
-    };
-
-    recordContext.upsertRecord(nextRecord);
-    recordContext.setSelectedRecord(nextRecord);
-    recordContext.setCurrentMonth(toDate(nextRecord.created_at));
-
-    form.reset({
-      images: nextRecord.images,
-      content: nextRecord.content,
-      health_note: nextRecord.health_note,
-    });
 
     const payload = {
-      images: _values.images ?? [],
-      content: _values.content,
-      health_note: _values.health_note,
+      date: currentRecord?.created_at ?? p.date,
+      content: values.content,
+      healthNote: values.health_note,
+      images: values.images,
     };
 
-    setIsLoading(true);
-
     try {
-      await new Promise((resolve) => setTimeout(resolve, 400));
-      if (currentRecord) {
-        await updateRecord(token, animalId, recordId, payload);
-      } else {
-        await createRecord(token, animalId, payload);
-      }
-      toast(
-        currentRecord ? '돌봄기록을 수정했어요!' : '돌봄기록을 작성했어요!',
+      const savedRecord = currentRecord
+        ? await updateOrganizationFosterRecord(
+            activeToken,
+            recordContext.animalId,
+            currentRecord.id,
+            payload,
+          )
+        : await createOrganizationFosterRecord(
+            activeToken,
+            recordContext.animalId,
+            payload,
+          );
+
+      recordContext.upsertRecord(savedRecord);
+      recordContext.setSelectedRecord(savedRecord);
+      recordContext.setCurrentMonth(toDate(savedRecord.created_at));
+
+      form.reset({
+        images: savedRecord.images ?? [],
+        content: savedRecord.content,
+        health_note: savedRecord.health_note,
+      });
+
+      setOpen(false);
+      setIsEdit(false);
+
+      toast.success(
+        currentRecord ? '돌봄 기록을 수정했어요.' : '돌봄 기록을 등록했어요.',
       );
-      closeDialog();
-    } catch {
-      toast('잠시 뒤 다시 시도해 주세요.');
-    } finally {
-      setIsLoading(false);
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : '잠시 뒤 다시 시도해 주세요.';
+      toast.error(message);
     }
   };
 
-  useEffect(() => {
-    if (open) {
-      form.reset(defaultValues);
-    }
-  }, [defaultValues, form, open]);
-
-  useEffect(() => {
-    setToken(resolveStoredAccessToken());
-  }, []);
+  const isDialogBusy = isSubmitting || isDeleting;
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           onClick={() => {
-            const setSelectedRecord = recordContext?.setSelectedRecord;
-            if (setSelectedRecord) {
-              setSelectedRecord(currentRecord ?? null);
-            }
-            const setRecordMonth = recordContext?.setCurrentMonth;
-            if (setRecordMonth) {
-              setRecordMonth(p.date);
-            }
-
+            recordContext.setSelectedRecord(currentRecord ?? null);
+            recordContext.setCurrentMonth(p.date);
             if (p.date.getMonth() !== recordContext.currentMonth.getMonth()) {
               setCurrentMonth(p.date);
             }
           }}
-          className={`relative flex h-12 w-full p-0 md:h-20 ${isToday && 'max-md:bg-[#15894B]'} ${isPasted ? 'cursor-pointer' : 'cursor-default'} flex-col items-center justify-center gap-3 rounded-lg border ${currentRecord ? 'bg-[#F9F9F9] hover:bg-neutral-100' : 'bg-white hover:bg-neutral-100'}`}
+          className={`relative flex h-12 w-full p-0 md:h-20 ${isToday && 'max-md:bg-[#15894B]'} ${isPastDate ? 'cursor-pointer' : 'cursor-default'} flex-col items-center justify-center gap-3 rounded-lg border ${currentRecord ? 'bg-[#F9F9F9] hover:bg-neutral-100' : 'bg-white hover:bg-neutral-100'}`}
         >
           {isToday && (
             <div className="absolute top-2.5 left-2 h-6 w-6 rounded-full bg-[#15894B] max-md:hidden" />
@@ -271,10 +285,10 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
           )}
         </Button>
       </DialogTrigger>
-      {isPasted && (
+      {isPastDate && (
         <DialogContent
           onInteractOutside={(event) => {
-            if (isLoading) event.preventDefault();
+            if (isDialogBusy) event.preventDefault();
           }}
         >
           <Form {...form}>
@@ -289,7 +303,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                     {format(p.date, 'M월 d일 (eee)', { locale: ko })}
                   </Badge>
                 </DialogTitle>
-                <div className={`flex w-full flex-col gap-10 px-2`}>
+                <div className="flex w-full flex-col gap-10 px-2">
                   <div className="flex w-full flex-col gap-4">
                     <div className="flex w-full flex-col items-start gap-0.5">
                       <div className="flex items-center gap-2 font-medium">
@@ -335,23 +349,22 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       render={({ field }) => (
                         <FormItem>
                           {isEdit ||
-                          (field?.value && field.value.length > 0) ? (
+                          (field?.value && field?.value.length > 0) ? (
                             <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
                               {isEdit &&
                                 (!field?.value ||
-                                  (field?.value &&
-                                    field?.value?.length < 6)) && (
+                                  (field?.value && field?.value?.length < 6)) && (
                                   <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
                                     <div className="absolute z-10 flex h-full w-full">
                                       <label
-                                        htmlFor="additionalImgs"
+                                        htmlFor={fileInputId}
                                         className="flex w-full cursor-pointer items-center justify-center"
                                       >
                                         <Plus className="h-10 w-10 text-neutral-300" />
                                       </label>
                                       <input
                                         type="file"
-                                        id="additionalImgs"
+                                        id={fileInputId}
                                         accept="image/*"
                                         multiple
                                         onChange={(
@@ -380,23 +393,26 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                               {field?.value?.map((image, index) => (
                                 <Card
                                   className="relative p-0 shadow-none"
-                                  key={index}
+                                  key={image}
                                 >
-                                  <Button
-                                    type="button"
-                                    onClick={() => {
-                                      const deleteImage = field?.value?.filter(
-                                        (value) => value !== image,
-                                      );
-                                      field?.onChange(deleteImage);
-                                    }}
-                                    className={`absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full bg-neutral-300 p-0 ${currentRecord ? 'hidden' : 'flex'}`}
-                                  >
-                                    <Plus
-                                      className="h-4 w-4 rotate-45 text-white"
-                                      strokeWidth={2.5}
-                                    />
-                                  </Button>
+                                  {isEdit && (
+                                    <Button
+                                      type="button"
+                                      onClick={() => {
+                                        const rest =
+                                          field?.value?.filter(
+                                            (value) => value !== image,
+                                          ) ?? [];
+                                        field?.onChange(rest);
+                                      }}
+                                      className="absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-300 p-0"
+                                    >
+                                      <Plus
+                                        className="h-4 w-4 rotate-45 text-white"
+                                        strokeWidth={2.5}
+                                      />
+                                    </Button>
+                                  )}
                                   <div className="relative h-32 w-full">
                                     <Image
                                       src={image}
@@ -411,7 +427,8 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                             </div>
                           ) : (
                             <Card className="flex h-44 w-full flex-col items-center justify-center">
-                              <ImageOff stroke="#404040" /> 사진이 없어요.
+                              <ImageOff stroke="#404040" />
+                              사진이 없어요.
                             </Card>
                           )}
                           <FormMessage />
@@ -469,9 +486,29 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                   />
                 </RecordHealthNote>
               </DialogHeader>
-              <DialogFooter className="mt-6">
+              <DialogFooter className="mt-6 flex flex-col gap-3 sm:flex-row sm:items-center sm:justify-between">
+                {currentRecord && isEdit ? (
+                  <Button
+                    type="button"
+                    variant="destructive"
+                    className="w-full sm:w-auto"
+                    disabled={isDialogBusy}
+                    onClick={handleDeleteRecord}
+                  >
+                    {isDeleting ? (
+                      <Loader2 className="animate-spin" />
+                    ) : (
+                      <>
+                        <Trash2 />
+                        삭제하기
+                      </>
+                    )}
+                  </Button>
+                ) : (
+                  <span />
+                )}
                 {isEdit ? (
-                  <>
+                  <div className="flex w-full justify-end gap-3 sm:w-auto">
                     <DialogClose asChild>
                       <Button
                         type="button"
@@ -480,6 +517,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                           setIsEdit(false);
                         }}
                         className="w-24"
+                        disabled={isDialogBusy}
                       >
                         취소
                       </Button>
@@ -488,22 +526,22 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       type="submit"
                       variant={'default'}
                       className="w-24"
-                      disabled={isLoading || !form.formState.isValid}
+                      disabled={isDialogBusy || !form.formState.isValid}
                     >
-                      {isLoading ? (
+                      {isSubmitting ? (
                         <Loader2 className="animate-spin" />
                       ) : (
                         '완료하기'
                       )}
                     </Button>
-                  </>
+                  </div>
                 ) : (
                   <Button
                     type="button"
                     variant={'outline_black'}
-                    onClick={(e) => {
-                      e.preventDefault();
-                      e.stopPropagation();
+                    onClick={(event) => {
+                      event.preventDefault();
+                      event.stopPropagation();
                       setIsEdit(true);
                     }}
                     className="w-24"

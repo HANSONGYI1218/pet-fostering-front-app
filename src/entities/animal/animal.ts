@@ -14,6 +14,11 @@ export enum AnimalSize {
   LARGE = 'LARGE',
 }
 
+export enum FosterState {
+  IN_PROGRESS = 'IN_PROGRESS',
+  FOSTERED = 'FOSTERED',
+}
+
 export enum AnimalStatus {
   WAITING = 'WAITING',
   IN_PROGRESS = 'IN_PROGRESS',

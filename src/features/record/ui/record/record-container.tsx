@@ -10,9 +10,11 @@ import { ArrowUp } from 'lucide-react';
 export default function RecordContainer({
   records,
   isDog,
+  animalId,
 }: {
   records: FosterRecord[];
   isDog: boolean;
+  animalId: string;
 }) {
   const [showButton, setShowButton] = useState(false);
 
@@ -38,6 +40,7 @@ export default function RecordContainer({
         records={records}
         initalValue={records[records.length - 1]}
         isDog={isDog}
+        animalId={animalId}
       >
         <RecordCalendar />
         <RecordDetail />

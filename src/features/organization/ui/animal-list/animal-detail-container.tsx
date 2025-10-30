@@ -1,6 +1,7 @@
 'use client';
 
 import { AnimalCarousel } from '@/features/foster/ui/foster-list/animal-carousel';
+import { AnimalCreateDialog } from './animal-create-dialog';
 import { Button } from '@/shared/ui/button';
 import { Card } from '@/shared/ui/card';
 import Image from 'next/image';
@@ -13,7 +14,7 @@ import {
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/shared/constants/enum';
-import { Check, Pencil } from 'lucide-react';
+import { Check, Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '@/shared/ui/badge';
 import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
 import {
@@ -23,17 +24,65 @@ import {
 } from '@/shared/lib/utils';
 import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
 import { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
-import { useState } from 'react';
+import { useState, useCallback } from 'react';
 import ChartContainer from '@/features/record/widgets/record-chart/chart-container';
 import { format } from 'date-fns';
 import RecordFiltered from './record-filtered';
+import { useRouter } from 'next/navigation';
+import { useQueryClient } from '@tanstack/react-query';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { toast } from 'sonner';
+import { deleteOrganizationAnimal } from '@/features/organization/api/foster-admin';
+import { ORGANIZATION_ANIMALS_QUERY_KEY } from './hooks/use-organization-animals';
+import {
+  AlertDialog,
+  AlertDialogAction,
+  AlertDialogCancel,
+  AlertDialogContent,
+  AlertDialogDescription,
+  AlertDialogFooter,
+  AlertDialogHeader,
+  AlertDialogTitle,
+  AlertDialogTrigger,
+} from '@/shared/ui/alert-dialog';
 
 export default function AnimalDetailContainer({
   animal,
 }: {
   animal: OrganizationAnimalDetailItem;
 }) {
+  const router = useRouter();
+  const queryClient = useQueryClient();
   const [currentPage, setCurrentPage] = useState(0);
+  const [isDeleting, setIsDeleting] = useState(false);
+
+  const handleDelete = useCallback(async () => {
+    const token = resolveStoredAccessToken();
+
+    if (!token) {
+      toast('로그인이 필요합니다.');
+      return;
+    }
+
+    setIsDeleting(true);
+    try {
+      await deleteOrganizationAnimal(token, animal.id);
+      await queryClient.invalidateQueries({
+        queryKey: ORGANIZATION_ANIMALS_QUERY_KEY,
+      });
+      toast.success('보호 동물을 삭제했어요.');
+      router.push('/organization/animal-list');
+      router.refresh();
+    } catch (error) {
+      const message =
+        error instanceof Error
+          ? error.message
+          : '삭제에 실패했어요. 잠시 뒤 다시 시도해 주세요.';
+      toast.error(message);
+    } finally {
+      setIsDeleting(false);
+    }
+  }, [animal.id, queryClient, router]);
 
   const total_address = `${animal?.organization?.address} ${animal?.organization?.address_detail}`;
 
@@ -133,13 +182,54 @@ export default function AnimalDetailContainer({
             상세 정보
           </Button>
         </div>{' '}
-        <Button
-          variant="outline_black"
-          className={`h-10 ${currentPage === 0 ? 'flex' : 'hidden'}`}
-        >
-          <Pencil />
-          정보 수정하기
-        </Button>
+        <div className="flex items-center gap-2">
+          <AnimalCreateDialog
+            mode="edit"
+            animal={animal}
+            organizationId={animal.organization?.id}
+            onSuccess={() => router.refresh()}
+            trigger={
+              <Button
+                variant="outline_black"
+                className={`h-10 ${currentPage === 0 ? 'flex' : 'hidden'}`}
+              >
+                <Pencil />
+                정보 수정하기
+              </Button>
+            }
+          />
+          <AlertDialog>
+            <AlertDialogTrigger asChild>
+              <Button
+                variant="destructive"
+                className={`h-10 ${currentPage === 0 ? 'flex' : 'hidden'}`}
+                disabled={isDeleting}
+              >
+                <Trash2 />
+                삭제하기
+              </Button>
+            </AlertDialogTrigger>
+            <AlertDialogContent>
+              <AlertDialogHeader>
+                <AlertDialogTitle>보호 동물을 삭제할까요?</AlertDialogTitle>
+                <AlertDialogDescription>
+                  삭제하면 {animal.name}에 대한 모든 정보와 돌봄 기록이 사라집니다.
+                  이 작업은 되돌릴 수 없습니다.
+                </AlertDialogDescription>
+              </AlertDialogHeader>
+              <AlertDialogFooter>
+                <AlertDialogCancel disabled={isDeleting}>취소</AlertDialogCancel>
+                <AlertDialogAction
+                  disabled={isDeleting}
+                  onClick={handleDelete}
+                  className="bg-red-600 text-white hover:bg-red-600/90"
+                >
+                  {isDeleting ? '삭제 중...' : '삭제하기'}
+                </AlertDialogAction>
+              </AlertDialogFooter>
+            </AlertDialogContent>
+          </AlertDialog>
+        </div>
       </div>
       {currentPage === 0 ? (
         <>

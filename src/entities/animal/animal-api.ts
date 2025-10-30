@@ -6,7 +6,13 @@ import {
 } from '../animal-condition/animal-condition';
 import { FosterApplicant } from '../foster-apply/foster-apply-api';
 import { FosterRecord } from '../foster-record/foster-record';
-import { AnimalType, AnimalGender, AnimalStatus, AnimalSize } from './animal';
+import {
+  AnimalType,
+  AnimalGender,
+  AnimalStatus,
+  AnimalSize,
+  FosterState,
+} from './animal';
 
 export type FosterRecordAnimalItem = {
   id: string;
@@ -101,6 +107,7 @@ export type OrganizationAnimalDetailItem = {
   name: string;
   type: AnimalType;
   size: AnimalSize;
+  animalStatus: FosterState;
   breed: string;
   birth_date: Date;
   gender: AnimalGender;

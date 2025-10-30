@@ -33,10 +33,18 @@ import {
   AnimalType,
   AnimalSize,
   AnimalGender,
-  AnimalStatus,
+  FosterState,
 } from '@/entities/animal/animal';
 import { Card } from '@/shared/ui/card';
-import { ChangeEvent, useEffect, useRef, useState } from 'react';
+import {
+  ChangeEvent,
+  ReactElement,
+  useCallback,
+  useEffect,
+  useMemo,
+  useRef,
+  useState,
+} from 'react';
 import { Calendar } from '@/shared/ui/calendar';
 import Image from 'next/image';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
@@ -63,6 +71,15 @@ import {
 } from '@/entities/animal-condition/animal-condition';
 import Chip from '@/shared/widgets/form/chip';
 import { useEmergencyReasonReset } from './hooks/use-emergency-reason-reset';
+import { useQueryClient } from '@tanstack/react-query';
+import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { toast } from 'sonner';
+import {
+  createOrganizationAnimal,
+  updateOrganizationAnimal,
+} from '@/features/organization/api/foster-admin';
+import { ORGANIZATION_ANIMALS_QUERY_KEY } from './hooks/use-organization-animals';
+import type { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
@@ -71,7 +88,7 @@ const AnimalCreateformSchema = z.object({
   type: z.nativeEnum(AnimalType),
   size: z.nativeEnum(AnimalSize),
   gender: z.nativeEnum(AnimalGender),
-  status: z.nativeEnum(AnimalStatus),
+  status: z.nativeEnum(FosterState),
   images: z.array(z.string()).min(1),
   breed: z.string().min(1, {
     message: '보호동물의 품종을 작성해 주세요.',
@@ -92,31 +109,99 @@ const AnimalCreateformSchema = z.object({
   organization_id: z.string(),
 });
 
-export function AnimalCreateDialog() {
+type AnimalCreateDialogProps = {
+  mode?: 'create' | 'edit';
+  trigger?: ReactElement;
+  animal?: OrganizationAnimalDetailItem | null;
+  organizationId?: string;
+  onSuccess?: () => void;
+};
+
+const CREATE_DEFAULTS: z.infer<typeof AnimalCreateformSchema> = {
+  name: '',
+  type: AnimalType.DOG,
+  size: AnimalSize.SMALL,
+  gender: AnimalGender.MALE,
+  status: FosterState.IN_PROGRESS,
+  images: [],
+  breed: '',
+  birth_date: new Date(),
+  remark: '',
+  introduction: '',
+  isEmergency: false,
+  emergency_reason: '',
+  animal_healths: [] as AnimalHealth[],
+  animal_personalitys: [] as AnimalPersonality[],
+  animal_environments: [] as AnimalEnvironment[],
+  special_notes_animals: [] as AnimalSpecialNote[],
+  organization_id: '1',
+};
+
+export function AnimalCreateDialog({
+  mode = 'create',
+  trigger,
+  animal,
+  organizationId,
+  onSuccess,
+}: AnimalCreateDialogProps) {
+  const isEdit = mode === 'edit';
+  const defaultValues = useMemo<z.infer<typeof AnimalCreateformSchema>>(() => {
+    if (isEdit && animal) {
+      return {
+        name: animal.name ?? '',
+        type: animal.type ?? AnimalType.DOG,
+        size: animal.size ?? AnimalSize.SMALL,
+        gender: animal.gender ?? AnimalGender.MALE,
+        status: animal.animalStatus ?? FosterState.IN_PROGRESS,
+        images: animal.images?.slice() ?? [],
+        breed: animal.breed ?? '',
+        birth_date: animal.birth_date ? new Date(animal.birth_date) : new Date(),
+        introduction: animal.introduction ?? '',
+        remark: animal.remark ?? '',
+        isEmergency: Boolean(animal.isEmergency),
+        emergency_reason: animal.emergency_reason ?? '',
+        animal_healths: animal.animal_healths?.slice() ?? [],
+        animal_personalitys: animal.animal_personalitys?.slice() ?? [],
+        animal_environments: animal.foster_environments?.slice() ?? [],
+        special_notes_animals: animal.special_notes_animals?.slice() ?? [],
+        organization_id: animal.organization?.id ?? organizationId ?? '1',
+      };
+    }
+
+    return {
+      ...CREATE_DEFAULTS,
+      birth_date: new Date(),
+      organization_id: organizationId ?? CREATE_DEFAULTS.organization_id,
+    };
+  }, [animal, isEdit, organizationId]);
+
+  const queryClient = useQueryClient();
   const form = useForm<z.infer<typeof AnimalCreateformSchema>>({
     resolver: zodResolver(AnimalCreateformSchema),
-    defaultValues: {
-      name: '',
-      type: AnimalType.DOG,
-      size: AnimalSize.SMALL,
-      gender: AnimalGender.MALE,
-      status: AnimalStatus.WAITING,
-      images: [],
-      breed: '',
-      birth_date: new Date(),
-      remark: '',
-      isEmergency: false,
-      emergency_reason: '',
-      animal_healths: [] as AnimalHealth[],
-      animal_personalitys: [] as AnimalPersonality[],
-      animal_environments: [] as AnimalEnvironment[],
-      special_notes_animals: [] as AnimalSpecialNote[],
-      organization_id: '1',
-    },
+    defaultValues,
   });
   const contentRef = useRef<HTMLDivElement>(null);
 
   const [currentPage, setCurrentPage] = useState(0);
+  const [open, setOpen] = useState(false);
+  const [isSubmitting, setIsSubmitting] = useState(false);
+
+  const triggerNode = useMemo(() => {
+    if (trigger) {
+      return trigger;
+    }
+
+    return (
+      <Button variant="outline_green" className="h-10 text-[#00592d]">
+        <Plus />
+        보호 동물 추가
+      </Button>
+    );
+  }, [trigger]);
+
+  useEffect(() => {
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
 
   useEffect(() => {
     if (contentRef.current) {
@@ -150,18 +235,89 @@ export function AnimalCreateDialog() {
     (form.watch('isEmergency') &&
       form.watch('emergency_reason')?.trim().length > 0);
 
-  // 2. Define a submit handler.
-  function onSubmit(_values: z.infer<typeof AnimalCreateformSchema>) {}
+  const resetForm = useCallback(() => {
+    setCurrentPage(0);
+    form.reset(defaultValues);
+  }, [defaultValues, form]);
+
+  async function onSubmit(values: z.infer<typeof AnimalCreateformSchema>) {
+    const token = resolveStoredAccessToken();
+
+    if (!token) {
+      toast('로그인이 필요합니다.');
+      return;
+    }
+
+    setIsSubmitting(true);
+    const payload = {
+      name: values.name,
+      organizationId: values.organization_id,
+      shared: values.status === FosterState.FOSTERED,
+      status: values.status,
+      type: values.type,
+      size: values.size,
+      gender: values.gender,
+      breed: values.breed,
+      birthDate: values.birth_date,
+      introduction: values.introduction,
+      remark: values.remark,
+      isEmergency: values.isEmergency,
+      emergencyReason: values.emergency_reason,
+      images: values.images,
+      healthTags: values.animal_healths,
+      personalityTags: values.animal_personalitys,
+      environmentTags: values.animal_environments,
+      specialNoteTags: values.special_notes_animals,
+    } as const;
+
+    try {
+      if (isEdit && animal) {
+        await updateOrganizationAnimal(token, animal.id, payload);
+        toast.success('보호 동물 정보를 수정했어요.');
+      } else {
+        await createOrganizationAnimal(token, payload);
+        toast.success('보호 동물을 등록했어요.');
+      }
+
+      await queryClient.invalidateQueries({
+        queryKey: ORGANIZATION_ANIMALS_QUERY_KEY,
+      });
+      onSuccess?.();
+      resetForm();
+      setOpen(false);
+    } catch (error) {
+      const message =
+        error instanceof Error ? error.message : '잠시 뒤 다시 시도해 주세요.';
+      toast.error(message);
+    } finally {
+      setIsSubmitting(false);
+    }
+  }
 
   return (
-    <Dialog>
+    <Dialog
+      open={open}
+      onOpenChange={(next) => {
+        if (isSubmitting) {
+          return;
+        }
+        if (next) {
+          const token = resolveStoredAccessToken();
+          if (!token) {
+            toast('로그인이 필요합니다.');
+            return;
+          }
+          resetForm();
+        } else {
+          resetForm();
+        }
+        setOpen(next);
+      }}
+    >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
           <DialogTrigger asChild>
-            <Button variant="outline_green" className="h-10 text-[#00592d]">
-              <Plus />
-              보호 동물 추가
-            </Button>
+            {triggerNode}
           </DialogTrigger>
           <DialogContent ref={contentRef} className="gap-10 sm:max-w-xl">
             <DialogHeader>
@@ -797,10 +953,10 @@ ex) 꼬리 만지는 걸 싫어함.
               {currentPage === 2 && (
                 <Button
                   type="submit"
-                  disabled={currentPage === 2 && !isStep3Valid}
+                  disabled={(!isStep3Valid && currentPage === 2) || isSubmitting}
                   className="w-40"
                 >
-                  프로필 등록
+                  {isSubmitting ? '등록 중...' : '프로필 등록'}
                 </Button>
               )}
             </DialogFooter>

@@ -3,8 +3,44 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import AnimalDetailContainer from '../animal-detail-container';
-import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
+import { AnimalGender, AnimalSize, AnimalType, FosterState } from '@/entities/animal/animal';
 import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
+
+vi.mock('@tanstack/react-query', () => ({
+  useQueryClient: () => ({
+    invalidateQueries: vi.fn(),
+  }),
+}));
+
+vi.mock('@/lib/auth/session', () => ({
+  resolveStoredAccessToken: vi.fn(() => 'token'),
+}));
+
+vi.mock('sonner', () => {
+  const fn = vi.fn();
+  fn.success = vi.fn();
+  fn.error = vi.fn();
+  return { toast: fn };
+});
+
+vi.mock('@/features/organization/api/foster-admin', () => ({
+  deleteOrganizationAnimal: vi.fn(),
+}));
+
+vi.mock('../animal-create-dialog', () => ({
+  AnimalCreateDialog: ({
+    trigger,
+  }: {
+    trigger?: React.ReactElement;
+  }) => trigger ?? null,
+}));
+
+vi.mock('next/navigation', () => ({
+  useRouter: () => ({
+    push: vi.fn(),
+    refresh: vi.fn(),
+  }),
+}));
 
 vi.mock('@/shared/widgets/map/kakaomap-loader', () => ({
   default: () => <div data-testid="mock-map" />,
@@ -90,6 +126,7 @@ const baseAnimal = {
   name: '두부',
   type: AnimalType.DOG,
   size: AnimalSize.SMALL,
+  animalStatus: FosterState.IN_PROGRESS,
   breed: '믹스',
   birth_date: new Date('2022-01-01'),
   gender: AnimalGender.FEMALE,
