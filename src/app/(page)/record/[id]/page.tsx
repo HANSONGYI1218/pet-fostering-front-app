@@ -6,12 +6,19 @@ import { AnimalType } from '@/entities/animal/animal';
 import { FosterRecord } from '@/entities/foster-record/foster-record';
 import { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
 import { fetchRecordDetail } from '@/features/record/api/record';
-import { notFound } from 'next/navigation';
+import { notFound, redirect } from 'next/navigation';
 import BackButton from '@/shared/widgets/navigation/back-button';
 import type { AsyncParams } from '@/shared/types/next';
 import { createAppMetadata } from '@/shared/config/seo';
+import { resolveServerAccessToken } from '@/lib/auth/server-session';
 
-const getRecordDetail = cache((id: string) => fetchRecordDetail(id));
+const token = await resolveServerAccessToken();
+
+if (!token) {
+  redirect('/record');
+}
+
+const getRecordDetail = cache((id: string) => fetchRecordDetail(id, token));
 
 export async function generateMetadata({
   params,
@@ -49,7 +56,7 @@ export default async function RecordDetailPage({
 }: AsyncParams<{ id: string }>) {
   const { id } = await params;
 
-  const { info, records } = await getRecordDetail(id).catch(
+  const { info, records } = await fetchRecordDetail(id, token!).catch(
     (error: unknown) => {
       if (error instanceof Error && /404/.test(error.message)) {
         notFound();

@@ -14,9 +14,10 @@ export enum AnimalSize {
   LARGE = 'LARGE',
 }
 
-export enum FosterState {
+export enum AnimalStatus {
+  WAITING = 'WAITING',
   IN_PROGRESS = 'IN_PROGRESS',
-  FOSTERED = 'FOSTERED',
+  COMPLETED = 'COMPLETED',
 }
 
 export type Animal = {
@@ -35,7 +36,7 @@ export type Animal = {
   updated_at: Date;
   current_foster_start_date: Date;
   current_foster_end_date: Date;
-  state: FosterState;
+  state: AnimalStatus;
   isEmergency: boolean;
   emergency_reason: string;
   organization_id: string;

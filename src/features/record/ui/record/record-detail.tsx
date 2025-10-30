@@ -95,30 +95,32 @@ export default function RecordDetail() {
         )
       ) : filteredRecords?.length > 0 ? (
         <div className="flex flex-col">
-          {filteredRecords?.map((record, indx) => (
-            <div
-              key={indx}
-              className={`flex flex-col gap-2 ${indx !== filteredRecords?.length - 1 && 'border-b'} py-6`}
-            >
-              <span className="text-base font-semibold md:text-lg">
-                {format(toDate(record?.created_at), 'yyyy.MM.dd')}
-              </span>
-              <div className="grid w-full grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
-                {record?.images?.map((image, index) => (
-                  <div key={index} className="relative h-40 w-full">
-                    <Image
-                      src={image ?? '/images/placeholder.png'}
-                      alt={`record-${record?.created_at}`}
-                      fill
-                      className="object-cover"
-                      sizes="(max-width: 768px) 100vw, 25vw"
-                      unoptimized={!image?.startsWith('/')}
-                    />
-                  </div>
-                ))}
+          {filteredRecords?.map((record, indx) =>
+            record?.images?.length > 0 ? (
+              <div
+                key={indx}
+                className={`flex flex-col gap-2 ${indx !== filteredRecords?.length - 1 && 'border-b'} py-6`}
+              >
+                <span className="text-base font-semibold md:text-lg">
+                  {format(toDate(record?.created_at), 'yyyy.MM.dd')}
+                </span>
+                <div className="grid w-full grid-cols-2 gap-6 md:grid-cols-3 xl:grid-cols-4">
+                  {record?.images?.map((image, index) => (
+                    <div key={index} className="relative h-40 w-full">
+                      <Image
+                        src={image ?? '/images/placeholder.png'}
+                        alt={`record-${record?.created_at}`}
+                        fill
+                        className="object-cover"
+                        sizes="(max-width: 768px) 100vw, 25vw"
+                        unoptimized={!image?.startsWith('/')}
+                      />
+                    </div>
+                  ))}
+                </div>
               </div>
-            </div>
-          ))}
+            ) : null,
+          )}
         </div>
       ) : (
         <EmptyBox text="사진이 없어요." />

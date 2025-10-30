@@ -33,7 +33,7 @@ import {
   AnimalType,
   AnimalSize,
   AnimalGender,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 import { Card } from '@/shared/ui/card';
 import { ChangeEvent, useEffect, useRef, useState } from 'react';
@@ -71,7 +71,7 @@ const AnimalCreateformSchema = z.object({
   type: z.nativeEnum(AnimalType),
   size: z.nativeEnum(AnimalSize),
   gender: z.nativeEnum(AnimalGender),
-  status: z.nativeEnum(FosterState),
+  status: z.nativeEnum(AnimalStatus),
   images: z.array(z.string()).min(1),
   breed: z.string().min(1, {
     message: '보호동물의 품종을 작성해 주세요.',
@@ -100,7 +100,7 @@ export function AnimalCreateDialog() {
       type: AnimalType.DOG,
       size: AnimalSize.SMALL,
       gender: AnimalGender.MALE,
-      status: FosterState.IN_PROGRESS,
+      status: AnimalStatus.WAITING,
       images: [],
       breed: '',
       birth_date: new Date(),

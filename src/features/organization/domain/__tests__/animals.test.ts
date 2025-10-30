@@ -6,7 +6,7 @@ import {
   AnimalGender,
   AnimalSize,
   AnimalType,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 
 const createAnimal = (
@@ -19,7 +19,7 @@ const createAnimal = (
   breed: '믹스',
   birth_date: new Date('2020-01-01'),
   gender: AnimalGender.MALE,
-  animalStatus: FosterState.IN_PROGRESS,
+  animalStatus: AnimalStatus.WAITING,
   image: '/image.png',
   applicants: [],
   animal_healths: [],
@@ -33,10 +33,10 @@ const createAnimal = (
 describe('sortOrganizationAnimals', () => {
   it('임시보호 상태 우선순위에 맞게 정렬한다', () => {
     const animals = [
-      createAnimal({ id: 'fostered', animalStatus: FosterState.FOSTERED }),
+      createAnimal({ id: 'fostered', animalStatus: AnimalStatus.IN_PROGRESS }),
       createAnimal({
         id: 'in-progress',
-        animalStatus: FosterState.IN_PROGRESS,
+        animalStatus: AnimalStatus.WAITING,
       }),
     ];
 
@@ -50,8 +50,8 @@ describe('sortOrganizationAnimals', () => {
 
   it('정렬 시 원본 배열을 변경하지 않는다', () => {
     const animals = [
-      createAnimal({ id: 'first', animalStatus: FosterState.FOSTERED }),
-      createAnimal({ id: 'second', animalStatus: FosterState.IN_PROGRESS }),
+      createAnimal({ id: 'first', animalStatus: AnimalStatus.IN_PROGRESS }),
+      createAnimal({ id: 'second', animalStatus: AnimalStatus.WAITING }),
     ];
 
     sortOrganizationAnimals(animals);
@@ -68,7 +68,7 @@ describe('filterOrganizationAnimals', () => {
       type: AnimalType.DOG,
       size: AnimalSize.SMALL,
       gender: AnimalGender.MALE,
-      animalStatus: FosterState.IN_PROGRESS,
+      animalStatus: AnimalStatus.WAITING,
     }),
     createAnimal({
       id: 'cat-medium-female',
@@ -76,7 +76,7 @@ describe('filterOrganizationAnimals', () => {
       type: AnimalType.CAT,
       size: AnimalSize.MEDIUM,
       gender: AnimalGender.FEMALE,
-      animalStatus: FosterState.FOSTERED,
+      animalStatus: AnimalStatus.IN_PROGRESS,
       isEmergency: true,
       breed: '코리안숏헤어',
     }),
@@ -86,7 +86,7 @@ describe('filterOrganizationAnimals', () => {
       type: AnimalType.DOG,
       size: AnimalSize.LARGE,
       gender: AnimalGender.FEMALE,
-      animalStatus: FosterState.FOSTERED,
+      animalStatus: AnimalStatus.IN_PROGRESS,
       breed: 'Poodle Mix',
     }),
   ];
@@ -121,7 +121,7 @@ describe('filterOrganizationAnimals', () => {
       type: AnimalType.DOG,
       size: AnimalSize.LARGE,
       gender: AnimalGender.FEMALE,
-      status: FosterState.FOSTERED,
+      status: AnimalStatus.IN_PROGRESS,
     });
 
     expect(result.map((animal) => animal.id)).toEqual(['dog-large-female']);

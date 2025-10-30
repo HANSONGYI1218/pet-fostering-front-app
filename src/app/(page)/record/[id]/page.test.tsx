@@ -1,6 +1,12 @@
 import { describe, expect, it, vi, afterEach } from 'vitest';
 import { cleanup, render } from '@testing-library/react';
 
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(() => ({
+    get: vi.fn(() => ({ value: 'mock-token' })),
+  })),
+}));
+
 vi.mock('@/features/record/api/record', () => ({
   fetchRecordDetail: vi.fn().mockResolvedValue({
     info: {
@@ -65,6 +71,9 @@ describe('RecordDetailPage', () => {
 
     render(element);
 
-    expect(fetchRecordDetail).toHaveBeenCalledWith('seed-animal-nabi');
+    expect(fetchRecordDetail).toHaveBeenCalledWith(
+      'seed-animal-nabi',
+      expect.any(String),
+    );
   });
 });

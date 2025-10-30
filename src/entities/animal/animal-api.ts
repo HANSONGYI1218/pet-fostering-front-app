@@ -6,7 +6,7 @@ import {
 } from '../animal-condition/animal-condition';
 import { FosterApplicant } from '../foster-apply/foster-apply-api';
 import { FosterRecord } from '../foster-record/foster-record';
-import { AnimalType, AnimalGender, FosterState, AnimalSize } from './animal';
+import { AnimalType, AnimalGender, AnimalStatus, AnimalSize } from './animal';
 
 export type FosterRecordAnimalItem = {
   id: string;
@@ -17,8 +17,7 @@ export type FosterRecordAnimalItem = {
   gender: AnimalGender;
   images: string[];
   foster_duration: number;
-  state: FosterState;
-  foster_match_id: string;
+  state: AnimalStatus;
 };
 
 export type FosterListAnimalItem = {
@@ -87,7 +86,7 @@ export type OrganizationAnimalListItem = {
   breed: string;
   birth_date: Date;
   gender: AnimalGender;
-  animalStatus: FosterState;
+  animalStatus: AnimalStatus;
   image: string;
   applicants: FosterApplicant[];
   animal_healths: AnimalHealth[];
@@ -140,4 +139,18 @@ export type AnimalListItem = {
   image: string;
   isEmergency: boolean;
   euthanasia_date: Date | null;
+};
+
+export type AnimalUpsertPayload = {
+  name?: string;
+  size?: AnimalSize;
+  type?: AnimalType;
+  breed?: string;
+  birth_date?: Date;
+  gender?: AnimalGender;
+  introduction?: string | undefined;
+  remark?: string | undefined;
+  current_foster_start_date?: Date | undefined;
+  current_foster_end_date?: Date | undefined;
+  status?: AnimalStatus;
 };

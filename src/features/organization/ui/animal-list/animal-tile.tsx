@@ -12,7 +12,7 @@ import { Badge } from '@/shared/ui/badge';
 import Link from 'next/link';
 import { FosterApplyListDialog } from './foster-apply-list-dialog';
 import { Button } from '@/shared/ui/button';
-import { FosterState } from '@/entities/animal/animal';
+import { AnimalStatus } from '@/entities/animal/animal';
 import { formatAnimalAge } from '@/shared/lib/utils';
 import Image from 'next/image';
 
@@ -21,7 +21,7 @@ export default function FosterTile({
 }: {
   animal: OrganizationAnimalListItem;
 }) {
-  const isFosterCompleted = animal?.animalStatus === FosterState.FOSTERED;
+  const isFosterCompleted = animal?.animalStatus === AnimalStatus.IN_PROGRESS;
 
   return (
     <Card
