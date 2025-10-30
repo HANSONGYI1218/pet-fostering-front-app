@@ -450,7 +450,7 @@ export const deleteComment = async (
 };
 
 export const updatePostView = async (id: string) => {
-  const response = await fetch(resolveEndpoint(`/community/posts/${id}`), {
+  const response = await fetch(resolveEndpoint(`/community/posts/${id}/views`), {
     method: 'PATCH',
     headers: { 'Content-Type': 'application/json' },
   });

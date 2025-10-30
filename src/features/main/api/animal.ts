@@ -1,31 +1,25 @@
-import { AnimalListItem } from '@/entities/animal/animal-api';
-import { AnimalGender, AnimalType } from '@/entities/animal/animal';
-import { toDate } from '@/shared/lib/utils';
+import {
+  type PublicFosterAnimalListItemDto,
+  type PublicFosterAnimalListResponseDto,
+  mapFosterListItem,
+} from '@/features/foster/api/foster';
+import type {
+  AnimalListItem,
+  FosterListAnimalItem,
+} from '@/entities/animal/animal-api';
 import { resolveEndpoint } from '@/shared/api/config';
 import { logError } from '@/shared/lib/logging';
 
-type AnimalListDto = {
-  id: string;
-  name: string;
-  type?: keyof typeof AnimalType | null;
-  gender?: keyof typeof AnimalGender | null;
-  breed?: string | null;
-  birthDate?: string | null;
-  image: string;
-  euthanasia_date?: Date | null;
-  isEmergency: boolean;
-};
-
-const mapListItem = (dto: AnimalListDto): AnimalListItem => ({
-  id: dto.id,
-  name: dto.name,
-  type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
-  breed: dto.breed ?? '',
-  birth_date: dto.birthDate ? toDate(dto.birthDate) : null,
-  gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
-  image: dto.image ?? '/images/animal-placeholder.png',
-  euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
-  isEmergency: dto.isEmergency,
+const toMainListItem = (item: FosterListAnimalItem): AnimalListItem => ({
+  id: item.id,
+  name: item.name,
+  type: item.type,
+  breed: item.breed,
+  birth_date: item.birth_date,
+  gender: item.gender,
+  image: item.image,
+  euthanasia_date: item.euthanasia_date,
+  isEmergency: item.isEmergency,
 });
 
 export const fetchAnimalLists = async ({
@@ -46,9 +40,15 @@ export const fetchAnimalLists = async ({
       throw new Error(`보호동물 목록 요청 실패: ${response.status}`);
     }
 
-    const result: AnimalListDto[] = await response.json();
+    const payload =
+      ((await response.json()) as
+        | PublicFosterAnimalListResponseDto
+        | PublicFosterAnimalListItemDto[]) ?? [];
 
-    return result.map(mapListItem);
+    const items = Array.isArray(payload) ? payload : payload.items ?? [];
+    const fosterItems = items.map((item) => mapFosterListItem(item));
+
+    return fosterItems.map(toMainListItem);
   } catch (error) {
     logError('보호동물 목록을 불러오지 못했습니다.', error);
     if (error instanceof Error) {

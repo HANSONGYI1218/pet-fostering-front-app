@@ -21,7 +21,7 @@ describe('fetchAnimalLists', () => {
   it('요청에 limit 파라미터를 포함한다', async () => {
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: async () => [],
+      json: async () => ({ items: [] }),
     } as Response);
 
     const { fetchAnimalLists } = await import('../animal');
@@ -39,19 +39,27 @@ describe('fetchAnimalLists', () => {
 
     fetchMock.mockResolvedValueOnce({
       ok: true,
-      json: async () => [
-        {
-          id: 'animal-1',
-          name: 'Buddy',
-          type: 'DOG',
-          gender: 'MALE',
-          breed: 'Jindo',
-          birthDate: '2024-01-01T00:00:00.000Z',
-          image: '/images/animal-placeholder.png',
-          euthanasia_date: euthanasiaDate,
-          isEmergency: true,
-        },
-      ],
+      json: async () => ({
+        items: [
+          {
+            id: 'animal-1',
+            name: 'Buddy',
+            type: 'DOG',
+            gender: 'MALE',
+            breed: 'Jindo',
+            birthDate: '2024-01-01T00:00:00.000Z',
+            mainImageUrl: '/images/animal-placeholder.png',
+            isEmergency: true,
+            euthanasiaDate,
+            status: 'IN_PROGRESS',
+            shared: false,
+            healthTags: [],
+            personalityTags: [],
+            environmentTags: [],
+            fosterDays: 3,
+          },
+        ],
+      }),
     } as Response);
 
     const { fetchAnimalLists } = await import('../animal');

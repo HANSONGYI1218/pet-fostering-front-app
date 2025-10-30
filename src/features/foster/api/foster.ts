@@ -14,7 +14,7 @@ import { toDate } from '@/shared/lib/utils';
 import { resolveEndpoint } from '@/shared/api/config';
 import { logError } from '@/shared/lib/logging';
 
-type PublicFosterOrganizationDto = {
+export type PublicFosterOrganizationDto = {
   id: string;
   name: string;
   address?: string | null;
@@ -33,19 +33,20 @@ type PublicFosterAnimalBaseDto = {
   gender?: keyof typeof AnimalGender | null;
   breed?: string | null;
   birthDate?: string | null;
-  euthanasia_date?: Date | null;
+  euthanasiaDate?: string | null;
   status: string;
   shared: boolean;
   mainImageUrl?: string | null;
   isEmergency: boolean;
+  isFosterCondition: boolean;
   emergencyReason?: string | null;
-  organization: PublicFosterOrganizationDto | null;
+  organization?: PublicFosterOrganizationDto | null;
   healthTags: Array<keyof typeof AnimalHealth>;
   personalityTags: Array<keyof typeof AnimalPersonality>;
   environmentTags: Array<keyof typeof AnimalEnvironment>;
 };
 
-type PublicFosterAnimalListItemDto = PublicFosterAnimalBaseDto & {
+export type PublicFosterAnimalListItemDto = PublicFosterAnimalBaseDto & {
   fosterDays: number;
 };
 
@@ -59,12 +60,12 @@ type PublicFosterAnimalDetailDto = PublicFosterAnimalBaseDto & {
   currentFosterEndDate?: string | null;
 };
 
-type PublicFosterAnimalListResponseDto = {
+export type PublicFosterAnimalListResponseDto = {
   items: PublicFosterAnimalListItemDto[];
 };
 
 const mapOrganization = (
-  dto: PublicFosterOrganizationDto | null,
+  dto?: PublicFosterOrganizationDto | null,
 ): FosterListAnimalItem['organization'] | null => {
   if (!dto) return null;
 
@@ -89,7 +90,7 @@ const mapListItem = (
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
   image: dto.mainImageUrl ?? '/images/animal-placeholder.png',
   isBookmarked: false,
-  euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
+  euthanasia_date: dto.euthanasiaDate ? toDate(dto.euthanasiaDate) : null,
   animal_healths: dto.healthTags.map(
     (value) => AnimalHealth[value] ?? AnimalHealth.NEUTERED,
   ),
@@ -122,7 +123,7 @@ const mapDetail = (
   images:
     dto.images.length > 0 ? dto.images : ['/images/animal-placeholder.png'],
   introduction: dto.introduction ?? '',
-  euthanasia_date: dto.euthanasia_date ? toDate(dto.euthanasia_date) : null,
+  euthanasia_date: dto.euthanasiaDate ? toDate(dto.euthanasiaDate) : null,
   remark: dto.remark ?? '',
   isBookmarked: false,
   isFosterCondition: dto.isFosterCondition ?? false,
