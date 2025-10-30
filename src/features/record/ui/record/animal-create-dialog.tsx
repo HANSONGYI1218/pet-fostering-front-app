@@ -83,6 +83,7 @@ const AnimalCreateformSchema = z.object({
 });
 
 export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
+  // eslint-disable-next-line react-hooks/exhaustive-deps
   const defaultAnimalValues = {
     name: animal?.name ?? '',
     type: animal?.type ?? AnimalType.DOG,

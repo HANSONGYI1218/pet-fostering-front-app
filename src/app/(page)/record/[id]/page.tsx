@@ -12,20 +12,18 @@ import type { AsyncParams } from '@/shared/types/next';
 import { createAppMetadata } from '@/shared/config/seo';
 import { resolveServerAccessToken } from '@/lib/auth/server-session';
 
-const token = await resolveServerAccessToken();
-
-if (!token) {
-  redirect('/record');
-}
-
-const getRecordDetail = cache((id: string) => fetchRecordDetail(id, token));
-
 export async function generateMetadata({
   params,
 }: AsyncParams<{ id: string }>): Promise<Metadata> {
   const { id } = await params;
 
+  const token = await resolveServerAccessToken();
+  if (!token) {
+    redirect('/record');
+  }
+
   try {
+    const getRecordDetail = cache((id: string) => fetchRecordDetail(id, token));
     const { info } = await getRecordDetail(id);
     const animalName = info.animal.name;
     const organizationName = info.organization.name || '보호소';
@@ -56,7 +54,12 @@ export default async function RecordDetailPage({
 }: AsyncParams<{ id: string }>) {
   const { id } = await params;
 
-  const { info, records } = await fetchRecordDetail(id, token!).catch(
+  const token = await resolveServerAccessToken();
+  if (!token) {
+    redirect('/record');
+  }
+
+  const { info, records } = await fetchRecordDetail(id, token).catch(
     (error: unknown) => {
       if (error instanceof Error && /404/.test(error.message)) {
         notFound();

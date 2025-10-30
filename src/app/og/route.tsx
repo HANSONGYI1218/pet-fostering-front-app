@@ -2,17 +2,11 @@ import { ImageResponse } from 'next/og';
 
 export const runtime = 'edge';
 
-export const size = {
-  width: 1200,
-  height: 630,
-};
-
-export const contentType = 'image/png';
-
 const background = '#0f172a';
 const accent = '#38bdf8';
 
 export function GET() {
+  const size = { width: 1200, height: 630 }; // GET 내부에서만 사용
   return new ImageResponse(
     (
       <div
