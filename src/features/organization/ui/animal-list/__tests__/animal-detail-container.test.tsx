@@ -3,7 +3,12 @@ import { render, screen } from '@testing-library/react';
 import { describe, expect, it, vi } from 'vitest';
 
 import AnimalDetailContainer from '../animal-detail-container';
-import { AnimalGender, AnimalSize, AnimalType, FosterState } from '@/entities/animal/animal';
+import {
+  AnimalGender,
+  AnimalSize,
+  AnimalType,
+  FosterState,
+} from '@/entities/animal/animal';
 import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
 
 vi.mock('@tanstack/react-query', () => ({
@@ -28,11 +33,8 @@ vi.mock('@/features/organization/api/foster-admin', () => ({
 }));
 
 vi.mock('../animal-create-dialog', () => ({
-  AnimalCreateDialog: ({
-    trigger,
-  }: {
-    trigger?: React.ReactElement;
-  }) => trigger ?? null,
+  AnimalCreateDialog: ({ trigger }: { trigger?: React.ReactElement }) =>
+    trigger ?? null,
 }));
 
 vi.mock('next/navigation', () => ({

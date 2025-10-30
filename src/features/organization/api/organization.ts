@@ -9,6 +9,7 @@ import {
   AnimalSize,
   AnimalType,
   AnimalStatus,
+  FosterState,
 } from '@/entities/animal/animal';
 import type {
   OrganizationAnimalDetailItem,
@@ -141,6 +142,15 @@ export const fetchOrganizationAnimals = async (): Promise<
   }
 };
 
+const mapDetailStatusToFosterState = (
+  status?: keyof typeof AnimalStatus | null,
+): FosterState => {
+  if (status === 'COMPLETED') {
+    return FosterState.FOSTERED;
+  }
+  return FosterState.IN_PROGRESS;
+};
+
 const mapOrganizationRecord = (
   dto: NonNullable<OrganizationAnimalDetailDto['fosterRecords']>[number],
 ): FosterRecord => ({
@@ -157,6 +167,7 @@ const mapOrganizationDetail = (
 ): OrganizationAnimalDetailItem => ({
   id: dto.id,
   name: dto.name,
+  animalStatus: mapDetailStatusToFosterState(dto.status),
   type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
   size: dto.size ? AnimalSize[dto.size] : AnimalSize.SMALL,
   breed: dto.breed ?? '',

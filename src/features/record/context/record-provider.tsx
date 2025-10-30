@@ -105,12 +105,8 @@ export const RecordProvider: React.FC<{
   }, []);
 
   const removeRecord = useCallback((recordId: string) => {
-    setRecordsState((prev) =>
-      prev.filter((record) => record.id !== recordId),
-    );
-    setSelectedRecord((current) =>
-      current?.id === recordId ? null : current,
-    );
+    setRecordsState((prev) => prev.filter((record) => record.id !== recordId));
+    setSelectedRecord((current) => (current?.id === recordId ? null : current));
   }, []);
 
   return (

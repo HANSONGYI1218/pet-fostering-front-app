@@ -213,12 +213,14 @@ export default function AnimalDetailContainer({
               <AlertDialogHeader>
                 <AlertDialogTitle>보호 동물을 삭제할까요?</AlertDialogTitle>
                 <AlertDialogDescription>
-                  삭제하면 {animal.name}에 대한 모든 정보와 돌봄 기록이 사라집니다.
-                  이 작업은 되돌릴 수 없습니다.
+                  삭제하면 {animal.name}에 대한 모든 정보와 돌봄 기록이
+                  사라집니다. 이 작업은 되돌릴 수 없습니다.
                 </AlertDialogDescription>
               </AlertDialogHeader>
               <AlertDialogFooter>
-                <AlertDialogCancel disabled={isDeleting}>취소</AlertDialogCancel>
+                <AlertDialogCancel disabled={isDeleting}>
+                  취소
+                </AlertDialogCancel>
                 <AlertDialogAction
                   disabled={isDeleting}
                   onClick={handleDelete}

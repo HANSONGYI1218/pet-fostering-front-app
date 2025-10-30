@@ -155,7 +155,9 @@ export function AnimalCreateDialog({
         status: animal.animalStatus ?? FosterState.IN_PROGRESS,
         images: animal.images?.slice() ?? [],
         breed: animal.breed ?? '',
-        birth_date: animal.birth_date ? new Date(animal.birth_date) : new Date(),
+        birth_date: animal.birth_date
+          ? new Date(animal.birth_date)
+          : new Date(),
         introduction: animal.introduction ?? '',
         remark: animal.remark ?? '',
         isEmergency: Boolean(animal.isEmergency),
@@ -316,9 +318,7 @@ export function AnimalCreateDialog({
     >
       <Form {...form}>
         <form onSubmit={form.handleSubmit(onSubmit)} className="space-y-8">
-          <DialogTrigger asChild>
-            {triggerNode}
-          </DialogTrigger>
+          <DialogTrigger asChild>{triggerNode}</DialogTrigger>
           <DialogContent ref={contentRef} className="gap-10 sm:max-w-xl">
             <DialogHeader>
               <DialogTitle>보호 동물 추가</DialogTitle>
@@ -953,7 +953,9 @@ ex) 꼬리 만지는 걸 싫어함.
               {currentPage === 2 && (
                 <Button
                   type="submit"
-                  disabled={(!isStep3Valid && currentPage === 2) || isSubmitting}
+                  disabled={
+                    (!isStep3Valid && currentPage === 2) || isSubmitting
+                  }
                   className="w-40"
                 >
                   {isSubmitting ? '등록 중...' : '프로필 등록'}

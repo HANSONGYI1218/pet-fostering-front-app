@@ -128,7 +128,9 @@ describe('CalendarDialogForm', () => {
     await user.type(contentField, '새로운 기록');
     await user.type(healthField, '오늘은 아주 건강했어요');
 
-    const submitButton = await screen.findByRole('button', { name: '완료하기' });
+    const submitButton = await screen.findByRole('button', {
+      name: '완료하기',
+    });
 
     await user.click(submitButton);
 
@@ -277,7 +279,9 @@ describe('CalendarDialogForm', () => {
     const editButton = await screen.findByRole('button', { name: '수정하기' });
     await user.click(editButton);
 
-    const deleteButton = await screen.findByRole('button', { name: '삭제하기' });
+    const deleteButton = await screen.findByRole('button', {
+      name: '삭제하기',
+    });
     await user.click(deleteButton);
 
     await waitFor(() => {

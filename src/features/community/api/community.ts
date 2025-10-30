@@ -450,10 +450,13 @@ export const deleteComment = async (
 };
 
 export const updatePostView = async (id: string) => {
-  const response = await fetch(resolveEndpoint(`/community/posts/${id}/views`), {
-    method: 'PATCH',
-    headers: { 'Content-Type': 'application/json' },
-  });
+  const response = await fetch(
+    resolveEndpoint(`/community/posts/${id}/views`),
+    {
+      method: 'PATCH',
+      headers: { 'Content-Type': 'application/json' },
+    },
+  );
 
   if (!response.ok) {
     throw new Error(`게시물 뷰 증가 요청 실패: ${response.status}`);

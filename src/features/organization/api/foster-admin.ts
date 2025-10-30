@@ -207,7 +207,9 @@ export const updateOrganizationAnimal = async (
   });
 
   if (!response.ok) {
-    throw new Error(`보호 동물 정보를 수정하지 못했습니다. (${response.status})`);
+    throw new Error(
+      `보호 동물 정보를 수정하지 못했습니다. (${response.status})`,
+    );
   }
 
   const dto = (await response.json()) as FosterRecordBaseDto;
@@ -279,7 +281,9 @@ export const updateOrganizationFosterRecord = async (
   payload: OrganizationFosterRecordPayload,
 ): Promise<FosterRecord> => {
   const resolvedToken = ensureToken(token);
-  const endpoint = resolveEndpoint(`/foster/animals/${animalId}/records/${recordId}`);
+  const endpoint = resolveEndpoint(
+    `/foster/animals/${animalId}/records/${recordId}`,
+  );
 
   const response = await fetch(endpoint, {
     method: 'PATCH',
@@ -303,7 +307,9 @@ export const deleteOrganizationFosterRecord = async (
   recordId: string,
 ) => {
   const resolvedToken = ensureToken(token);
-  const endpoint = resolveEndpoint(`/foster/animals/${animalId}/records/${recordId}`);
+  const endpoint = resolveEndpoint(
+    `/foster/animals/${animalId}/records/${recordId}`,
+  );
 
   const response = await fetch(endpoint, {
     method: 'DELETE',
@@ -314,5 +320,9 @@ export const deleteOrganizationFosterRecord = async (
     throw new Error(`돌봄 기록 삭제에 실패했습니다. (${response.status})`);
   }
 
-  return response.json() as Promise<{ id: string; animalId: string; deleted: true }>;
+  return response.json() as Promise<{
+    id: string;
+    animalId: string;
+    deleted: true;
+  }>;
 };

@@ -4,9 +4,12 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AnimalCreateDialog } from '../animal-create-dialog';
 
-const toastMock = vi.fn() as unknown as typeof import('sonner').toast;
-toastMock.success = vi.fn();
-toastMock.error = vi.fn();
+const toastMock = vi.hoisted(() => {
+  const toastFn = vi.fn() as unknown as typeof import('sonner').toast;
+  toastFn.success = vi.fn();
+  toastFn.error = vi.fn();
+  return toastFn;
+});
 
 const sessionMocks = vi.hoisted(() => ({
   resolveStoredAccessToken: vi.fn<() => string | null>(),
@@ -33,10 +36,9 @@ vi.mock('@/lib/auth/session', async () => {
 });
 
 vi.mock('@/features/organization/api/foster-admin', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/features/organization/api/foster-admin')>(
-      '@/features/organization/api/foster-admin',
-    );
+  const actual = await vi.importActual<
+    typeof import('@/features/organization/api/foster-admin')
+  >('@/features/organization/api/foster-admin');
 
   return {
     ...actual,

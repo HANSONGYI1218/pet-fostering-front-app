@@ -3,7 +3,10 @@
 import { useEffect } from 'react';
 import { useRouter } from 'next/navigation';
 
-import { clearStoredAuthTokens, resolveStoredAccessToken } from '@/lib/auth/session';
+import {
+  clearStoredAuthTokens,
+  resolveStoredAccessToken,
+} from '@/lib/auth/session';
 import { Loader2 } from 'lucide-react';
 import { resolveEndpoint } from '@/shared/api/config';
 import { logError } from '@/shared/lib/logging';

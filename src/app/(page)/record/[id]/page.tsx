@@ -86,7 +86,7 @@ export default async function RecordDetailPage({
           <RecordContainer
             records={sortedRecords}
             isDog={fosterInfo.animal.type === AnimalType.DOG}
-            animalId={fosterInfo.animal.id}
+            animalId={id}
           />
         </div>
       </div>

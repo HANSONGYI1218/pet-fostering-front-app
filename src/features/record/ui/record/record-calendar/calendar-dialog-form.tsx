@@ -6,13 +6,7 @@ import { ImageOff, Loader2, Plus, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import {
-  useCallback,
-  useEffect,
-  useMemo,
-  useState,
-  useId,
-} from 'react';
+import { useCallback, useEffect, useMemo, useState, useId } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -28,6 +22,7 @@ import {
   DialogContent,
   DialogFooter,
   DialogHeader,
+  DialogDescription,
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
@@ -69,11 +64,11 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
 
   const currentRecord =
     recordContext.records.length > 0
-      ? recordContext.records.find(
+      ? (recordContext.records.find(
           (record: FosterRecord) =>
             format(toDate(record.created_at), 'yyyy-M-d') ===
             format(p.date, 'yyyy-M-d'),
-        ) ?? null
+        ) ?? null)
       : null;
 
   const isToday = format(new Date(), 'yyyy-M-d') === format(p.date, 'yyyy-M-d');
@@ -224,9 +219,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       );
     } catch (error) {
       const message =
-        error instanceof Error
-          ? error.message
-          : '잠시 뒤 다시 시도해 주세요.';
+        error instanceof Error ? error.message : '잠시 뒤 다시 시도해 주세요.';
       toast.error(message);
     }
   };
@@ -291,6 +284,9 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
             if (isDialogBusy) event.preventDefault();
           }}
         >
+          <DialogDescription className="sr-only">
+            돌봄 기록을 작성하거나 수정하는 대화상자입니다.
+          </DialogDescription>
           <Form {...form}>
             <form
               onSubmit={form.handleSubmit(onSubmit)}
@@ -353,7 +349,8 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                             <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
                               {isEdit &&
                                 (!field?.value ||
-                                  (field?.value && field?.value?.length < 6)) && (
+                                  (field?.value &&
+                                    field?.value?.length < 6)) && (
                                   <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
                                     <div className="absolute z-10 flex h-full w-full">
                                       <label

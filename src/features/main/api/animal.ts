@@ -45,7 +45,7 @@ export const fetchAnimalLists = async ({
         | PublicFosterAnimalListResponseDto
         | PublicFosterAnimalListItemDto[]) ?? [];
 
-    const items = Array.isArray(payload) ? payload : payload.items ?? [];
+    const items = Array.isArray(payload) ? payload : (payload.items ?? []);
     const fosterItems = items.map((item) => mapFosterListItem(item));
 
     return fosterItems.map(toMainListItem);

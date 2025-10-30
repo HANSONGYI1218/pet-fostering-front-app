@@ -349,7 +349,9 @@ export default function CommunityCommentTile({
                   <Button
                     type="button"
                     onClick={handleReportComment}
-                    disabled={isReportLoading || reportReason.trim().length === 0}
+                    disabled={
+                      isReportLoading || reportReason.trim().length === 0
+                    }
                   >
                     {isReportLoading ? (
                       <Loader2 className="animate-spin" />

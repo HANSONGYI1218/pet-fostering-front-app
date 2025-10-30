@@ -173,7 +173,7 @@ export const fetchRecordAnimals = async (
 
 export const fetchRecordDetail = async (
   id: string,
-  token: string | undefined,
+  _token: string | undefined,
 ): Promise<{ info: FosterMatchInfo; records: FosterRecord[] }> => {
   try {
     const endpoint = resolveEndpoint(`/public/foster/records/animals/${id}`);
