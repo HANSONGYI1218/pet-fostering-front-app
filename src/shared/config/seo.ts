@@ -3,7 +3,8 @@ import type { Metadata } from 'next';
 const FALLBACK_SITE_URL = 'https://perdiz.pet';
 
 const TITLE = '임시보호 매칭 플랫폼 퍼디즈';
-const DESCRIPTION = '임시보호자와 보호소를 빠르게 연결하는 퍼디즈 플랫폼입니다.';
+const DESCRIPTION =
+  '임시보호자와 보호소를 빠르게 연결하는 퍼디즈 플랫폼입니다.';
 const OG_IMAGE_PATH = '/og';
 
 type MetadataImage = {

@@ -3,13 +3,13 @@ import {
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  FOSTER_STATE_LABEL_KO,
+  ANIMAL_STATUS_LABEL_KO,
 } from '@/shared/constants/enum';
 import {
   AnimalGender,
   AnimalSize,
   AnimalType,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 import type { FosterFilterValue } from '@/features/foster/domain/list/filters';
 import {
@@ -37,11 +37,11 @@ export default function FosterConditionCard({
   animalType: FosterFilterValue<AnimalType>;
   animalSize: FosterFilterValue<AnimalSize>;
   animalGender: FosterFilterValue<AnimalGender>;
-  animalStatus?: FosterFilterValue<FosterState>;
+  animalStatus?: FosterFilterValue<AnimalStatus>;
   setAnimalType: Dispatch<SetStateAction<FosterFilterValue<AnimalType>>>;
   setAnimalSize: Dispatch<SetStateAction<FosterFilterValue<AnimalSize>>>;
   setAnimalGender: Dispatch<SetStateAction<FosterFilterValue<AnimalGender>>>;
-  setAnimalStatus?: Dispatch<SetStateAction<FosterFilterValue<FosterState>>>;
+  setAnimalStatus?: Dispatch<SetStateAction<FosterFilterValue<AnimalStatus>>>;
 }) {
   const handleChangeAnimalType = (value: string) => {
     setAnimalType(value as FosterFilterValue<AnimalType>);
@@ -56,7 +56,7 @@ export default function FosterConditionCard({
   };
 
   const handleChangeAnimalStatus = (value: string) => {
-    setAnimalStatus?.(value as FosterFilterValue<FosterState>);
+    setAnimalStatus?.(value as FosterFilterValue<AnimalStatus>);
   };
 
   const conditionTypes = [
@@ -132,12 +132,16 @@ export default function FosterConditionCard({
             options: [
               { label: FILTER_ALL_LABEL_KO, value: FILTER_ALL_VALUE },
               {
-                label: FOSTER_STATE_LABEL_KO[FosterState.IN_PROGRESS],
-                value: FosterState.IN_PROGRESS,
+                label: ANIMAL_STATUS_LABEL_KO[AnimalStatus.WAITING],
+                value: AnimalStatus.WAITING,
               },
               {
-                label: FOSTER_STATE_LABEL_KO[FosterState.FOSTERED],
-                value: FosterState.FOSTERED,
+                label: ANIMAL_STATUS_LABEL_KO[AnimalStatus.IN_PROGRESS],
+                value: AnimalStatus.IN_PROGRESS,
+              },
+              {
+                label: ANIMAL_STATUS_LABEL_KO[AnimalStatus.COMPLETED],
+                value: AnimalStatus.COMPLETED,
               },
             ],
             selected: animalStatus,

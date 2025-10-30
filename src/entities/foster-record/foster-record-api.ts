@@ -1,9 +1,14 @@
-import { AnimalGender, AnimalType, FosterState } from '../animal/animal';
+import {
+  AnimalGender,
+  AnimalType,
+  AnimalStatus,
+  AnimalSize,
+} from '../animal/animal';
 import { FosterRecord } from './foster-record';
 
 export type FosterMatchInfo = {
   id: string;
-  state: FosterState;
+  state: AnimalStatus;
   organization: {
     id: string;
     name: string;
@@ -15,9 +20,13 @@ export type FosterMatchInfo = {
   };
   animal: {
     name: string;
+    size: AnimalSize;
     type: AnimalType;
     breed: string;
     birth_date: Date;
+    introduction: string;
+    current_foster_start_date: Date;
+    current_foster_end_date: Date;
     gender: AnimalGender;
     remark: string;
     images: string[];
@@ -27,7 +36,7 @@ export type FosterMatchInfo = {
 
 export type FosterRecordItem = {
   id: string;
-  state: FosterState;
+  state: AnimalStatus;
   organization: {
     id: string;
     name: string;
@@ -48,6 +57,12 @@ export type FosterRecordItem = {
   };
   created_at: Date;
   foster_records: FosterRecord[];
+};
+
+export type RecordUpsertPayload = {
+  images?: string[] | null;
+  content?: string | null;
+  healthNote?: string | null;
 };
 
 export type { FosterRecord };

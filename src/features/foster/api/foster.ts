@@ -6,6 +6,7 @@ import {
 } from '@/entities/animal-condition/animal-condition';
 import { AnimalGender, AnimalSize, AnimalType } from '@/entities/animal/animal';
 import type {
+  AnimalUpsertPayload,
   FosterAnimalDetailItem,
   FosterListAnimalItem,
 } from '@/entities/animal/animal-api';
@@ -13,6 +14,9 @@ import { toDate } from '@/shared/lib/utils';
 
 import { resolveEndpoint } from '@/shared/api/config';
 import { logError } from '@/shared/lib/logging';
+import { userHeaders } from '@/features/mypage/api/user';
+import { fosterAnimalListRevalid } from './redirect';
+import { fosterAnimalDetailPageRevalid } from '@/features/record/api/redirect';
 
 export type PublicFosterOrganizationDto = {
   id: string;
@@ -218,6 +222,45 @@ export const fetchFosterAnimalDetail = async (
       '임보 동물 상세를 불러오는 중 알 수 없는 오류가 발생했습니다.',
     );
   }
+};
+
+export const createAnimal = async (
+  token: string | undefined,
+  payload: AnimalUpsertPayload,
+) => {
+  const response = await fetch(resolveEndpoint(`/foster/animals`), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
+      ...userHeaders(token),
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`보호동물 생성 요청 실패: ${response.status}`);
+  }
+  fosterAnimalListRevalid();
+};
+
+export const updateAnimal = async (
+  token: string | undefined,
+  id: string,
+  payload: AnimalUpsertPayload,
+) => {
+  const response = await fetch(resolveEndpoint(`/foster/animals/${id}`), {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
+      ...userHeaders(token),
+    },
+    body: JSON.stringify(payload),
+  });
+
+  if (!response.ok) {
+    throw new Error(`보호동물 업데이트 요청 실패: ${response.status}`);
+  }
+  fosterAnimalDetailPageRevalid({ animalId: id });
 };
 
 export { mapListItem as mapFosterListItem, mapDetail as mapFosterDetail };

@@ -8,7 +8,7 @@ import {
   AnimalGender,
   AnimalSize,
   AnimalType,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 
 vi.mock('@/lib/socket', () => ({
@@ -30,7 +30,7 @@ const createAnimal = (overrides: Partial<OrganizationAnimalListItem>) =>
     breed: '믹스',
     birth_date: new Date('2020-01-01'),
     gender: AnimalGender.MALE,
-    animalStatus: FosterState.IN_PROGRESS,
+    animalStatus: AnimalStatus.WAITING,
     image: '/image.png',
     applicants: [],
     animal_healths: [],

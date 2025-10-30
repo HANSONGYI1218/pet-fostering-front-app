@@ -46,9 +46,7 @@ describe('createAppMetadata', () => {
 
     expect(metadata.title).toBe('새로운 제목');
     expect(metadata.description).toBe('새로운 설명');
-    expect(metadata.alternates?.canonical).toBe(
-      `${SITE_URL}/foster-list/123`,
-    );
+    expect(metadata.alternates?.canonical).toBe(`${SITE_URL}/foster-list/123`);
     expect(metadata.openGraph?.url?.toString()).toBe(
       `${SITE_URL}/foster-list/123`,
     );

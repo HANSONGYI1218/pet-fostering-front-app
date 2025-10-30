@@ -1,8 +1,9 @@
 import { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
 import { Card } from '@/shared/ui/card';
 import { ANIMAL_GENDER_LABEL_KO } from '@/shared/constants/enum';
-import { formatAnimalAge, getDDay } from '@/shared/lib/utils';
+import { formatAnimalAge, fosterDuration } from '@/shared/lib/utils';
 import Image from 'next/image';
+import { AniamlCreateDialog } from './animal-create-dialog';
 
 export default function FosterInfoCard({
   fosterInfo,
@@ -46,7 +47,9 @@ export default function FosterInfoCard({
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-700">임보 기간</span>
             <span className="font-medium">
-              {fosterInfo?.created_at && getDDay(fosterInfo?.created_at)}일
+              {fosterInfo?.animal?.current_foster_start_date &&
+                fosterDuration(fosterInfo?.animal?.current_foster_start_date)}
+              일
             </span>
           </div>
         </div>
@@ -55,6 +58,7 @@ export default function FosterInfoCard({
           <span className="text-sm text-neutral-700">특이사항</span>
           <span className="font-medium">{fosterInfo?.animal?.remark}</span>
         </div>
+        <AniamlCreateDialog animal={fosterInfo?.animal ?? undefined} />
       </Card>
       <Card className="w-full cursor-default items-center justify-center gap-2 border-none">
         <span className="font-medium">내가 쓴 돌봄기록</span>

@@ -101,21 +101,26 @@ export default function FosterRegisterStep({
     {
       index: 0,
       component: (
-        <Card className="cursor-default items-center gap-4 px-8 py-10">
+        <Card className="cursor-default items-center gap-10 px-8 py-16">
+          <h1 className="text-xl font-semibold">
+            임시보호자 등록을 시작해보세요.
+          </h1>
           <Image
-            src="/images/foster-register.png"
-            width={280}
-            height={280}
-            alt="foster-register"
+            src="/images/white-poodle-dog6.png"
+            width={200}
+            height={200}
+            alt="white-poodle-dog6"
           />
-          <span>임시 보호자 등록 전입니다</span>
-          <Button
-            variant={'destructive'}
-            className="h-10 px-8"
-            onClick={handleNext}
-          >
-            등록하기
-          </Button>
+          <div className="flex flex-col items-center gap-2">
+            <span>임시 보호자 등록 전입니다</span>
+            <Button
+              variant={'destructive'}
+              className="h-10 px-8"
+              onClick={handleNext}
+            >
+              등록하기
+            </Button>
+          </div>
         </Card>
       ),
     },

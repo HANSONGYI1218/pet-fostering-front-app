@@ -16,6 +16,7 @@ const badgeVariants = cva(
         destructive:
           'border-transparent bg-[#FDE8E8] text-black [a&]:hover:bg-[#FDE8E8]/90', // 연한 핑크
         outline: 'text-black border border-black bg-white',
+        outline_green: 'text-[#0D7840] border border-[#0D7840] bg-white',
         outline_none: 'border-none text-black',
         red: 'bg-[#EA1B1B]/80 text-white rounded-lg h-10 border-none text-base',
         black: 'bg-black text-white rounded-full h-6 border-none text-xs',

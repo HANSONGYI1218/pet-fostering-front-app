@@ -26,7 +26,7 @@ import { Card } from '@/shared/ui/card';
 import Image from 'next/image';
 import { Textarea } from '@/shared/ui/textarea';
 import { Button } from '@/shared/ui/button';
-import { ChangeEvent, ReactElement, useMemo, useState } from 'react';
+import { ChangeEvent, ReactElement, useEffect, useMemo, useState } from 'react';
 import { PostItem } from '@/entities/post/post-api';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import { toast } from 'sonner';
@@ -50,7 +50,7 @@ type PostFormDialogProps = {
 };
 
 export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
-  const token = resolveStoredAccessToken();
+  const [token, setToken] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
 
@@ -144,6 +144,10 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
     const next = images.filter((image) => image !== target);
     fieldOnChange(next);
   };
+
+  useEffect(() => {
+    setToken(resolveStoredAccessToken());
+  }, []);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -282,7 +286,7 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
                 type="submit"
                 variant="destructive"
                 className="w-24"
-                disabled={isLoading}
+                disabled={isLoading || !form.formState.isValid}
               >
                 {isLoading ? <Loader2 className="animate-spin" /> : '작성'}
               </Button>

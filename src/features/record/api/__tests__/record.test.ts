@@ -1,7 +1,13 @@
-import { vi } from 'vitest';
-import { FosterState } from '@/entities/animal/animal';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { AnimalStatus } from '@/entities/animal/animal';
 
 import { fetchRecordAnimals, fetchRecordDetail } from '../record';
+
+vi.mock('next/headers', () => ({
+  cookies: vi.fn(() => ({
+    get: vi.fn(() => ({ value: 'mock-token' })),
+  })),
+}));
 
 vi.mock('@/shared/api/config', () => ({
   resolveEndpoint: (path: string) => `https://example.com${path}`,
@@ -39,17 +45,16 @@ describe('record api', () => {
             },
           ],
         }),
-      }) as Response,
+      }) as unknown as Response,
     );
 
-    const animals = await fetchRecordAnimals();
+    const animals = await fetchRecordAnimals(expect.any(String));
 
     expect(animals).toHaveLength(1);
     expect(animals[0]).toMatchObject({
       id: 'animal-1',
-      foster_match_id: 'match-1',
       foster_duration: 10,
-      state: FosterState.IN_PROGRESS,
+      state: AnimalStatus.IN_PROGRESS,
     });
   });
 
@@ -74,9 +79,13 @@ describe('record api', () => {
             },
             animal: {
               name: '초코',
+              size: 'SMALL',
               type: 'DOG',
               breed: '푸들',
+              introduction: '성격 좋아요~!',
               birthDate: '2023-01-01T00:00:00.000Z',
+              current_foster_start_date: '2025-09-01T00:00:00.000Z',
+              current_foster_end_date: '2026-12-01T00:00:00.000Z',
               gender: 'FEMALE',
               remark: '친화적',
               images: ['https://example.com/1.jpg'],
@@ -93,10 +102,10 @@ describe('record api', () => {
             },
           ],
         }),
-      }) as Response,
+      }) as unknown as Response,
     );
 
-    const detail = await fetchRecordDetail('animal-1');
+    const detail = await fetchRecordDetail('animal-1', expect.any(String));
 
     expect(detail.info.id).toBe('animal-1');
     expect(detail.records[0]).toMatchObject({
@@ -110,10 +119,10 @@ describe('record api', () => {
       Promise.resolve({
         ok: false,
         status: 500,
-      }) as Response,
+      }) as unknown as Response,
     );
 
-    await expect(fetchRecordAnimals()).rejects.toThrow(
+    await expect(fetchRecordAnimals(expect.any(String))).rejects.toThrow(
       '기록 동물 목록 요청 실패: 500',
     );
   });
@@ -123,11 +132,11 @@ describe('record api', () => {
       Promise.resolve({
         ok: false,
         status: 404,
-      }) as Response,
+      }) as unknown as Response,
     );
 
-    await expect(fetchRecordDetail('unknown')).rejects.toThrow(
-      '기록 상세 요청 실패: 404',
-    );
+    await expect(
+      fetchRecordDetail('unknown', expect.any(String)),
+    ).rejects.toThrow('기록 상세 요청 실패: 404');
   });
 });

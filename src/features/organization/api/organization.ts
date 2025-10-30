@@ -8,7 +8,7 @@ import {
   AnimalGender,
   AnimalSize,
   AnimalType,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 import type {
   OrganizationAnimalDetailItem,
@@ -38,7 +38,7 @@ type OrganizationAnimalDto = {
   breed?: string | null;
   birthDate?: string | null;
   gender?: keyof typeof AnimalGender | null;
-  status?: keyof typeof FosterState | null;
+  status?: keyof typeof AnimalStatus | null;
   imageUrl?: string | null;
   isEmergency?: boolean | null;
   applicants?: OrganizationApplicantDto[];
@@ -100,7 +100,7 @@ export const mapOrganizationAnimal = (
   breed: dto.breed ?? '',
   birth_date: dto.birthDate ? toDate(dto.birthDate) : new Date(),
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
-  animalStatus: dto.status ? FosterState[dto.status] : FosterState.IN_PROGRESS,
+  animalStatus: dto.status ? AnimalStatus[dto.status] : AnimalStatus.WAITING,
   image: dto.imageUrl ?? '/images/animal-placeholder.png',
   applicants: dto.applicants?.map(mapApplicant) ?? [],
   animal_healths:

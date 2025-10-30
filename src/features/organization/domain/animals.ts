@@ -4,7 +4,7 @@ import {
   AnimalGender,
   AnimalSize,
   AnimalType,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 import { normalizeKeyword } from '@/shared/lib/utils';
 
@@ -13,13 +13,14 @@ export type OrganizationAnimalFilters = {
   type?: FosterFilterValue<AnimalType>;
   size?: FosterFilterValue<AnimalSize>;
   gender?: FosterFilterValue<AnimalGender>;
-  status?: FosterFilterValue<FosterState>;
+  status?: FosterFilterValue<AnimalStatus>;
   keyword?: string;
 };
 
-const STATUS_PRIORITY: Record<FosterState, number> = {
-  [FosterState.IN_PROGRESS]: 0,
-  [FosterState.FOSTERED]: 1,
+const STATUS_PRIORITY: Record<AnimalStatus, number> = {
+  [AnimalStatus.WAITING]: 0,
+  [AnimalStatus.IN_PROGRESS]: 1,
+  [AnimalStatus.COMPLETED]: 1,
 };
 
 const isAll = <T>(value?: FosterFilterValue<T>): value is 'ALL' | undefined =>

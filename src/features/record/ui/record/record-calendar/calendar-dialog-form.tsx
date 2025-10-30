@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns';
 import { WholeDateArray } from './tr';
-import { Loader2, Plus } from 'lucide-react';
+import { ImageOff, Loader2, Plus } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
@@ -35,8 +35,11 @@ import { Card } from '@/shared/ui/card';
 import { RecordContent } from '@/features/record/widgets/record-content';
 import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
 import { cn, toDate } from '@/shared/lib/utils';
-
+import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { toast } from 'sonner';
 import type { Dispatch, SetStateAction } from 'react';
+import { createRecord, updateRecord } from '@/features/record/api/record';
+import { useParams } from 'next/navigation';
 
 interface TdProps {
   p: WholeDateArray;
@@ -46,12 +49,16 @@ interface TdProps {
 
 const RecordSchema = z.object({
   images: z.array(z.string()).optional(),
-  content: z.string(),
-  health_note: z.string(),
+  content: z.string().min(1, '내용을 입력해주세요'),
+  health_note: z.string().min(1, '건강 상태를 입력해주세요'),
 });
+
+type RecordFormValues = z.infer<typeof RecordSchema>;
 
 const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const recordContext = useRecord();
+  const params = useParams();
+  const animalId = params.id as string;
 
   const currentRecord =
     recordContext?.records.length > 0
@@ -72,6 +79,8 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
 
   const [open, setOpen] = useState(false);
   const [isEdit, setIsEdit] = useState(currentRecord ? false : true);
+  const [token, setToken] = useState<string | null>(null);
+  const [isLoading, setIsLoading] = useState(false);
 
   const defaultValues = useMemo(
     () => ({
@@ -85,11 +94,40 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const form = useForm<z.infer<typeof RecordSchema>>({
     resolver: zodResolver(RecordSchema),
     defaultValues,
+    mode: 'onChange',
   });
 
-  useEffect(() => {
-    form.reset(defaultValues);
-  }, [defaultValues, form]);
+  const closeDialog = () => {
+    form.reset();
+    setOpen(false);
+    setIsEdit(false);
+    setIsLoading(false);
+  };
+
+  const handleOpenChange = (nextOpen: boolean) => {
+    if (nextOpen && !token) {
+      toast('로그인 후 이용해 주세요.');
+      return;
+    }
+    if (!nextOpen) {
+      // Dialog 닫을 때
+      form.reset(
+        currentRecord
+          ? {
+              images: currentRecord.images ?? [],
+              content: currentRecord.content ?? '',
+              health_note: currentRecord.health_note ?? '',
+            }
+          : defaultValues,
+      );
+      setIsEdit(false); // 닫을 때는 항상 false
+    } else {
+      // Dialog 열 때
+      setIsEdit(!currentRecord); // currentRecord 없으면 true, 있으면 false
+    }
+    setIsLoading(false);
+    setOpen(nextOpen);
+  };
 
   const resolveRecordId = () => {
     if (currentRecord?.id) {
@@ -106,8 +144,14 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     return `record-${Date.now()}`;
   };
 
-  const onSubmit = async (data: z.infer<typeof RecordSchema>) => {
-    if (!recordContext) {
+  const onSubmit = async (_values: RecordFormValues) => {
+    if (!token) {
+      toast('로그인 후 이용해 주세요.');
+      return;
+    }
+
+    if (!recordContext || !animalId) {
+      toast('다시 한번 새로고침 해주세요.');
       return;
     }
 
@@ -115,9 +159,9 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     const createdAt = currentRecord?.created_at ?? p.date;
     const nextRecord: FosterRecord = {
       id: recordId,
-      images: data.images ?? [],
-      content: data.content,
-      health_note: data.health_note,
+      images: _values.images ?? [],
+      content: _values.content,
+      health_note: _values.health_note,
       created_at: toDate(createdAt),
       updated_at: new Date(),
     };
@@ -132,14 +176,44 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       health_note: nextRecord.health_note,
     });
 
-    setOpen(false);
-    setIsEdit(false);
+    const payload = {
+      images: _values.images ?? [],
+      content: _values.content,
+      health_note: _values.health_note,
+    };
+
+    setIsLoading(true);
+
+    try {
+      await new Promise((resolve) => setTimeout(resolve, 400));
+      if (currentRecord) {
+        await updateRecord(token, animalId, recordId, payload);
+      } else {
+        await createRecord(token, animalId, payload);
+      }
+      toast(
+        currentRecord ? '돌봄기록을 수정했어요!' : '돌봄기록을 작성했어요!',
+      );
+      closeDialog();
+    } catch {
+      toast('잠시 뒤 다시 시도해 주세요.');
+    } finally {
+      setIsLoading(false);
+    }
   };
 
-  const isSubmitting = form.formState.isSubmitting;
+  useEffect(() => {
+    if (open) {
+      form.reset(defaultValues);
+    }
+  }, [defaultValues, form, open]);
+
+  useEffect(() => {
+    setToken(resolveStoredAccessToken());
+  }, []);
 
   return (
-    <Dialog open={open} onOpenChange={setOpen}>
+    <Dialog open={open} onOpenChange={handleOpenChange}>
       <DialogTrigger asChild>
         <Button
           onClick={() => {
@@ -200,7 +274,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       {isPasted && (
         <DialogContent
           onInteractOutside={(event) => {
-            if (isSubmitting) event.preventDefault();
+            if (isLoading) event.preventDefault();
           }}
         >
           <Form {...form}>
@@ -260,78 +334,86 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       name={'images'}
                       render={({ field }) => (
                         <FormItem>
-                          <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
-                            {isEdit &&
-                              (!field?.value ||
-                                (field?.value && field?.value?.length < 6)) && (
-                                <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
-                                  <div className="absolute z-10 flex h-full w-full">
-                                    <label
-                                      htmlFor="additionalImgs"
-                                      className="flex w-full cursor-pointer items-center justify-center"
-                                    >
-                                      <Plus className="h-10 w-10 text-neutral-300" />
-                                    </label>
-                                    <input
-                                      type="file"
-                                      id="additionalImgs"
-                                      accept="image/*"
-                                      multiple
-                                      onChange={(
-                                        event: ChangeEvent<HTMLInputElement>,
-                                      ) => {
-                                        const { files } = event.target;
+                          {isEdit ||
+                          (field?.value && field.value.length > 0) ? (
+                            <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
+                              {isEdit &&
+                                (!field?.value ||
+                                  (field?.value &&
+                                    field?.value?.length < 6)) && (
+                                  <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
+                                    <div className="absolute z-10 flex h-full w-full">
+                                      <label
+                                        htmlFor="additionalImgs"
+                                        className="flex w-full cursor-pointer items-center justify-center"
+                                      >
+                                        <Plus className="h-10 w-10 text-neutral-300" />
+                                      </label>
+                                      <input
+                                        type="file"
+                                        id="additionalImgs"
+                                        accept="image/*"
+                                        multiple
+                                        onChange={(
+                                          event: ChangeEvent<HTMLInputElement>,
+                                        ) => {
+                                          const { files } = event.target;
 
-                                        if (files) {
-                                          const imagePaths = Array.from(
-                                            files,
-                                          ).map((file) =>
-                                            URL.createObjectURL(file),
-                                          );
+                                          if (files) {
+                                            const imagePaths = Array.from(
+                                              files,
+                                            ).map((file) =>
+                                              URL.createObjectURL(file),
+                                            );
 
-                                          field.onChange([
-                                            ...(field?.value ?? []),
-                                            ...imagePaths,
-                                          ]);
-                                        }
-                                      }}
-                                      className="hidden"
+                                            field.onChange([
+                                              ...(field?.value ?? []),
+                                              ...imagePaths,
+                                            ]);
+                                          }
+                                        }}
+                                        className="hidden"
+                                      />
+                                    </div>
+                                  </Card>
+                                )}
+                              {field?.value?.map((image, index) => (
+                                <Card
+                                  className="relative p-0 shadow-none"
+                                  key={index}
+                                >
+                                  <Button
+                                    type="button"
+                                    onClick={() => {
+                                      const deleteImage = field?.value?.filter(
+                                        (value) => value !== image,
+                                      );
+                                      field?.onChange(deleteImage);
+                                    }}
+                                    className={`absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full bg-neutral-300 p-0 ${currentRecord ? 'hidden' : 'flex'}`}
+                                  >
+                                    <Plus
+                                      className="h-4 w-4 rotate-45 text-white"
+                                      strokeWidth={2.5}
+                                    />
+                                  </Button>
+                                  <div className="relative h-32 w-full">
+                                    <Image
+                                      src={image}
+                                      alt={`record-image-${index + 1}`}
+                                      fill
+                                      className="rounded-xl object-cover"
+                                      sizes="(min-width: 1024px) 20vw, 100vw"
                                     />
                                   </div>
                                 </Card>
-                              )}
-                            {field?.value?.map((image, index) => (
-                              <Card
-                                className="relative p-0 shadow-none"
-                                key={index}
-                              >
-                                <Button
-                                  type="button"
-                                  onClick={() => {
-                                    const deleteImage = field?.value?.filter(
-                                      (value) => value !== image,
-                                    );
-                                    field?.onChange(deleteImage);
-                                  }}
-                                  className={`absolute -top-2 -right-2 z-10 h-6 w-6 rounded-full bg-neutral-300 p-0 ${currentRecord ? 'hidden' : 'flex'}`}
-                                >
-                                  <Plus
-                                    className="h-4 w-4 rotate-45 text-white"
-                                    strokeWidth={2.5}
-                                  />
-                                </Button>
-                                <div className="relative h-32 w-full">
-                                  <Image
-                                    src={image}
-                                    alt={`record-image-${index + 1}`}
-                                    fill
-                                    className="rounded-xl object-cover"
-                                    sizes="(min-width: 1024px) 20vw, 100vw"
-                                  />
-                                </div>
-                              </Card>
-                            ))}
-                          </div>
+                              ))}
+                            </div>
+                          ) : (
+                            <Card className="flex h-44 w-full flex-col items-center justify-center">
+                              <ImageOff stroke="#404040" /> 사진이 없어요.
+                            </Card>
+                          )}
                           <FormMessage />
                         </FormItem>
                       )}
@@ -406,9 +488,9 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                       type="submit"
                       variant={'default'}
                       className="w-24"
-                      disabled={isSubmitting}
+                      disabled={isLoading || !form.formState.isValid}
                     >
-                      {isSubmitting ? (
+                      {isLoading ? (
                         <Loader2 className="animate-spin" />
                       ) : (
                         '완료하기'

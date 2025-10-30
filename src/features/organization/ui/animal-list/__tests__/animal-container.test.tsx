@@ -6,7 +6,7 @@ import {
   AnimalType,
   AnimalGender,
   AnimalSize,
-  FosterState,
+  AnimalStatus,
 } from '@/entities/animal/animal';
 import { useQuery } from '@tanstack/react-query';
 
@@ -54,7 +54,7 @@ describe('AnimalContainer', () => {
       breed: '믹스',
       birth_date: new Date('2020-01-01'),
       gender: AnimalGender.FEMALE,
-      animalStatus: FosterState.IN_PROGRESS,
+      animalStatus: AnimalStatus.WAITING,
       image: '/image.png',
       applicants: [],
       animal_healths: [],
@@ -71,7 +71,7 @@ describe('AnimalContainer', () => {
       breed: '믹스',
       birth_date: new Date('2020-01-01'),
       gender: AnimalGender.FEMALE,
-      animalStatus: FosterState.IN_PROGRESS,
+      animalStatus: AnimalStatus.WAITING,
       image: '/image.png',
       applicants: [],
       animal_healths: [],
