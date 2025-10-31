@@ -112,3 +112,18 @@ export const handleCopyLink = async (text: string) => {
     toast('잠시만요!! 다시 한번 더 시도해주세요.');
   }
 };
+
+type OnChangeHandler = (e: React.ChangeEvent<HTMLTextAreaElement>) => void;
+
+export function createLimitedOnChange(
+  maxLines: number,
+  fieldOnChange: (e: React.ChangeEvent<HTMLTextAreaElement>) => void,
+): OnChangeHandler {
+  return (e) => {
+    const lines = e.target.value.split('\n');
+    if (lines.length > maxLines) {
+      e.target.value = lines.slice(0, maxLines).join('\n');
+    }
+    fieldOnChange(e);
+  };
+}

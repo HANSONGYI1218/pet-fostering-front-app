@@ -59,7 +59,7 @@ export default function AddressPopUp({ onSelect }: AddressPopUpProps) {
       <Button
         type="button"
         variant={'outline_black'}
-        className="flex h-10 gap-2"
+        className="flex h-9 gap-2"
         onClick={() => openAddressPopup()}
       >
         <Search className="h-4 w-4" />

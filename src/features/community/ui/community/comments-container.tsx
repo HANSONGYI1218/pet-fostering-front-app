@@ -31,10 +31,9 @@ export default function CommentsContainer({
   const postId = initialComments[0]?.post_id;
   const [selectedComment, setSelectedComment] =
     useState<CommentSelection | null>(null);
-  const [comments, setComments] = useState<CommentItem[]>(initialComments);
   const sortedComments = useMemo(
-    () => sortByCreatedAtDesc(comments),
-    [comments],
+    () => sortByCreatedAtDesc(initialComments),
+    [initialComments],
   );
   const { currentPage, goToPage, pageItems, totalItems, itemsPerPage } =
     usePagination(sortedComments, { itemsPerPage: 10 });
@@ -95,7 +94,7 @@ export default function CommentsContainer({
             </defs>
           </svg>
           <span className="font-semibold">
-            {hasComments ? `${comments.length}개의 답변이 있어요` : '댓글'}
+            {hasComments ? `${pagedComments.length}개의 답변이 있어요` : '댓글'}
           </span>
         </div>
         <CommentsForm
@@ -103,7 +102,6 @@ export default function CommentsContainer({
           draft={{ mode: 'create' }}
           heightClassName="min-h-40"
           onClose={() => setSelectedComment(null)}
-          handleComments={setComments}
         />
         {hasComments ? (
           <div className="flex w-full flex-col">
@@ -116,7 +114,6 @@ export default function CommentsContainer({
                     comment={comment}
                     selectedComment={selectedComment}
                     onSelectComment={setSelectedComment}
-                    onUpdateComments={setComments}
                   />
                   {selectedComment?.type === 'new' &&
                     selectedComment.id === comment.id && (
@@ -124,7 +121,6 @@ export default function CommentsContainer({
                         postId={postId}
                         draft={{ mode: 'reply', parentId: comment.id }}
                         onClose={() => setSelectedComment(null)}
-                        handleComments={setComments}
                       />
                     )}
                   <hr className="w-full" />
@@ -136,7 +132,6 @@ export default function CommentsContainer({
                             comment={reply}
                             selectedComment={selectedComment}
                             onSelectComment={setSelectedComment}
-                            onUpdateComments={setComments}
                           />
                           <hr className="w-full" />
                         </div>

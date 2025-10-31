@@ -22,6 +22,7 @@ export type UpdateUserProfilePayload = {
   name?: string | null;
   email?: string | null;
   phoneNumber?: string | null;
+  password?: string | null;
   zipcode?: string | null;
   address?: string | null;
   addressDetail?: string | null;

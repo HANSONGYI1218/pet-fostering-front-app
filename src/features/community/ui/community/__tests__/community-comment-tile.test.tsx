@@ -99,11 +99,7 @@ describe('CommunityCommentTile', () => {
     const handleComments = vi.fn((updater) => updater([baseComment]));
 
     render(
-      <CommunityCommentTile
-        comment={baseComment}
-        onSelectComment={vi.fn()}
-        onUpdateComments={handleComments}
-      />,
+      <CommunityCommentTile comment={baseComment} onSelectComment={vi.fn()} />,
     );
 
     await waitFor(() =>
@@ -129,8 +125,6 @@ describe('CommunityCommentTile', () => {
       ),
     );
 
-    expect(handleComments).toHaveBeenCalledTimes(1);
-    expect(handleComments.mock.results[0].value).toEqual([]);
     expect(toast).toHaveBeenCalledWith('댓글을 삭제했어요.');
   });
 
@@ -151,13 +145,7 @@ describe('CommunityCommentTile', () => {
       updater([{ ...baseComment, reply_comments: [reply] }]),
     );
 
-    render(
-      <CommunityCommentTile
-        comment={reply}
-        onSelectComment={vi.fn()}
-        onUpdateComments={handleComments}
-      />,
-    );
+    render(<CommunityCommentTile comment={reply} onSelectComment={vi.fn()} />);
 
     await waitFor(() =>
       expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
@@ -178,10 +166,6 @@ describe('CommunityCommentTile', () => {
       ),
     );
 
-    expect(handleComments).toHaveBeenCalledTimes(1);
-    expect(handleComments.mock.results[0].value).toEqual([
-      { ...baseComment, reply_comments: null },
-    ]);
     expect(toast).toHaveBeenCalledWith('댓글을 삭제했어요.');
   });
 });

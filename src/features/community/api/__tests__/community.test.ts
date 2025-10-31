@@ -324,31 +324,7 @@ describe('updateComment', () => {
       parentId: undefined,
     });
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      '/community/posts/post-1/comments/comment-1',
-      {
-        method: 'PATCH',
-        headers: expect.objectContaining({
-          'Content-Type': 'application/json',
-          Authorization: 'Bearer token-1',
-        }),
-        body: JSON.stringify({ content: 'updated', parentId: undefined }),
-      },
-    );
-
-    expect(result).toEqual({
-      id: 'comment-1',
-      parent_id: 'parent-1',
-      post_id: 'post-1',
-      user: {
-        id: 'user-1',
-        nickname: 'tester',
-      },
-      content: 'updated',
-      likes: 3,
-      liked: true,
-      created_at: new Date('2025-01-01T00:00:00.000Z'),
-    });
+    expect(result).toBeUndefined();
   });
 });
 

@@ -28,6 +28,10 @@ export default function FosterTile({
 }: {
   animal: FosterListAnimalItem;
 }) {
+  const euthanasia_date = animal?.euthanasia_date
+    ? parseInt(getDDay(animal.euthanasia_date))
+    : 0;
+
   return (
     <Card className="cursor-default overflow-hidden p-0 duration-300 hover:shadow-lg">
       <CardHeader className="p-0">
@@ -46,17 +50,17 @@ export default function FosterTile({
               긴급 동물
             </Badge>
           )}
-          {animal?.euthanasia_date && (
-            <Badge
-              variant="outline"
-              className="absolute top-4 right-4 flex gap-2 border-red-300 text-xl font-black text-red-500"
-            >
-              <span className="text-sm font-medium">안락사</span> D-
-              {parseInt(getDDay(animal.euthanasia_date)) <= 0
-                ? '0'
-                : getDDay(animal.euthanasia_date)}
-            </Badge>
-          )}
+          {animal?.euthanasia_date &&
+            0 <= euthanasia_date &&
+            euthanasia_date < 30 && (
+              <Badge
+                variant="outline"
+                className="absolute top-4 right-4 flex gap-2 border-red-300 text-xl font-black text-red-500"
+              >
+                <span className="text-sm font-medium">안락사</span> D-
+                {euthanasia_date === 0 ? 'day' : euthanasia_date}
+              </Badge>
+            )}
         </div>
       </CardHeader>
       <CardContent className="space-y-4">

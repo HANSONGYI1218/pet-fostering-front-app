@@ -49,6 +49,7 @@ export default function TopBar() {
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);
   const { claims: authUser } = useAuthClaims();
+  const [mounted, setMounted] = useState(false);
 
   const closeMobileMenu = useCallback(() => {
     setIsMobileMenuOpen(false);
@@ -69,6 +70,10 @@ export default function TopBar() {
       document.body.style.overflow = originalOverflow;
     };
   }, [isMobileMenuOpen]);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   const userLabel = useMemo(() => {
     if (!authUser) {
@@ -95,6 +100,13 @@ export default function TopBar() {
 
     return path.split('/')[1] ?? null;
   }, [path]);
+
+  if (authUser === undefined) {
+    return <header className="bg-background h-16" />;
+  }
+  if (!mounted) {
+    return <header className="bg-background h-16" />;
+  }
 
   const handleLoginClick = () => {
     const currentUrl = window.location.pathname + window.location.search;

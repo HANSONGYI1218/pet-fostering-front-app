@@ -30,7 +30,7 @@ import {
   AnimalStatus,
 } from '@/entities/animal/animal';
 import { Card } from '@/shared/ui/card';
-import { ChangeEvent, useState, useEffect } from 'react';
+import { ChangeEvent, useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
 import { Calendar } from '@/shared/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
@@ -83,24 +83,26 @@ const AnimalCreateformSchema = z.object({
 });
 
 export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
-  // eslint-disable-next-line react-hooks/exhaustive-deps
-  const defaultAnimalValues = {
-    name: animal?.name ?? '',
-    type: animal?.type ?? AnimalType.DOG,
-    size: animal?.size ?? AnimalSize.SMALL,
-    gender: animal?.gender ?? AnimalGender.MALE,
-    images: animal?.images ?? [],
-    breed: animal?.breed ?? '',
-    birth_date: animal?.birth_date ? new Date(animal.birth_date) : undefined,
-    remark: animal?.remark ?? '',
-    introduction: animal?.introduction ?? '',
-    current_foster_start_date: animal?.current_foster_start_date
-      ? new Date(animal.current_foster_start_date)
-      : undefined,
-    current_foster_end_date: animal?.current_foster_end_date
-      ? new Date(animal.current_foster_end_date)
-      : undefined,
-  };
+  const defaultAnimalValues = useMemo(
+    () => ({
+      name: animal?.name ?? '',
+      type: animal?.type ?? AnimalType.DOG,
+      size: animal?.size ?? AnimalSize.SMALL,
+      gender: animal?.gender ?? AnimalGender.MALE,
+      images: animal?.images ?? [],
+      breed: animal?.breed ?? '',
+      birth_date: animal?.birth_date ? new Date(animal.birth_date) : undefined,
+      remark: animal?.remark ?? '',
+      introduction: animal?.introduction ?? '',
+      current_foster_start_date: animal?.current_foster_start_date
+        ? new Date(animal.current_foster_start_date)
+        : undefined,
+      current_foster_end_date: animal?.current_foster_end_date
+        ? new Date(animal.current_foster_end_date)
+        : undefined,
+    }),
+    [animal],
+  );
 
   const form = useForm<z.infer<typeof AnimalCreateformSchema>>({
     resolver: zodResolver(AnimalCreateformSchema),
@@ -176,7 +178,7 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
 
   useEffect(() => {
     form.reset(defaultAnimalValues);
-  }, [animal, defaultAnimalValues, form]);
+  }, [defaultAnimalValues, form]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>

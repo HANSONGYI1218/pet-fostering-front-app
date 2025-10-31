@@ -526,7 +526,7 @@ export default function AnimalDetailContainer({
               </h1>
             </div>
             <div className="flex items-center justify-between gap-16">
-              <KakaoMapLoader address={total_address ?? ''} />
+              <KakaoMapLoader address={animal?.organization?.address ?? ''} />
 
               <div className="grid w-full grid-cols-2 items-end gap-6">
                 {centerDatas?.map((a) => (

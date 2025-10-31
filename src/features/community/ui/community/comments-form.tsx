@@ -17,12 +17,7 @@ import { toast } from 'sonner';
 import { useEffect, useState } from 'react';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
-import {
-  updateComment,
-  createComment,
-  fetchCommunityComments,
-} from '../../api/community';
-import { CommentItem } from '@/entities/comment/comment-api';
+import { updateComment, createComment } from '../../api/community';
 
 type CommentFormMode = 'create' | 'reply' | 'edit';
 
@@ -46,7 +41,6 @@ type CommentsFormProps = {
   heightClassName?: string;
   postId: string;
   onClose?: () => void;
-  handleComments?: (updater: (prev: CommentItem[]) => CommentItem[]) => void;
 };
 
 const resolveToastMessage = (mode: CommentFormMode) => {
@@ -65,7 +59,6 @@ export default function CommentsForm({
   postId,
   heightClassName,
   onClose,
-  handleComments,
 }: CommentsFormProps) {
   const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
@@ -93,7 +86,7 @@ export default function CommentsForm({
     }
     const payload = {
       content: _values?.comment,
-      parentId: draft?.parentId ?? undefined,
+      parentId: draft?.id ? undefined : draft?.parentId,
     };
     setIsLoading(true);
 
@@ -102,11 +95,6 @@ export default function CommentsForm({
         await updateComment(token, postId, draft.id, payload);
       } else {
         await createComment(token, postId, payload);
-      }
-
-      if (handleComments) {
-        const refreshed = await fetchCommunityComments(postId, token);
-        handleComments(() => refreshed);
       }
 
       toast(resolveToastMessage(mode));

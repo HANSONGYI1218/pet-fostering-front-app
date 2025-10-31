@@ -1,6 +1,7 @@
 import { Card } from '@/shared/ui/card';
 import Image from 'next/image';
 import { cn } from '@/shared/lib/utils';
+import { ImageOff } from 'lucide-react';
 
 export function RecordImages({
   images,
@@ -50,22 +51,28 @@ export function RecordImages({
         <>{children}</>
       ) : (
         <div className="flex w-full gap-2 overflow-x-auto">
-          {images?.map((image, index) => (
-            <Card
-              key={index}
-              className="w-64 flex-shrink-0 p-0 shadow-none" // ✅ 고정 너비 + 줄어들지 않게
-            >
-              <div className={cn('relative h-44 w-full md:h-64', className)}>
-                <Image
-                  src={image}
-                  alt={`record-image-${index + 1}`}
-                  fill
-                  className="rounded-lg object-cover"
-                  sizes="(min-width: 1024px) 20vw, 100vw"
-                />
-              </div>
+          {images && images?.length > 0 ? (
+            images?.map((image, index) => (
+              <Card
+                key={index}
+                className="w-64 flex-shrink-0 p-0 shadow-none" // ✅ 고정 너비 + 줄어들지 않게
+              >
+                <div className={cn('relative h-44 w-full md:h-64', className)}>
+                  <Image
+                    src={image}
+                    alt={`record-image-${index + 1}`}
+                    fill
+                    className="rounded-lg object-cover"
+                    sizes="(min-width: 1024px) 20vw, 100vw"
+                  />
+                </div>
+              </Card>
+            ))
+          ) : (
+            <Card className="flex h-44 w-full flex-col items-center justify-center">
+              <ImageOff stroke="#404040" /> 사진이 없어요.
             </Card>
-          ))}
+          )}
         </div>
       )}
     </div>

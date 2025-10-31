@@ -1,6 +1,13 @@
+/* eslint-disable react-hooks/exhaustive-deps */
 'use client';
 
-import { useCallback, useEffect, useMemo, useState } from 'react';
+import {
+  useCallback,
+  useEffect,
+  useMemo,
+  useState,
+  useTransition,
+} from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
 
 import MypageMenu from './mypage-menu';
@@ -20,6 +27,7 @@ import type { PostItemByUserId } from '@/entities/post/post-api';
 import type { CommentItemByUserId } from '@/entities/comment/comment-api';
 import { mergeProfileWithClaims } from '@/features/mypage/lib/profile-fallback';
 import { resolveStoredAuthClaims } from '@/lib/auth/session';
+import { Loader2 } from 'lucide-react';
 
 type MypageContentProps = {
   initialStep: MypageStep;
@@ -49,6 +57,7 @@ export default function MypageContent({
     useState<UserNotificationSettingItem | null>(notification);
   const [postsState] = useState<PostItemByUserId[]>(posts);
   const [commentsState] = useState<CommentItemByUserId[]>(comments);
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (!tabParam || isMypageStep(tabParam)) {
@@ -78,8 +87,10 @@ export default function MypageContent({
       }
 
       const queryString = params.toString();
-      router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
-        scroll: false,
+      startTransition(() => {
+        router.replace(queryString ? `${pathname}?${queryString}` : pathname, {
+          scroll: false,
+        });
       });
     },
     [paramsString, pathname, router],
@@ -114,6 +125,7 @@ export default function MypageContent({
           profile={profileState}
           loading={false}
           onProfileUpdate={handleProfileUpdate}
+          setCurrentStep={handleStepChange}
         />
       );
     }
@@ -152,7 +164,13 @@ export default function MypageContent({
   return (
     <div className="flex w-full gap-10">
       <MypageMenu currentStep={currentStep} setCurrentStep={handleStepChange} />
-      <div className="flex w-full flex-1">{content}</div>
+      {isPending ? (
+        <div className="flex w-full flex-1 items-center justify-center">
+          <Loader2 className="h-6 w-6 animate-spin text-neutral-500" />
+        </div>
+      ) : (
+        <div className="flex w-full flex-1">{content}</div>
+      )}
     </div>
   );
 }

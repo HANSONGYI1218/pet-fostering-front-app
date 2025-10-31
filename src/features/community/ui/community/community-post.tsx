@@ -47,6 +47,8 @@ import {
   deleteBookmark,
   createBookmark,
   deletePost,
+  deletePostLike,
+  createPostLike,
 } from '../../api/community';
 import { createReport } from '../../api/report';
 import { logError } from '@/shared/lib/logging';
@@ -69,6 +71,8 @@ export default function CommunityPost({
   );
   const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
   const [open, setOpen] = useState(false);
+  const [isPostLike, setIsPostLike] = useState(false);
+  const [postLikeCnt, setPostLikeCnt] = useState(post?.likes ?? 0);
   const [isLoading, setIsLoading] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState('');
@@ -79,6 +83,11 @@ export default function CommunityPost({
     const stored = resolveStoredAccessToken();
     setToken(stored ?? null);
   }, []);
+
+  useEffect(() => {
+    setPostLikeCnt(post?.likes ?? 0);
+    setIsPostLike(false);
+  }, [post]);
 
   if (!resolvedPost) {
     return (
@@ -95,7 +104,6 @@ export default function CommunityPost({
     : undefined;
   const contentLines = resolvedPost.content?.split('<br/>') ?? [];
   const isOwner = Boolean(userId && userId === resolvedPost.authorId);
-  const likeCount = resolvedPost.likes ?? 0;
   const bookmarkAriaLabel = isBookmarked ? '북마크 해제' : '북마크 추가';
 
   const handleBookmarkToggle = async () => {
@@ -119,6 +127,30 @@ export default function CommunityPost({
       }
     } catch (error) {
       logError('게시글 북마크 토글 실패', error);
+    }
+  };
+
+  const handlePostLike = async () => {
+    if (!post?.id) {
+      return toast('다시 한번 새로고침 해주세요.');
+    }
+
+    if (token) {
+      try {
+        if (isPostLike) {
+          await deletePostLike(token, post.id);
+          setIsPostLike(false);
+          setPostLikeCnt((prev) => prev - 1);
+        } else {
+          await createPostLike(token, post.id);
+          setIsPostLike(true);
+          setPostLikeCnt((prev) => prev + 1);
+        }
+      } catch (error) {
+        logError('게시물 업데이트 실패', error);
+      }
+    } else {
+      toast('로그인 후 이용해주세요.');
     }
   };
 
@@ -203,7 +235,7 @@ export default function CommunityPost({
           <button
             type="button"
             onClick={handleBookmarkToggle}
-            className="flex h-9 w-9 items-center justify-center rounded-full border border-transparent transition hover:border-[#00592d]/60 focus-visible:ring-2 focus-visible:ring-[#00592d]/30 focus-visible:ring-offset-2 focus-visible:outline-none"
+            className={`h-9 w-9 transform cursor-pointer items-center justify-center rounded-full duration-300 hover:scale-110 ${token ? 'flex' : 'hidden'}`}
             aria-label={bookmarkAriaLabel}
             aria-pressed={isBookmarked}
             data-testid="bookmark-toggle"
@@ -232,13 +264,16 @@ export default function CommunityPost({
                 format(createdAt, 'yyyy.MM.dd a hh:mm', { locale: ko })}
             </span>
             <div className="flex items-center gap-2 md:gap-5">
-              <div className="flex items-center gap-1">
+              <div
+                onClick={handlePostLike}
+                className={`flex items-center gap-1 ${token ? 'cursor-pointer' : ''}`}
+              >
                 <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
                 <span
                   className="text-sm text-neutral-400"
                   data-testid="post-like-count"
                 >
-                  {likeCount}
+                  {postLikeCnt}
                 </span>
               </div>
               <div className="flex items-center gap-1">

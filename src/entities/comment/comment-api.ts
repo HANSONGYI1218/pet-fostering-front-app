@@ -38,7 +38,7 @@ export type CommentItemByUserId = {
   reply_length: number;
 };
 
-export type CreateCommentPayload = {
+export type UpsertCommentPayload = {
   content: string;
-  parentId: string | undefined;
+  parentId?: string | undefined;
 };

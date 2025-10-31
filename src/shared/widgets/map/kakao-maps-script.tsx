@@ -1,9 +1,12 @@
 import Script from 'next/script';
-
 import { buildKakaoSdkUrl } from '@/lib/kakao-sdk';
 import { logWarning } from '@/shared/lib/logging';
 
-export default function KakaoMapsScript() {
+type Props = {
+  onLoad?: () => void;
+};
+
+export default function KakaoMapsScript({ onLoad }: Props) {
   const kakaoSdkUrl = buildKakaoSdkUrl(process.env.NEXT_PUBLIC_MAP_KEY);
 
   if (!kakaoSdkUrl) {
@@ -13,5 +16,7 @@ export default function KakaoMapsScript() {
     return null;
   }
 
-  return <Script strategy="afterInteractive" src={kakaoSdkUrl} />;
+  return (
+    <Script strategy="afterInteractive" src={kakaoSdkUrl} onLoad={onLoad} />
+  );
 }

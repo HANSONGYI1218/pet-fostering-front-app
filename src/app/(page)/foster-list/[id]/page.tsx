@@ -255,6 +255,7 @@ export default async function FosterListDetailPage({
                   phone_number={animal?.organization?.phone_number ?? ''}
                 />
                 <FosterRequestDialog
+                  type={animal?.type}
                   name={animal?.name ?? ''}
                   isFosterCondition={animal?.isFosterCondition}
                 />
