@@ -10,7 +10,8 @@
     "test": "cross-env VITE_CJS_IGNORE_WARNING=1 vitest run",
     "sync:amplify-env": "tsx scripts/sync-amplify-env.ts",
     "env:verify": "tsx scripts/check-required-env.ts",
-    "verify": "pnpm lint && pnpm test && pnpm build"
+    "verify": "pnpm env:verify && pnpm check:api-health && pnpm lint && pnpm test && pnpm build",
+    "check:api-health": "tsx scripts/check-api-health.ts"
   },
   "dependencies": {
     "@aws-sdk/client-ssm": "^3.716.0",

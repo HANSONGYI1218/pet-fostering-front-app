@@ -1,9 +1,7 @@
 #!/usr/bin/env tsx
 
-import { readFile } from 'node:fs/promises';
-
 import { findMissingKeys } from './env-check';
-import { parseEnvFile } from './env-utils';
+import { loadEnvRecords } from './env-file';
 
 const REQUIRED_KEYS = [
   'NEXT_PUBLIC_SITE_URL',
@@ -49,25 +47,9 @@ const parseArgs = (argv: string[]) => {
   return options;
 };
 
-const loadEnvFile = async (filePath?: string) => {
-  const target =
-    filePath ?? process.env.AMPLIFY_ENV_FILE ?? 'deployment/amplify/env.local';
-
-  try {
-    const content = await readFile(target, 'utf-8');
-    return parseEnvFile(content);
-  } catch (error) {
-    console.warn(
-      `환경 변수 파일을 열 수 없습니다 (${target}). 건너뜁니다.`,
-      error,
-    );
-    return {};
-  }
-};
-
 const main = async () => {
   const options = parseArgs(process.argv.slice(2));
-  const fileEnv = await loadEnvFile(options.filePath);
+  const fileEnv = await loadEnvRecords(options.filePath);
 
   const combined = {
     ...fileEnv,
