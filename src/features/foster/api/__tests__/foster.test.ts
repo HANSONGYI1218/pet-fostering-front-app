@@ -223,6 +223,7 @@ describe('foster api mappers', () => {
       birthDate: new Date('2024-02-01T00:00:00.000Z'),
       currentFosterStartDate: new Date('2024-02-10T00:00:00.000Z'),
       status: AnimalStatus.IN_PROGRESS,
+      images: ['https://cdn.test/animal-1.png'],
     };
 
     await createAnimal('token-1', payload);
@@ -243,6 +244,7 @@ describe('foster api mappers', () => {
       birthDate: '2024-02-01T00:00:00.000Z',
       currentFosterStartDate: '2024-02-10T00:00:00.000Z',
       status: AnimalStatus.IN_PROGRESS,
+      images: ['https://cdn.test/animal-1.png'],
     });
   });
 
@@ -257,6 +259,7 @@ describe('foster api mappers', () => {
       name: '초코',
       gender: AnimalGender.FEMALE,
       birthDate: new Date('2023-01-01T00:00:00.000Z'),
+      images: ['https://cdn.test/choco.png'],
     };
 
     await updateAnimal('token-2', 'animal-2', payload);
@@ -276,6 +279,7 @@ describe('foster api mappers', () => {
       name: '초코',
       gender: AnimalGender.FEMALE,
       birthDate: '2023-01-01T00:00:00.000Z',
+      images: ['https://cdn.test/choco.png'],
     });
   });
 });

@@ -3,6 +3,14 @@ import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 
 const resetMock = vi.fn();
+const addFilesMock = vi.fn<
+  (files: FileList | File[], current?: string[]) => string[]
+>();
+const removeImageMock = vi.fn<(target: string, current?: string[]) => string[]>();
+const clearMock = vi.fn();
+const resolveMock = vi.fn<
+  (token: string, images: string[]) => Promise<{ images: string[]; uploadedCount: number }>
+>();
 
 vi.mock('sonner', () => ({
   toast: vi.fn(),
@@ -30,6 +38,15 @@ vi.mock('lucide-react', () => ({
   CalendarIcon: () => null,
   Loader2: () => null,
   Plus: () => null,
+}));
+
+vi.mock('@/shared/hooks/use-image-upload-store', () => ({
+  useImageUploadStore: vi.fn(() => ({
+    addFiles: addFilesMock,
+    removeFile: removeImageMock,
+    clear: clearMock,
+    resolve: resolveMock,
+  })),
 }));
 
 vi.mock('@/shared/ui/dialog', () => ({
@@ -148,6 +165,15 @@ vi.mock('react-hook-form', () => {
 
 beforeEach(() => {
   resetMock.mockClear();
+  addFilesMock.mockReset();
+  addFilesMock.mockImplementation((_files, current = []) => [...current]);
+  removeImageMock.mockReset();
+  removeImageMock.mockImplementation((_target, current = []) =>
+    (current ?? []).filter((value) => value !== _target),
+  );
+  clearMock.mockReset();
+  resolveMock.mockReset();
+  resolveMock.mockResolvedValue({ images: [], uploadedCount: 0 });
 });
 
 describe('AniamlCreateDialog', () => {
@@ -158,12 +184,14 @@ describe('AniamlCreateDialog', () => {
 
     await waitFor(() => {
       expect(resetMock).toHaveBeenCalledTimes(1);
+      expect(clearMock).toHaveBeenCalledTimes(1);
     });
 
     rerender(<AniamlCreateDialog />);
 
     await waitFor(() => {
       expect(resetMock).toHaveBeenCalledTimes(1);
+      expect(clearMock).toHaveBeenCalledTimes(1);
     });
   });
 });

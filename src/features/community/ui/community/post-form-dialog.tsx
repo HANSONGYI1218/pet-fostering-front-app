@@ -31,6 +31,8 @@ import { PostItem } from '@/entities/post/post-api';
 import { resolveStoredAccessToken } from '@/lib/auth/session';
 import { toast } from 'sonner';
 import { createPost, updatePost } from '../../api/community';
+import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
+import { IMAGE_UPLOAD_SCOPE } from '@/shared/lib/image-upload';
 
 const PostFormSchema = z.object({
   title: z.string().trim().min(1, {
@@ -53,6 +55,10 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
   const [token, setToken] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
+  const { addFiles, removeFile, clear, resolve } = useImageUploadStore({
+    scope: `${IMAGE_UPLOAD_SCOPE}/community`,
+    maxCount: 5,
+  });
 
   const form = useForm<PostFormValues>({
     resolver: zodResolver(PostFormSchema),
@@ -78,6 +84,7 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
 
   const closeDialog = () => {
     form.reset();
+    clear();
     setOpen(false);
   };
 
@@ -87,9 +94,27 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
       return;
     }
 
+    const images = _values.images ?? [];
+    let normalizedImages = images;
+
+    try {
+      const { images: resolvedImages, uploadedCount } = await resolve(
+        token,
+        images,
+      );
+      normalizedImages = resolvedImages;
+      if (uploadedCount > 0) {
+        form.setValue('images', resolvedImages);
+      }
+    } catch (error) {
+      toast('사진 업로드에 실패했어요. 다시 시도해 주세요.');
+      return;
+    }
+
     const payload = {
       title: _values?.title,
       content: _values?.content,
+      images: normalizedImages,
     };
 
     setIsLoading(true);
@@ -125,14 +150,11 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
     const { files } = event.target;
     if (!files) return;
 
-    const urls = Array.from(files)
-      .slice(0, 5)
-      .map((file) => URL.createObjectURL(file));
-
     const current = form.getValues('images') ?? [];
-    const next = [...current, ...urls].slice(0, 5);
+    const next = addFiles(files, current);
 
     fieldOnChange(next);
+    event.target.value = '';
   };
 
   const handleRemoveImage = (
@@ -141,8 +163,7 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
     target: string,
   ) => {
     if (!images) return;
-    const next = images.filter((image) => image !== target);
-    fieldOnChange(next);
+    fieldOnChange(removeFile(target, images));
   };
 
   useEffect(() => {

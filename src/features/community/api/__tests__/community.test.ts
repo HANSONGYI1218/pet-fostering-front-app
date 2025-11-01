@@ -233,7 +233,11 @@ describe('createPost', () => {
       ok: true,
     });
 
-    const payload = { title: 'hello', content: 'world' };
+    const payload = {
+      title: 'hello',
+      content: 'world',
+      images: ['https://cdn.test/new.png'],
+    };
     await createPost('token-1', payload);
 
     expect(fetchMock).toHaveBeenCalledWith('/community/posts', {
@@ -280,6 +284,7 @@ describe('updatePost', () => {
     await updatePost('token-1', 'post-1', {
       title: '수정',
       content: '본문',
+      images: ['https://cdn.test/updated.png'],
     });
 
     expect(fetchMock).toHaveBeenCalledWith('/community/posts/post-1', {
@@ -288,7 +293,11 @@ describe('updatePost', () => {
         'Content-Type': 'application/json',
         Authorization: 'Bearer token-1',
       }),
-      body: JSON.stringify({ title: '수정', content: '본문' }),
+      body: JSON.stringify({
+        title: '수정',
+        content: '본문',
+        images: ['https://cdn.test/updated.png'],
+      }),
     });
     expect(detailRevalidateSpy).toHaveBeenCalledWith({ postId: 'post-1' });
   });

@@ -31,6 +31,7 @@ const toAnimalDtoPayload = (payload: AnimalUpsertPayload) => ({
   introduction: payload.introduction,
   remark: payload.remark,
   status: payload.status,
+  images: payload.images,
   currentFosterStartDate: toIso(payload.currentFosterStartDate),
   currentFosterEndDate: toIso(payload.currentFosterEndDate),
 });

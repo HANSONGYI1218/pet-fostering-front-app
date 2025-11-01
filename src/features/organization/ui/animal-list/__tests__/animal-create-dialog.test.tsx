@@ -1,6 +1,6 @@
 import { fireEvent, render, screen } from '@testing-library/react';
 import { QueryClient, QueryClientProvider } from '@tanstack/react-query';
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { AnimalCreateDialog } from '../animal-create-dialog';
 
@@ -61,8 +61,16 @@ describe('AnimalCreateDialog', () => {
     });
     sessionMocks.resolveStoredAccessToken.mockReturnValue(null);
     toastMock.mockClear();
-    toastMock.success.mockClear();
-    toastMock.error.mockClear();
+   toastMock.success.mockClear();
+   toastMock.error.mockClear();
+    Object.assign(URL, {
+      createObjectURL: vi.fn(() => 'blob:preview-1'),
+      revokeObjectURL: vi.fn(),
+    });
+  });
+
+  afterEach(() => {
+    fosterApiMocks.createOrganizationAnimal.mockReset();
   });
 
   it('로그인하지 않은 상태에서는 다이얼로그를 열 수 없다', () => {
@@ -81,4 +89,5 @@ describe('AnimalCreateDialog', () => {
 
     queryClient.clear();
   });
+
 });

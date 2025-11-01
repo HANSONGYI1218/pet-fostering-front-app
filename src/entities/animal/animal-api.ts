@@ -162,4 +162,5 @@ export type AnimalUpsertPayload = {
   currentFosterStartDate?: Date | undefined;
   currentFosterEndDate?: Date | undefined;
   status?: AnimalStatus;
+  images?: string[];
 };

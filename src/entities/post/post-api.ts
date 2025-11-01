@@ -36,4 +36,5 @@ export type PostItemByUserId = {
 export type PostUpsertPayload = {
   title: string;
   content: string;
+  images?: string[];
 };

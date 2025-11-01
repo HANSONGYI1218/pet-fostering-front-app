@@ -44,6 +44,8 @@ import {
   updateOrganizationFosterRecord,
 } from '@/features/organization/api/foster-admin';
 import type { Dispatch, SetStateAction } from 'react';
+import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
+import { IMAGE_UPLOAD_SCOPE } from '@/shared/lib/image-upload';
 
 interface TdProps {
   p: WholeDateArray;
@@ -58,6 +60,8 @@ const RecordSchema = z.object({
 });
 
 type RecordFormValues = z.infer<typeof RecordSchema>;
+
+const RECORD_IMAGE_MAX = 6;
 
 const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const recordContext = useRecord();
@@ -110,9 +114,21 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     mode: 'onChange',
   });
 
+  const { addFiles, removeFile: removeImage, clear, resolve } = useImageUploadStore({
+    scope: `${IMAGE_UPLOAD_SCOPE}/records`,
+    maxCount: RECORD_IMAGE_MAX,
+  });
+
   useEffect(() => {
+    clear();
     form.reset(defaultValues);
-  }, [defaultValues, form]);
+  }, [clear, defaultValues, form]);
+
+  useEffect(() => {
+    return () => {
+      clear();
+    };
+  }, [clear]);
 
   const isSubmitting = form.formState.isSubmitting;
   const fileInputId = useId();
@@ -124,8 +140,10 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
         return;
       }
       setIsEdit(!currentRecord);
+      clear();
       form.reset(defaultValues);
     } else {
+      clear();
       form.reset(defaultValues);
       setIsEdit(false);
       setIsDeleting(false);
@@ -157,6 +175,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
         content: '',
         health_note: '',
       });
+      clear();
       setOpen(false);
       setIsEdit(false);
     } catch (error) {
@@ -180,11 +199,28 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       return;
     }
 
+    const images = values.images ?? [];
+    let normalizedImages = images;
+
+    try {
+      const { images: resolvedImages, uploadedCount } = await resolve(
+        activeToken,
+        images,
+      );
+      normalizedImages = resolvedImages;
+      if (uploadedCount > 0) {
+        form.setValue('images', resolvedImages);
+      }
+    } catch (error) {
+      toast.error('사진 업로드에 실패했어요. 다시 시도해 주세요.');
+      return;
+    }
+
     const payload = {
       date: currentRecord?.created_at ?? p.date,
       content: values.content,
       healthNote: values.health_note,
-      images: values.images,
+      images: normalizedImages,
     };
 
     try {
@@ -210,6 +246,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
         content: savedRecord.content,
         health_note: savedRecord.health_note,
       });
+      clear();
 
       setOpen(false);
       setIsEdit(false);
@@ -350,7 +387,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                               {isEdit &&
                                 (!field?.value ||
                                   (field?.value &&
-                                    field?.value?.length < 6)) && (
+                                    field?.value?.length < RECORD_IMAGE_MAX)) && (
                                   <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
                                     <div className="absolute z-10 flex h-full w-full">
                                       <label
@@ -370,16 +407,12 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                                           const { files } = event.target;
 
                                           if (files) {
-                                            const imagePaths = Array.from(
+                                            const next = addFiles(
                                               files,
-                                            ).map((file) =>
-                                              URL.createObjectURL(file),
+                                              field?.value ?? [],
                                             );
-
-                                            field.onChange([
-                                              ...(field?.value ?? []),
-                                              ...imagePaths,
-                                            ]);
+                                            field.onChange(next);
+                                            event.target.value = '';
                                           }
                                         }}
                                         className="hidden"
@@ -396,11 +429,11 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                                     <Button
                                       type="button"
                                       onClick={() => {
-                                        const rest =
-                                          field?.value?.filter(
-                                            (value) => value !== image,
-                                          ) ?? [];
-                                        field?.onChange(rest);
+                                        const next = removeImage(
+                                          image,
+                                          field?.value ?? [],
+                                        );
+                                        field?.onChange(next);
                                       }}
                                       className="absolute -top-2 -right-2 z-10 flex h-6 w-6 items-center justify-center rounded-full bg-neutral-300 p-0"
                                     >

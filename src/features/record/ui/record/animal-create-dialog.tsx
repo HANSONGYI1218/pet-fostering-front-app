@@ -50,6 +50,8 @@ import { toast } from 'sonner';
 import { createAnimal, updateAnimal } from '@/features/foster/api/foster';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
 import { useParams } from 'next/navigation';
+import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
+import { IMAGE_UPLOAD_SCOPE } from '@/shared/lib/image-upload';
 
 type AniamlProps = {
   name: string;
@@ -64,6 +66,8 @@ type AniamlProps = {
   current_foster_start_date: Date;
   current_foster_end_date: Date;
 };
+
+const MAX_IMAGE_COUNT = 3;
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
@@ -113,6 +117,10 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
     criteriaMode: 'all',
     shouldUseNativeValidation: false,
   });
+  const { addFiles, removeFile: removeImage, clear, resolve } = useImageUploadStore({
+    scope: `${IMAGE_UPLOAD_SCOPE}/records`,
+    maxCount: MAX_IMAGE_COUNT,
+  });
   const params = useParams();
   const animalId = params?.id as string;
 
@@ -121,6 +129,7 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
   const [open, setOpen] = useState(false);
 
   const closeDialog = () => {
+    clear();
     form.reset();
     setOpen(false);
   };
@@ -128,6 +137,23 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
   const onSubmit = async (_values: z.infer<typeof AnimalCreateformSchema>) => {
     if (!token) {
       toast('로그인 후 이용해 주세요.');
+      return;
+    }
+
+    const images = _values.images ?? [];
+    let normalizedImages = images;
+
+    try {
+      const { images: resolvedImages, uploadedCount } = await resolve(
+        token,
+        images,
+      );
+      normalizedImages = resolvedImages;
+      if (uploadedCount > 0) {
+        form.setValue('images', resolvedImages);
+      }
+    } catch (error) {
+      toast('사진 업로드에 실패했어요. 다시 시도해 주세요.');
       return;
     }
 
@@ -143,6 +169,7 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
       currentFosterStartDate: _values?.current_foster_start_date ?? undefined,
       currentFosterEndDate: _values?.current_foster_end_date ?? undefined,
       status: AnimalStatus.IN_PROGRESS,
+      images: normalizedImages,
     };
 
     setIsLoading(true);
@@ -169,6 +196,11 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
       return;
     }
 
+    if (!nextOpen) {
+      clear();
+      form.reset(defaultAnimalValues);
+    }
+
     setOpen(nextOpen);
   };
 
@@ -177,8 +209,15 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
   }, []);
 
   useEffect(() => {
+    clear();
     form.reset(defaultAnimalValues);
-  }, [defaultAnimalValues, form]);
+  }, [clear, defaultAnimalValues, form]);
+
+  useEffect(() => {
+    return () => {
+      clear();
+    };
+  }, [clear]);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>
@@ -217,7 +256,8 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
                     </div>
                     <div className="grid w-full grid-cols-2 gap-2 md:grid-cols-3">
                       {(!field?.value ||
-                        (field?.value && field?.value?.length < 3)) && (
+                        (field?.value &&
+                          field?.value?.length < MAX_IMAGE_COUNT)) && (
                         <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
                           <div className="absolute z-10 flex h-full w-full">
                             <label
@@ -237,14 +277,9 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
                                 const { files } = event.target;
                                 if (!files) return;
 
-                                const urls = Array.from(files).map((file) =>
-                                  URL.createObjectURL(file),
-                                );
-
-                                field.onChange([
-                                  ...(field.value ?? []),
-                                  ...urls,
-                                ]);
+                                const next = addFiles(files, field.value ?? []);
+                                field.onChange(next);
+                                event.target.value = '';
                               }}
                               className="hidden"
                             />
@@ -256,11 +291,8 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
                           <Button
                             type="button"
                             onClick={() => {
-                              const deleteImage = field?.value?.filter(
-                                (value) => value !== image,
-                              );
-
-                              field?.onChange(deleteImage);
+                              const next = removeImage(image, field.value ?? []);
+                              field?.onChange(next);
                             }}
                             className="absolute -top-2 -right-2 z-10 flex h-6 w-6 rounded-full bg-neutral-300 p-0"
                           >

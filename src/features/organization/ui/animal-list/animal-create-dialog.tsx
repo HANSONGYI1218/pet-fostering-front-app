@@ -80,6 +80,8 @@ import {
 } from '@/features/organization/api/foster-admin';
 import { ORGANIZATION_ANIMALS_QUERY_KEY } from './hooks/use-organization-animals';
 import type { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
+import { IMAGE_UPLOAD_SCOPE } from '@/shared/lib/image-upload';
+import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
@@ -137,6 +139,8 @@ const CREATE_DEFAULTS: z.infer<typeof AnimalCreateformSchema> = {
   organization_id: '1',
 };
 
+const MAX_IMAGE_COUNT = 3;
+
 export function AnimalCreateDialog({
   mode = 'create',
   trigger,
@@ -183,6 +187,10 @@ export function AnimalCreateDialog({
     defaultValues,
   });
   const contentRef = useRef<HTMLDivElement>(null);
+  const { addFiles, removeFile, clear, resolve } = useImageUploadStore({
+    scope: IMAGE_UPLOAD_SCOPE,
+    maxCount: MAX_IMAGE_COUNT,
+  });
 
   const [currentPage, setCurrentPage] = useState(0);
   const [open, setOpen] = useState(false);
@@ -202,11 +210,12 @@ export function AnimalCreateDialog({
   }, [trigger]);
 
   useEffect(() => {
+    clear();
     form.reset(defaultValues);
-  }, [defaultValues, form]);
+  }, [clear, defaultValues, form]);
 
   useEffect(() => {
-    if (contentRef.current) {
+    if (contentRef.current && typeof contentRef.current.scrollTo === 'function') {
       contentRef.current.scrollTo({
         top: 0,
         behavior: 'smooth', // 부드럽게 스크롤
@@ -239,8 +248,9 @@ export function AnimalCreateDialog({
 
   const resetForm = useCallback(() => {
     setCurrentPage(0);
+    clear();
     form.reset(defaultValues);
-  }, [defaultValues, form]);
+  }, [clear, defaultValues, form]);
 
   async function onSubmit(values: z.infer<typeof AnimalCreateformSchema>) {
     const token = resolveStoredAccessToken();
@@ -251,6 +261,23 @@ export function AnimalCreateDialog({
     }
 
     setIsSubmitting(true);
+    let normalizedImages = values.images;
+
+    try {
+      const { images: resolvedImages, uploadedCount } = await resolve(
+        token,
+        values.images,
+      );
+      normalizedImages = resolvedImages;
+      if (uploadedCount > 0) {
+        form.setValue('images', resolvedImages);
+      }
+    } catch (error) {
+      toast.error('사진 업로드에 실패했어요. 다시 시도해 주세요.');
+      setIsSubmitting(false);
+      return;
+    }
+
     const payload = {
       name: values.name,
       organizationId: values.organization_id,
@@ -265,7 +292,7 @@ export function AnimalCreateDialog({
       remark: values.remark,
       isEmergency: values.isEmergency,
       emergencyReason: values.emergency_reason,
-      images: values.images,
+      images: normalizedImages,
       healthTags: values.animal_healths,
       personalityTags: values.animal_personalitys,
       environmentTags: values.animal_environments,
@@ -339,7 +366,8 @@ export function AnimalCreateDialog({
                       </div>
                       <div className="grid w-full grid-cols-3 gap-2">
                         {(!field?.value ||
-                          (field?.value && field?.value?.length < 3)) && (
+                          (field?.value &&
+                            field?.value?.length < MAX_IMAGE_COUNT)) && (
                           <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
                             <div className="absolute z-10 flex h-full w-full">
                               <label
@@ -359,14 +387,9 @@ export function AnimalCreateDialog({
                                   const { files } = event.target;
                                   if (!files) return;
 
-                                  const urls = Array.from(files).map((file) =>
-                                    URL.createObjectURL(file),
-                                  );
-
-                                  field.onChange([
-                                    ...(field.value ?? []),
-                                    ...urls,
-                                  ]);
+                                  const next = addFiles(files, field.value ?? []);
+                                  field.onChange(next);
+                                  event.target.value = '';
                                 }}
                                 className="hidden"
                               />
@@ -381,11 +404,12 @@ export function AnimalCreateDialog({
                             <Button
                               type="button"
                               onClick={() => {
-                                const deleteImage = field?.value?.filter(
-                                  (value) => value !== image,
+                                const next = removeFile(
+                                  image,
+                                  field.value ?? [],
                                 );
 
-                                field?.onChange(deleteImage);
+                                field.onChange(next);
                               }}
                               className="absolute -top-2 -right-2 z-10 flex h-6 w-6 rounded-full bg-neutral-300 p-0"
                             >

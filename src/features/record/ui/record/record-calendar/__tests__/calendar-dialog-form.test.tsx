@@ -18,6 +18,20 @@ const fosterApiMocks = vi.hoisted(() => ({
   remove: vi.fn(),
 }));
 
+const uploadStoreMocks = vi.hoisted(() => ({
+  addFiles: vi.fn<
+    (files: FileList | File[], current?: string[]) => string[]
+  >(),
+  removeFile: vi.fn<(target: string, current?: string[]) => string[]>(),
+  clear: vi.fn(),
+  resolve: vi.fn<
+    (token: string, images: string[]) => Promise<{
+      images: string[];
+      uploadedCount: number;
+    }>
+  >(),
+}));
+
 vi.mock('@/lib/auth/session', () => ({
   resolveStoredAccessToken: vi.fn(() => 'token'),
 }));
@@ -33,6 +47,10 @@ vi.mock('@/features/organization/api/foster-admin', () => ({
   createOrganizationFosterRecord: fosterApiMocks.create,
   updateOrganizationFosterRecord: fosterApiMocks.update,
   deleteOrganizationFosterRecord: fosterApiMocks.remove,
+}));
+
+vi.mock('@/shared/hooks/use-image-upload-store', () => ({
+  useImageUploadStore: vi.fn(() => uploadStoreMocks),
 }));
 
 const createRecord = (
@@ -54,6 +72,17 @@ describe('CalendarDialogForm', () => {
     fosterApiMocks.update.mockReset();
     fosterApiMocks.remove.mockReset();
     vi.mocked(resolveStoredAccessToken).mockReturnValue('token');
+    uploadStoreMocks.addFiles.mockReset();
+    uploadStoreMocks.addFiles.mockImplementation((_files, current = []) => [
+      ...current,
+    ]);
+    uploadStoreMocks.removeFile.mockReset();
+    uploadStoreMocks.removeFile.mockImplementation((_target, current = []) =>
+      (current ?? []).filter((value) => value !== _target),
+    );
+    uploadStoreMocks.clear.mockReset();
+    uploadStoreMocks.resolve.mockReset();
+    uploadStoreMocks.resolve.mockResolvedValue({ images: [], uploadedCount: 0 });
   });
 
   it('새 기록을 작성하면 컨텍스트에 저장된다', async () => {
@@ -139,6 +168,7 @@ describe('CalendarDialogForm', () => {
       expect(latest?.some((record) => record.content === '새로운 기록')).toBe(
         true,
       );
+      expect(uploadStoreMocks.resolve).toHaveBeenCalledWith('token', []);
     });
   });
 
@@ -217,6 +247,7 @@ describe('CalendarDialogForm', () => {
       expect(latest?.find((record) => record.id === 'existing')?.content).toBe(
         '수정된 기록',
       );
+      expect(uploadStoreMocks.resolve).toHaveBeenCalledWith('token', []);
     });
   });
 
