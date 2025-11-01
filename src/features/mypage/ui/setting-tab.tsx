@@ -23,8 +23,8 @@ import {
   FormField,
   FormItem,
   FormLabel,
-  FormMessage,
 } from '@/shared/ui/form';
+import { Loader2 } from 'lucide-react';
 import { Switch } from '@/shared/ui/switch';
 import { Button } from '@/shared/ui/button';
 import {
@@ -154,7 +154,7 @@ export default function SettingTab({
   if (loading) {
     return (
       <div className="flex w-full justify-center py-16 text-neutral-500">
-        알림 설정을 불러오는 중입니다...
+        <Loader2 className="animate-spin" />
       </div>
     );
   }
@@ -162,15 +162,15 @@ export default function SettingTab({
   return (
     <Form {...form}>
       <form onSubmit={form.handleSubmit(onSubmit)} className="w-full space-y-8">
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <h1 className="text-xl font-semibold">이메일 알림</h1>
           <Card className="cursor-default gap-6 px-8">
             <FormField
               control={form.control}
               name="commentEmail"
               render={({ field }) => (
-                <FormItem className="flex w-full items-center justify-between">
-                  <div className="flex flex-col gap-3">
+                <FormItem className="flex w-full flex-row items-end">
+                  <div className="flex flex-1 flex-col gap-3">
                     <FormLabel>게시글 알림</FormLabel>
                     <span className="text-muted-foreground">
                       나의 게시글에 댓글이 달리면 이메일로 알림을 받겠습니다.
@@ -178,12 +178,12 @@ export default function SettingTab({
                   </div>
                   <FormControl>
                     <Switch
+                      type="submit"
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
                       disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -192,8 +192,8 @@ export default function SettingTab({
               control={form.control}
               name="fosterAnimalInfoEmail"
               render={({ field }) => (
-                <FormItem className="flex w-full items-center justify-between">
-                  <div className="flex flex-col gap-3">
+                <FormItem className="flex w-full flex-row items-end">
+                  <div className="flex flex-1 flex-col gap-3">
                     <FormLabel>임시보호 알림</FormLabel>
                     <span className="text-muted-foreground">
                       임시보호 매칭시 이메일로 알림을 받겠습니다.
@@ -201,12 +201,12 @@ export default function SettingTab({
                   </div>
                   <FormControl>
                     <Switch
+                      type="submit"
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
                       disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -215,8 +215,8 @@ export default function SettingTab({
               control={form.control}
               name="marketingEmail"
               render={({ field }) => (
-                <FormItem className="flex w-full items-center justify-between">
-                  <div className="flex flex-col gap-3">
+                <FormItem className="flex w-full flex-row items-end">
+                  <div className="flex flex-1 flex-col gap-3">
                     <FormLabel>마케팅 활용 및 공고 수신 동의</FormLabel>
                     <span className="text-muted-foreground">
                       각종 이벤트, 회원 혜택, 할인 행사 등 이메일로 마케팅
@@ -225,27 +225,27 @@ export default function SettingTab({
                   </div>
                   <FormControl>
                     <Switch
+                      type="submit"
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
                       disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
           </Card>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <h1 className="text-xl font-semibold">카카오톡 알림</h1>
           <Card className="cursor-default gap-6 px-8">
             <FormField
               control={form.control}
               name="fosterAnimalInfoKakao"
               render={({ field }) => (
-                <FormItem className="flex w-full items-center justify-between">
-                  <div className="flex flex-col gap-3">
+                <FormItem className="flex w-full flex-row items-end">
+                  <div className="flex flex-1 flex-col gap-3">
                     <FormLabel>임시보호 알림</FormLabel>
                     <span className="text-muted-foreground">
                       임시보호 매칭시 카카오톡으로 알림을 받겠습니다.
@@ -253,12 +253,12 @@ export default function SettingTab({
                   </div>
                   <FormControl>
                     <Switch
+                      type="submit"
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
                       disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
@@ -267,8 +267,8 @@ export default function SettingTab({
               control={form.control}
               name="marketingKakao"
               render={({ field }) => (
-                <FormItem className="flex w-full items-center justify-between">
-                  <div className="flex flex-col gap-3">
+                <FormItem className="flex w-full flex-row items-end">
+                  <div className="flex flex-1 flex-col gap-3">
                     <FormLabel>마케팅 활용 및 공고 수신 동의</FormLabel>
                     <span className="text-muted-foreground">
                       각종 이벤트, 회원 혜택, 할인 행사 등 카카오톡으로 마케팅
@@ -277,19 +277,19 @@ export default function SettingTab({
                   </div>
                   <FormControl>
                     <Switch
+                      type="submit"
                       checked={field.value ?? false}
                       onCheckedChange={field.onChange}
                       disabled={loading || isSaving || isDeleting}
                     />
                   </FormControl>
-                  <FormMessage />
                 </FormItem>
               )}
             />
           </Card>
         </div>
 
-        <div className="flex flex-col gap-2">
+        <div className="flex flex-col gap-4">
           <h1 className="text-xl font-semibold">계정 삭제</h1>
           <Card className="flex w-full cursor-default flex-row items-center justify-between px-8">
             <span className="text-muted-foreground">
@@ -300,7 +300,7 @@ export default function SettingTab({
                 <DialogTrigger asChild>
                   <Button
                     variant="ghost"
-                    className="text-sm text-red-500 hover:text-red-500 hover:underline hover:decoration-red-500"
+                    className="text-sm text-red-500/70 hover:underline hover:decoration-red-500"
                   >
                     계정 삭제하기
                   </Button>
@@ -329,24 +329,17 @@ export default function SettingTab({
                       disabled={isDeleting}
                       onClick={() => void handleAccountDelete()}
                     >
-                      {isDeleting ? '삭제 중...' : '삭제하기'}
+                      {isDeleting ? (
+                        <Loader2 className="animate-spin" />
+                      ) : (
+                        '삭제하기'
+                      )}
                     </Button>
                   </DialogFooter>
                 </DialogContent>
               </Dialog>
             </FormControl>
           </Card>
-        </div>
-
-        <div className="flex justify-end">
-          <Button
-            type="submit"
-            variant="destructive"
-            disabled={isSaving || loading || isDeleting}
-            className="min-w-28"
-          >
-            {isSaving ? '저장 중...' : '저장하기'}
-          </Button>
         </div>
       </form>
     </Form>

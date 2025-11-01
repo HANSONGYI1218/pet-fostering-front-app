@@ -104,24 +104,20 @@ describe('CommentsForm', () => {
     const user = userEvent.setup();
     const handleComments = vi.fn();
 
-    render(
-      <CommentsForm
-        postId="post-1"
-        draft={{ mode: 'create' }}
-        handleComments={handleComments}
-      />,
-    );
+    render(<CommentsForm postId="post-1" draft={{ mode: 'create' }} />);
 
     await waitFor(() =>
       expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
     );
-    const textarea = await screen.findByPlaceholderText('댓글을 남겨주세요.');
 
+    const textarea = await screen.findByPlaceholderText('댓글을 남겨주세요.');
     await user.type(textarea, '새 댓글');
+
     const submitButton = await screen.findByRole('button', {
       name: '작성하기',
     });
     await waitFor(() => expect(submitButton).not.toBeDisabled());
+
     const form = submitButton.closest('form');
     expect(form).not.toBeNull();
     fireEvent.submit(form as HTMLFormElement);
@@ -133,21 +129,13 @@ describe('CommentsForm', () => {
         { content: '새 댓글', parentId: undefined },
       ),
     );
-    await waitFor(() => expect(handleComments).toHaveBeenCalledTimes(1));
+
     expect(toast).not.toHaveBeenCalledWith('잠시 뒤 다시 시도해 주세요.');
-    expect(communityApiMocks.fetchCommunityComments).toHaveBeenCalledWith(
-      'post-1',
-      'token-1',
-    );
-    const updater = handleComments.mock.calls[0][0];
-    expect(typeof updater).toBe('function');
-    expect(updater([])).toEqual([sampleComment]);
     expect(textarea).toHaveValue('');
   });
 
   it('댓글을 수정하고 최신 목록으로 갱신한다', async () => {
     const user = userEvent.setup();
-    const handleComments = vi.fn();
     const onClose = vi.fn();
 
     render(
@@ -159,7 +147,6 @@ describe('CommentsForm', () => {
           parentId: undefined,
           content: '작성된 댓글',
         }}
-        handleComments={handleComments}
         onClose={onClose}
       />,
     );
@@ -186,16 +173,7 @@ describe('CommentsForm', () => {
         { content: '수정된 댓글', parentId: undefined },
       ),
     );
-    await waitFor(() => expect(handleComments).toHaveBeenCalledTimes(1));
     expect(toast).not.toHaveBeenCalledWith('잠시 뒤 다시 시도해 주세요.');
-    expect(communityApiMocks.fetchCommunityComments).toHaveBeenCalledWith(
-      'post-1',
-      'token-1',
-    );
-    const updater = handleComments.mock.calls[0][0];
-    expect(updater([{ ...sampleComment, content: '이전 댓글' }])).toEqual([
-      sampleComment,
-    ]);
     expect(onClose).toHaveBeenCalled();
   });
 });

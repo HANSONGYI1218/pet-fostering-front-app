@@ -12,14 +12,17 @@ export default function AnimalBookmark({
 }) {
   const { isAuthenticated } = useAuthClaims();
   const [isChecked, setIsChecked] = useState(isBookmarked);
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
 
   useEffect(() => {
     setIsChecked(isBookmarked);
   }, [isBookmarked]);
 
-  if (!isAuthenticated) {
-    return null;
-  }
+  if (!mounted || !isAuthenticated) return null;
 
   return (
     <Button

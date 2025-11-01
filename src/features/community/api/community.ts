@@ -1,7 +1,7 @@
 import type {
   CommentItem,
   ReplyCommentItem,
-  CreateCommentPayload,
+  UpsertCommentPayload,
 } from '@/entities/comment/comment-api';
 import type { PostUpsertPayload, PostItem } from '@/entities/post/post-api';
 import { toDate } from '@/shared/lib/utils';
@@ -378,7 +378,7 @@ export const deleteBookmark = async (token: string | undefined, id: string) => {
 export const createComment = async (
   token: string | undefined,
   id: string,
-  payload: CreateCommentPayload,
+  payload: UpsertCommentPayload,
 ) => {
   const response = await fetch(
     resolveEndpoint(`/community/posts/${id}/comments`),
@@ -396,9 +396,6 @@ export const createComment = async (
     throw new Error(`댓글 생성 요청 실패: ${response.status}`);
   }
 
-  // const dto = (await response.json()) as CommunityReplyDto;
-
-  // return mapReply(dto);
   communityDetailPageRevalid({ postId: id });
 };
 
@@ -406,7 +403,7 @@ export const updateComment = async (
   token: string | undefined,
   postId: string,
   commentId: string,
-  payload: CreateCommentPayload,
+  payload: UpsertCommentPayload,
 ) => {
   const response = await fetch(
     resolveEndpoint(`/community/posts/${postId}/comments/${commentId}`),
@@ -424,9 +421,7 @@ export const updateComment = async (
     throw new Error(`댓글 업데이트 요청 실패: ${response.status}`);
   }
 
-  const dto = (await response.json()) as CommunityReplyDto;
-
-  return mapReply(dto);
+  communityDetailPageRevalid({ postId });
 };
 
 export const deleteComment = async (
@@ -447,6 +442,34 @@ export const deleteComment = async (
   }
 
   communityDetailPageRevalid({ postId });
+};
+
+export const createPostLike = async (token: string | undefined, id: string) => {
+  const response = await fetch(
+    resolveEndpoint(`/community/posts/${id}/likes`),
+    {
+      method: 'POST',
+      headers: userHeaders(token),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`게시물 좋아요 요청 실패: ${response.status}`);
+  }
+};
+
+export const deletePostLike = async (token: string | undefined, id: string) => {
+  const response = await fetch(
+    resolveEndpoint(`/community/posts/${id}/likes`),
+    {
+      method: 'DELETE',
+      headers: userHeaders(token),
+    },
+  );
+
+  if (!response.ok) {
+    throw new Error(`게시물 좋아요 취소 요청 실패: ${response.status}`);
+  }
 };
 
 export const updatePostView = async (id: string) => {

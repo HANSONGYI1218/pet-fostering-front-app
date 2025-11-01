@@ -15,15 +15,26 @@ import Link from 'next/link';
 import Image from 'next/image';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
 import { useAuthClaims } from '@/lib/auth/use-auth-claims';
+import { useState, useEffect } from 'react';
+import { AnimalType } from '@/entities/animal/animal';
 
 export default function FosterRequestDialog({
+  type,
   name,
   isFosterCondition,
 }: {
+  type: AnimalType;
   name: string;
   isFosterCondition: boolean;
 }) {
   const { isAuthenticated } = useAuthClaims();
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) return null;
 
   return (
     <div className="relative flex flex-1 justify-center">
@@ -45,13 +56,23 @@ export default function FosterRequestDialog({
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col items-center gap-2">
-            <Image
-              src="/images/bear-dog3.png"
-              width={160}
-              height={160}
-              alt="bear-dog3"
-              className="py-6 max-md:h-1/2 max-md:w-1/2"
-            />
+            {type === AnimalType.DOG ? (
+              <Image
+                src="/images/dialog/poodle-with-toy.png"
+                width={160}
+                height={160}
+                alt="poodle-with-toy"
+                className="py-6 max-md:h-1/2 max-md:w-1/2"
+              />
+            ) : (
+              <Image
+                src="/images/dialog/cat-2color.png"
+                width={160}
+                height={160}
+                alt="cat-2color"
+                className="py-6 max-md:h-1/2 max-md:w-1/2"
+              />
+            )}
             {isFosterCondition ? (
               <span className="text-center">
                 임시보호 요청을 하기 전,

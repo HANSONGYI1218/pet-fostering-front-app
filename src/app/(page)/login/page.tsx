@@ -18,10 +18,10 @@ export default function LoginPage() {
           </span>
         </div>
         <Image
-          src="/images/login/welcome.png"
+          src="/images/login/dog-with-cat.png"
           width={210}
           height={210}
-          alt="welcome"
+          alt="dog-with-cat"
         />{' '}
         <div className="flex w-full flex-col gap-3">
           <KakaoLoginButton />

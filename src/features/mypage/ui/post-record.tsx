@@ -61,7 +61,7 @@ export default function PostRecord({ posts, loading }: PostRecordProps) {
 
   return (
     <div className="flex w-full flex-col gap-10">
-      <Card className="cursor-auto border-none p-0 shadow-none">
+      <Card className="cursor-auto border-none bg-transparent p-0 shadow-none">
         <CardHeader className="gap-4 p-0">
           <div className="flex flex-wrap items-center gap-2">
             <Select

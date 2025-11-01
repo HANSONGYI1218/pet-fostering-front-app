@@ -85,30 +85,16 @@ describe('CommentsContainer', () => {
 
   it('댓글을 작성한 뒤 최신 목록을 표시한다', async () => {
     const user = userEvent.setup();
-    const nextComment: CommentItem = {
-      ...baseComment,
-      id: 'comment-2',
-      content: '새 댓글',
-      created_at: new Date('2025-01-02T00:00:00.000Z'),
-    };
-    communityApiMocks.fetchCommunityComments.mockResolvedValue([
-      nextComment,
-      baseComment,
-    ]);
 
     render(<CommentsContainer initialComments={[baseComment]} />);
 
-    await waitFor(() =>
-      expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
-    );
-
     const textarea = screen.getByPlaceholderText('댓글을 남겨주세요.');
     await user.type(textarea, '새 댓글');
+
     const submitButton = screen.getByRole('button', { name: '작성하기' });
     await waitFor(() => expect(submitButton).not.toBeDisabled());
 
     const form = submitButton.closest('form');
-    expect(form).not.toBeNull();
     fireEvent.submit(form as HTMLFormElement);
 
     await waitFor(() =>
@@ -118,15 +104,5 @@ describe('CommentsContainer', () => {
         { content: '새 댓글', parentId: undefined },
       ),
     );
-    await waitFor(() =>
-      expect(communityApiMocks.fetchCommunityComments).toHaveBeenCalledWith(
-        'post-1',
-        'token-1',
-      ),
-    );
-
-    expect(screen.getByText('새 댓글')).toBeInTheDocument();
-    expect(screen.getByText('기존 댓글')).toBeInTheDocument();
-    expect(screen.getByText('2개의 답변이 있어요')).toBeInTheDocument();
   });
 });

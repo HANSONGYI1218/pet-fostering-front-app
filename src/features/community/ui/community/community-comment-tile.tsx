@@ -48,14 +48,12 @@ type CommunityCommentTileProps = {
   comment: CommentLike;
   selectedComment?: CommentSelection | null;
   onSelectComment?: (next: CommentSelection | null) => void;
-  onUpdateComments?: (updater: (prev: CommentItem[]) => CommentItem[]) => void;
 };
 
 export default function CommunityCommentTile({
   comment,
   selectedComment,
   onSelectComment,
-  onUpdateComments,
 }: CommunityCommentTileProps) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
@@ -78,6 +76,11 @@ export default function CommunityCommentTile({
     const isOwnerResult = userId ? userId === comment?.user?.id : false;
     setIsOwner(isOwnerResult);
   }, [comment?.user?.id, userId]);
+
+  useEffect(() => {
+    setIsCommentLike(comment?.liked ?? false);
+    setCommentLikeCnt(comment?.likes ?? 0);
+  }, [comment]);
 
   const handleToggleReply = () => {
     if (!comment?.id) return;
@@ -124,24 +127,6 @@ export default function CommunityCommentTile({
 
     try {
       await deleteComment(token, comment.post_id, comment.id);
-
-      onUpdateComments?.((prev) => {
-        if (comment.parent_id) {
-          return prev.map((item) => {
-            if (item.id !== comment.parent_id) {
-              return item;
-            }
-            const nextReplies = (item.reply_comments ?? []).filter(
-              (reply) => reply.id !== comment.id,
-            );
-            return {
-              ...item,
-              reply_comments: nextReplies.length > 0 ? nextReplies : null,
-            };
-          });
-        }
-        return prev.filter((item) => item.id !== comment.id);
-      });
 
       toast('댓글을 삭제했어요.');
       setOpen(false);
@@ -376,7 +361,6 @@ export default function CommunityCommentTile({
             }}
             postId={comment?.post_id}
             onClose={() => onSelectComment?.(null)}
-            handleComments={onUpdateComments}
           />
         </div>
       ) : (
