@@ -4,6 +4,7 @@ import {
   REFRESH_TOKEN_STORAGE_KEY,
   USER_PROFILE_STORAGE_KEY,
 } from './kakao';
+import { ensureHttpsUrl } from './url-utils';
 import { dispatchAuthChangeEvent } from './events';
 import { clearBrowserCookie } from './cookie-utils';
 
@@ -94,7 +95,7 @@ const parseStoredProfile = (value: string | null): StoredProfile | null => {
         : null;
     const avatarUrl =
       typeof parsed.avatarUrl === 'string'
-        ? parsed.avatarUrl.trim() || null
+        ? ensureHttpsUrl(parsed.avatarUrl)
         : null;
 
     if (displayName === null && avatarUrl === null) {
@@ -143,7 +144,7 @@ export const parseAuthClaims = (token: string): AuthClaims | null => {
         : null;
     const avatarUrl =
       typeof payload.avatarUrl === 'string'
-        ? payload.avatarUrl.trim() || null
+        ? ensureHttpsUrl(payload.avatarUrl)
         : null;
 
     return {

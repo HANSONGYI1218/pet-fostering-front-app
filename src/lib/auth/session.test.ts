@@ -1,8 +1,11 @@
 import { Buffer } from 'node:buffer';
 
 import {
+  ACCESS_TOKEN_EXPIRE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
+  USER_PROFILE_STORAGE_KEY,
+  persistAuthTokens,
 } from '@/lib/auth/kakao';
 import { describe, expect, it } from 'vitest';
 
@@ -11,7 +14,6 @@ import {
   parseAuthClaims,
   resolveStoredAuthClaims,
 } from './session';
-import { ACCESS_TOKEN_EXPIRE_KEY, USER_PROFILE_STORAGE_KEY } from './kakao';
 
 type StorageLike = Pick<Storage, 'getItem' | 'setItem' | 'removeItem'>;
 
@@ -76,7 +78,7 @@ describe('session utilities', () => {
       sub: 'user-123',
       role: 'USER',
       displayName: ' 퍼디즈 ',
-      avatarUrl: ' https://cdn.kakao/avatar.png ',
+      avatarUrl: ' http://cdn.kakao/avatar.png ',
     });
 
     const claims = parseAuthClaims(token);
@@ -127,7 +129,7 @@ describe('session utilities', () => {
       USER_PROFILE_STORAGE_KEY,
       JSON.stringify({
         displayName: '퍼디즈',
-        avatarUrl: 'https://cdn.kakao/avatar.png',
+        avatarUrl: 'http://cdn.kakao/avatar.png',
       }),
     );
     const claims = resolveStoredAuthClaims(storage);
@@ -174,5 +176,25 @@ describe('session utilities', () => {
           cookie.includes('Max-Age=0'),
       ),
     ).toBe(true);
+  });
+
+  it('Persist 시 아바타 URL을 https로 정규화한다', () => {
+    const storage = createStorage();
+    const tokens = {
+      token: 'access',
+      refreshToken: 'refresh',
+      displayName: '퍼디즈',
+      avatarUrl: 'http://cdn.kakao/avatar.png',
+    };
+
+    persistAuthTokens({ tokens, storage });
+
+    const storedProfileRaw = storage.getItem(USER_PROFILE_STORAGE_KEY);
+    expect(storedProfileRaw).not.toBeNull();
+    const storedProfile = JSON.parse(storedProfileRaw ?? '{}');
+    expect(storedProfile).toMatchObject({
+      displayName: '퍼디즈',
+      avatarUrl: 'https://cdn.kakao/avatar.png',
+    });
   });
 });

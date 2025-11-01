@@ -1,6 +1,7 @@
 import { resolveEndpoint } from '@/shared/api/config';
 import { dispatchAuthChangeEvent } from '@/lib/auth/events';
 import { DEFAULT_MAX_AGE_SECONDS, setBrowserCookie } from './cookie-utils';
+import { ensureHttpsUrl } from './url-utils';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
 const KAKAO_LOGOUT_URL = 'https://kauth.kakao.com/oauth/logout';
@@ -150,15 +151,19 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
 
   const now = Date.now();
   const expireAt = now + DEFAULT_MAX_AGE_SECONDS * 1000; // 만료 시각(ms)
+  const normalizedTokens: AuthTokenPair = {
+    ...tokens,
+    avatarUrl: ensureHttpsUrl(tokens.avatarUrl),
+  };
 
   // localStorage에 저장
-  targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, tokens.token);
-  targetStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, tokens.refreshToken);
+  targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, normalizedTokens.token);
+  targetStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, normalizedTokens.refreshToken);
   targetStorage.setItem(
     USER_PROFILE_STORAGE_KEY,
     JSON.stringify({
-      displayName: tokens.displayName ?? null,
-      avatarUrl: tokens.avatarUrl ?? null,
+      displayName: normalizedTokens.displayName ?? null,
+      avatarUrl: normalizedTokens.avatarUrl ?? null,
     }),
   );
   targetStorage.setItem(ACCESS_TOKEN_EXPIRE_KEY, expireAt.toString());
@@ -166,19 +171,19 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
   // 쿠키에도 저장 (만료 시간 적용)
   setBrowserCookie(
     ACCESS_TOKEN_STORAGE_KEY,
-    tokens.token,
+    normalizedTokens.token,
     DEFAULT_MAX_AGE_SECONDS,
   );
   setBrowserCookie(
     REFRESH_TOKEN_STORAGE_KEY,
-    tokens.refreshToken,
+    normalizedTokens.refreshToken,
     DEFAULT_MAX_AGE_SECONDS,
   );
 
   // 로그인 상태 변경 이벤트 발생
   dispatchAuthChangeEvent();
 
-  return tokens;
+  return normalizedTokens;
 };
 
 export const completeKakaoLogin = async ({
