@@ -13,6 +13,7 @@ type PresignResponse = {
   key: string;
   expiresIn: number;
   contentType: string;
+  fields: Record<string, string>;
 };
 
 type UploadImagesParams = {
@@ -68,12 +69,15 @@ export const uploadImages = async ({
       fileSize: file.size,
     });
 
+    const formData = new FormData();
+    Object.entries(presigned.fields).forEach(([field, value]) => {
+      formData.append(field, value);
+    });
+    formData.append('file', file);
+
     const uploadResponse = await fetch(presigned.uploadUrl, {
-      method: 'PUT',
-      headers: {
-        'Content-Type': presigned.contentType,
-      },
-      body: file,
+      method: 'POST',
+      body: formData,
     });
 
     await ensureSuccessfulResponse(uploadResponse, '이미지 업로드');

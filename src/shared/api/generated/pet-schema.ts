@@ -2549,6 +2549,7 @@ export interface operations {
             key?: string;
             expiresIn?: number;
             contentType?: string;
+            fields?: Record<string, string>;
           };
         };
       };

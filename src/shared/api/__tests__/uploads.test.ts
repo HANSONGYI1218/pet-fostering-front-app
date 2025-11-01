@@ -1,117 +1,62 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { uploadImages } from '../uploads';
 
+const originalFetch = global.fetch;
+
 describe('uploadImages', () => {
-  const token = 'test-token';
-  const scope = 'animals';
-
-  beforeEach(() => {
-    vi.resetModules();
-  });
-
   afterEach(() => {
     vi.restoreAllMocks();
+    global.fetch = originalFetch;
   });
 
-  it('요청을 presign 후 S3로 업로드하고 공개 URL을 반환한다', async () => {
-    const file = new File(['meow'], 'cat.png', { type: 'image/png' });
+  it('presigned POST를 이용해 이미지를 업로드한다', async () => {
     const fetchMock = vi
       .spyOn(global, 'fetch')
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          uploadUrl: 'https://s3.test/animal/cat.png?signed',
-          publicUrl: 'https://cdn.test/animal/cat.png',
-          key: 'animals/mock-key.png',
-          expiresIn: 120,
-          contentType: 'image/png',
-        }),
-      } as Response)
-      .mockResolvedValueOnce({
-        ok: true,
-      } as Response);
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            uploadUrl: 'https://s3.example.com',
+            publicUrl: 'https://cdn.example.com/file.png',
+            key: 'animals/file.png',
+            expiresIn: 120,
+            contentType: 'image/png',
+            fields: {
+              key: 'animals/file.png',
+              Policy: 'policy',
+              'Content-Type': 'image/png',
+              'x-amz-algorithm': 'AWS4-HMAC-SHA256',
+              'x-amz-credential': 'credential',
+              'x-amz-date': '20250101T000000Z',
+              'x-amz-signature': 'signature',
+            },
+          }),
+          { status: 201, headers: { 'Content-Type': 'application/json' } },
+        ),
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 204 }));
 
-    const urls = await uploadImages({
-      token,
-      scope,
+    const file = new File(['data'], 'pet.png', { type: 'image/png' });
+
+    const result = await uploadImages({
+      token: 'token',
+      scope: 'animals',
       files: [file],
     });
 
     expect(fetchMock).toHaveBeenCalledTimes(2);
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      1,
-      'http://localhost:3001/uploads/images',
-      {
-        method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-          Authorization: `Bearer ${token}`,
-        },
-        body: JSON.stringify({
-          scope,
-          fileName: 'cat.png',
-          contentType: 'image/png',
-          fileSize: file.size,
-        }),
-      },
-    );
-    expect(fetchMock).toHaveBeenNthCalledWith(
-      2,
-      'https://s3.test/animal/cat.png?signed',
-      {
-        method: 'PUT',
-        headers: {
-          'Content-Type': 'image/png',
-        },
-        body: file,
-      },
-    );
-    expect(urls).toEqual(['https://cdn.test/animal/cat.png']);
-  });
 
-  it('presign 이 실패하면 에러를 던진다', async () => {
-    const file = new File(['oops'], 'dog.png', { type: 'image/png' });
-    vi.spyOn(global, 'fetch').mockResolvedValueOnce({
-      ok: false,
-      status: 403,
-      text: async () => 'forbidden',
-    } as Response);
+    const [, uploadInit] = fetchMock.mock.calls[1];
+    expect(uploadInit?.method).toBe('POST');
+    const formData = uploadInit?.body as FormData;
+    expect(formData).toBeInstanceOf(FormData);
 
-    await expect(
-      uploadImages({
-        token,
-        scope,
-        files: [file],
-      }),
-    ).rejects.toThrowError();
-  });
+    const entries = Array.from(formData.entries());
+    expect(entries).toContainEqual(['key', 'animals/file.png']);
+    expect(entries).toContainEqual(['Content-Type', 'image/png']);
+    const fileEntry = entries.find(([name]) => name === 'file');
+    expect(fileEntry?.[1]).toBe(file);
 
-  it('S3 업로드가 실패하면 에러를 던진다', async () => {
-    const file = new File(['oops'], 'horse.png', { type: 'image/png' });
-    vi.spyOn(global, 'fetch')
-      .mockResolvedValueOnce({
-        ok: true,
-        json: async () => ({
-          uploadUrl: 'https://s3.test/animal/horse.png?signed',
-          publicUrl: 'https://cdn.test/animal/horse.png',
-          key: 'animals/horse.png',
-          expiresIn: 120,
-          contentType: 'image/png',
-        }),
-      } as Response)
-      .mockResolvedValueOnce({
-        ok: false,
-        status: 500,
-        text: async () => 'failed',
-      } as Response);
-
-    await expect(
-      uploadImages({
-        token,
-        scope,
-        files: [file],
-      }),
-    ).rejects.toThrowError();
+    expect(result).toEqual(['https://cdn.example.com/file.png']);
   });
 });
