@@ -12,6 +12,11 @@ export default function FosterInfoCard({
   fosterInfo: FosterMatchInfo;
   recordCnt: number;
 }) {
+  const fosterDays =
+    fosterInfo?.animal?.current_foster_start_date != null
+      ? fosterDuration(fosterInfo.animal.current_foster_start_date)
+      : null;
+
   return (
     <div className="flex w-full flex-col gap-6 md:w-md">
       <Card className="w-full cursor-default border-none">
@@ -47,9 +52,7 @@ export default function FosterInfoCard({
           <div className="flex items-center justify-between">
             <span className="text-sm text-neutral-700">임보 기간</span>
             <span className="font-medium">
-              {fosterInfo?.animal?.current_foster_start_date &&
-                fosterDuration(fosterInfo?.animal?.current_foster_start_date)}
-              일
+              {fosterDays !== null ? `${fosterDays}일` : '-'}
             </span>
           </div>
         </div>

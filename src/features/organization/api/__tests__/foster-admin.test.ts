@@ -85,9 +85,14 @@ describe('foster-admin api', () => {
   });
 
   it('updateOrganizationAnimal uses PATCH and includes arrays only when provided', async () => {
-    mockFetch.mockImplementation(() => buildResponse());
+    const json = vi.fn().mockResolvedValue({});
+    mockFetch.mockImplementation(() =>
+      buildResponse({
+        json,
+      }),
+    );
 
-    await updateOrganizationAnimal('token', 'animal-1', {
+    const result = await updateOrganizationAnimal('token', 'animal-1', {
       name: '두부',
       organizationId: 'org-1',
       images: [],
@@ -102,6 +107,8 @@ describe('foster-admin api', () => {
       images: [],
       healthTags: [],
     });
+    expect(result).toBeUndefined();
+    expect(json).not.toHaveBeenCalled();
   });
 
   it('deleteOrganizationAnimal issues DELETE with authorization header', async () => {

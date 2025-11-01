@@ -71,7 +71,7 @@ export default function CommunityPost({
   );
   const [isBookmarked, setIsBookmarked] = useState(initialBookmark);
   const [open, setOpen] = useState(false);
-  const [isPostLike, setIsPostLike] = useState(false);
+  const [isPostLike, setIsPostLike] = useState(post?.liked ?? false);
   const [postLikeCnt, setPostLikeCnt] = useState(post?.likes ?? 0);
   const [isLoading, setIsLoading] = useState(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
@@ -86,7 +86,7 @@ export default function CommunityPost({
 
   useEffect(() => {
     setPostLikeCnt(post?.likes ?? 0);
-    setIsPostLike(false);
+    setIsPostLike(post?.liked ?? false);
   }, [post]);
 
   if (!resolvedPost) {
@@ -137,15 +137,11 @@ export default function CommunityPost({
 
     if (token) {
       try {
-        if (isPostLike) {
-          await deletePostLike(token, post.id);
-          setIsPostLike(false);
-          setPostLikeCnt((prev) => prev - 1);
-        } else {
-          await createPostLike(token, post.id);
-          setIsPostLike(true);
-          setPostLikeCnt((prev) => prev + 1);
-        }
+        const response = isPostLike
+          ? await deletePostLike(token, post.id)
+          : await createPostLike(token, post.id);
+        setIsPostLike(response.liked);
+        setPostLikeCnt(response.likeCount);
       } catch (error) {
         logError('게시물 업데이트 실패', error);
       }

@@ -16,84 +16,63 @@ import { logError } from '@/shared/lib/logging';
 import { userHeaders } from '@/features/mypage/api/user';
 import { fosterAnimalDetailPageRevalid } from './redirect';
 
-type RecordAnimalDto = {
-  id: string;
-  name: string;
-  type: keyof typeof AnimalType | null;
-  breed: string | null;
-  birthDate: string | null;
-  gender: keyof typeof AnimalGender | null;
-  images: string[];
-  fosterDuration: number;
-  state: keyof typeof AnimalStatus;
-  matchId: string;
+import type { components } from '@/shared/api/generated/pet-schema';
+
+type PublicRecordAnimalDto = components['schemas']['PublicRecordAnimalDto'];
+type PublicRecordListResponseDto =
+  components['schemas']['PublicRecordListResponseDto'];
+type PublicRecordDetailDto =
+  components['schemas']['PublicRecordDetailDto'];
+
+const coerceAnimalType = (
+  value: PublicRecordAnimalDto['type'],
+): AnimalType => {
+  if (!value) return AnimalType.DOG;
+  return AnimalType[value as keyof typeof AnimalType] ?? AnimalType.DOG;
 };
 
-type RecordListResponseDto = {
-  items: RecordAnimalDto[];
+const coerceAnimalGender = (
+  value: PublicRecordAnimalDto['gender'],
+): AnimalGender => {
+  if (!value) return AnimalGender.MALE;
+  return AnimalGender[value as keyof typeof AnimalGender] ?? AnimalGender.MALE;
 };
 
-const mapRecordAnimal = (dto: RecordAnimalDto): FosterRecordAnimalItem => ({
+const coerceAnimalStatus = (
+  value: PublicRecordAnimalDto['state'] | null | undefined,
+): AnimalStatus => {
+  if (!value) {
+    return AnimalStatus.WAITING;
+  }
+  return AnimalStatus[value as keyof typeof AnimalStatus] ?? AnimalStatus.WAITING;
+};
+
+const mapRecordAnimal = (
+  dto: PublicRecordAnimalDto,
+): FosterRecordAnimalItem => ({
   id: dto.id,
   name: dto.name,
-  type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
+  type: coerceAnimalType(dto.type ?? null),
   breed: dto.breed ?? '',
   birth_date: dto.birthDate ? toDate(dto.birthDate) : null,
-  gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
+  gender: coerceAnimalGender(dto.gender ?? null),
   images: dto.images,
   foster_duration: dto.fosterDuration,
-  state: AnimalStatus[dto.state] ?? AnimalStatus.WAITING,
+  state: coerceAnimalStatus(dto.state),
 });
 
-type RecordDetailDto = {
-  id: string;
-  info: {
-    id: string;
-    state: keyof typeof AnimalStatus;
-    createdAt: string;
-    organization: {
-      id: string;
-      name: string;
-      phoneNumber: string | null;
-      zipcode: string | null;
-      address: string | null;
-      addressDetail: string | null;
-      email: string | null;
-    } | null;
-    animal: {
-      name: string;
-      size: keyof typeof AnimalSize | null;
-      type: keyof typeof AnimalType | null;
-      breed: string | null;
-      introduction: string | null;
-      birthDate: string | null;
-      gender: keyof typeof AnimalGender | null;
-      currentFosterStartDate: Date;
-      currentFosterEndDate: Date;
-      remark: string | null;
-      images: string[];
-    };
-  };
-  records: Array<{
-    id: string;
-    content: string | null;
-    healthNote: string | null;
-    createdAt: string;
-    updatedAt: string;
-    images: string[];
-  }>;
-};
-
 const mapRecordDetail = (
-  dto: RecordDetailDto,
+  dto: PublicRecordDetailDto,
 ): {
   info: FosterMatchInfo;
   records: FosterRecord[];
 } => {
   const organization = dto.info.organization;
+  const animal = dto.info.animal;
   const mappedInfo: FosterMatchInfo = {
     id: dto.info.id,
-    state: AnimalStatus[dto.info.state] ?? AnimalStatus.WAITING,
+    state: AnimalStatus[dto.info.state as keyof typeof AnimalStatus] ??
+      AnimalStatus.WAITING,
     organization: {
       id: organization?.id ?? '',
       name: organization?.name ?? '',
@@ -104,29 +83,27 @@ const mapRecordDetail = (
       email: organization?.email ?? '',
     },
     animal: {
-      name: dto.info.animal.name,
-      size: dto?.info.animal?.size
-        ? AnimalSize[dto.info.animal.size]
+      name: animal.name,
+      size: animal?.size
+        ? AnimalSize[animal.size as keyof typeof AnimalSize]
         : AnimalSize.SMALL,
-      type: dto.info.animal.type
-        ? AnimalType[dto.info.animal.type]
+      type: animal.type
+        ? AnimalType[animal.type as keyof typeof AnimalType]
         : AnimalType.DOG,
-      introduction: dto.info.animal.introduction ?? '',
-      breed: dto.info.animal.breed ?? '',
-      birth_date: dto.info.animal.birthDate
-        ? toDate(dto.info.animal.birthDate)
-        : new Date(),
-      gender: dto.info.animal.gender
-        ? AnimalGender[dto.info.animal.gender]
+      introduction: animal.introduction ?? '',
+      breed: animal.breed ?? '',
+      birth_date: animal.birthDate ? toDate(animal.birthDate) : null,
+      gender: animal.gender
+        ? AnimalGender[animal.gender as keyof typeof AnimalGender]
         : AnimalGender.MALE,
-      remark: dto.info.animal.remark ?? '',
-      images: dto.info.animal.images,
-      current_foster_start_date: dto.info.animal.currentFosterStartDate
-        ? toDate(dto.info.animal.currentFosterStartDate)
-        : new Date(),
-      current_foster_end_date: dto.info.animal.currentFosterEndDate
-        ? toDate(dto.info.animal.currentFosterEndDate)
-        : new Date(),
+      remark: animal.remark ?? '',
+      images: animal.images,
+      current_foster_start_date: animal.currentFosterStartDate
+        ? toDate(animal.currentFosterStartDate)
+        : null,
+      current_foster_end_date: animal.currentFosterEndDate
+        ? toDate(animal.currentFosterEndDate)
+        : null,
     },
     created_at: toDate(dto.info.createdAt),
   };
@@ -157,7 +134,7 @@ export const fetchRecordAnimals = async (
       throw new Error(`기록 동물 목록 요청 실패: ${response.status}`);
     }
 
-    const result: RecordListResponseDto = await response.json();
+    const result: PublicRecordListResponseDto = await response.json();
     return result.items.map(mapRecordAnimal);
   } catch (error) {
     logError('기록 동물 목록을 불러오지 못했습니다.', error);
@@ -186,7 +163,7 @@ export const fetchRecordDetail = async (
       throw new Error(`기록 상세 요청 실패: ${response.status}`);
     }
 
-    const result: RecordDetailDto = await response.json();
+    const result: PublicRecordDetailDto = await response.json();
 
     return mapRecordDetail(result);
   } catch (error) {

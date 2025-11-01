@@ -84,8 +84,8 @@ describe('record api', () => {
               breed: '푸들',
               introduction: '성격 좋아요~!',
               birthDate: '2023-01-01T00:00:00.000Z',
-              current_foster_start_date: '2025-09-01T00:00:00.000Z',
-              current_foster_end_date: '2026-12-01T00:00:00.000Z',
+              currentFosterStartDate: '2025-09-01T00:00:00.000Z',
+              currentFosterEndDate: '2026-12-01T00:00:00.000Z',
               gender: 'FEMALE',
               remark: '친화적',
               images: ['https://example.com/1.jpg'],
@@ -108,10 +108,56 @@ describe('record api', () => {
     const detail = await fetchRecordDetail('animal-1', expect.any(String));
 
     expect(detail.info.id).toBe('animal-1');
+    expect(detail.info.animal.birth_date?.toISOString()).toBe(
+      '2023-01-01T00:00:00.000Z',
+    );
+    expect(detail.info.animal.current_foster_start_date?.toISOString()).toBe(
+      '2025-09-01T00:00:00.000Z',
+    );
+    expect(detail.info.animal.current_foster_end_date?.toISOString()).toBe(
+      '2026-12-01T00:00:00.000Z',
+    );
     expect(detail.records[0]).toMatchObject({
       id: 'record-1',
       health_note: '정상',
     });
+  });
+
+  it('maps nullable animal timeline fields safely', async () => {
+    fetchMock.mockResolvedValueOnce(
+      Promise.resolve({
+        ok: true,
+        json: async () => ({
+          id: 'animal-1',
+          info: {
+            id: 'animal-1',
+            state: 'WAITING',
+            createdAt: '2025-09-01T00:00:00.000Z',
+            organization: null,
+            animal: {
+              name: '초코',
+              size: null,
+              type: null,
+              breed: null,
+              introduction: null,
+              birthDate: null,
+              currentFosterStartDate: null,
+              currentFosterEndDate: null,
+              gender: null,
+              remark: null,
+              images: [],
+            },
+          },
+          records: [],
+        }),
+      }) as unknown as Response,
+    );
+
+    const detail = await fetchRecordDetail('animal-1', expect.any(String));
+
+    expect(detail.info.animal.birth_date).toBeNull();
+    expect(detail.info.animal.current_foster_start_date).toBeNull();
+    expect(detail.info.animal.current_foster_end_date).toBeNull();
   });
 
   it('fetchRecordAnimals가 실패하면 예외를 전달한다', async () => {

@@ -124,6 +124,8 @@ export type OrganizationAnimalDetailItem = {
   special_notes_animals: AnimalSpecialNote[];
   isEmergency: boolean;
   emergency_reason: string;
+  applicants: FosterApplicant[];
+  foster_apply_number: number;
   organization: {
     id: string;
     name: string;

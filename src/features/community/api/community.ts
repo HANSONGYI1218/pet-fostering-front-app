@@ -11,6 +11,7 @@ import { communityDetailPageRevalid, communityPageRevalid } from './redirect';
 
 type PostCountDto = {
   comments: number;
+  likes: number;
 };
 
 type PostAuthorDto = {
@@ -27,6 +28,7 @@ type PostListItemDto = {
   viewCount: number;
   createdAt: string;
   updatedAt: string;
+  likeCount?: number | null;
   _count?: PostCountDto;
 };
 
@@ -50,6 +52,8 @@ type CommunityPostDto = {
   content: string;
   viewCount: number;
   likeCount?: number | null;
+  liked?: boolean;
+  isBookmarked?: boolean;
   images?: string[] | null;
   commentCount?: number | null;
   createdAt: string;
@@ -94,7 +98,10 @@ export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
     },
     title: item.title,
     content: item.content,
-    likes: 0,
+    likes:
+      item.likeCount ??
+      item._count?.likes ??
+      0,
     commentCount: item._count?.comments ?? 0,
     views: item.viewCount,
     created_at: toDate(item.createdAt),
@@ -173,6 +180,8 @@ export const mapCommunityPost = (dto: CommunityPostDto): PostItem => ({
   content: dto.content,
   views: dto.viewCount,
   likes: dto.likeCount ?? 0,
+  liked: dto.liked ?? false,
+  isBookmarked: dto.isBookmarked ?? false,
   images: dto.images ?? [],
   commentCount: dto.commentCount ?? undefined,
   created_at: toDate(dto.createdAt),
@@ -444,7 +453,16 @@ export const deleteComment = async (
   communityDetailPageRevalid({ postId });
 };
 
-export const createPostLike = async (token: string | undefined, id: string) => {
+type PostLikeResponseDto = {
+  postId: string;
+  liked: boolean;
+  likeCount: number;
+};
+
+export const createPostLike = async (
+  token: string | undefined,
+  id: string,
+): Promise<PostLikeResponseDto> => {
   const response = await fetch(
     resolveEndpoint(`/community/posts/${id}/likes`),
     {
@@ -456,9 +474,15 @@ export const createPostLike = async (token: string | undefined, id: string) => {
   if (!response.ok) {
     throw new Error(`게시물 좋아요 요청 실패: ${response.status}`);
   }
+
+  const payload = (await response.json()) as PostLikeResponseDto;
+  return payload;
 };
 
-export const deletePostLike = async (token: string | undefined, id: string) => {
+export const deletePostLike = async (
+  token: string | undefined,
+  id: string,
+): Promise<PostLikeResponseDto> => {
   const response = await fetch(
     resolveEndpoint(`/community/posts/${id}/likes`),
     {
@@ -470,6 +494,9 @@ export const deletePostLike = async (token: string | undefined, id: string) => {
   if (!response.ok) {
     throw new Error(`게시물 좋아요 취소 요청 실패: ${response.status}`);
   }
+
+  const payload = (await response.json()) as PostLikeResponseDto;
+  return payload;
 };
 
 export const updatePostView = async (id: string) => {

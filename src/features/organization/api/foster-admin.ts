@@ -170,7 +170,7 @@ export const updateOrganizationAnimal = async (
   token: string | null | undefined,
   animalId: string,
   payload: OrganizationAnimalUpsertPayload,
-) => {
+): Promise<void> => {
   const resolvedToken = ensureToken(token);
   const endpoint = resolveEndpoint(`/foster/animals/${animalId}`);
 
@@ -211,9 +211,6 @@ export const updateOrganizationAnimal = async (
       `보호 동물 정보를 수정하지 못했습니다. (${response.status})`,
     );
   }
-
-  const dto = (await response.json()) as FosterRecordBaseDto;
-  return mapFosterRecord(dto);
 };
 
 export const deleteOrganizationAnimal = async (

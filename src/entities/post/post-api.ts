@@ -16,6 +16,8 @@ export type PostItem = {
   images?: string[];
   commentCount?: number;
   updated_at?: Date;
+  isBookmarked?: boolean;
+  liked?: boolean;
 };
 
 export type PostItemByUserId = {
