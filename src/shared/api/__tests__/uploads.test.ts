@@ -56,13 +56,17 @@ describe('uploadImages', () => {
         }),
       },
     );
-    expect(fetchMock).toHaveBeenNthCalledWith(2, 'https://s3.test/animal/cat.png?signed', {
-      method: 'PUT',
-      headers: {
-        'Content-Type': 'image/png',
+    expect(fetchMock).toHaveBeenNthCalledWith(
+      2,
+      'https://s3.test/animal/cat.png?signed',
+      {
+        method: 'PUT',
+        headers: {
+          'Content-Type': 'image/png',
+        },
+        body: file,
       },
-      body: file,
-    });
+    );
     expect(urls).toEqual(['https://cdn.test/animal/cat.png']);
   });
 

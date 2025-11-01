@@ -21,7 +21,10 @@ type UploadImagesParams = {
   files: File[];
 };
 
-const ensureSuccessfulResponse = async (response: Response, context: string) => {
+const ensureSuccessfulResponse = async (
+  response: Response,
+  context: string,
+) => {
   if (response.ok) {
     return;
   }

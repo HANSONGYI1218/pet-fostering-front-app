@@ -96,7 +96,6 @@ describe('CommunityCommentTile', () => {
 
   it('상위 댓글을 삭제하고 상태를 갱신한다', async () => {
     const user = userEvent.setup();
-    const handleComments = vi.fn((updater) => updater([baseComment]));
 
     render(
       <CommunityCommentTile comment={baseComment} onSelectComment={vi.fn()} />,
@@ -140,10 +139,6 @@ describe('CommunityCommentTile', () => {
       liked: false,
       created_at: new Date('2025-01-01T01:00:00.000Z'),
     };
-
-    const handleComments = vi.fn((updater) =>
-      updater([{ ...baseComment, reply_comments: [reply] }]),
-    );
 
     render(<CommunityCommentTile comment={reply} onSelectComment={vi.fn()} />);
 

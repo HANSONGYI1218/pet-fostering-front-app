@@ -98,10 +98,7 @@ export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
     },
     title: item.title,
     content: item.content,
-    likes:
-      item.likeCount ??
-      item._count?.likes ??
-      0,
+    likes: item.likeCount ?? item._count?.likes ?? 0,
     commentCount: item._count?.comments ?? 0,
     views: item.viewCount,
     created_at: toDate(item.createdAt),

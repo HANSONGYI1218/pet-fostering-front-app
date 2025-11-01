@@ -13,7 +13,8 @@ type CliOptions = {
 };
 
 const parseArgs = (argv: readonly string[]): CliOptions => {
-  const options: CliOptions = {};
+  let filePath: string | undefined;
+  let url: string | undefined;
 
   for (let index = 0; index < argv.length; index += 1) {
     const token = argv[index];
@@ -23,31 +24,24 @@ const parseArgs = (argv: readonly string[]): CliOptions => {
     }
 
     const key = token.slice(2);
+    const next = argv[index + 1];
+
+    if (!next) {
+      exitWithMessage(`--${key} 인자에 값이 필요합니다.`);
+    }
 
     if (key === 'file') {
-      const next = argv[index + 1];
-
-      if (!next) {
-        exitWithMessage('--file 인자에 값이 필요합니다.');
-      }
-
-      options.filePath = next;
-      index += 1;
+      filePath = next;
     } else if (key === 'url') {
-      const next = argv[index + 1];
-
-      if (!next) {
-        exitWithMessage('--url 인자에 값이 필요합니다.');
-      }
-
-      options.url = next;
-      index += 1;
+      url = next;
     } else {
       exitWithMessage(`지원하지 않는 옵션: --${key}`);
     }
+
+    index += 1;
   }
 
-  return options;
+  return { filePath, url };
 };
 
 const logSuccess = (message: string) => {

@@ -19,13 +19,14 @@ const fosterApiMocks = vi.hoisted(() => ({
 }));
 
 const uploadStoreMocks = vi.hoisted(() => ({
-  addFiles: vi.fn<
-    (files: FileList | File[], current?: string[]) => string[]
-  >(),
+  addFiles: vi.fn<(files: FileList | File[], current?: string[]) => string[]>(),
   removeFile: vi.fn<(target: string, current?: string[]) => string[]>(),
   clear: vi.fn(),
   resolve: vi.fn<
-    (token: string, images: string[]) => Promise<{
+    (
+      token: string,
+      images: string[],
+    ) => Promise<{
       images: string[];
       uploadedCount: number;
     }>
@@ -82,7 +83,10 @@ describe('CalendarDialogForm', () => {
     );
     uploadStoreMocks.clear.mockReset();
     uploadStoreMocks.resolve.mockReset();
-    uploadStoreMocks.resolve.mockResolvedValue({ images: [], uploadedCount: 0 });
+    uploadStoreMocks.resolve.mockResolvedValue({
+      images: [],
+      uploadedCount: 0,
+    });
   });
 
   it('새 기록을 작성하면 컨텍스트에 저장된다', async () => {

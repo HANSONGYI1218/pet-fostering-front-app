@@ -68,7 +68,10 @@ export const useImageUploadStore = ({
   }, []);
 
   const resolve = useCallback(
-    async (token: string, images: string[]): Promise<ResolveImageUploadResult> => {
+    async (
+      token: string,
+      images: string[],
+    ): Promise<ResolveImageUploadResult> => {
       const result = await resolveImageUploads({
         token,
         scope,

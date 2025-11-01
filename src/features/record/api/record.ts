@@ -21,12 +21,9 @@ import type { components } from '@/shared/api/generated/pet-schema';
 type PublicRecordAnimalDto = components['schemas']['PublicRecordAnimalDto'];
 type PublicRecordListResponseDto =
   components['schemas']['PublicRecordListResponseDto'];
-type PublicRecordDetailDto =
-  components['schemas']['PublicRecordDetailDto'];
+type PublicRecordDetailDto = components['schemas']['PublicRecordDetailDto'];
 
-const coerceAnimalType = (
-  value: PublicRecordAnimalDto['type'],
-): AnimalType => {
+const coerceAnimalType = (value: PublicRecordAnimalDto['type']): AnimalType => {
   if (!value) return AnimalType.DOG;
   return AnimalType[value as keyof typeof AnimalType] ?? AnimalType.DOG;
 };
@@ -44,7 +41,17 @@ const coerceAnimalStatus = (
   if (!value) {
     return AnimalStatus.WAITING;
   }
-  return AnimalStatus[value as keyof typeof AnimalStatus] ?? AnimalStatus.WAITING;
+  return (
+    AnimalStatus[value as keyof typeof AnimalStatus] ?? AnimalStatus.WAITING
+  );
+};
+
+const coerceAnimalInfoSize = (value: unknown): AnimalSize => {
+  if (typeof value !== 'string') {
+    return AnimalSize.SMALL;
+  }
+
+  return AnimalSize[value as keyof typeof AnimalSize] ?? AnimalSize.SMALL;
 };
 
 const mapRecordAnimal = (
@@ -69,9 +76,13 @@ const mapRecordDetail = (
 } => {
   const organization = dto.info.organization;
   const animal = dto.info.animal;
+  const animalSize = coerceAnimalInfoSize(
+    (animal as { size?: string | null | undefined })?.size ?? null,
+  );
   const mappedInfo: FosterMatchInfo = {
     id: dto.info.id,
-    state: AnimalStatus[dto.info.state as keyof typeof AnimalStatus] ??
+    state:
+      AnimalStatus[dto.info.state as keyof typeof AnimalStatus] ??
       AnimalStatus.WAITING,
     organization: {
       id: organization?.id ?? '',
@@ -84,9 +95,7 @@ const mapRecordDetail = (
     },
     animal: {
       name: animal.name,
-      size: animal?.size
-        ? AnimalSize[animal.size as keyof typeof AnimalSize]
-        : AnimalSize.SMALL,
+      size: animalSize,
       type: animal.type
         ? AnimalType[animal.type as keyof typeof AnimalType]
         : AnimalType.DOG,

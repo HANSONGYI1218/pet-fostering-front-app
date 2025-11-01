@@ -158,7 +158,10 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
 
   // localStorage에 저장
   targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, normalizedTokens.token);
-  targetStorage.setItem(REFRESH_TOKEN_STORAGE_KEY, normalizedTokens.refreshToken);
+  targetStorage.setItem(
+    REFRESH_TOKEN_STORAGE_KEY,
+    normalizedTokens.refreshToken,
+  );
   targetStorage.setItem(
     USER_PROFILE_STORAGE_KEY,
     JSON.stringify({

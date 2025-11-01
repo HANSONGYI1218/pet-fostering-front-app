@@ -102,7 +102,6 @@ describe('CommentsForm', () => {
 
   it('댓글을 생성하고 최신 목록으로 갱신한다', async () => {
     const user = userEvent.setup();
-    const handleComments = vi.fn();
 
     render(<CommentsForm postId="post-1" draft={{ mode: 'create' }} />);
 

@@ -114,7 +114,12 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
     mode: 'onChange',
   });
 
-  const { addFiles, removeFile: removeImage, clear, resolve } = useImageUploadStore({
+  const {
+    addFiles,
+    removeFile: removeImage,
+    clear,
+    resolve,
+  } = useImageUploadStore({
     scope: `${IMAGE_UPLOAD_SCOPE}/records`,
     maxCount: RECORD_IMAGE_MAX,
   });
@@ -178,10 +183,10 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       clear();
       setOpen(false);
       setIsEdit(false);
-    } catch (error) {
+    } catch (caught) {
       const message =
-        error instanceof Error
-          ? error.message
+        caught instanceof Error
+          ? caught.message
           : '삭제에 실패했어요. 잠시 뒤 다시 시도해 주세요.';
       toast.error(message);
     } finally {
@@ -211,7 +216,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       if (uploadedCount > 0) {
         form.setValue('images', resolvedImages);
       }
-    } catch (error) {
+    } catch {
       toast.error('사진 업로드에 실패했어요. 다시 시도해 주세요.');
       return;
     }
@@ -387,7 +392,8 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                               {isEdit &&
                                 (!field?.value ||
                                   (field?.value &&
-                                    field?.value?.length < RECORD_IMAGE_MAX)) && (
+                                    field?.value?.length <
+                                      RECORD_IMAGE_MAX)) && (
                                   <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
                                     <div className="absolute z-10 flex h-full w-full">
                                       <label

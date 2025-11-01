@@ -58,13 +58,13 @@ type AniamlProps = {
   size: AnimalSize;
   type: AnimalType;
   breed: string;
-  birth_date: Date;
+  birth_date: Date | null;
   gender: AnimalGender;
   remark: string;
   images: string[];
   introduction: string;
-  current_foster_start_date: Date;
-  current_foster_end_date: Date;
+  current_foster_start_date: Date | null;
+  current_foster_end_date: Date | null;
 };
 
 const MAX_IMAGE_COUNT = 3;
@@ -117,7 +117,12 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
     criteriaMode: 'all',
     shouldUseNativeValidation: false,
   });
-  const { addFiles, removeFile: removeImage, clear, resolve } = useImageUploadStore({
+  const {
+    addFiles,
+    removeFile: removeImage,
+    clear,
+    resolve,
+  } = useImageUploadStore({
     scope: `${IMAGE_UPLOAD_SCOPE}/records`,
     maxCount: MAX_IMAGE_COUNT,
   });
@@ -152,7 +157,7 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
       if (uploadedCount > 0) {
         form.setValue('images', resolvedImages);
       }
-    } catch (error) {
+    } catch {
       toast('사진 업로드에 실패했어요. 다시 시도해 주세요.');
       return;
     }
@@ -291,7 +296,10 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
                           <Button
                             type="button"
                             onClick={() => {
-                              const next = removeImage(image, field.value ?? []);
+                              const next = removeImage(
+                                image,
+                                field.value ?? [],
+                              );
                               field?.onChange(next);
                             }}
                             className="absolute -top-2 -right-2 z-10 flex h-6 w-6 rounded-full bg-neutral-300 p-0"

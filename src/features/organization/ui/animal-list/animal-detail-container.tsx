@@ -533,10 +533,7 @@ export default function AnimalDetailContainer({
 
               <div className="grid w-full grid-cols-2 items-end gap-6">
                 {centerDatas?.map((a, index) => (
-                  <div
-                    key={a?.title ?? index}
-                    className="flex flex-col gap-1"
-                  >
+                  <div key={a?.title ?? index} className="flex flex-col gap-1">
                     <span className="text-sm font-medium text-neutral-400">
                       {a?.title}
                     </span>

@@ -106,7 +106,7 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
       if (uploadedCount > 0) {
         form.setValue('images', resolvedImages);
       }
-    } catch (error) {
+    } catch {
       toast('사진 업로드에 실패했어요. 다시 시도해 주세요.');
       return;
     }

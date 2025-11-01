@@ -3,14 +3,18 @@ import { render, waitFor } from '@testing-library/react';
 import React from 'react';
 
 const resetMock = vi.fn();
-const addFilesMock = vi.fn<
-  (files: FileList | File[], current?: string[]) => string[]
->();
-const removeImageMock = vi.fn<(target: string, current?: string[]) => string[]>();
+const addFilesMock =
+  vi.fn<(files: FileList | File[], current?: string[]) => string[]>();
+const removeImageMock =
+  vi.fn<(target: string, current?: string[]) => string[]>();
 const clearMock = vi.fn();
-const resolveMock = vi.fn<
-  (token: string, images: string[]) => Promise<{ images: string[]; uploadedCount: number }>
->();
+const resolveMock =
+  vi.fn<
+    (
+      token: string,
+      images: string[],
+    ) => Promise<{ images: string[]; uploadedCount: number }>
+  >();
 
 vi.mock('sonner', () => ({
   toast: vi.fn(),
@@ -50,13 +54,27 @@ vi.mock('@/shared/hooks/use-image-upload-store', () => ({
 }));
 
 vi.mock('@/shared/ui/dialog', () => ({
-  Dialog: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  DialogClose: ({ children }: { children: React.ReactNode }) => <button type="button">{children}</button>,
-  DialogContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  DialogFooter: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  DialogHeader: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  DialogTitle: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  DialogTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  Dialog: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogClose: ({ children }: { children: React.ReactNode }) => (
+    <button type="button">{children}</button>
+  ),
+  DialogContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogFooter: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogHeader: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogTitle: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  DialogTrigger: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock('@/shared/ui/button', () => ({
@@ -68,22 +86,36 @@ vi.mock('@/shared/ui/button', () => ({
 }));
 
 vi.mock('@/shared/ui/select', () => ({
-  Select: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  SelectContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  SelectItem: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  SelectTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  Select: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  SelectContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  SelectItem: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  SelectTrigger: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
   SelectValue: () => <div />,
 }));
 
 vi.mock('@/shared/ui/form', () => ({
-  Form: ({ children }: { children: React.ReactNode }) => <form>{children}</form>,
-  FormControl: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  Form: ({ children }: { children: React.ReactNode }) => (
+    <form>{children}</form>
+  ),
+  FormControl: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
   FormField: ({
     name,
     render,
   }: {
     name: string;
-    render: (args: { field: { value: unknown; onChange: () => void } }) => React.ReactNode;
+    render: (args: {
+      field: { value: unknown; onChange: () => void };
+    }) => React.ReactNode;
   }) => {
     let value: unknown = '';
     if (name === 'images') {
@@ -98,8 +130,12 @@ vi.mock('@/shared/ui/form', () => ({
 
     return <div>{render({ field: { value, onChange: () => undefined } })}</div>;
   },
-  FormItem: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  FormLabel: ({ children }: { children: React.ReactNode }) => <label>{children}</label>,
+  FormItem: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  FormLabel: ({ children }: { children: React.ReactNode }) => (
+    <label>{children}</label>
+  ),
   FormMessage: () => null,
 }));
 
@@ -108,7 +144,9 @@ vi.mock('@/shared/ui/input', () => ({
 }));
 
 vi.mock('@/shared/ui/textarea', () => ({
-  Textarea: (props: React.ComponentProps<'textarea'>) => <textarea {...props} />,
+  Textarea: (props: React.ComponentProps<'textarea'>) => (
+    <textarea {...props} />
+  ),
 }));
 
 vi.mock('@/shared/ui/calendar', () => ({
@@ -116,19 +154,29 @@ vi.mock('@/shared/ui/calendar', () => ({
 }));
 
 vi.mock('@/shared/ui/popover', () => ({
-  Popover: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  PopoverContent: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
-  PopoverTrigger: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  Popover: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  PopoverContent: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
+  PopoverTrigger: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock('@/shared/widgets/form/selected-button', () => ({
   __esModule: true,
-  default: ({ children }: { children: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock('@/shared/widgets/feedback/empty-box', () => ({
   __esModule: true,
-  default: ({ children }: { children?: React.ReactNode }) => <div>{children}</div>,
+  default: ({ children }: { children?: React.ReactNode }) => (
+    <div>{children}</div>
+  ),
 }));
 
 vi.mock('@/shared/widgets/feedback/need-login-badge', () => ({
@@ -137,7 +185,7 @@ vi.mock('@/shared/widgets/feedback/need-login-badge', () => ({
 }));
 
 vi.mock('react-hook-form', () => {
-  const ReactHooks = require('react');
+  const ReactHooks = React;
   return {
     useForm: () => {
       const formRef = ReactHooks.useRef<{

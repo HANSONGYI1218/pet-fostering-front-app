@@ -1,10 +1,7 @@
 import { describe, expect, it, vi } from 'vitest';
 
 import { uploadImages } from '@/shared/api/uploads';
-import {
-  IMAGE_UPLOAD_SCOPE,
-  resolveImageUploads,
-} from '../image-upload';
+import { IMAGE_UPLOAD_SCOPE, resolveImageUploads } from '../image-upload';
 
 vi.mock('@/shared/api/uploads', () => ({
   uploadImages: vi.fn(),

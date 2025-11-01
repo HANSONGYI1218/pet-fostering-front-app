@@ -117,9 +117,7 @@ export const mapOrganizationAnimal = (
     ) ?? [],
   isEmergency: Boolean(dto.isEmergency),
   foster_apply_number:
-    dto.fosterApplyNumber ??
-    (dto.applicants ? dto.applicants.length : 0) ??
-    0,
+    dto.fosterApplyNumber ?? (dto.applicants ? dto.applicants.length : 0) ?? 0,
 });
 
 export const fetchOrganizationAnimals = async (): Promise<
@@ -209,9 +207,7 @@ const mapOrganizationDetail = (
   emergency_reason: dto.emergencyReason ?? '',
   applicants: dto.applicants?.map(mapApplicant) ?? [],
   foster_apply_number:
-    dto.fosterApplyNumber ??
-    (dto.applicants ? dto.applicants.length : 0) ??
-    0,
+    dto.fosterApplyNumber ?? (dto.applicants ? dto.applicants.length : 0) ?? 0,
   organization: {
     id: dto.organization?.id ?? '',
     name: dto.organization?.name ?? '',

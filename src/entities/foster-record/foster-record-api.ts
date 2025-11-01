@@ -23,10 +23,10 @@ export type FosterMatchInfo = {
     size: AnimalSize;
     type: AnimalType;
     breed: string;
-    birth_date: Date;
+    birth_date: Date | null;
     introduction: string;
-    current_foster_start_date: Date;
-    current_foster_end_date: Date;
+    current_foster_start_date: Date | null;
+    current_foster_end_date: Date | null;
     gender: AnimalGender;
     remark: string;
     images: string[];

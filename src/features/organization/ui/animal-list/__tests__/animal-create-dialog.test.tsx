@@ -61,8 +61,8 @@ describe('AnimalCreateDialog', () => {
     });
     sessionMocks.resolveStoredAccessToken.mockReturnValue(null);
     toastMock.mockClear();
-   toastMock.success.mockClear();
-   toastMock.error.mockClear();
+    toastMock.success.mockClear();
+    toastMock.error.mockClear();
     Object.assign(URL, {
       createObjectURL: vi.fn(() => 'blob:preview-1'),
       revokeObjectURL: vi.fn(),
@@ -89,5 +89,4 @@ describe('AnimalCreateDialog', () => {
 
     queryClient.clear();
   });
-
 });

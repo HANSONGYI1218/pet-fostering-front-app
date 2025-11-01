@@ -215,7 +215,10 @@ export function AnimalCreateDialog({
   }, [clear, defaultValues, form]);
 
   useEffect(() => {
-    if (contentRef.current && typeof contentRef.current.scrollTo === 'function') {
+    if (
+      contentRef.current &&
+      typeof contentRef.current.scrollTo === 'function'
+    ) {
       contentRef.current.scrollTo({
         top: 0,
         behavior: 'smooth', // 부드럽게 스크롤
@@ -272,7 +275,7 @@ export function AnimalCreateDialog({
       if (uploadedCount > 0) {
         form.setValue('images', resolvedImages);
       }
-    } catch (error) {
+    } catch {
       toast.error('사진 업로드에 실패했어요. 다시 시도해 주세요.');
       setIsSubmitting(false);
       return;
@@ -314,9 +317,11 @@ export function AnimalCreateDialog({
       onSuccess?.();
       resetForm();
       setOpen(false);
-    } catch (error) {
+    } catch (caught) {
       const message =
-        error instanceof Error ? error.message : '잠시 뒤 다시 시도해 주세요.';
+        caught instanceof Error
+          ? caught.message
+          : '잠시 뒤 다시 시도해 주세요.';
       toast.error(message);
     } finally {
       setIsSubmitting(false);
@@ -387,7 +392,10 @@ export function AnimalCreateDialog({
                                   const { files } = event.target;
                                   if (!files) return;
 
-                                  const next = addFiles(files, field.value ?? []);
+                                  const next = addFiles(
+                                    files,
+                                    field.value ?? [],
+                                  );
                                   field.onChange(next);
                                   event.target.value = '';
                                 }}
