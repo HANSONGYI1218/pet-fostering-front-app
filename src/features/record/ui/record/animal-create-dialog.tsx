@@ -29,6 +29,7 @@ import {
   AnimalGender,
   AnimalStatus,
 } from '@/entities/animal/animal';
+import type { AnimalUpsertPayload } from '@/entities/animal/animal-api';
 import { Card } from '@/shared/ui/card';
 import { ChangeEvent, useState, useEffect, useMemo } from 'react';
 import Image from 'next/image';
@@ -130,18 +131,17 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
       return;
     }
 
-    const payload = {
+    const payload: AnimalUpsertPayload = {
       name: _values?.name ?? undefined,
       size: _values?.size ?? undefined,
       type: _values?.type ?? undefined,
       breed: _values?.breed ?? undefined,
-      birth_date: _values?.birth_date ?? undefined,
+      birthDate: _values?.birth_date ?? undefined,
       gender: _values?.gender ?? undefined,
       introduction: _values?.introduction ?? undefined,
       remark: _values?.remark ?? undefined,
-      current_foster_start_date:
-        _values?.current_foster_start_date ?? undefined,
-      current_foster_end_date: _values?.current_foster_end_date ?? undefined,
+      currentFosterStartDate: _values?.current_foster_start_date ?? undefined,
+      currentFosterEndDate: _values?.current_foster_end_date ?? undefined,
       status: AnimalStatus.IN_PROGRESS,
     };
 

@@ -190,6 +190,7 @@ export default function TopBar() {
             width={140}
             height={60}
             alt="main-logo"
+            className="h-auto"
             priority
           />
         </Link>

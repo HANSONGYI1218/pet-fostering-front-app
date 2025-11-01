@@ -175,4 +175,42 @@ describe('AnimalDetailContainer', () => {
     await user.click(detailButton);
     expect(editButton).toHaveClass('hidden');
   });
+
+  it('비어 있는 동물 정보가 있어도 중복 key 경고 없이 렌더링된다', () => {
+    const consoleErrorSpy = vi
+      .spyOn(console, 'error')
+      .mockImplementation(() => {});
+
+    setupMatchMedia();
+    setupIntersectionObserver();
+    setupResizeObserver();
+
+    const animalWithMissingData = {
+      ...baseAnimal,
+      breed: '',
+      birth_date: null,
+      current_foster_start_date: null,
+      current_foster_end_date: null,
+      organization: {
+        ...baseAnimal.organization,
+        phone_number: '',
+        address: '',
+        address_detail: '',
+      },
+    };
+
+    try {
+      render(<AnimalDetailContainer animal={animalWithMissingData} />);
+
+      const hasDuplicateKeyWarning = consoleErrorSpy.mock.calls.some(
+        ([message]) =>
+          typeof message === 'string' &&
+          message.includes('Encountered two children with the same key'),
+      );
+
+      expect(hasDuplicateKeyWarning).toBe(false);
+    } finally {
+      consoleErrorSpy.mockRestore();
+    }
+  });
 });

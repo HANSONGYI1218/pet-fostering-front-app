@@ -82,4 +82,10 @@ describe('TopBar', () => {
     expect(activeLinks).toHaveLength(1);
     expect(activeLinks[0]).toHaveAttribute('href', '/community');
   });
+
+  it('메인 로고는 높이 자동 스타일로 비율을 유지한다', () => {
+    render(<TopBar />);
+
+    expect(screen.getByAltText('main-logo')).toHaveClass('h-auto');
+  });
 });

@@ -349,8 +349,11 @@ export default function AnimalDetailContainer({
                 )}
                 <span className="text-2xl font-semibold">{animal?.name}</span>
                 <div className="grid w-full grid-cols-2 gap-6">
-                  {animalDatas?.slice(0, 6)?.map((a) => (
-                    <div key={a?.data} className="flex flex-col gap-1">
+                  {animalDatas?.slice(0, 6)?.map((a, index) => (
+                    <div
+                      key={a?.title ?? index}
+                      className="flex flex-col gap-1"
+                    >
                       <span className="text-sm font-medium text-neutral-400">
                         {a?.title}
                       </span>
@@ -529,8 +532,11 @@ export default function AnimalDetailContainer({
               <KakaoMapLoader address={animal?.organization?.address ?? ''} />
 
               <div className="grid w-full grid-cols-2 items-end gap-6">
-                {centerDatas?.map((a) => (
-                  <div key={a?.data} className="flex flex-col gap-1">
+                {centerDatas?.map((a, index) => (
+                  <div
+                    key={a?.title ?? index}
+                    className="flex flex-col gap-1"
+                  >
                     <span className="text-sm font-medium text-neutral-400">
                       {a?.title}
                     </span>

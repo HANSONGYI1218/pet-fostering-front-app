@@ -18,6 +18,23 @@ import { userHeaders } from '@/features/mypage/api/user';
 import { fosterAnimalListRevalid } from './redirect';
 import { fosterAnimalDetailPageRevalid } from '@/features/record/api/redirect';
 
+const toIso = (value?: Date): string | undefined =>
+  value instanceof Date ? value.toISOString() : undefined;
+
+const toAnimalDtoPayload = (payload: AnimalUpsertPayload) => ({
+  name: payload.name,
+  size: payload.size,
+  type: payload.type,
+  breed: payload.breed,
+  birthDate: toIso(payload.birthDate),
+  gender: payload.gender,
+  introduction: payload.introduction,
+  remark: payload.remark,
+  status: payload.status,
+  currentFosterStartDate: toIso(payload.currentFosterStartDate),
+  currentFosterEndDate: toIso(payload.currentFosterEndDate),
+});
+
 export type PublicFosterOrganizationDto = {
   id: string;
   name: string;
@@ -234,7 +251,7 @@ export const createAnimal = async (
       'Content-Type': 'application/json',
       ...userHeaders(token),
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(toAnimalDtoPayload(payload)),
   });
 
   if (!response.ok) {
@@ -254,7 +271,7 @@ export const updateAnimal = async (
       'Content-Type': 'application/json',
       ...userHeaders(token),
     },
-    body: JSON.stringify(payload),
+    body: JSON.stringify(toAnimalDtoPayload(payload)),
   });
 
   if (!response.ok) {

@@ -209,8 +209,11 @@ export default async function FosterListDetailPage({
                   )}
                 </div>
                 <div className="grid w-full grid-cols-2 gap-6">
-                  {animalDatas?.slice(0, 6)?.map((a) => (
-                    <div key={a?.data} className="flex flex-col gap-1">
+                  {animalDatas?.slice(0, 6)?.map((a, index) => (
+                    <div
+                      key={a?.title ?? index}
+                      className="flex flex-col gap-1"
+                    >
                       <span className="text-sm font-medium text-neutral-400">
                         {a?.title}
                       </span>
@@ -420,8 +423,11 @@ export default async function FosterListDetailPage({
               <KakaoMapLoader address={total_address ?? ''} />
 
               <div className="grid w-full grid-cols-2 items-start gap-6">
-                {centerDatas?.map((a) => (
-                  <div key={a?.data} className="flex flex-col gap-1">
+                {centerDatas?.map((a, index) => (
+                  <div
+                    key={a?.title ?? index}
+                    className="flex flex-col gap-1"
+                  >
                     <span className="text-sm font-medium text-neutral-400">
                       {a?.title}
                     </span>

@@ -153,11 +153,11 @@ export type AnimalUpsertPayload = {
   size?: AnimalSize;
   type?: AnimalType;
   breed?: string;
-  birth_date?: Date;
+  birthDate?: Date;
   gender?: AnimalGender;
   introduction?: string | undefined;
   remark?: string | undefined;
-  current_foster_start_date?: Date | undefined;
-  current_foster_end_date?: Date | undefined;
+  currentFosterStartDate?: Date | undefined;
+  currentFosterEndDate?: Date | undefined;
   status?: AnimalStatus;
 };
