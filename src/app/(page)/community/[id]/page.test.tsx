@@ -15,6 +15,7 @@ vi.mock('@/features/community/api/community', () => ({
     commentCount: 0,
   }),
   fetchCommunityComments: vi.fn().mockResolvedValue([]),
+  updatePostView: vi.fn().mockResolvedValue(undefined),
 }));
 
 vi.mock('@/features/community/ui/community/community-post', () => ({

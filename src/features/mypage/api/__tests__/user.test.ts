@@ -45,21 +45,21 @@ describe('user api update', () => {
       introduction: '소개',
     });
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      'https://example.com/users/me/profile',
-      {
-        method: 'PATCH',
-        headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer token-123',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          name: '홍길동',
-          introduction: '소개',
-        }),
-      },
-    );
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [requestedUrl, init] = fetchMock.mock.calls[0] ?? [];
+    expect(requestedUrl).toBe('https://example.com/users/me/profile');
+    expect(init).toMatchObject({
+      method: 'PATCH',
+      body: JSON.stringify({
+        name: '홍길동',
+        introduction: '소개',
+      }),
+    });
+    const headers = init?.headers as Headers | undefined;
+    expect(headers).toBeInstanceOf(Headers);
+    expect(headers?.get('accept')).toBe('application/json');
+    expect(headers?.get('content-type')).toBe('application/json');
+    expect(headers?.get('authorization')).toBe('Bearer token-123');
 
     expect(profile).toMatchObject({
       id: 'user-1',
@@ -88,22 +88,24 @@ describe('user api update', () => {
       marketingKakao: true,
     });
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [requestedUrl, init] = fetchMock.mock.calls[0] ?? [];
+    expect(requestedUrl).toBe(
       'https://example.com/users/me/notification-settings',
-      {
-        method: 'PATCH',
-        headers: {
-          Accept: 'application/json',
-          Authorization: 'Bearer token-123',
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          commentEmail: false,
-          marketingEmail: true,
-          marketingKakao: true,
-        }),
-      },
     );
+    expect(init).toMatchObject({
+      method: 'PATCH',
+      body: JSON.stringify({
+        commentEmail: false,
+        marketingEmail: true,
+        marketingKakao: true,
+      }),
+    });
+    const headers = init?.headers as Headers | undefined;
+    expect(headers).toBeInstanceOf(Headers);
+    expect(headers?.get('accept')).toBe('application/json');
+    expect(headers?.get('content-type')).toBe('application/json');
+    expect(headers?.get('authorization')).toBe('Bearer token-123');
 
     expect(settings).toMatchObject({
       commentEmail: false,
@@ -121,12 +123,12 @@ describe('user api update', () => {
 
     await expect(deleteMyAccount('token-123')).resolves.toBeUndefined();
 
-    expect(fetchMock).toHaveBeenCalledWith('https://example.com/users/me', {
-      method: 'DELETE',
-      headers: {
-        Accept: 'application/json',
-        Authorization: 'Bearer token-123',
-      },
-    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [requestedUrl, init] = fetchMock.mock.calls[0] ?? [];
+    expect(requestedUrl).toBe('https://example.com/users/me');
+    expect(init).toMatchObject({ method: 'DELETE' });
+    const headers = init?.headers as Headers | undefined;
+    expect(headers).toBeInstanceOf(Headers);
+    expect(headers?.get('authorization')).toBe('Bearer token-123');
   });
 });

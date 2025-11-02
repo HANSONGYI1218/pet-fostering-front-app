@@ -28,10 +28,15 @@ describe('fetchAnimalLists', () => {
 
     await fetchAnimalLists({ limit: 5 });
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [requestedUrl, init] = fetchMock.mock.calls[0] ?? [];
+    expect(requestedUrl).toBe(
       'https://example.com/public/foster/animals?limit=5',
-      { cache: 'no-store' },
     );
+    expect(init).toMatchObject({ cache: 'no-store' });
+    const headers = init?.headers as Headers | undefined;
+    expect(headers).toBeInstanceOf(Headers);
+    expect(headers?.get('accept')).toBe('application/json');
   });
 
   it('응답을 AnimalListItem으로 매핑한다', async () => {
@@ -66,10 +71,15 @@ describe('fetchAnimalLists', () => {
 
     const animals = await fetchAnimalLists({ limit: 10 });
 
-    expect(fetchMock).toHaveBeenCalledWith(
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [requestedUrl, init] = fetchMock.mock.calls[0] ?? [];
+    expect(requestedUrl).toBe(
       'https://example.com/public/foster/animals?limit=10',
-      { cache: 'no-store' },
     );
+    expect(init).toMatchObject({ cache: 'no-store' });
+    const headers = init?.headers as Headers | undefined;
+    expect(headers).toBeInstanceOf(Headers);
+    expect(headers?.get('accept')).toBe('application/json');
     expect(animals).toHaveLength(1);
     expect(animals[0]).toMatchObject({
       id: 'animal-1',

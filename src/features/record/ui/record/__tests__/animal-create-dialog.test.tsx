@@ -21,6 +21,7 @@ vi.mock('sonner', () => ({
 }));
 
 vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  useAccessToken: vi.fn(() => 'token'),
   ensureAccessToken: vi.fn(() => 'token'),
 }));
 

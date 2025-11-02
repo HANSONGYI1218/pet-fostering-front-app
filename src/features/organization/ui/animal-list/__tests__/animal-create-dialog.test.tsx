@@ -12,6 +12,7 @@ const toastMock = vi.hoisted(() => {
 });
 
 const authTokenMocks = vi.hoisted(() => ({
+  useAccessToken: vi.fn<() => string | null>(() => null),
   ensureAccessToken: vi.fn<() => string | null>(() => 'token'),
 }));
 
@@ -24,6 +25,7 @@ vi.mock('sonner', () => ({
 }));
 
 vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  useAccessToken: authTokenMocks.useAccessToken,
   ensureAccessToken: authTokenMocks.ensureAccessToken,
 }));
 
@@ -51,7 +53,11 @@ describe('AnimalCreateDialog', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-    authTokenMocks.ensureAccessToken.mockReturnValue(null);
+    authTokenMocks.useAccessToken.mockReturnValue(null);
+    authTokenMocks.ensureAccessToken.mockImplementation(() => {
+      toastMock('로그인이 필요합니다.');
+      return null;
+    });
     toastMock.mockClear();
     toastMock.success.mockClear();
     toastMock.error.mockClear();
