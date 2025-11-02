@@ -1,4 +1,5 @@
 import { Button } from '@/shared/ui/button';
+import { cn } from '@/shared/lib/utils';
 import {
   MYPAGE_STEPS,
   MYPAGE_STEP_LABEL,
@@ -26,7 +27,12 @@ export default function MypageMenu({
                 setCurrentStep(step);
               }}
               variant="ghost"
-              className={`h-12 w-full justify-start text-lg ${isActive ? 'bg-[#D0EFE0] font-semibold text-[#00592d] hover:bg-[#D0EFE0] hover:text-[#00592d]' : 'font-normal text-neutral-700'}`}
+              className={cn(
+                'h-12 w-full justify-start text-lg',
+                isActive
+                  ? 'bg-[#D0EFE0] font-semibold text-[#00592d] hover:bg-[#D0EFE0] hover:text-[#00592d]'
+                  : 'font-normal text-neutral-700',
+              )}
             >
               {MYPAGE_STEP_LABEL[step]}
             </Button>

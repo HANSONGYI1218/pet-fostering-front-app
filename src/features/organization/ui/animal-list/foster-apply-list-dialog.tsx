@@ -9,18 +9,18 @@ import {
   DialogTitle,
   DialogTrigger,
 } from '@/shared/ui/dialog';
-import { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
+import type { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
 import Image from 'next/image';
 import { ApplyAcceptDialog } from './applicent-accept-dialog';
 
 export function FosterApplyListDialog({
-  animal_name,
+  animalName,
   applicants,
-  apply_number,
+  applyNumber,
 }: {
-  animal_name: string;
+  animalName: string;
   applicants: FosterApplicant[];
-  apply_number: number;
+  applyNumber: number;
 }) {
   return (
     <Dialog>
@@ -30,17 +30,17 @@ export function FosterApplyListDialog({
             variant="outline_green"
             className="h-10 w-full font-semibold text-[#00592d]"
           >
-            임보 신청자 {apply_number > 0 && `(${apply_number})`}
+            임보 신청자 {applyNumber > 0 && `(${applyNumber})`}
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-lg">
           <DialogHeader className="">
             <DialogTitle className="flex items-center gap-2">
               임시보호 신청자 목록
-              <Badge variant={'outline'}>{animal_name}</Badge>
+              <Badge variant="outline">{animalName}</Badge>
             </DialogTitle>
             <DialogDescription className="self-end text-base">
-              {apply_number}건
+              {applyNumber}건
             </DialogDescription>
           </DialogHeader>
           {applicants?.map((applicant, index) => {
@@ -67,12 +67,12 @@ export function FosterApplyListDialog({
                 </div>
                 <span className="px-2 py-3">{applicant?.introduction}</span>
                 <div className="flex w-full gap-3">
-                  <Button variant={'outline_green'} className="px-6">
+                  <Button variant="outline_green" className="px-6">
                     이력보기
                   </Button>
                   <ApplyAcceptDialog
-                    animal_name={animal_name}
-                    applicant_name={applicant?.name}
+                    animalName={animalName}
+                    applicantName={applicant?.name}
                   />
                 </div>
               </Card>

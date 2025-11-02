@@ -1,14 +1,18 @@
 'use client';
 
-import { FosterRecord } from '@/entities/foster-record/foster-record';
-import React, {
+import {
   createContext,
+  type Dispatch,
+  type ReactNode,
+  type SetStateAction,
   useCallback,
   useContext,
   useEffect,
   useMemo,
   useState,
 } from 'react';
+
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import { toDate } from '@/shared/lib/utils';
 
 const normalizeRecord = (record: FosterRecord): FosterRecord => {
@@ -26,13 +30,12 @@ const normalizeRecord = (record: FosterRecord): FosterRecord => {
   };
 };
 
-// Context의 타입 정의
 interface RecordContextType {
   records: FosterRecord[];
   selectedRecord: FosterRecord | null;
-  setSelectedRecord: React.Dispatch<React.SetStateAction<FosterRecord | null>>;
+  setSelectedRecord: Dispatch<SetStateAction<FosterRecord | null>>;
   currentMonth: Date;
-  setCurrentMonth: React.Dispatch<React.SetStateAction<Date>>;
+  setCurrentMonth: Dispatch<SetStateAction<Date>>;
   isDog: boolean;
   upsertRecord: (record: FosterRecord) => void;
   removeRecord: (id: string) => void;
@@ -41,16 +44,23 @@ interface RecordContextType {
 
 const RecordContext = createContext<RecordContextType | null>(null);
 
-// Provider 컴포넌트
-export const RecordProvider: React.FC<{
+interface RecordProviderProps {
   records: FosterRecord[];
-  initalValue: FosterRecord;
+  initialValue: FosterRecord | null;
   isDog: boolean;
   animalId: string;
-  children: React.ReactNode;
-}> = ({ records, initalValue, isDog, animalId, children }) => {
+  children: ReactNode;
+}
+
+export function RecordProvider({
+  records,
+  initialValue,
+  isDog,
+  animalId,
+  children,
+}: RecordProviderProps) {
   const normalizedRecords = useMemo(
-    () => records.map((record) => normalizeRecord(record)),
+    () => records.map(normalizeRecord),
     [records],
   );
 
@@ -58,8 +68,8 @@ export const RecordProvider: React.FC<{
     useState<FosterRecord[]>(normalizedRecords);
 
   const normalizedInitialRecord = useMemo(
-    () => (initalValue ? normalizeRecord(initalValue) : null),
-    [initalValue],
+    () => (initialValue ? normalizeRecord(initialValue) : null),
+    [initialValue],
   );
 
   const [selectedRecord, setSelectedRecord] = useState<FosterRecord | null>(
@@ -126,14 +136,13 @@ export const RecordProvider: React.FC<{
       {children}
     </RecordContext.Provider>
   );
-};
+}
 
-// Custom Hook: Context 사용을 쉽게 해줌
 export const useRecord = (): RecordContextType => {
   const context = useContext(RecordContext);
 
   if (!context) {
-    throw new Error('useRecord must be used within an RecordProvider');
+    throw new Error('useRecord must be used within a RecordProvider');
   }
   return context;
 };

@@ -15,12 +15,16 @@ import { Textarea } from '@/shared/ui/textarea';
 import { Button } from '@/shared/ui/button';
 import { toast } from 'sonner';
 import { useState } from 'react';
+import { cn } from '@/shared/lib/utils';
 import {
   ensureAccessToken,
   useAccessToken,
 } from '@/shared/lib/auth/access-token.client';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
-import { updateComment, createComment } from '../../api/community';
+import {
+  updateComment,
+  createComment,
+} from '@/features/community/api/community';
 
 type CommentFormMode = 'create' | 'reply' | 'edit';
 
@@ -125,7 +129,10 @@ export default function CommentsForm({
                 <Textarea
                   {...field}
                   placeholder="댓글을 남겨주세요."
-                  className={`min-h-24 resize-none bg-[#fdfdfd] ${heightClassName ?? ''}`}
+                  className={cn(
+                    'min-h-24 resize-none bg-[#fdfdfd]',
+                    heightClassName,
+                  )}
                 />
               </FormControl>
               <FormMessage />

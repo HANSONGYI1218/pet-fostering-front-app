@@ -2,7 +2,7 @@
 
 import { useMemo } from 'react';
 
-import { PostItem } from '@/entities/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { selectRecentPopularPosts } from '@/features/community/domain/posts';
 import { usePagination } from '@/shared/hooks/use-pagination';
 import { PaginationDynamic } from '@/shared/widgets/navigation/pagination-dynamic';

@@ -1,4 +1,3 @@
-/* eslint-disable @typescript-eslint/no-explicit-any */
 import { render, waitFor } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { KakaoCallbackHandler } from '../ui/kakao-callback-handler';
@@ -13,11 +12,17 @@ vi.mock('next/navigation', () => ({
   useRouter: () => ({ replace: replaceMock }),
 }));
 
+type GlobalWithReportError = typeof globalThis & {
+  reportError: ReturnType<typeof vi.fn>;
+};
+
+const getGlobal = () => globalThis as GlobalWithReportError;
+
 describe('KakaoCallbackHandler', () => {
   beforeEach(() => {
     vi.restoreAllMocks();
     replaceMock.mockClear();
-    (globalThis as any).reportError = vi.fn(); // 👈 여기서 추가
+    getGlobal().reportError = vi.fn();
   });
 
   it('로그인 성공 시 router.replace 호출', async () => {
@@ -34,7 +39,7 @@ describe('KakaoCallbackHandler', () => {
     render(<KakaoCallbackHandler code={null} />);
 
     await waitFor(() => {
-      expect((globalThis as any).reportError).toHaveBeenCalledWith(
+      expect(getGlobal().reportError).toHaveBeenCalledWith(
         expect.objectContaining({ message: '카카오 인가 코드가 필요합니다.' }),
       );
     });

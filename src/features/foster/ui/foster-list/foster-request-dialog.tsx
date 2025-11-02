@@ -86,7 +86,7 @@ export default function FosterRequestDialog({
                   내 정보에서 자격을 등록해보세요.
                   <br />
                 </span>
-                <Link href={'/mypage?tab=foster'}>
+                <Link href="/mypage?tab=foster">
                   <span className="font-semibold text-red-500 underline decoration-[#F26F6F] underline-offset-4">
                     자격 등록하러 가기 →
                   </span>

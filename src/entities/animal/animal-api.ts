@@ -3,9 +3,9 @@ import {
   AnimalHealth,
   AnimalPersonality,
   AnimalSpecialNote,
-} from '../animal-condition/animal-condition';
-import { FosterApplicant } from '../foster-apply/foster-apply-api';
-import { FosterRecord } from '../foster-record/foster-record';
+} from '@/entities/animal-condition/animal-condition';
+import type { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import {
   AnimalType,
   AnimalGender,

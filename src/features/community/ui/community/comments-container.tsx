@@ -6,7 +6,10 @@ import { PaginationDynamic } from '@/shared/widgets/navigation/pagination-dynami
 import RetryButton from '@/shared/widgets/feedback/retry-button';
 import CommunityCommentTile from './community-comment-tile';
 import { Card } from '@/shared/ui/card';
-import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
+import type {
+  CommentItem,
+  ReplyCommentItem,
+} from '@/entities/comment/comment-api';
 import CommentsForm from './comments-form';
 import { CommentSelection } from './types';
 

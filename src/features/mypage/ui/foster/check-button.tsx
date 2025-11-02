@@ -1,5 +1,6 @@
 import { Checkbox } from '@/shared/ui/checkbox';
 import { Label } from '@/shared/ui/label';
+import { cn } from '@/shared/lib/utils';
 import {
   ANIMAL_TYPE_LABEL_KO,
   ANIMAL_AGE_LABEL_KO,
@@ -56,7 +57,12 @@ export function CheckButton({
 
   return (
     <div
-      className={`w-full ${type === 'environment' ? 'flex flex-wrap gap-x-12 gap-y-2' : 'grid grid-cols-4 gap-6'}`}
+      className={cn(
+        'w-full',
+        type === 'environment'
+          ? 'flex flex-wrap gap-x-12 gap-y-2'
+          : 'grid grid-cols-4 gap-6',
+      )}
     >
       {Object.entries(labelObject).map(([optionValue, label]) => (
         <label

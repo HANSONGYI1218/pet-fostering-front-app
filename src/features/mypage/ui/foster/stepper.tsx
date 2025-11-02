@@ -3,6 +3,7 @@
 import { motion } from 'framer-motion';
 import { BadgeCheck } from 'lucide-react';
 import Image from 'next/image';
+import { cn } from '@/shared/lib/utils';
 
 const steps = ['시작', 'step01', 'step02', 'step03', '등록'];
 
@@ -15,19 +16,24 @@ export default function Stepper({ currentStep }: { currentStep: number }) {
           <div key={idx} className="relative flex flex-1 flex-col items-center">
             {/* Circle */}
             {idx === 0 ? (
-              <div className={`flex h-fit w-fit rounded-full`}>
+              <div className="flex h-fit w-fit rounded-full">
                 <Image
                   src="/images/paw-with-hand.png"
                   width={40}
                   height={40}
-                  className={`${currentStep === 0 ? 'scale-120' : 'scale-100'} `}
+                  className={currentStep === 0 ? 'scale-120' : 'scale-100'}
                   alt="paw-with-hand.png"
                 />
               </div>
             ) : idx === steps.length - 1 ? (
-              <div className={`flex h-fit w-fit rounded-full p-1`}>
+              <div className="flex h-fit w-fit rounded-full p-1">
                 <BadgeCheck
-                  className={`h-10 w-10 ${currentStep === steps.length - 1 ? 'scale-120 fill-[#D0EFE0] stroke-[#00592d]' : 'scale-100 fill-white stroke-[#e5e7eb]'}`}
+                  className={cn(
+                    'h-10 w-10',
+                    currentStep === steps.length - 1
+                      ? 'scale-120 fill-[#D0EFE0] stroke-[#00592d]'
+                      : 'scale-100 fill-white stroke-[#e5e7eb]',
+                  )}
                   strokeWidth={2}
                 />
               </div>
@@ -46,11 +52,12 @@ export default function Stepper({ currentStep }: { currentStep: number }) {
             )}
             {/* Label */}
             <span
-              className={`mt-2 text-sm ${
+              className={cn(
+                'mt-2 text-sm',
                 currentStep >= idx
                   ? 'font-semibold text-[#00592d]'
-                  : 'text-gray-400'
-              }`}
+                  : 'text-gray-400',
+              )}
             >
               {step}
             </span>

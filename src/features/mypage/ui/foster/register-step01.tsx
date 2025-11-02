@@ -1,20 +1,18 @@
 'use client';
 
-import { UseFormReturn } from 'react-hook-form';
-import z from 'zod';
-import { FosterformSchema } from './foster-register-form';
-import { Card } from '@/shared/ui/card';
-import { Controller } from 'react-hook-form';
-import { CheckButton } from '@/features/mypage/ui/foster/check-button';
+import { Controller, UseFormReturn } from 'react-hook-form';
 import { CircleCheck } from 'lucide-react';
 
-export type FosterformValues = z.infer<typeof FosterformSchema>;
+import { CheckButton } from '@/features/mypage/ui/foster/check-button';
+import { cn } from '@/shared/lib/utils';
+import { Card } from '@/shared/ui/card';
+import type { FosterFormValues } from './foster-register-form';
 
 export default function RegisterStep01({
   form,
   isValidStep01,
 }: {
-  form: UseFormReturn<FosterformValues>;
+  form: UseFormReturn<FosterFormValues>;
   isValidStep01: boolean;
 }) {
   return (
@@ -27,13 +25,18 @@ export default function RegisterStep01({
           * 모든 항목은 복수 선택으로 가능한 조건을 최대한 선택해주세요.
         </span>
         <CircleCheck
-          className={`absolute top-0 right-0 h-7 w-7 stroke-white ${isValidStep01 ? 'fill-[#00592d]' : 'fill-neutral-300'}`}
+          className={cn(
+            'absolute top-0 right-0 h-7 w-7 stroke-white',
+            isValidStep01 ? 'fill-[#00592d]' : 'fill-neutral-300',
+          )}
         />
       </div>
       <div className="flex flex-col gap-4">
         <span className="font-medium">
-          <span className="mr-1 text-[#00592d]">Q.</span>임시보호 하실{' '}
-          <span className="text-[#00592d]">동물</span>을 선택해 주세요.
+          <span className="mr-1 text-[#00592d]">Q.</span>
+          <span>임시보호 하실</span>
+          <span className="text-[#00592d]">동물</span>
+          <span>을 선택해 주세요.</span>
         </span>
         <div className="pl-5">
           <Controller

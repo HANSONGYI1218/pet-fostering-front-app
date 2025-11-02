@@ -19,7 +19,8 @@ import { AUTH_CHANGE_EVENT_NAME, dispatchAuthChangeEvent } from './events';
 import { DEFAULT_MAX_AGE_SECONDS } from './cookie-utils';
 
 const ORIGINAL_ENV = { ...process.env };
-const toBase64 = (value: string) => Buffer.from(value, 'utf-8').toString('base64');
+const toBase64 = (value: string) =>
+  Buffer.from(value, 'utf-8').toString('base64');
 
 const stubBrowserEnv = () => {
   const cookieJar: string[] = [];

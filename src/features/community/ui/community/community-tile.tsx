@@ -1,4 +1,4 @@
-import { PostItem } from '@/entities/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { Card } from '@/shared/ui/card';
 import { Eye, MessageSquareText, ThumbsUp } from 'lucide-react';
 import Image from 'next/image';
@@ -6,16 +6,16 @@ import Link from 'next/link';
 import { stripHtml } from '@/shared/lib/utils';
 
 export default function CommunityTile({ post }: { post: PostItem }) {
-  const preview = stripHtml(post?.content ?? '').trim();
-  const nickname = post?.user?.nickname ?? '익명';
-  const commentCount = post?.commentCount ?? 0;
+  const preview = stripHtml(post.content).trim();
+  const nickname = post.user.nickname ?? '익명';
+  const commentCount = post.commentCount ?? 0;
 
   return (
-    <Link href={`/community/${post?.id}`}>
+    <Link href={`/community/${post.id}`}>
       <Card className="transition-all duration-500 hover:shadow-lg">
         <div className="flex w-full flex-1 flex-col gap-5">
           <span className="line-clamp-1 font-semibold md:text-lg">
-            {post?.title}
+            {post.title}
           </span>
           <span className="line-clamp-2 text-sm text-neutral-500 md:text-base">
             {preview}
@@ -37,11 +37,11 @@ export default function CommunityTile({ post }: { post: PostItem }) {
               </div>
               <div className="flex items-center gap-1">
                 <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
-                <span className="text-sm text-neutral-400">{post?.likes}</span>
+                <span className="text-sm text-neutral-400">{post.likes}</span>
               </div>
               <div className="flex items-center gap-1">
                 <Eye className="h-3.5 w-3.5" stroke="#a1a1a1" />
-                <span className="text-sm text-neutral-400">{post?.views}</span>
+                <span className="text-sm text-neutral-400">{post.views}</span>
               </div>
             </div>
           </div>

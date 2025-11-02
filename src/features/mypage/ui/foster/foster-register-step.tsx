@@ -1,75 +1,68 @@
 'use client';
 
+import { useCallback, useEffect, useState } from 'react';
+import { ArrowLeft, ArrowRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 import { useFormContext, UseFormReturn, useWatch } from 'react-hook-form';
-import z from 'zod';
-import {
-  FosterformSchema,
-  validateStep01,
-  validateStep02,
-} from './foster-register-form';
+
+import { Button } from '@/shared/ui/button';
+import { Card } from '@/shared/ui/card';
 import RegisterStep01 from './register-step01';
 import RegisterStep02 from './register-step02';
 import RegisterStep03 from './register-step03';
-import { Card } from '@/shared/ui/card';
-import Image from 'next/image';
-import { Button } from '@/shared/ui/button';
-import { useCallback, useEffect, useState } from 'react';
-import Link from 'next/link';
 import Stepper from './stepper';
-import { ArrowLeft, ArrowRight } from 'lucide-react';
-
-export type FosterformValues = z.infer<typeof FosterformSchema>;
+import {
+  validateStep01,
+  validateStep02,
+  type FosterFormValues,
+} from './foster-register-form';
 
 export default function FosterRegisterStep({
   form,
 }: {
-  form: UseFormReturn<FosterformValues>;
+  form: UseFormReturn<FosterFormValues>;
 }) {
-  const { control } = useFormContext<FosterformValues>();
+  const { control } = useFormContext<FosterFormValues>();
   const [currentStep, setCurrentStep] = useState(0);
-
-  // 버튼 노출 제어
   const [isPrevHidden, setIsPrevHidden] = useState(true);
   const [isNextHidden, setIsNextHidden] = useState(true);
   const [canNext, setCanNext] = useState(false);
 
-  // 유효성 상태
   const [step01Passed, setStep01Passed] = useState(false);
   const [step02Passed, setStep02Passed] = useState(false);
 
-  // Watch values
   const type = useWatch({ control, name: 'type' });
   const size = useWatch({ control, name: 'size' });
-  const animal_age = useWatch({ control, name: 'animal_age' });
+  const animalAge = useWatch({ control, name: 'animal_age' });
 
-  const foster_environments = useWatch({
+  const fosterEnvironments = useWatch({
     control,
     name: 'foster_environments',
   });
-  const special_notes_animals = useWatch({
+  const specialNotesAnimals = useWatch({
     control,
     name: 'special_notes_animals',
   });
-  const foster_period = useWatch({ control, name: 'foster_period' });
+  const fosterPeriod = useWatch({ control, name: 'foster_period' });
 
-  // Step validation
   const isStep01Valid = useCallback(
     () =>
       validateStep01({
         type: type ?? [],
         size: size ?? [],
-        animal_age: animal_age ?? [],
+        animal_age: animalAge ?? [],
       }).success,
-    [animal_age, size, type],
+    [animalAge, size, type],
   );
   const isStep02Valid = useCallback(
     () =>
       validateStep02({
-        foster_environments: foster_environments ?? [],
-        special_notes_animals: special_notes_animals ?? [],
-        foster_period,
+        foster_environments: fosterEnvironments ?? [],
+        special_notes_animals: specialNotesAnimals ?? [],
+        foster_period: fosterPeriod,
       }).success,
-    [foster_environments, foster_period, special_notes_animals],
+    [fosterEnvironments, fosterPeriod, specialNotesAnimals],
   );
 
   useEffect(() => {
@@ -80,7 +73,6 @@ export default function FosterRegisterStep({
     setStep02Passed(isStep02Valid());
   }, [isStep02Valid]);
 
-  // currentStep이 바뀔 때 버튼 상태 & canNext 업데이트
   useEffect(() => {
     setIsNextHidden(
       currentStep === 0 || currentStep === 3 || currentStep === 4,
@@ -114,7 +106,7 @@ export default function FosterRegisterStep({
           <div className="flex flex-col items-center gap-2">
             <span>임시 보호자 등록 전입니다</span>
             <Button
-              variant={'destructive'}
+              variant="destructive"
               className="h-10 px-8"
               onClick={handleNext}
             >
@@ -152,8 +144,8 @@ export default function FosterRegisterStep({
             완료했어요!
           </span>
           <span>보호동물 임시보호를 신청해보세요.</span>
-          <Link href={'/foster-list'}>
-            <Button variant={'destructive'} className="my-4 h-10 px-8">
+          <Link href="/foster-list">
+            <Button variant="destructive" className="my-4 h-10 px-8">
               보호동물 보러가기
             </Button>
           </Link>
@@ -165,14 +157,13 @@ export default function FosterRegisterStep({
   return (
     <div className="relative flex flex-col gap-2">
       <Stepper currentStep={currentStep} />
-      {/* Step Content */}
       <div className="relative mx-auto w-full max-w-2xl overflow-hidden">
         <div
           className="flex transition-transform duration-500"
           style={{ transform: `translateX(-${currentStep * 100}%)` }}
         >
-          {stepComponents.map((step, index) => (
-            <div key={index} className="w-full flex-shrink-0">
+          {stepComponents.map((step) => (
+            <div key={step.index} className="w-full flex-shrink-0">
               {step.component}
             </div>
           ))}
@@ -182,7 +173,7 @@ export default function FosterRegisterStep({
         {!isPrevHidden && (
           <Button
             onClick={handlePrev}
-            variant={'outline'}
+            variant="outline"
             className="absolute top-1/2 left-0 size-8 -translate-y-1/2 rounded-full"
           >
             <ArrowLeft />
@@ -192,7 +183,7 @@ export default function FosterRegisterStep({
           <Button
             onClick={handleNext}
             disabled={!canNext}
-            variant={'outline'}
+            variant="outline"
             className="absolute top-1/2 right-0 size-8 -translate-y-1/2 rounded-full"
           >
             <ArrowRight />

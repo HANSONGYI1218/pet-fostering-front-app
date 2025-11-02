@@ -15,6 +15,7 @@ import {
   navigationMenuTriggerStyle,
 } from '@/shared/ui/navigation-menu';
 import { useAuthClaims } from '@/lib/auth/use-auth-claims';
+import { cn } from '@/shared/lib/utils';
 
 const NAV_ITEMS = [
   {
@@ -146,7 +147,10 @@ export default function TopBar() {
         <li key={item.href}>
           <Link
             {...linkProps}
-            className={`flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition ${itemClassName}`}
+            className={cn(
+              'flex items-center justify-between rounded-md px-3 py-2 text-sm font-medium transition',
+              itemClassName,
+            )}
           >
             <span>{item.name}</span>
             {pawIconMobile}
@@ -158,7 +162,7 @@ export default function TopBar() {
             <Link
               key={item.href}
               {...linkProps}
-              className={`${navigationMenuTriggerStyle()} gap-2`}
+              className={cn(navigationMenuTriggerStyle(), 'gap-2')}
             >
               <span>{item.name}</span>
               <span className="flex w-6 justify-center">

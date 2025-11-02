@@ -4,7 +4,7 @@ import {
   AnimalHealth,
   AnimalSpecialNote,
   AnimalPeriod,
-} from '../animal-condition/animal-condition';
+} from '@/entities/animal-condition/animal-condition';
 
 export enum FosterEnvironment {
   QUIET_ENVIRONMENT = 'QUIET_ENVIRONMENT',

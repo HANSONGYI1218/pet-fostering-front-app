@@ -1,10 +1,10 @@
 import { Card } from '@/shared/ui/card';
 
 export function RecordHealthNote({
-  health_note,
+  healthNote,
   children,
 }: {
-  health_note?: string;
+  healthNote?: string;
   children?: React.ReactNode;
 }) {
   return (
@@ -43,7 +43,7 @@ export function RecordHealthNote({
         <>{children}</>
       ) : (
         <Card className="min-h-32 cursor-default p-3 shadow-none">
-          {health_note}
+          {healthNote}
         </Card>
       )}
     </div>

@@ -1,4 +1,4 @@
-import { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
+import type { OrganizationAnimalListItem } from '@/entities/animal/animal-api';
 import { Card } from '@/shared/ui/card';
 import {
   ANIMAL_GENDER_LABEL_KO,
@@ -13,7 +13,7 @@ import Link from 'next/link';
 import { FosterApplyListDialog } from './foster-apply-list-dialog';
 import { Button } from '@/shared/ui/button';
 import { AnimalStatus } from '@/entities/animal/animal';
-import { formatAnimalAge } from '@/shared/lib/utils';
+import { cn, formatAnimalAge } from '@/shared/lib/utils';
 import Image from 'next/image';
 
 export default function FosterTile({
@@ -25,7 +25,10 @@ export default function FosterTile({
 
   return (
     <Card
-      className={`relative mb-6 flex w-full cursor-default gap-0 overflow-hidden p-0 transition-all duration-500 hover:shadow-lg ${isFosterCompleted ? 'opacity-70' : 'opacity-100'}`}
+      className={cn(
+        'relative mb-6 flex w-full cursor-default gap-0 overflow-hidden p-0 transition-all duration-500 hover:shadow-lg',
+        isFosterCompleted ? 'opacity-70' : 'opacity-100',
+      )}
     >
       <div className="relative h-64 w-full">
         <Image
@@ -37,9 +40,7 @@ export default function FosterTile({
         />
       </div>
       {isFosterCompleted ? (
-        <div
-          className={`absolute top-4 left-4 flex h-9 cursor-default items-center gap-1.5 rounded-md bg-[#FFE081]/70 px-4 text-base font-semibold text-white`}
-        >
+        <div className="absolute top-4 left-4 flex h-9 cursor-default items-center gap-1.5 rounded-md bg-[#FFE081]/70 px-4 text-base font-semibold text-white">
           <svg
             width="24"
             height="24"
@@ -65,7 +66,10 @@ export default function FosterTile({
         </div>
       ) : (
         <div
-          className={`absolute top-4 left-4 h-9 cursor-default items-center gap-1.5 rounded-md bg-[#EA1B1B]/70 px-4 text-base font-semibold text-white ${animal?.isEmergency ? 'flex' : 'hidden'}`}
+          className={cn(
+            'absolute top-4 left-4 h-9 cursor-default items-center gap-1.5 rounded-md bg-[#EA1B1B]/70 px-4 text-base font-semibold text-white',
+            animal?.isEmergency ? 'flex' : 'hidden',
+          )}
         >
           <svg
             width="22"
@@ -114,7 +118,7 @@ export default function FosterTile({
           <div className="flex h-[60px] flex-wrap gap-2 overflow-hidden">
             {animal?.animal_personalitys?.map((personality, index) => {
               return (
-                <Badge key={index} variant={'default'} className="font-normal">
+                <Badge key={index} variant="default" className="font-normal">
                   {ANIMAL_PERSONALITY_LABEL_KO[personality]}
                 </Badge>
               );
@@ -129,11 +133,7 @@ export default function FosterTile({
           <div className="flex h-[60px] flex-wrap gap-2 overflow-hidden">
             {animal?.foster_environments?.map((environment, index) => {
               return (
-                <Badge
-                  key={index}
-                  variant={'secondary'}
-                  className="font-normal"
-                >
+                <Badge key={index} variant="secondary" className="font-normal">
                   {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
                 </Badge>
               );
@@ -142,15 +142,15 @@ export default function FosterTile({
         </div>
         <div className="mt-3 flex w-full flex-col gap-2">
           <FosterApplyListDialog
-            animal_name={animal?.name}
+            animalName={animal?.name}
             applicants={animal?.applicants}
-            apply_number={animal?.foster_apply_number}
+            applyNumber={animal?.foster_apply_number}
           />
           <Link
             href={`/organization/animal-list/${animal?.id}`}
             className="w-full"
           >
-            <Button variant={'destructive'} className="h-10 w-full">
+            <Button variant="destructive" className="h-10 w-full">
               상세 내용
               <MoveRight />
             </Button>

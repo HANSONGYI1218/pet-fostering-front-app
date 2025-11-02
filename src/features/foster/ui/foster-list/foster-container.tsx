@@ -1,6 +1,6 @@
 'use client';
 
-import { FosterListAnimalItem } from '@/entities/animal/animal-api';
+import type { FosterListAnimalItem } from '@/entities/animal/animal-api';
 import { useMemo, useState } from 'react';
 import { AlertTriangle } from 'lucide-react';
 
@@ -91,7 +91,7 @@ export default function FosterContainer({
         )
       ) : (
         <EmptyBox className="min-h-96" text="아직 보호동물이 없어요." />
-      )}{' '}
+      )}
     </div>
   );
 }

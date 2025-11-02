@@ -9,6 +9,7 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/shared/ui/carousel';
+import { cn } from '@/shared/lib/utils';
 import { useState, useEffect } from 'react';
 import Image from 'next/image';
 
@@ -78,9 +79,10 @@ export function AnimalCarousel({ images }: { images: string[] }) {
                 key={index}
                 type="button"
                 onClick={() => api?.scrollTo(index)}
-                className={`h-3 w-3 rounded-full transition-colors ${
-                  isActive ? 'bg-[#7c7c7c]' : 'bg-[#d4d4d4]'
-                }`}
+                className={cn(
+                  'h-3 w-3 rounded-full transition-colors',
+                  isActive ? 'bg-[#7c7c7c]' : 'bg-[#d4d4d4]',
+                )}
                 aria-label={`이미지 ${index + 1} 보기`}
               />
             );

@@ -88,7 +88,7 @@ export function ChartBarLabel({
       </CardContent>
       <CardFooter className="mx-auto flex-col items-start gap-2 text-sm">
         <div className="flex items-center gap-2 leading-none font-medium">
-          기록을 가장 많이 작성한 달은{' '}
+          <span>기록을 가장 많이 작성한 달은</span>
           <span className="text-base font-bold">{maxRecordMonth.month}</span>
           <TrendingUp className="h-4 w-4" />
         </div>

@@ -1,4 +1,4 @@
-import { PostItem } from '@/entities/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { Eye, MessageSquareText } from 'lucide-react';
 
 export default function TopListTile({
@@ -17,25 +17,25 @@ export default function TopListTile({
       </div>
       <div className="flex w-full flex-1 flex-col gap-2">
         <span className="line-clamp-1 font-semibold">
-          {recentPopularPost?.title}
+          {recentPopularPost.title}
         </span>
         <div className="flex w-full gap-5">
           <span className="text-sm text-[#525252]">
-            {recentPopularPost?.user?.nickname}
+            {recentPopularPost.user.nickname}
           </span>
           <div className="flex items-center gap-1">
             <MessageSquareText className="h-3.5 w-3.5" stroke="#525252" />
             <span className="text-sm text-[#525252]">
-              {recentPopularPost?.commentCount ?? 0}
+              {recentPopularPost.commentCount ?? 0}
             </span>
           </div>
           <div className="flex items-center gap-1">
             <Eye className="h-3.5 w-3.5" stroke="#525252" />
             <span className="text-sm text-[#525252]">
-              {recentPopularPost?.views}
+              {recentPopularPost.views}
             </span>
           </div>
-        </div>{' '}
+        </div>
       </div>
     </div>
   );

@@ -1,7 +1,7 @@
 'use client';
 
 import { Button } from '@/shared/ui/button';
-import { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
+import type { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 import { useMemo, useState } from 'react';
 import AnimalTile from './animal-tile';
 import { AnimalStatus } from '@/entities/animal/animal';

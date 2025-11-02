@@ -3,7 +3,7 @@ import {
   AnimalStatus,
   AnimalType,
 } from '@/entities/animal/animal';
-import { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
+import type { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 
 export const dummyFosterAnimals: FosterRecordAnimalItem[] = [
   {

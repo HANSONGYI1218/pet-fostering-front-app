@@ -29,7 +29,7 @@ import {
 import { useRecord } from '@/features/record/context/record-provider';
 import { Button } from '@/shared/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
-import { FosterRecord } from '@/entities/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import { Badge } from '@/shared/ui/badge';
 import { ko } from 'date-fns/locale';
 import { Card } from '@/shared/ui/card';
@@ -271,7 +271,14 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
               setCurrentMonth(p.date);
             }
           }}
-          className={`relative flex h-12 w-full p-0 md:h-20 ${isToday && 'max-md:bg-[#15894B]'} ${isPastDate ? 'cursor-pointer' : 'cursor-default'} flex-col items-center justify-center gap-3 rounded-lg border ${currentRecord ? 'bg-[#F9F9F9] hover:bg-neutral-100' : 'bg-white hover:bg-neutral-100'}`}
+          className={cn(
+            'relative flex h-12 w-full flex-col items-center justify-center gap-3 rounded-lg border p-0 md:h-20',
+            isToday && 'max-md:bg-[#15894B]',
+            isPastDate ? 'cursor-pointer' : 'cursor-default',
+            currentRecord
+              ? 'bg-[#F9F9F9] hover:bg-neutral-100'
+              : 'bg-white hover:bg-neutral-100',
+          )}
         >
           {isToday && (
             <div className="absolute top-2.5 left-2 h-6 w-6 rounded-full bg-[#15894B] max-md:hidden" />
@@ -329,7 +336,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
               <DialogHeader className="flex flex-col gap-10">
                 <DialogTitle className="flex items-center gap-2">
                   <span>돌봄기록 생성</span>
-                  <Badge variant={'outline'} className="border-neutral-300">
+                  <Badge variant="outline" className="border-neutral-300">
                     {format(p.date, 'M월 d일 (eee)', { locale: ko })}
                   </Badge>
                 </DialogTitle>
@@ -375,7 +382,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                     </div>
                     <FormField
                       control={form.control}
-                      name={'images'}
+                      name="images"
                       render={({ field }) => (
                         <FormItem>
                           {isEdit ||
@@ -469,7 +476,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                 <RecordContent>
                   <FormField
                     control={form.control}
-                    name={'content'}
+                    name="content"
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
@@ -492,7 +499,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                 <RecordHealthNote>
                   <FormField
                     control={form.control}
-                    name={'health_note'}
+                    name="health_note"
                     render={({ field }) => (
                       <FormItem className="w-full">
                         <FormControl>
@@ -540,7 +547,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                     <DialogClose asChild>
                       <Button
                         type="button"
-                        variant={'outline_black'}
+                        variant="outline_black"
                         onClick={() => {
                           setIsEdit(false);
                         }}
@@ -552,7 +559,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                     </DialogClose>
                     <Button
                       type="submit"
-                      variant={'default'}
+                      variant="default"
                       className="w-24"
                       disabled={isDialogBusy || !form.formState.isValid}
                     >
@@ -566,7 +573,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
                 ) : (
                   <Button
                     type="button"
-                    variant={'outline_black'}
+                    variant="outline_black"
                     onClick={(event) => {
                       event.preventDefault();
                       event.stopPropagation();

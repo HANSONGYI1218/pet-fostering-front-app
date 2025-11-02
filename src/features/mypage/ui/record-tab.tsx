@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { Button } from '@/shared/ui/button';
+import { cn } from '@/shared/lib/utils';
 import PostRecord from './post-record';
 import CommentRecord from './comment-record';
 import type { PostItemByUserId } from '@/entities/post/post-api';
@@ -27,14 +28,24 @@ export default function RecordTab({
         <Button
           variant="ghost"
           onClick={() => setCurrentPage(0)}
-          className={`h-full rounded-none font-semibold ${currentPage === 0 ? 'border-b-2 border-[#00592d] text-[#00592d] hover:text-[#00592d]' : 'border-b-2 border-neutral-100 text-neutral-600 hover:border-b-2 hover:border-neutral-300 hover:text-neutral-600'}`}
+          className={cn(
+            'h-full rounded-none font-semibold',
+            currentPage === 0
+              ? 'border-b-2 border-[#00592d] text-[#00592d] hover:text-[#00592d]'
+              : 'border-b-2 border-neutral-100 text-neutral-600 hover:border-b-2 hover:border-neutral-300 hover:text-neutral-600',
+          )}
         >
           작성 글
         </Button>
         <Button
           variant="ghost"
           onClick={() => setCurrentPage(1)}
-          className={`h-full rounded-none font-semibold ${currentPage === 1 ? 'border-b-2 border-[#00592d] text-[#00592d] hover:text-[#00592d]' : 'border-b-2 border-neutral-100 text-neutral-600 hover:border-b-2 hover:border-neutral-300 hover:text-neutral-600'}`}
+          className={cn(
+            'h-full rounded-none font-semibold',
+            currentPage === 1
+              ? 'border-b-2 border-[#00592d] text-[#00592d] hover:text-[#00592d]'
+              : 'border-b-2 border-neutral-100 text-neutral-600 hover:border-b-2 hover:border-neutral-300 hover:text-neutral-600',
+          )}
         >
           작성 댓글
         </Button>

@@ -16,7 +16,7 @@ import { ko } from 'date-fns/locale';
 import { RecordImages } from '@/features/record/widgets/record-images';
 import { RecordContent } from '@/features/record/widgets/record-content';
 import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
-import { toDate } from '@/shared/lib/utils';
+import { cn, toDate } from '@/shared/lib/utils';
 import EmptyBox from '@/shared/widgets/feedback/empty-box';
 
 export default function RecordDetail() {
@@ -37,7 +37,7 @@ export default function RecordDetail() {
           onClick={() => {
             setViewType('record');
           }}
-          className={`h-9 rounded-lg max-md:text-sm md:h-11`}
+          className="h-9 rounded-lg max-md:text-sm md:h-11"
         >
           {format(currentMonth, 'M월')} 돌봄기록
         </Button>
@@ -46,7 +46,7 @@ export default function RecordDetail() {
           onClick={() => {
             setViewType('gallary');
           }}
-          className={`h-9 rounded-lg max-md:text-sm md:h-11`}
+          className="h-9 rounded-lg max-md:text-sm md:h-11"
         >
           사진 갤러리
         </Button>
@@ -73,10 +73,11 @@ export default function RecordDetail() {
                         fill="black"
                       />
                     </svg>
-                    {format(toDate(record?.created_at), 'M월 dd일 E요일', {
-                      locale: ko,
-                    })}{' '}
-                    돌봄기록
+                    <span>
+                      {`${format(toDate(record?.created_at), 'M월 dd일 E요일', {
+                        locale: ko,
+                      })} 돌봄기록`}
+                    </span>
                   </div>
                 </AccordionTrigger>
                 <AccordionContent className="mb-6 flex flex-col gap-6 rounded-2xl bg-neutral-50 p-6">
@@ -84,7 +85,7 @@ export default function RecordDetail() {
 
                   <div className="flex w-full flex-col gap-6 md:flex-row">
                     <RecordContent content={record?.content} />
-                    <RecordHealthNote health_note={record?.health_note} />
+                    <RecordHealthNote healthNote={record?.health_note} />
                   </div>
                 </AccordionContent>
               </AccordionItem>
@@ -99,7 +100,10 @@ export default function RecordDetail() {
             record?.images?.length > 0 ? (
               <div
                 key={indx}
-                className={`flex flex-col gap-2 ${indx !== filteredRecords?.length - 1 && 'border-b'} py-6`}
+                className={cn(
+                  'flex flex-col gap-2 py-6',
+                  indx !== filteredRecords?.length - 1 && 'border-b',
+                )}
               >
                 <span className="text-base font-semibold md:text-lg">
                   {format(toDate(record?.created_at), 'yyyy.MM.dd')}

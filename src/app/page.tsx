@@ -2,7 +2,7 @@ import Link from 'next/link';
 import { Button } from '@/shared/ui/button';
 import Image from 'next/image';
 import { MoveRight } from 'lucide-react';
-import { AnimalListItem } from '@/entities/animal/animal-api';
+import type { AnimalListItem } from '@/entities/animal/animal-api';
 import { fetchAnimalLists } from '@/features/main/api/animal';
 import { logError } from '@/shared/lib/logging';
 import AnimalTile from '@/features/main/ui/animal-tile';
@@ -84,7 +84,7 @@ export default async function Home() {
           </span>
           <Link href="/foster-list">
             <Button
-              variant={'destructive'}
+              variant="destructive"
               className="h-12 w-44 rounded-full border-[#15894B] bg-[#15894B] md:w-64"
             >
               임보 신청하기 <MoveRight />
@@ -116,7 +116,7 @@ export default async function Home() {
           </div>
           <Link href="/foster-list">
             <Button
-              variant={'destructive'}
+              variant="destructive"
               className="h-12 w-44 rounded-full border-[#15894B] bg-[#15894B] lg:w-64"
             >
               보호동물 더보기 <MoveRight />

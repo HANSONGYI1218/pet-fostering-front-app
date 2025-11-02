@@ -58,7 +58,7 @@ export default function AddressPopUp({ onSelect }: AddressPopUpProps) {
       <Script src="//t1.daumcdn.net/mapjsapi/bundle/postcode/prod/postcode.v2.js" />
       <Button
         type="button"
-        variant={'outline_black'}
+        variant="outline_black"
         className="flex h-9 gap-2"
         onClick={() => openAddressPopup()}
       >

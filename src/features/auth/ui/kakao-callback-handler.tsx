@@ -5,6 +5,7 @@ import { useRouter } from 'next/navigation';
 
 import { completeKakaoLogin } from '@/lib/auth/kakao';
 import { Loader2 } from 'lucide-react';
+import { cn } from '@/shared/lib/utils';
 
 type KakaoCallbackHandlerProps = {
   code: string | null;
@@ -98,7 +99,10 @@ export const KakaoCallbackHandler = ({ code }: KakaoCallbackHandlerProps) => {
   return (
     <div className="flex min-h-screen flex-col items-center justify-center bg-neutral-50 p-6 text-center">
       <div
-        className={`flex w-full max-w-md flex-col items-center gap-4 rounded-2xl p-10 ${status === 'error' ? 'bg-white' : 'bg-neutral-50'}`}
+        className={cn(
+          'flex w-full max-w-md flex-col items-center gap-4 rounded-2xl p-10',
+          status === 'error' ? 'bg-white' : 'bg-neutral-50',
+        )}
       >
         {status === 'error' ? (
           <>

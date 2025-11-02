@@ -8,7 +8,7 @@ import {
   RecordProvider,
   useRecord,
 } from '@/features/record/context/record-provider';
-import { FosterRecord } from '@/entities/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import { WholeDateArray } from '../tr';
 import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 
@@ -133,7 +133,7 @@ describe('CalendarDialogForm', () => {
     render(
       <RecordProvider
         records={initialRecords}
-        initalValue={initialRecords[0]}
+        initialValue={initialRecords[0]}
         isDog
         animalId="animal-test"
       >
@@ -215,7 +215,7 @@ describe('CalendarDialogForm', () => {
     render(
       <RecordProvider
         records={initialRecords}
-        initalValue={existingRecord}
+        initialValue={existingRecord}
         isDog
         animalId="animal-test"
       >
@@ -296,7 +296,7 @@ describe('CalendarDialogForm', () => {
     render(
       <RecordProvider
         records={initialRecords}
-        initalValue={existingRecord}
+        initialValue={existingRecord}
         isDog
         animalId="animal-test"
       >

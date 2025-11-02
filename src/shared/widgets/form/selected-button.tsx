@@ -1,3 +1,5 @@
+import { cn } from '@/shared/lib/utils';
+
 type Option<T> = {
   key: T;
   word: string;
@@ -22,7 +24,12 @@ export default function SelectedButton<T extends string | number>({
         onClick={() => {
           onChange(first?.key);
         }}
-        className={`flex w-full cursor-pointer items-center justify-center rounded-l-xl ${value === first?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'}`}
+        className={cn(
+          'flex w-full cursor-pointer items-center justify-center rounded-l-xl',
+          value === first?.key
+            ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80'
+            : 'hover:bg-green-10',
+        )}
       >
         {first?.word}
       </div>
@@ -33,7 +40,12 @@ export default function SelectedButton<T extends string | number>({
             onClick={() => {
               onChange(second?.key);
             }}
-            className={`flex w-full cursor-pointer items-center justify-center text-center ${value === second?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'}`}
+            className={cn(
+              'flex w-full cursor-pointer items-center justify-center text-center',
+              value === second?.key
+                ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80'
+                : 'hover:bg-green-10',
+            )}
           >
             {second?.word}
           </div>
@@ -44,7 +56,12 @@ export default function SelectedButton<T extends string | number>({
         onClick={() => {
           onChange(third?.key);
         }}
-        className={`flex w-full cursor-pointer items-center justify-center rounded-r-xl ${value === third?.key ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80' : 'hover:bg-green-10'}`}
+        className={cn(
+          'flex w-full cursor-pointer items-center justify-center rounded-r-xl',
+          value === third?.key
+            ? 'bg-[#00592d] font-semibold text-white hover:bg-[#00592d]/80'
+            : 'hover:bg-green-10',
+        )}
       >
         {third?.word}
       </div>

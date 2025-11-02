@@ -1,29 +1,29 @@
 'use client';
 
-import { UseFormReturn } from 'react-hook-form';
-import z from 'zod';
-import { FosterformSchema } from './foster-register-form';
-import { Card } from '@/shared/ui/card';
-import { Controller } from 'react-hook-form';
+import { Controller, UseFormReturn } from 'react-hook-form';
+import { format } from 'date-fns';
+import { CalendarIcon, Plus, Trash2 } from 'lucide-react';
+
 import { CheckButton } from '@/features/mypage/ui/foster/check-button';
 import { AnimalSize, AnimalType } from '@/entities/animal/animal';
 import { AnimalAge } from '@/entities/animal-condition/animal-condition';
-import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
-import { FormControl } from '@/shared/ui/form';
-import { Button } from '@/shared/ui/button';
-import { format } from 'date-fns';
-import { CalendarIcon, Plus, Trash2 } from 'lucide-react';
 import { cn } from '@/shared/lib/utils';
+import { Button } from '@/shared/ui/button';
+import { Card } from '@/shared/ui/card';
 import { Calendar } from '@/shared/ui/calendar';
+import { FormControl } from '@/shared/ui/form';
 import { Input } from '@/shared/ui/input';
-
-export type FosterformValues = z.infer<typeof FosterformSchema>;
+import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
+import {
+  createDefaultExperience,
+  type FosterFormValues,
+} from './foster-register-form';
 
 export default function RegisterStep03({
   form,
   handleButtonNext,
 }: {
-  form: UseFormReturn<FosterformValues>;
+  form: UseFormReturn<FosterFormValues>;
   handleButtonNext: () => void;
 }) {
   return (
@@ -59,18 +59,7 @@ export default function RegisterStep03({
                           );
                           field.onChange(newExperiences);
                         } else {
-                          field.onChange([
-                            {
-                              id: '',
-                              animal_type: AnimalType.DOG,
-                              animal_size: AnimalSize.SMALL,
-                              animal_age: AnimalAge.JUVENILE,
-                              foster_start_date: undefined,
-                              foster_end_date: undefined,
-                              organization_name: '',
-                              note: '',
-                            },
-                          ]);
+                          field.onChange([createDefaultExperience()]);
                         }
                       }}
                     />
@@ -141,7 +130,7 @@ export default function RegisterStep03({
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
-                              variant={'outline'}
+                              variant="outline"
                               className={cn(
                                 'flex-1 pl-3 text-left font-normal',
                                 !experience?.foster_start_date &&
@@ -190,7 +179,7 @@ export default function RegisterStep03({
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
-                              variant={'outline'}
+                              variant="outline"
                               className={cn(
                                 'flex-1 pl-3 text-left font-normal',
                                 !experience?.foster_end_date &&
@@ -249,30 +238,21 @@ export default function RegisterStep03({
           )}
         />
         <Button
-          variant={'ghost'}
+          variant="ghost"
           className="mx-auto h-8 w-8 rounded-full bg-[#C1E5CE] text-[#00592D] hover:bg-[#C1E5CE]/80 hover:text-[#00592D]"
           onClick={() => {
             const currentExperiences =
               form.getValues('foster_experiences') ?? [];
             form.setValue('foster_experiences', [
               ...currentExperiences,
-              {
-                id: '',
-                animal_type: AnimalType.DOG,
-                animal_size: AnimalSize.SMALL,
-                animal_age: AnimalAge.JUVENILE,
-                foster_start_date: undefined,
-                foster_end_date: undefined,
-                organization_name: '',
-                note: '',
-              },
+              createDefaultExperience(),
             ]);
           }}
         >
           <Plus />
         </Button>
       </div>
-      <Button variant={'destructive'} onClick={handleButtonNext}>
+      <Button variant="destructive" onClick={handleButtonNext}>
         등록 완료하기
       </Button>
     </Card>

@@ -36,7 +36,7 @@ import { Button } from '@/shared/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
 import RetryButton from '@/shared/widgets/feedback/retry-button';
 import type { PostItem } from '@/entities/post/post-api';
-import { toDate, handleCopyLink } from '@/shared/lib/utils';
+import { cn, toDate, handleCopyLink } from '@/shared/lib/utils';
 import { resolveStoredAuthClaims } from '@/lib/auth/session';
 import {
   ensureAccessToken,
@@ -50,8 +50,8 @@ import {
   deletePost,
   deletePostLike,
   createPostLike,
-} from '../../api/community';
-import { createReport } from '../../api/report';
+} from '@/features/community/api/community';
+import { createReport } from '@/features/community/api/report';
 import { logError } from '@/shared/lib/logging';
 
 type PostWithBookmark = PostItem & { isBookmarked?: boolean };
@@ -212,7 +212,7 @@ export default function CommunityPost({
   const editTrigger = (
     <Button
       type="button"
-      variant={'ghost'}
+      variant="ghost"
       className="w-full cursor-default justify-start px-[6px] text-left text-sm font-normal hover:bg-neutral-100 hover:font-normal"
     >
       수정하기
@@ -227,7 +227,10 @@ export default function CommunityPost({
           <button
             type="button"
             onClick={handleBookmarkToggle}
-            className={`h-9 w-9 transform cursor-pointer items-center justify-center rounded-full duration-300 hover:scale-110 ${token ? 'flex' : 'hidden'}`}
+            className={cn(
+              'h-9 w-9 transform cursor-pointer items-center justify-center rounded-full duration-300 hover:scale-110',
+              token ? 'flex' : 'hidden',
+            )}
             aria-label={bookmarkAriaLabel}
             aria-pressed={isBookmarked}
             data-testid="bookmark-toggle"
@@ -258,7 +261,10 @@ export default function CommunityPost({
             <div className="flex items-center gap-2 md:gap-5">
               <div
                 onClick={handlePostLike}
-                className={`flex items-center gap-1 ${token ? 'cursor-pointer' : ''}`}
+                className={cn(
+                  'flex items-center gap-1',
+                  token ? 'cursor-pointer' : undefined,
+                )}
               >
                 <ThumbsUp className="h-3.5 w-3.5" stroke="#a1a1a1" />
                 <span

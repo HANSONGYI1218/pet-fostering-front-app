@@ -3,7 +3,7 @@ import { describe, expect, it } from 'vitest';
 import type { PropsWithChildren } from 'react';
 
 import { RecordProvider, useRecord } from '../record-provider';
-import { FosterRecord } from '@/entities/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 
 const createRecord = (
   id: string,
@@ -26,7 +26,7 @@ const createWrapper = (
     return (
       <RecordProvider
         records={records}
-        initalValue={initial}
+        initialValue={initial}
         isDog
         animalId="animal-ctx"
       >

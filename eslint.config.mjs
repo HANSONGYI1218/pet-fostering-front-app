@@ -134,6 +134,15 @@ export default [
             'Next.js 동적 라우트에서는 searchParams를 AsyncSearchParams<T>로 선언하고 await 해야 합니다.',
         },
       ],
+      camelcase: [
+        'error',
+        {
+          properties: 'never',
+          ignoreImports: true,
+          ignoreDestructuring: true,
+          allow: ['^[A-Z0-9_]+$'],
+        },
+      ],
     },
     settings: {
       react: {

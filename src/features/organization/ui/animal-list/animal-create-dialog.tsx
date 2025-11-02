@@ -357,7 +357,7 @@ export function AnimalCreateDialog({
               <div className="flex flex-col gap-10">
                 <FormField
                   control={form.control}
-                  name={'images'}
+                  name="images"
                   render={({ field }) => (
                     <FormItem>
                       <div className="flex flex-col gap-1">
@@ -462,7 +462,7 @@ export function AnimalCreateDialog({
                         <PopoverTrigger asChild>
                           <FormControl>
                             <Button
-                              variant={'outline'}
+                              variant="outline"
                               className={cn(
                                 'w-full text-left text-sm font-normal',
                                 !field.value && 'text-muted-foreground',
@@ -589,7 +589,7 @@ export function AnimalCreateDialog({
                 />
                 <FormField
                   control={form.control}
-                  name={'introduction'}
+                  name="introduction"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>소개</FormLabel>
@@ -610,7 +610,7 @@ ex) 우리 이쁜 꽃남이는 정말 똑똑한 아이에요.
                 />
                 <FormField
                   control={form.control}
-                  name={'remark'}
+                  name="remark"
                   render={({ field }) => (
                     <FormItem className="w-full">
                       <FormLabel>특이사항</FormLabel>

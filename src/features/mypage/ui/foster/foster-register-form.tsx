@@ -1,6 +1,25 @@
 'use client';
 
 import { z } from 'zod';
+import { zodResolver } from '@hookform/resolvers/zod';
+import { useForm, type Resolver } from 'react-hook-form';
+import { ChevronRight } from 'lucide-react';
+
+import { AnimalType, AnimalSize } from '@/entities/animal/animal';
+import {
+  AnimalAge,
+  AnimalPeriod,
+  AnimalSpecialNote,
+} from '@/entities/animal-condition/animal-condition';
+import { FosterEnvironment } from '@/entities/foster-condition/foster-condition';
+import type { FosterConditionItem } from '@/entities/foster-condition/foster-condition-api';
+import {
+  ANIMAL_AGE_LABEL_KO,
+  ANIMAL_SIZE_LABEL_KO,
+  ANIMAL_SPECIAL_NOTE_LABEL_KO,
+  ANIMAL_TYPE_LABEL_KO,
+  FOSTER_ENVIRONMENT_LABEL_KO,
+} from '@/shared/constants/enum';
 import {
   Form,
   FormControl,
@@ -9,26 +28,11 @@ import {
   FormLabel,
   FormMessage,
 } from '@/shared/ui/form';
-import { AnimalType, AnimalSize } from '@/entities/animal/animal';
-import {
-  AnimalAge,
-  AnimalSpecialNote,
-  AnimalPeriod,
-} from '@/entities/animal-condition/animal-condition';
-import { FosterEnvironment } from '@/entities/foster-condition/foster-condition';
-import { zodResolver } from '@hookform/resolvers/zod';
-import { Resolver, useForm } from 'react-hook-form';
-import { FosterConditionItem } from '@/entities/foster-condition/foster-condition-api';
-import { ChevronRight } from 'lucide-react';
-import {
-  ANIMAL_AGE_LABEL_KO,
-  ANIMAL_SIZE_LABEL_KO,
-  ANIMAL_SPECIAL_NOTE_LABEL_KO,
-  ANIMAL_TYPE_LABEL_KO,
-  FOSTER_ENVIRONMENT_LABEL_KO,
-} from '@/shared/constants/enum';
 import { Card } from '@/shared/ui/card';
 import FosterRegisterStep from './foster-register-step';
+
+const arrayWithDefault = <T extends z.ZodTypeAny>(schema: T) =>
+  z.preprocess((value) => (Array.isArray(value) ? value : []), z.array(schema));
 
 export const FosterExperienceSchema = z.object({
   id: z.string().optional(),
@@ -41,19 +45,32 @@ export const FosterExperienceSchema = z.object({
   note: z.string().optional(),
 });
 
-export const FosterformSchema = z.object({
-  type: z.array(z.enum(AnimalType)).catch([]),
-  size: z.array(z.enum(AnimalSize)).catch([]),
-  animal_age: z.array(z.enum(AnimalAge)).catch([]),
-  foster_environments: z.array(z.enum(FosterEnvironment)).catch([]),
-  special_notes_animals: z.array(z.enum(AnimalSpecialNote)).catch([]),
+export const FosterFormSchema = z.object({
+  type: arrayWithDefault(z.enum(AnimalType)),
+  size: arrayWithDefault(z.enum(AnimalSize)),
+  animal_age: arrayWithDefault(z.enum(AnimalAge)),
+  foster_environments: arrayWithDefault(z.enum(FosterEnvironment)),
+  special_notes_animals: arrayWithDefault(z.enum(AnimalSpecialNote)),
   foster_period: z.enum(AnimalPeriod),
   foster_experiences: z.array(FosterExperienceSchema).optional(),
 });
 
-// Step 1 체크 함수
+export type FosterExperience = z.infer<typeof FosterExperienceSchema>;
+export type FosterFormValues = z.infer<typeof FosterFormSchema>;
+
+export const createDefaultExperience = (): FosterExperience => ({
+  id: '',
+  animal_type: AnimalType.DOG,
+  animal_size: AnimalSize.SMALL,
+  animal_age: AnimalAge.JUVENILE,
+  foster_start_date: undefined,
+  foster_end_date: undefined,
+  organization_name: '',
+  note: '',
+});
+
 export const validateStep01 = (data: unknown) => {
-  const step01Schema = FosterformSchema.pick({
+  const step01Schema = FosterFormSchema.pick({
     type: true,
     size: true,
     animal_age: true,
@@ -71,9 +88,8 @@ export const validateStep01 = (data: unknown) => {
   return step01Schema.safeParse(data);
 };
 
-// Step 2 체크 함수
 export const validateStep02 = (data: unknown) => {
-  const step02Schema = FosterformSchema.pick({
+  const step02Schema = FosterFormSchema.pick({
     foster_environments: true,
     special_notes_animals: true,
     foster_period: true,
@@ -97,10 +113,8 @@ export default function FosterRegisterForm({
 }: {
   fosterCondition: FosterConditionItem | undefined;
 }) {
-  const form = useForm<z.infer<typeof FosterformSchema>>({
-    resolver: zodResolver(FosterformSchema) as unknown as Resolver<
-      z.infer<typeof FosterformSchema>
-    >,
+  const form = useForm<FosterFormValues>({
+    resolver: zodResolver(FosterFormSchema) as Resolver<FosterFormValues>,
     defaultValues: {
       type: fosterCondition?.type ?? [],
       size: fosterCondition?.size ?? [],
@@ -109,32 +123,21 @@ export default function FosterRegisterForm({
       special_notes_animals: fosterCondition?.special_notes_animals ?? [],
       foster_period: fosterCondition?.foster_period ?? undefined,
       foster_experiences: fosterCondition?.foster_experiences ?? [
-        {
-          id: '',
-          animal_type: AnimalType.DOG,
-          animal_size: AnimalSize.SMALL,
-          animal_age: AnimalAge.JUVENILE,
-          foster_start_date: undefined,
-          foster_end_date: undefined,
-          organization_name: '',
-          note: '',
-        },
+        createDefaultExperience(),
       ],
     },
   });
 
-  // 2. Define a submit handler.
-  function onSubmit(_values: z.infer<typeof FosterformSchema>) {}
-
   return (
     <Form {...form}>
       <form
-        onSubmit={form.handleSubmit(onSubmit)}
+        onSubmit={(event) => {
+          event.preventDefault();
+        }}
         className="flex w-full flex-col gap-10"
       >
         {fosterCondition ? (
           <>
-            {/* {'임시보호 동물 조건'} */}
             <div className="flex flex-col gap-2">
               <h1 className="text-xl font-semibold">임시보호 동물 조건</h1>
               <Card className="cursor-default gap-4 px-8">
@@ -202,7 +205,6 @@ export default function FosterRegisterForm({
                 </div>
               </Card>
             </div>
-            {/* {'임시보호자 환경'} */}
             <div className="flex flex-col gap-2">
               <h1 className="text-xl font-semibold">임시보호자 환경</h1>
               <Card className="cursor-default gap-4 px-8">

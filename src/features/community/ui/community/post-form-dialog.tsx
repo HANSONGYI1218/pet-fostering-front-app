@@ -27,10 +27,10 @@ import Image from 'next/image';
 import { Textarea } from '@/shared/ui/textarea';
 import { Button } from '@/shared/ui/button';
 import { ChangeEvent, ReactElement, useMemo, useState } from 'react';
-import { PostItem } from '@/entities/post/post-api';
+import type { PostItem } from '@/entities/post/post-api';
 import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 import { toast } from 'sonner';
-import { createPost, updatePost } from '../../api/community';
+import { createPost, updatePost } from '@/features/community/api/community';
 import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
 import { IMAGE_UPLOAD_SCOPE } from '@/shared/lib/image-upload';
 

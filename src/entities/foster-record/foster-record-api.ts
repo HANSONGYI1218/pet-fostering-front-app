@@ -3,8 +3,8 @@ import {
   AnimalType,
   AnimalStatus,
   AnimalSize,
-} from '../animal/animal';
-import { FosterRecord } from './foster-record';
+} from '@/entities/animal/animal';
+import type { FosterRecord } from './foster-record';
 
 export type FosterMatchInfo = {
   id: string;

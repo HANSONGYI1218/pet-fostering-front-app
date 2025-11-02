@@ -1,4 +1,4 @@
-import { FosterListAnimalItem } from '@/entities/animal/animal-api';
+import type { FosterListAnimalItem } from '@/entities/animal/animal-api';
 import Link from 'next/link';
 import Image from 'next/image';
 import { ArrowRight, MapPin } from 'lucide-react';
@@ -28,7 +28,7 @@ export default function FosterTile({
 }: {
   animal: FosterListAnimalItem;
 }) {
-  const euthanasia_date = animal?.euthanasia_date
+  const euthanasiaDate = animal?.euthanasia_date
     ? parseInt(getDDay(animal.euthanasia_date))
     : 0;
 
@@ -51,14 +51,14 @@ export default function FosterTile({
             </Badge>
           )}
           {animal?.euthanasia_date &&
-            0 <= euthanasia_date &&
-            euthanasia_date < 30 && (
+            0 <= euthanasiaDate &&
+            euthanasiaDate < 30 && (
               <Badge
                 variant="outline"
                 className="absolute top-4 right-4 flex gap-2 border-red-300 text-xl font-black text-red-500"
               >
                 <span className="text-sm font-medium">안락사</span> D-
-                {euthanasia_date === 0 ? 'day' : euthanasia_date}
+                {euthanasiaDate === 0 ? 'day' : euthanasiaDate}
               </Badge>
             )}
         </div>

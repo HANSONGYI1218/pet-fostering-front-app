@@ -1,5 +1,5 @@
 import { AnimalGender, AnimalType } from '@/entities/animal/animal';
-import { AnimalListItem } from '@/entities/animal/animal-api';
+import type { AnimalListItem } from '@/entities/animal/animal-api';
 
 export const dummyAnimals: AnimalListItem[] = [
   {

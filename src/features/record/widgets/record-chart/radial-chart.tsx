@@ -77,7 +77,7 @@ export function ChartRadialStacked({
                         <tspan
                           x={viewBox.cx}
                           y={(viewBox.cy || 0) - 16}
-                          className={`fill-foreground text-2xl font-bold text-[#007AFF]`}
+                          className="fill-foreground text-2xl font-bold text-[#007AFF]"
                         >
                           {value}개
                         </tspan>
@@ -103,10 +103,10 @@ export function ChartRadialStacked({
         </ChartContainer>
       </CardContent>
       <CardFooter className="absolute inset-x-0 bottom-6 flex w-full flex-col gap-2 text-sm">
-        <div className="flex items-center leading-none font-medium">
-          총 {totalDay}개 중{' '}
-          <span className="ml-1 text-base font-bold">{value}</span>
-          개를 작성했어요.
+        <div className="flex items-center gap-1 leading-none font-medium">
+          <span>총 {totalDay}개 중</span>
+          <span className="text-base font-bold">{value}</span>
+          <span>개를 작성했어요.</span>
         </div>
         <div className="text-muted-foreground leading-none">
           조금 더 열심히 임보 기록을 해야해요.

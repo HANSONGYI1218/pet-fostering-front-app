@@ -2,6 +2,7 @@
 
 import { Dot } from 'lucide-react';
 import Image from 'next/image';
+import { cn } from '@/shared/lib/utils';
 
 export default function AniamlCreateProgress({
   currentIndex,
@@ -19,28 +20,45 @@ export default function AniamlCreateProgress({
               stroke="#00592d/20"
             />
             <Dot
-              className={`absolute z-10 h-4 w-4 rounded-full bg-[#00592d] ${currentIndex === 0 && 'animate-pulse'}`}
+              className={cn(
+                'absolute z-10 h-4 w-4 rounded-full bg-[#00592d]',
+                currentIndex === 0 && 'animate-pulse',
+              )}
               stroke="#00592d"
             />
           </div>
           <hr
-            className={`h-2 flex-1 ${currentIndex >= 1 ? 'bg-[#00592d]/20' : 'bg-neutral-200'}`}
+            className={cn(
+              'h-2 flex-1',
+              currentIndex >= 1 ? 'bg-[#00592d]/20' : 'bg-neutral-200',
+            )}
           />
         </div>
         {/* 두번째 dot */}
         <div className="flex flex-1 items-center">
           <div className="relative flex h-8 w-8 items-center justify-center">
             <Dot
-              className={`relative flex h-full w-full rounded-full ${currentIndex >= 1 ? 'bg-[#00592d]/20' : 'bg-neutral-200'}`}
+              className={cn(
+                'relative flex h-full w-full rounded-full',
+                currentIndex >= 1 ? 'bg-[#00592d]/20' : 'bg-neutral-200',
+              )}
               stroke="#00592d/20"
             />
             <Dot
-              className={`absolute z-10 h-4 w-4 rounded-full ${currentIndex >= 1 ? 'animate-pulse bg-[#00592d]' : 'bg-neutral-500'}`}
+              className={cn(
+                'absolute z-10 h-4 w-4 rounded-full',
+                currentIndex >= 1
+                  ? 'animate-pulse bg-[#00592d]'
+                  : 'bg-neutral-500',
+              )}
               stroke={currentIndex >= 1 ? '#00592d' : 'neutral-500'}
             />
           </div>
           <hr
-            className={`h-2 flex-1 rounded-r-full ${currentIndex >= 2 ? 'bg-[#00592d]/20' : 'bg-neutral-200'}`}
+            className={cn(
+              'h-2 flex-1 rounded-r-full',
+              currentIndex >= 2 ? 'bg-[#00592d]/20' : 'bg-neutral-200',
+            )}
           />
         </div>
         {/* 세번째 dot */}
@@ -50,7 +68,7 @@ export default function AniamlCreateProgress({
             stroke="#00592d/20"
           />
           <Dot
-            className={`absolute z-10 h-4 w-4 rounded-full bg-[#00592d] ${currentIndex === 2 && 'animate-pulse'}`}
+            className="absolute z-10 h-4 w-4 rounded-full bg-[#00592d]"
             stroke="#00592d"
           />
         </div> */}

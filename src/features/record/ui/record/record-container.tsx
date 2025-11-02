@@ -1,6 +1,6 @@
 'use client';
 
-import { FosterRecord } from '@/entities/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import RecordCalendar from './record-calendar/record-calendar';
 import { RecordProvider } from '@/features/record/context/record-provider';
 import RecordDetail from './record-detail';
@@ -17,6 +17,7 @@ export default function RecordContainer({
   animalId: string;
 }) {
   const [showButton, setShowButton] = useState(false);
+  const initialRecord = records.length > 0 ? records[records.length - 1] : null;
 
   useEffect(() => {
     const handleScroll = () => {
@@ -38,7 +39,7 @@ export default function RecordContainer({
     <div className="relative flex w-full min-w-0 flex-col gap-6">
       <RecordProvider
         records={records}
-        initalValue={records[records.length - 1]}
+        initialValue={initialRecord}
         isDog={isDog}
         animalId={animalId}
       >

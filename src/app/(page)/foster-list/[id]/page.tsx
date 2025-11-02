@@ -32,6 +32,14 @@ import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
 import type { AsyncParams } from '@/shared/types/next';
 import { createAppMetadata } from '@/shared/config/seo';
 
+const formatFosterPeriod = (start?: Date | null, end?: Date | null): string =>
+  [
+    start ? format(start, 'yyyy.MM.dd') : null,
+    end ? format(end, 'yyyy.MM.dd') : null,
+  ]
+    .filter(Boolean)
+    .join(' - ');
+
 const getFosterAnimalDetail = cache((id: string) =>
   fetchFosterAnimalDetail(id),
 );
@@ -78,7 +86,7 @@ export default async function FosterListDetailPage({
     }
     throw error;
   });
-  const total_address =
+  const totalAddress =
     `${animal.organization.address} ${animal.organization.address_detail}`.trim();
 
   const healthData = animal.animal_healths
@@ -147,7 +155,7 @@ export default async function FosterListDetailPage({
     },
     {
       title: '주소',
-      data: total_address,
+      data: totalAddress,
     },
   ];
 
@@ -255,7 +263,7 @@ export default async function FosterListDetailPage({
               <div className="flex w-full flex-col gap-4 md:flex-row">
                 <ConnectDialog
                   name={animal?.organization?.name ?? ''}
-                  phone_number={animal?.organization?.phone_number ?? ''}
+                  phoneNumber={animal?.organization?.phone_number ?? ''}
                 />
                 <FosterRequestDialog
                   type={animal?.type}
@@ -287,14 +295,10 @@ export default async function FosterListDetailPage({
                       </span>
                     </div>
                     <span>
-                      {animal?.current_foster_start_date &&
-                        format(
-                          animal?.current_foster_start_date,
-                          'yyyy.MM.dd',
-                        )}{' '}
-                      -{' '}
-                      {animal?.current_foster_end_date &&
-                        format(animal?.current_foster_end_date, 'yyyy.MM.dd')}
+                      {formatFosterPeriod(
+                        animal?.current_foster_start_date ?? null,
+                        animal?.current_foster_end_date ?? null,
+                      )}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -309,7 +313,7 @@ export default async function FosterListDetailPage({
                         (personality, index) => (
                           <Badge
                             key={index}
-                            variant={'default'}
+                            variant="default"
                             className="h-9 px-4 text-base font-normal"
                           >
                             {ANIMAL_PERSONALITY_LABEL_KO[personality]}
@@ -347,7 +351,7 @@ export default async function FosterListDetailPage({
                       return (
                         <Badge
                           key={index}
-                          variant={'secondary'}
+                          variant="secondary"
                           className="h-9 px-4 text-base font-normal"
                         >
                           {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
@@ -371,7 +375,7 @@ export default async function FosterListDetailPage({
                       return (
                         <Badge
                           key={index}
-                          variant={'destructive'}
+                          variant="destructive"
                           className="h-9 px-4 text-base font-normal"
                         >
                           {ANIMAL_SPECIAL_NOTE_LABEL_KO[note]}
@@ -395,13 +399,17 @@ export default async function FosterListDetailPage({
                 width={28}
                 height={28}
                 className="h-7 w-7"
-              />{' '}
+              />
               {animal?.name}에게 작지만 따뜻한 후원을 해주세요.
             </span>
             <span className="text-end text-sm text-neutral-700">
               <span className="underline decoration-neutral-700">
-                {animal?.organization?.donation_bank_name}{' '}
-                {animal?.organization?.donation_account_number}
+                {[
+                  animal?.organization?.donation_bank_name,
+                  animal?.organization?.donation_account_number,
+                ]
+                  .filter(Boolean)
+                  .join(' ')}
               </span>
               <br />
               예금주: {animal?.organization?.donation_account_holder}
@@ -420,7 +428,7 @@ export default async function FosterListDetailPage({
               </h1>
             </div>
             <div className="flex flex-col items-center justify-between gap-8 md:flex-row md:gap-16">
-              <KakaoMapLoader address={total_address ?? ''} />
+              <KakaoMapLoader address={totalAddress ?? ''} />
 
               <div className="grid w-full grid-cols-2 items-start gap-6">
                 {centerDatas?.map((a, index) => (

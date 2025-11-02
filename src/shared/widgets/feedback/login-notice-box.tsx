@@ -11,7 +11,7 @@ export default function LoginNoticeBox({
     <Card className="flex h-96 w-full items-center justify-center text-neutral-500">
       {errorMessage}
       <Link href="/login">
-        <Button variant={'destructive'} className="w-32">
+        <Button variant="destructive" className="w-32">
           로그인
         </Button>
       </Link>

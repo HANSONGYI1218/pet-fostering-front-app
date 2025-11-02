@@ -31,16 +31,19 @@ import {
   ensureAccessToken,
   useAccessToken,
 } from '@/shared/lib/auth/access-token.client';
-import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
-import { toDate } from '@/shared/lib/utils';
+import type {
+  CommentItem,
+  ReplyCommentItem,
+} from '@/entities/comment/comment-api';
+import { cn, toDate } from '@/shared/lib/utils';
 import CommentsForm from './comments-form';
 import { CommentSelection } from './types';
 import {
   createCommentLike,
   deleteCommentLike,
   deleteComment,
-} from '../../api/community';
-import { createReport } from '../../api/report';
+} from '@/features/community/api/community';
+import { createReport } from '@/features/community/api/report';
 import { logError } from '@/shared/lib/logging';
 
 type CommentLike = CommentItem | ReplyCommentItem;
@@ -196,9 +199,10 @@ export default function CommunityCommentTile({
 
   return (
     <div
-      className={`flex w-full flex-col py-8 ${
-        comment.parent_id ? 'bg-neutral-50 px-8' : ''
-      }`}
+      className={cn(
+        'flex w-full flex-col py-8',
+        comment.parent_id ? 'bg-neutral-50 px-8' : undefined,
+      )}
     >
       <div className="flex w-full justify-between gap-5">
         <div className="flex items-center gap-3">
@@ -376,11 +380,17 @@ export default function CommunityCommentTile({
           })}
         </span>
         <div
-          className={`flex items-center gap-1 ${token ? 'cursor-pointer' : 'cursor-default'}`}
+          className={cn(
+            'flex items-center gap-1',
+            token ? 'cursor-pointer' : 'cursor-default',
+          )}
         >
           <ThumbsUp
             onClick={handleCommentLike}
-            className={`h-3.5 w-3.5 ${isCommentLike && 'scale-105 fill-[#00592d]'}`}
+            className={cn(
+              'h-3.5 w-3.5',
+              isCommentLike && 'scale-105 fill-[#00592d]',
+            )}
             stroke={`${isCommentLike ? '#00592d' : '#a1a1a1'}`}
           />
           <span className="text-sm text-neutral-400">

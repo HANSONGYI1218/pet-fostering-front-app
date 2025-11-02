@@ -9,7 +9,7 @@ import {
 } from '@/shared/ui/accordion';
 import { addMonths, format, subMonths } from 'date-fns';
 import CalendarHeader from '@/shared/widgets/navigation/calendar-header';
-import { FosterRecord } from '@/entities/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import { ko } from 'date-fns/locale/ko';
 import { RecordImages } from '@/features/record/widgets/record-images';
 import { RecordContent } from '@/features/record/widgets/record-content';
@@ -70,14 +70,14 @@ const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
               d="M10.9297 23.4791V3.33301C11.5605 3.68636 12.4417 3.68637 13.0725 3.33304V23.4794C12.3814 23.6981 11.6209 23.698 10.9297 23.4791Z"
               fill="#004C26"
             />
-          </svg>{' '}
-          돌봄기록
+          </svg>
+          <span>돌봄기록</span>
         </span>
         <CalendarHeader
           currentMonth={currentMonth}
           prevMonth={prevMonth}
           nextMonth={nextMonth}
-        />{' '}
+        />
       </div>
       {filteredRecords && filteredRecords?.length > 0 ? (
         <Accordion
@@ -100,10 +100,11 @@ const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
                       fill="black"
                     />
                   </svg>
-                  {format(toDate(record?.created_at), 'M월 dd일 E요일', {
-                    locale: ko,
-                  })}{' '}
-                  돌봄기록
+                  <span>
+                    {`${format(toDate(record?.created_at), 'M월 dd일 E요일', {
+                      locale: ko,
+                    })} 돌봄기록`}
+                  </span>
                 </div>
               </AccordionTrigger>
               <AccordionContent className="mb-6 flex flex-col gap-6 rounded-2xl bg-neutral-50 p-6">
@@ -111,7 +112,7 @@ const RecordFiltered = ({ records }: { records: FosterRecord[] }) => {
 
                 <div className="flex w-full gap-6">
                   <RecordContent content={record?.content} />
-                  <RecordHealthNote health_note={record?.health_note} />
+                  <RecordHealthNote healthNote={record?.health_note} />
                 </div>
               </AccordionContent>
             </AccordionItem>

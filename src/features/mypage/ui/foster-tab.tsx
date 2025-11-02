@@ -1,6 +1,6 @@
 'use client';
 
-import { FosterConditionItem } from '@/entities/foster-condition/foster-condition-api';
+import type { FosterConditionItem } from '@/entities/foster-condition/foster-condition-api';
 import { Card } from '@/shared/ui/card';
 import FosterRegisterForm from './foster/foster-register-form';
 
@@ -10,14 +10,14 @@ export default function FosterTab() {
   return (
     <div className="flex w-full flex-col gap-10">
       <Card className="gap-2">
-        <h1 className="text-xl font-semibold">
-          임시보호자{' '}
+        <h1 className="flex items-center gap-1 text-xl font-semibold">
+          <span>임시보호자</span>
           <span
-            className={`${fosterCondition ? 'text-[#00592d]' : 'text-[#FF5F57]'}`}
+            className={fosterCondition ? 'text-[#00592d]' : 'text-[#FF5F57]'}
           >
             {fosterCondition ? '등록' : '미등록'}
-          </span>{' '}
-          상태입니다.
+          </span>
+          <span>상태입니다.</span>
         </h1>
         <span className="text-neutral-700">
           {fosterCondition

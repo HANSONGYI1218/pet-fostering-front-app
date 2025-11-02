@@ -22,7 +22,7 @@ export default function LoginPage() {
           width={210}
           height={210}
           alt="dog-with-cat"
-        />{' '}
+        />
         <div className="flex w-full flex-col gap-3">
           <KakaoLoginButton />
           <GoogleLoginButton />

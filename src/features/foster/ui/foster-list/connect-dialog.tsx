@@ -12,10 +12,10 @@ import Image from 'next/image';
 
 export default function ConnectDialog({
   name,
-  phone_number,
+  phoneNumber,
 }: {
   name: string;
-  phone_number: string;
+  phoneNumber: string;
 }) {
   return (
     <Dialog>
@@ -32,7 +32,7 @@ export default function ConnectDialog({
         <DialogHeader className="flex flex-col items-center">
           <DialogTitle className="text-black">{name}로 연락주세요</DialogTitle>
           <DialogDescription className="text-lg leading-none font-semibold text-black">
-            {phone_number}
+            {phoneNumber}
           </DialogDescription>
         </DialogHeader>
         <div className="flex flex-col items-center gap-2">

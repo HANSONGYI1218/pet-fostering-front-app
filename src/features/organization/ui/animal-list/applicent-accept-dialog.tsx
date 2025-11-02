@@ -11,25 +11,25 @@ import {
 import Image from 'next/image';
 
 export function ApplyAcceptDialog({
-  animal_name,
-  applicant_name,
+  animalName,
+  applicantName,
 }: {
-  animal_name: string;
-  applicant_name: string;
+  animalName: string;
+  applicantName: string;
 }) {
   return (
     <Dialog>
       <form className="w-full">
         <DialogTrigger asChild>
-          <Button variant={'destructive'} className="px-6">
+          <Button variant="destructive" className="px-6">
             수락하기
           </Button>
         </DialogTrigger>
         <DialogContent className="sm:max-w-md">
           <DialogHeader className="flex items-center">
             <DialogTitle className="flex items-center gap-2 text-center text-xl">
-              {applicant_name}님을 <br />
-              {animal_name}의 임시보호자로 수락할까요?
+              {applicantName}님을 <br />
+              {animalName}의 임시보호자로 수락할까요?
             </DialogTitle>
           </DialogHeader>
           <div className="flex flex-col items-center justify-center gap-2 py-6">

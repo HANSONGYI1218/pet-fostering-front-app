@@ -1,4 +1,4 @@
-import { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
+import type { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
 import { Card } from '@/shared/ui/card';
 import { ANIMAL_GENDER_LABEL_KO } from '@/shared/constants/enum';
 import { formatAnimalAge, fosterDuration } from '@/shared/lib/utils';

@@ -159,10 +159,7 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
   const tokenExpireAt = extractJwtExpiration(normalizedTokens.token);
   const expireAt =
     tokenExpireAt && tokenExpireAt > now ? tokenExpireAt : fallbackExpireAt;
-  const maxAgeSeconds = Math.max(
-    1,
-    Math.floor((expireAt - now) / 1000),
-  );
+  const maxAgeSeconds = Math.max(1, Math.floor((expireAt - now) / 1000));
 
   // localStorage에 저장
   targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, normalizedTokens.token);

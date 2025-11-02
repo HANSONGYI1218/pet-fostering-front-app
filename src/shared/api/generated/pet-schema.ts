@@ -2,2380 +2,2564 @@
 // Do not edit manually.
 
 export interface paths {
-    "/": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["AppController_getHello"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+  '/': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["AppController_getHealth[0]"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['AppController_getHello'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/health': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/api/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["AppController_getHealth[1]"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['AppController_getHealth[0]'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/api/health': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/{stage}/api/health": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get: operations["AppController_getStageHealth"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['AppController_getHealth[1]'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/{stage}/api/health': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/auth/kakao": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Exchange Kakao auth code for JWTs */
-        post: operations["AuthController_kakaoLogin"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get: operations['AppController_getStageHealth'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/auth/kakao': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/auth/refresh": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Refresh access token using refresh token */
-        post: operations["AuthController_refresh"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Exchange Kakao auth code for JWTs */
+    post: operations['AuthController_kakaoLogin'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/auth/refresh': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/auth/logout": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Logout current user (no-op server-side) */
-        post: operations["AuthController_logout"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Refresh access token using refresh token */
+    post: operations['AuthController_refresh'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/auth/logout': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List posts with comment count (cursor pagination) */
-        get: operations["CommunityController_listPosts"];
-        put?: never;
-        /** Create a new post */
-        post: operations["CommunityController_createPost"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Logout current user (no-op server-side) */
+    post: operations['AuthController_logout'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/community/posts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get post detail; increments view count */
-        get: operations["CommunityController_getPost"];
-        put?: never;
-        post?: never;
-        /** Delete own post */
-        delete: operations["CommunityController_deletePost"];
-        options?: never;
-        head?: never;
-        /** Update own post */
-        patch: operations["CommunityController_updatePost"];
-        trace?: never;
+    /** List posts with comment count (cursor pagination) */
+    get: operations['CommunityController_listPosts'];
+    put?: never;
+    /** Create a new post */
+    post: operations['CommunityController_createPost'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/community/posts/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts/{id}/bookmarks": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Bookmark a post */
-        post: operations["CommunityController_bookmark"];
-        /** Unbookmark a post */
-        delete: operations["CommunityController_unbookmark"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get post detail; increments view count */
+    get: operations['CommunityController_getPost'];
+    put?: never;
+    post?: never;
+    /** Delete own post */
+    delete: operations['CommunityController_deletePost'];
+    options?: never;
+    head?: never;
+    /** Update own post */
+    patch: operations['CommunityController_updatePost'];
+    trace?: never;
+  };
+  '/community/posts/{id}/bookmarks': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts/{id}/likes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Like a post */
-        post: operations["CommunityController_likePost"];
-        /** Unlike a post */
-        delete: operations["CommunityController_unlikePost"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Bookmark a post */
+    post: operations['CommunityController_bookmark'];
+    /** Unbookmark a post */
+    delete: operations['CommunityController_unbookmark'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/community/posts/{id}/likes': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts/{id}/views": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Increment post view count */
-        patch: operations["CommunityController_incrementPostView"];
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Like a post */
+    post: operations['CommunityController_likePost'];
+    /** Unlike a post */
+    delete: operations['CommunityController_unlikePost'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/community/posts/{id}/views': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts/{id}/comments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List comments with like count and my-like flag */
-        get: operations["CommunityController_listComments"];
-        put?: never;
-        /** Create a comment or reply */
-        post: operations["CommunityController_createComment"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Increment post view count */
+    patch: operations['CommunityController_incrementPostView'];
+    trace?: never;
+  };
+  '/community/posts/{id}/comments': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/posts/{postId}/comments/{commentId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete own comment (post-scoped path) */
-        delete: operations["CommunityController_deleteCommentFromPost"];
-        options?: never;
-        head?: never;
-        /** Update own comment */
-        patch: operations["CommunityController_updateComment"];
-        trace?: never;
+    /** List comments with like count and my-like flag */
+    get: operations['CommunityController_listComments'];
+    put?: never;
+    /** Create a comment or reply */
+    post: operations['CommunityController_createComment'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/community/posts/{postId}/comments/{commentId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/comments/{commentId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete own comment (no children allowed) */
-        delete: operations["CommunityController_deleteComment"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete own comment (post-scoped path) */
+    delete: operations['CommunityController_deleteCommentFromPost'];
+    options?: never;
+    head?: never;
+    /** Update own comment */
+    patch: operations['CommunityController_updateComment'];
+    trace?: never;
+  };
+  '/community/comments/{commentId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/community/comments/{commentId}/likes": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Like a comment */
-        post: operations["CommunityController_likeComment"];
-        /** Unlike a comment */
-        delete: operations["CommunityController_unlikeComment"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete own comment (no children allowed) */
+    delete: operations['CommunityController_deleteComment'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/community/comments/{commentId}/likes': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/foster/animals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List animals by status */
-        get: operations["FosterController_listAnimals"];
-        put?: never;
-        /** Create animal (ORG only for org-owned) */
-        post: operations["FosterController_createAnimal"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Like a comment */
+    post: operations['CommunityController_likeComment'];
+    /** Unlike a comment */
+    delete: operations['CommunityController_unlikeComment'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/foster/animals': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/foster/shared-animals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List shared animals */
-        get: operations["FosterController_listSharedAnimals"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List animals by status */
+    get: operations['FosterController_listAnimals'];
+    put?: never;
+    /** Create animal (ORG only for org-owned) */
+    post: operations['FosterController_createAnimal'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/foster/shared-animals': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/foster/animals/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete animal (owner or ORG admin) */
-        delete: operations["FosterController_deleteAnimal"];
-        options?: never;
-        head?: never;
-        /** Update animal (owner or ORG admin) */
-        patch: operations["FosterController_updateAnimal"];
-        trace?: never;
+    /** List shared animals */
+    get: operations['FosterController_listSharedAnimals'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/foster/animals/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/foster/animals/{id}/records": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List records within a 12-month window */
-        get: operations["FosterController_listRecords"];
-        put?: never;
-        /** Create record (max 6 images) */
-        post: operations["FosterController_createRecord"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete animal (owner or ORG admin) */
+    delete: operations['FosterController_deleteAnimal'];
+    options?: never;
+    head?: never;
+    /** Update animal (owner or ORG admin) */
+    patch: operations['FosterController_updateAnimal'];
+    trace?: never;
+  };
+  '/foster/animals/{id}/records': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/foster/animals/{id}/records/{recordId}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get record detail */
-        get: operations["FosterController_getRecord"];
-        put?: never;
-        post?: never;
-        /** Delete record */
-        delete: operations["FosterController_deleteRecord"];
-        options?: never;
-        head?: never;
-        /** Update record and images */
-        patch: operations["FosterController_updateRecord"];
-        trace?: never;
+    /** List records within a 12-month window */
+    get: operations['FosterController_listRecords'];
+    put?: never;
+    /** Create record (max 6 images) */
+    post: operations['FosterController_createRecord'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/foster/animals/{id}/records/{recordId}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/foster/waiting-animals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List animals in WAITING status */
-        get: operations["FosterController_listWaitingAnimals"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get record detail */
+    get: operations['FosterController_getRecord'];
+    put?: never;
+    post?: never;
+    /** Delete record */
+    delete: operations['FosterController_deleteRecord'];
+    options?: never;
+    head?: never;
+    /** Update record and images */
+    patch: operations['FosterController_updateRecord'];
+    trace?: never;
+  };
+  '/foster/waiting-animals': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/organization/animals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List animals managed by organization */
-        get: operations["OrganizationController_listAnimals"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List animals in WAITING status */
+    get: operations['FosterController_listWaitingAnimals'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/organization/animals': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/organization/animals/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get organization animal detail */
-        get: operations["OrganizationController_getAnimal"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List animals managed by organization */
+    get: operations['OrganizationController_listAnimals'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/organization/animals/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/reports": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** Report a post or comment */
-        post: operations["ReportsController_create"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get organization animal detail */
+    get: operations['OrganizationController_getAnimal'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/reports': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/public/foster/animals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List foster animals (public) */
-        get: operations["PublicFosterController_listAnimals"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    /** Report a post or comment */
+    post: operations['ReportsController_create'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/public/foster/animals': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/public/foster/animals/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get foster animal detail (public) */
-        get: operations["PublicFosterController_getAnimal"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List foster animals (public) */
+    get: operations['PublicFosterController_listAnimals'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/public/foster/animals/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/public/foster/records/animals": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List animals with foster records (public) */
-        get: operations["PublicFosterRecordsController_listAnimals"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get foster animal detail (public) */
+    get: operations['PublicFosterController_getAnimal'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/public/foster/records/animals': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/public/foster/records/animals/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get foster record detail (public) */
-        get: operations["PublicFosterRecordsController_getAnimal"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List animals with foster records (public) */
+    get: operations['PublicFosterRecordsController_listAnimals'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/public/foster/records/animals/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/public/notices": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List public notices */
-        get: operations["PublicNoticeController_list"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get foster record detail (public) */
+    get: operations['PublicFosterRecordsController_getAnimal'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/public/notices': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/public/notices/{id}": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Fetch a public notice detail */
-        get: operations["PublicNoticeController_get"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List public notices */
+    get: operations['PublicNoticeController_list'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/public/notices/{id}': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/profile": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get current user profile */
-        get: operations["UsersController_getProfile"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update current user profile */
-        patch: operations["UsersController_updateProfile"];
-        trace?: never;
+    /** Fetch a public notice detail */
+    get: operations['PublicNoticeController_get'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/users/me/profile': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/notification-settings": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** Get current user notification settings */
-        get: operations["UsersController_getNotificationSetting"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        /** Update current user notification settings */
-        patch: operations["UsersController_updateNotificationSetting"];
-        trace?: never;
+    /** Get current user profile */
+    get: operations['UsersController_getProfile'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update current user profile */
+    patch: operations['UsersController_updateProfile'];
+    trace?: never;
+  };
+  '/users/me/notification-settings': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        post?: never;
-        /** Delete current user account */
-        delete: operations["UsersController_deleteAccount"];
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** Get current user notification settings */
+    get: operations['UsersController_getNotificationSetting'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    /** Update current user notification settings */
+    patch: operations['UsersController_updateNotificationSetting'];
+    trace?: never;
+  };
+  '/users/me': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/posts": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List community posts authored by current user */
-        get: operations["UsersController_listMyPosts"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    get?: never;
+    put?: never;
+    post?: never;
+    /** Delete current user account */
+    delete: operations['UsersController_deleteAccount'];
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/users/me/posts': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/users/me/comments": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        /** List community comments authored by current user */
-        get: operations["UsersController_listMyComments"];
-        put?: never;
-        post?: never;
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List community posts authored by current user */
+    get: operations['UsersController_listMyPosts'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/users/me/comments': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "/uploads/images": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        get?: never;
-        put?: never;
-        /** 이미지 업로드용 S3 presigned URL 생성 */
-        post: operations["UploadsController_createImageUpload"];
-        delete?: never;
-        options?: never;
-        head?: never;
-        patch?: never;
-        trace?: never;
+    /** List community comments authored by current user */
+    get: operations['UsersController_listMyComments'];
+    put?: never;
+    post?: never;
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
+  '/uploads/images': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
+    get?: never;
+    put?: never;
+    /** 이미지 업로드용 S3 presigned URL 생성 */
+    post: operations['UploadsController_createImageUpload'];
+    delete?: never;
+    options?: never;
+    head?: never;
+    patch?: never;
+    trace?: never;
+  };
 }
 export type webhooks = Record<string, never>;
 export interface components {
-    schemas: {
-        KakaoAuthDto: {
-            /** @description Authorization code from Kakao callback */
-            code: string;
-        };
-        AuthTokenPairDto: {
-            /** @description JWT access token */
-            token: string;
-            /** @description JWT refresh token */
-            refreshToken: string;
-            /** @description Display name of the user */
-            displayName?: Record<string, never>;
-            /** @description Avatar URL of the user */
-            avatarUrl?: Record<string, never>;
-        };
-        RefreshDto: {
-            /** @description Previously issued refresh token */
-            refreshToken: string;
-        };
-        LogoutResponseDto: {
-            /** @enum {number} */
-            ok: true;
-        };
-        PostAuthorDto: {
-            id: string;
-            displayName?: Record<string, never> | null;
-        };
-        PostCountDto: {
-            comments: number;
-            likes: number;
-        };
-        PostListItemDto: {
-            id: string;
-            authorId: string;
-            author: components["schemas"]["PostAuthorDto"];
-            title: string;
-            content: string;
-            images: string[];
-            viewCount: number;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            /** @description Number of likes */
-            likeCount: number;
-            _count: components["schemas"]["PostCountDto"];
-        };
-        PostListResponseDto: {
-            items: components["schemas"]["PostListItemDto"][];
-            /** @description Cursor for next page */
-            nextCursor?: Record<string, never> | null;
-            /** @description Page size */
-            limit: number;
-        };
-        CreatePostDto: {
-            title: string;
-            /** @description Post content */
-            content: string;
-            /** @description Public image URLs associated with the post (max 5) */
-            images?: string[] | null;
-        };
-        PostDetailDto: {
-            id: string;
-            authorId: string;
-            author: components["schemas"]["PostAuthorDto"];
-            title: string;
-            content: string;
-            images: string[];
-            viewCount: number;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            /** @description Number of likes */
-            likeCount: number;
-            _count: components["schemas"]["PostCountDto"];
-            isBookmarked: boolean;
-            liked: boolean;
-        };
-        BookmarkResponseDto: {
-            postId: string;
-            bookmarked: boolean;
-        };
-        LikePostResponseDto: {
-            postId: string;
-            liked: boolean;
-            likeCount: number;
-        };
-        UpdatePostDto: {
-            title?: string;
-            /** @description Post content */
-            content?: string;
-            /** @description Public image URLs associated with the post (max 5) */
-            images?: string[] | null;
-        };
-        CommentAuthorDto: {
-            id: string;
-            displayName?: Record<string, never> | null;
-        };
-        CommentListItemDto: {
-            id: string;
-            postId: string;
-            authorId: string;
-            author: components["schemas"]["CommentAuthorDto"];
-            parentId?: Record<string, never> | null;
-            content: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            liked: boolean;
-            likeCount: number;
-            replies: components["schemas"]["CommentListItemDto"][];
-        };
-        ListCommentsResponseDto: {
-            postId: string;
-            items: components["schemas"]["CommentListItemDto"][];
-        };
-        CreateCommentDto: {
-            /** @description Comment content */
-            content: string;
-            /** @description Parent comment id for reply */
-            parentId?: string;
-        };
-        UpdateCommentDto: {
-            /** @description Comment content */
-            content: string;
-        };
-        DeleteCommentResponseDto: {
-            commentId: string;
-            /** @enum {number} */
-            deleted: true;
-        };
-        LikeCommentResponseDto: {
-            commentId: string;
-            liked: boolean;
-        };
-        AnimalListItemDto: {
-            id: string;
-            name: string;
-            /** @enum {string} */
-            status: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            shared: boolean;
-            orgId?: Record<string, never> | null;
-            ownerUserId?: Record<string, never> | null;
-            fosterDays: number;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        ListAnimalsResponseDto: {
-            items: components["schemas"]["AnimalListItemDto"][];
-        };
-        FosterRecordImageDto: {
-            id: string;
-            url: string;
-            sortOrder?: Record<string, never> | null;
-        };
-        OrganizationMetaDto: {
-            id: string;
-            name: string;
-        };
-        AnimalMetaDto: {
-            id: string;
-            name: string;
-            /** @enum {string} */
-            status: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            shared: boolean;
-            organization?: components["schemas"]["OrganizationMetaDto"] | null;
-        };
-        GetRecordResponseDto: {
-            id: string;
-            animalId: string;
-            /**
-             * Format: date-time
-             * @description Record date
-             */
-            date: string;
-            content?: Record<string, never> | null;
-            healthNote?: Record<string, never> | null;
-            images: components["schemas"]["FosterRecordImageDto"][];
-            animal: components["schemas"]["AnimalMetaDto"];
-        };
-        FosterRecordDtoOut: {
-            id: string;
-            animalId: string;
-            /**
-             * Format: date-time
-             * @description Record date
-             */
-            date: string;
-            content?: Record<string, never> | null;
-            healthNote?: Record<string, never> | null;
-            images: components["schemas"]["FosterRecordImageDto"][];
-        };
-        ListRecordsResponseDto: {
-            animalId: string;
-            animal: components["schemas"]["AnimalMetaDto"];
-            /** @description ISO date from */
-            from: string;
-            /** @description ISO date to */
-            to: string;
-            items: components["schemas"]["FosterRecordDtoOut"][];
-        };
-        DeleteAnimalResponseDto: {
-            id: string;
-            /** @enum {number} */
-            deleted: true;
-        };
-        DeleteRecordResponseDto: {
-            animalId: string;
-            id: string;
-            /** @enum {number} */
-            deleted: true;
-        };
-        CreateAnimalDto: {
-            name: string;
-            /** @description Organization id if org-owned */
-            orgId?: string;
-            shared?: boolean;
-            /** @enum {string} */
-            status?: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            /** @enum {string} */
-            type?: "DOG" | "CAT";
-            /** @enum {string} */
-            size?: "SMALL" | "MEDIUM" | "LARGE";
-            /** @enum {string} */
-            gender?: "MALE" | "FEMALE";
-            breed?: string;
-            /** @description Birth date (ISO string) */
-            birthDate?: string;
-            introduction?: string;
-            remark?: string;
-            emergency?: boolean;
-            emergencyReason?: string;
-            images?: string[];
-            healthTags?: ("NEUTERED" | "VACCINATED" | "MICROCHIPPED" | "HEARTWORM_TESTED" | "DEWORMED" | "FLEA_TICK_TREATED")[];
-            personalityTags?: ("QUIET" | "ENERGETIC" | "INDEPENDENCE" | "SENSITIVITY" | "FRIENDLY_WITH_PEOPLE" | "GOOD_WITH_OTHER_ANIMAL" | "POTTY_TRAINING_COMPLETION" | "NO_BITING")[];
-            environmentTags?: ("QUIET_ENVIRONMENT" | "AVAILABILITY_FOR_WALKS_PLAY" | "FREQUENT_INTERACTION_WITH_PETS" | "PRESENCE_OF_OTHER_ANIMAL" | "WILLINGNESS_FOR_POTTY_TRAINING" | "PATIENCE_WITH_BARKING_BITING" | "CARE_FOR_SENSITIVE_OR_FEARFUL_PETS" | "HOUSEHOLD_WITH_YOUNG_CHILDREN")[];
-            specialNoteTags?: ("SEPARATION_ANXIETY" | "MEDICATION_REQUIRED" | "POTTY_ACCIDENTS" | "AGGRESSION_TOWARD_OTHER_ANIMALS" | "ONGOING_TREATMENT_OR_RECOVERY" | "DISABLED_OR_ILL_PETS_ACCEPTED")[];
-            isFosterCondition?: boolean;
-            currentFosterStartDate?: string;
-            currentFosterEndDate?: string;
-        };
-        UpdateAnimalDto: {
-            name?: string;
-            shared?: boolean;
-            /** @enum {string} */
-            status?: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            /** @enum {string} */
-            type?: "DOG" | "CAT";
-            /** @enum {string} */
-            size?: "SMALL" | "MEDIUM" | "LARGE";
-            /** @enum {string} */
-            gender?: "MALE" | "FEMALE";
-            breed?: string;
-            /** @description Birth date (ISO string) */
-            birthDate?: string;
-            introduction?: string;
-            remark?: string;
-            emergency?: boolean;
-            emergencyReason?: string;
-            images?: string[];
-            healthTags?: ("NEUTERED" | "VACCINATED" | "MICROCHIPPED" | "HEARTWORM_TESTED" | "DEWORMED" | "FLEA_TICK_TREATED")[];
-            personalityTags?: ("QUIET" | "ENERGETIC" | "INDEPENDENCE" | "SENSITIVITY" | "FRIENDLY_WITH_PEOPLE" | "GOOD_WITH_OTHER_ANIMAL" | "POTTY_TRAINING_COMPLETION" | "NO_BITING")[];
-            environmentTags?: ("QUIET_ENVIRONMENT" | "AVAILABILITY_FOR_WALKS_PLAY" | "FREQUENT_INTERACTION_WITH_PETS" | "PRESENCE_OF_OTHER_ANIMAL" | "WILLINGNESS_FOR_POTTY_TRAINING" | "PATIENCE_WITH_BARKING_BITING" | "CARE_FOR_SENSITIVE_OR_FEARFUL_PETS" | "HOUSEHOLD_WITH_YOUNG_CHILDREN")[];
-            specialNoteTags?: ("SEPARATION_ANXIETY" | "MEDICATION_REQUIRED" | "POTTY_ACCIDENTS" | "AGGRESSION_TOWARD_OTHER_ANIMALS" | "ONGOING_TREATMENT_OR_RECOVERY" | "DISABLED_OR_ILL_PETS_ACCEPTED")[];
-            isFosterCondition?: boolean;
-            currentFosterStartDate?: string;
-            currentFosterEndDate?: string;
-        };
-        CreateRecordDto: {
-            /** @description ISO date (YYYY-MM-DD) */
-            date: string;
-            content?: string;
-            healthNote?: string;
-            images?: string[];
-        };
-        UpdateRecordDto: {
-            /** @description ISO date (YYYY-MM-DD) */
-            date?: string;
-            content?: string;
-            healthNote?: string;
-            images?: string[];
-        };
-        /** @enum {string} */
-        AnimalStatus: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-        OrganizationApplicantDto: {
-            id: string;
-            name: string;
-            email?: Record<string, never> | null;
-            phoneNumber?: Record<string, never> | null;
-            address?: Record<string, never> | null;
-            addressDetail?: Record<string, never> | null;
-            introduction?: Record<string, never> | null;
-        };
-        OrganizationAnimalDto: {
-            id: string;
-            name: string;
-            /** @enum {string|null} */
-            type?: "DOG" | "CAT" | null;
-            /** @enum {string|null} */
-            size?: "SMALL" | "MEDIUM" | "LARGE" | null;
-            /** @enum {string|null} */
-            gender?: "MALE" | "FEMALE" | null;
-            breed?: Record<string, never> | null;
-            birthDate?: Record<string, never> | null;
-            status: components["schemas"]["AnimalStatus"];
-            imageUrl?: Record<string, never> | null;
-            isEmergency: boolean;
-            applicants: components["schemas"]["OrganizationApplicantDto"][];
-            healthTags: ("NEUTERED" | "VACCINATED" | "MICROCHIPPED" | "HEARTWORM_TESTED" | "DEWORMED" | "FLEA_TICK_TREATED")[];
-            personalityTags: ("QUIET" | "ENERGETIC" | "INDEPENDENCE" | "SENSITIVITY" | "FRIENDLY_WITH_PEOPLE" | "GOOD_WITH_OTHER_ANIMAL" | "POTTY_TRAINING_COMPLETION" | "NO_BITING")[];
-            environmentTags: ("QUIET_ENVIRONMENT" | "AVAILABILITY_FOR_WALKS_PLAY" | "FREQUENT_INTERACTION_WITH_PETS" | "PRESENCE_OF_OTHER_ANIMAL" | "WILLINGNESS_FOR_POTTY_TRAINING" | "PATIENCE_WITH_BARKING_BITING" | "CARE_FOR_SENSITIVE_OR_FEARFUL_PETS" | "HOUSEHOLD_WITH_YOUNG_CHILDREN")[];
-            fosterApplyNumber: number;
-        };
-        OrganizationAnimalListResponseDto: {
-            items: components["schemas"]["OrganizationAnimalDto"][];
-        };
-        OrganizationFosterRecordDto: {
-            id: string;
-            content?: Record<string, never> | null;
-            healthNote?: Record<string, never> | null;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-            images: string[];
-        };
-        OrganizationAnimalDetailDto: {
-            id: string;
-            name: string;
-            /** @enum {string|null} */
-            type?: "DOG" | "CAT" | null;
-            /** @enum {string|null} */
-            size?: "SMALL" | "MEDIUM" | "LARGE" | null;
-            /** @enum {string|null} */
-            gender?: "MALE" | "FEMALE" | null;
-            breed?: Record<string, never> | null;
-            birthDate?: Record<string, never> | null;
-            status: components["schemas"]["AnimalStatus"];
-            imageUrl?: Record<string, never> | null;
-            isEmergency: boolean;
-            applicants: components["schemas"]["OrganizationApplicantDto"][];
-            healthTags: ("NEUTERED" | "VACCINATED" | "MICROCHIPPED" | "HEARTWORM_TESTED" | "DEWORMED" | "FLEA_TICK_TREATED")[];
-            personalityTags: ("QUIET" | "ENERGETIC" | "INDEPENDENCE" | "SENSITIVITY" | "FRIENDLY_WITH_PEOPLE" | "GOOD_WITH_OTHER_ANIMAL" | "POTTY_TRAINING_COMPLETION" | "NO_BITING")[];
-            environmentTags: ("QUIET_ENVIRONMENT" | "AVAILABILITY_FOR_WALKS_PLAY" | "FREQUENT_INTERACTION_WITH_PETS" | "PRESENCE_OF_OTHER_ANIMAL" | "WILLINGNESS_FOR_POTTY_TRAINING" | "PATIENCE_WITH_BARKING_BITING" | "CARE_FOR_SENSITIVE_OR_FEARFUL_PETS" | "HOUSEHOLD_WITH_YOUNG_CHILDREN")[];
-            fosterApplyNumber: number;
-            introduction?: Record<string, never> | null;
-            remark?: Record<string, never> | null;
-            images: string[];
-            emergencyReason?: Record<string, never> | null;
-            currentFosterStartDate?: Record<string, never> | null;
-            currentFosterEndDate?: Record<string, never> | null;
-            specialNoteTags: ("SEPARATION_ANXIETY" | "MEDICATION_REQUIRED" | "POTTY_ACCIDENTS" | "AGGRESSION_TOWARD_OTHER_ANIMALS" | "ONGOING_TREATMENT_OR_RECOVERY" | "DISABLED_OR_ILL_PETS_ACCEPTED")[];
-            organization?: components["schemas"]["OrganizationMetaDto"] | null;
-            fosterRecords: components["schemas"]["OrganizationFosterRecordDto"][];
-        };
-        CreateReportDto: {
-            /** @enum {string} */
-            targetType: "POST" | "COMMENT";
-            targetId: string;
-            reason: string;
-        };
-        ReportDto: {
-            id: string;
-            /** @enum {string} */
-            targetType: "POST" | "COMMENT";
-            targetId: string;
-            reason: string;
-            reporterId: string;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        PublicFosterOrganizationDto: {
-            id: string;
-            name: string;
-            address?: Record<string, never>;
-            addressDetail?: Record<string, never>;
-            phoneNumber?: Record<string, never>;
-            donationBankName?: Record<string, never>;
-            donationAccountNumber?: Record<string, never>;
-            donationAccountHolder?: Record<string, never>;
-        };
-        PublicFosterAnimalListItemDto: {
-            id: string;
-            name: string;
-            /** @enum {string|null} */
-            type?: "DOG" | "CAT" | null;
-            /** @enum {string|null} */
-            size?: "SMALL" | "MEDIUM" | "LARGE" | null;
-            /** @enum {string|null} */
-            gender?: "MALE" | "FEMALE" | null;
-            breed?: Record<string, never> | null;
-            birthDate?: Record<string, never> | null;
-            /** @enum {string} */
-            status: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            shared: boolean;
-            mainImageUrl?: Record<string, never> | null;
-            isEmergency: boolean;
-            euthanasiaDate?: Record<string, never> | null;
-            isFosterCondition: boolean;
-            emergencyReason?: Record<string, never> | null;
-            organization?: components["schemas"]["PublicFosterOrganizationDto"] | null;
-            healthTags: ("NEUTERED" | "VACCINATED" | "MICROCHIPPED" | "HEARTWORM_TESTED" | "DEWORMED" | "FLEA_TICK_TREATED")[];
-            personalityTags: ("QUIET" | "ENERGETIC" | "INDEPENDENCE" | "SENSITIVITY" | "FRIENDLY_WITH_PEOPLE" | "GOOD_WITH_OTHER_ANIMAL" | "POTTY_TRAINING_COMPLETION" | "NO_BITING")[];
-            environmentTags: ("QUIET_ENVIRONMENT" | "AVAILABILITY_FOR_WALKS_PLAY" | "FREQUENT_INTERACTION_WITH_PETS" | "PRESENCE_OF_OTHER_ANIMAL" | "WILLINGNESS_FOR_POTTY_TRAINING" | "PATIENCE_WITH_BARKING_BITING" | "CARE_FOR_SENSITIVE_OR_FEARFUL_PETS" | "HOUSEHOLD_WITH_YOUNG_CHILDREN")[];
-            fosterDays: number;
-        };
-        PublicFosterAnimalListResponseDto: {
-            items: components["schemas"]["PublicFosterAnimalListItemDto"][];
-        };
-        PublicFosterAnimalDetailDto: {
-            id: string;
-            name: string;
-            /** @enum {string|null} */
-            type?: "DOG" | "CAT" | null;
-            /** @enum {string|null} */
-            size?: "SMALL" | "MEDIUM" | "LARGE" | null;
-            /** @enum {string|null} */
-            gender?: "MALE" | "FEMALE" | null;
-            breed?: Record<string, never> | null;
-            birthDate?: Record<string, never> | null;
-            /** @enum {string} */
-            status: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            shared: boolean;
-            mainImageUrl?: Record<string, never> | null;
-            isEmergency: boolean;
-            euthanasiaDate?: Record<string, never> | null;
-            isFosterCondition: boolean;
-            emergencyReason?: Record<string, never> | null;
-            organization?: components["schemas"]["PublicFosterOrganizationDto"] | null;
-            healthTags: ("NEUTERED" | "VACCINATED" | "MICROCHIPPED" | "HEARTWORM_TESTED" | "DEWORMED" | "FLEA_TICK_TREATED")[];
-            personalityTags: ("QUIET" | "ENERGETIC" | "INDEPENDENCE" | "SENSITIVITY" | "FRIENDLY_WITH_PEOPLE" | "GOOD_WITH_OTHER_ANIMAL" | "POTTY_TRAINING_COMPLETION" | "NO_BITING")[];
-            environmentTags: ("QUIET_ENVIRONMENT" | "AVAILABILITY_FOR_WALKS_PLAY" | "FREQUENT_INTERACTION_WITH_PETS" | "PRESENCE_OF_OTHER_ANIMAL" | "WILLINGNESS_FOR_POTTY_TRAINING" | "PATIENCE_WITH_BARKING_BITING" | "CARE_FOR_SENSITIVE_OR_FEARFUL_PETS" | "HOUSEHOLD_WITH_YOUNG_CHILDREN")[];
-            introduction?: Record<string, never> | null;
-            remark?: Record<string, never> | null;
-            images: string[];
-            specialNoteTags: ("SEPARATION_ANXIETY" | "MEDICATION_REQUIRED" | "POTTY_ACCIDENTS" | "AGGRESSION_TOWARD_OTHER_ANIMALS" | "ONGOING_TREATMENT_OR_RECOVERY" | "DISABLED_OR_ILL_PETS_ACCEPTED")[];
-            currentFosterStartDate?: Record<string, never> | null;
-            currentFosterEndDate?: Record<string, never> | null;
-        };
-        PublicRecordAnimalDto: {
-            id: string;
-            name: string;
-            /** @enum {string|null} */
-            type?: "DOG" | "CAT" | null;
-            breed?: string | null;
-            birthDate?: string | null;
-            /** @enum {string|null} */
-            gender?: "MALE" | "FEMALE" | null;
-            images: string[];
-            fosterDuration: number;
-            state: components["schemas"]["AnimalStatus"];
-            matchId: string;
-        };
-        PublicRecordListResponseDto: {
-            items: components["schemas"]["PublicRecordAnimalDto"][];
-        };
-        PublicRecordOrganizationDto: {
-            id: string;
-            name: string;
-            phoneNumber?: string | null;
-            zipcode?: string | null;
-            address?: string | null;
-            addressDetail?: string | null;
-            email?: string | null;
-        };
-        PublicRecordAnimalInfoDto: {
-            name: string;
-            /** @enum {string|null} */
-            type?: "DOG" | "CAT" | null;
-            breed?: string | null;
-            birthDate?: string | null;
-            /** @enum {string|null} */
-            gender?: "MALE" | "FEMALE" | null;
-            introduction?: string | null;
-            remark?: string | null;
-            images: string[];
-            currentFosterStartDate?: string | null;
-            currentFosterEndDate?: string | null;
-        };
-        PublicRecordInfoDto: {
-            id: string;
-            state: components["schemas"]["AnimalStatus"];
-            createdAt: string;
-            organization?: components["schemas"]["PublicRecordOrganizationDto"] | null;
-            animal: components["schemas"]["PublicRecordAnimalInfoDto"];
-        };
-        PublicRecordEntryDto: {
-            id: string;
-            content?: string | null;
-            healthNote?: string | null;
-            createdAt: string;
-            updatedAt: string;
-            images: string[];
-        };
-        PublicRecordDetailDto: {
-            id: string;
-            info: components["schemas"]["PublicRecordInfoDto"];
-            records: components["schemas"]["PublicRecordEntryDto"][];
-        };
-        PublicNoticeListItemDto: {
-            id: string;
-            title: string;
-            type?: Record<string, never> | null;
-            isFixed: boolean;
-            /** Format: date-time */
-            createdAt: string;
-            attachments: number;
-        };
-        PublicNoticeListResponseDto: {
-            items: components["schemas"]["PublicNoticeListItemDto"][];
-        };
-        PublicNoticeDetailDto: {
-            id: string;
-            title: string;
-            type?: Record<string, never> | null;
-            isFixed: boolean;
-            /** Format: date-time */
-            createdAt: string;
-            content: string;
-            attachmentFiles: string[];
-        };
-        UserProfileDto: {
-            id: string;
-            name: Record<string, never> | null;
-            email: Record<string, never> | null;
-            phoneNumber: Record<string, never> | null;
-            zipcode: Record<string, never> | null;
-            address: Record<string, never> | null;
-            addressDetail: Record<string, never> | null;
-            introduction: Record<string, never> | null;
-            isEligibleForFoster: boolean;
-        };
-        UserNotificationSettingDto: {
-            commentEmail: boolean;
-            fosterAnimalInfoEmail: boolean;
-            fosterAnimalInfoKakao: boolean;
-            marketingEmail: boolean;
-            marketingKakao: boolean;
-        };
-        UpdateUserProfileDto: {
-            name?: Record<string, never> | null;
-            email?: Record<string, never> | null;
-            phoneNumber?: Record<string, never> | null;
-            zipcode?: Record<string, never> | null;
-            address?: Record<string, never> | null;
-            addressDetail?: Record<string, never> | null;
-            introduction?: Record<string, never> | null;
-        };
-        UpdateUserNotificationSettingDto: {
-            commentEmail?: boolean;
-            fosterAnimalInfoEmail?: boolean;
-            fosterAnimalInfoKakao?: boolean;
-            marketingEmail?: boolean;
-            marketingKakao?: boolean;
-        };
-        UserPostItemDto: {
-            id: string;
-            title: string;
-            content: string;
-            views: number;
-            commentCount: number;
-            /** Format: date-time */
-            createdAt: string;
-            /** Format: date-time */
-            updatedAt: string;
-        };
-        UserCommentPostSummaryDto: {
-            id: string;
-            title: string;
-        };
-        UserCommentItemDto: {
-            id: string;
-            postId: string;
-            content: string;
-            /** Format: date-time */
-            createdAt: string;
-            likes: number;
-            post: components["schemas"]["UserCommentPostSummaryDto"] | null;
-        };
-        CreateImageUploadDto: {
-            /**
-             * @description 업로드를 구분하기 위한 경로 (예: animals, community/posts)
-             * @example animals
-             */
-            scope: string;
-            /**
-             * @description 원본 파일 이름
-             * @example dog.png
-             */
-            fileName: string;
-            /**
-             * @description 파일 MIME 타입
-             * @example image/png
-             */
-            contentType: string;
-            /**
-             * @description 파일 크기 (Byte)
-             * @example 1024
-             */
-            fileSize: number;
-        };
+  schemas: {
+    KakaoAuthDto: {
+      /** @description Authorization code from Kakao callback */
+      code: string;
     };
-    responses: never;
-    parameters: never;
-    requestBodies: never;
-    headers: never;
-    pathItems: never;
+    AuthTokenPairDto: {
+      /** @description JWT access token */
+      token: string;
+      /** @description JWT refresh token */
+      refreshToken: string;
+      /** @description Display name of the user */
+      displayName?: Record<string, never>;
+      /** @description Avatar URL of the user */
+      avatarUrl?: Record<string, never>;
+    };
+    RefreshDto: {
+      /** @description Previously issued refresh token */
+      refreshToken: string;
+    };
+    LogoutResponseDto: {
+      /** @enum {number} */
+      ok: true;
+    };
+    PostAuthorDto: {
+      id: string;
+      displayName?: Record<string, never> | null;
+    };
+    PostCountDto: {
+      comments: number;
+      likes: number;
+    };
+    PostListItemDto: {
+      id: string;
+      authorId: string;
+      author: components['schemas']['PostAuthorDto'];
+      title: string;
+      content: string;
+      images: string[];
+      viewCount: number;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      /** @description Number of likes */
+      likeCount: number;
+      _count: components['schemas']['PostCountDto'];
+    };
+    PostListResponseDto: {
+      items: components['schemas']['PostListItemDto'][];
+      /** @description Cursor for next page */
+      nextCursor?: Record<string, never> | null;
+      /** @description Page size */
+      limit: number;
+    };
+    CreatePostDto: {
+      title: string;
+      /** @description Post content */
+      content: string;
+      /** @description Public image URLs associated with the post (max 5) */
+      images?: string[] | null;
+    };
+    PostDetailDto: {
+      id: string;
+      authorId: string;
+      author: components['schemas']['PostAuthorDto'];
+      title: string;
+      content: string;
+      images: string[];
+      viewCount: number;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      /** @description Number of likes */
+      likeCount: number;
+      _count: components['schemas']['PostCountDto'];
+      isBookmarked: boolean;
+      liked: boolean;
+    };
+    BookmarkResponseDto: {
+      postId: string;
+      bookmarked: boolean;
+    };
+    LikePostResponseDto: {
+      postId: string;
+      liked: boolean;
+      likeCount: number;
+    };
+    UpdatePostDto: {
+      title?: string;
+      /** @description Post content */
+      content?: string;
+      /** @description Public image URLs associated with the post (max 5) */
+      images?: string[] | null;
+    };
+    CommentAuthorDto: {
+      id: string;
+      displayName?: Record<string, never> | null;
+    };
+    CommentListItemDto: {
+      id: string;
+      postId: string;
+      authorId: string;
+      author: components['schemas']['CommentAuthorDto'];
+      parentId?: Record<string, never> | null;
+      content: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      liked: boolean;
+      likeCount: number;
+      replies: components['schemas']['CommentListItemDto'][];
+    };
+    ListCommentsResponseDto: {
+      postId: string;
+      items: components['schemas']['CommentListItemDto'][];
+    };
+    CreateCommentDto: {
+      /** @description Comment content */
+      content: string;
+      /** @description Parent comment id for reply */
+      parentId?: string;
+    };
+    UpdateCommentDto: {
+      /** @description Comment content */
+      content: string;
+    };
+    DeleteCommentResponseDto: {
+      commentId: string;
+      /** @enum {number} */
+      deleted: true;
+    };
+    LikeCommentResponseDto: {
+      commentId: string;
+      liked: boolean;
+    };
+    AnimalListItemDto: {
+      id: string;
+      name: string;
+      /** @enum {string} */
+      status: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      shared: boolean;
+      orgId?: Record<string, never> | null;
+      ownerUserId?: Record<string, never> | null;
+      fosterDays: number;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    ListAnimalsResponseDto: {
+      items: components['schemas']['AnimalListItemDto'][];
+    };
+    FosterRecordImageDto: {
+      id: string;
+      url: string;
+      sortOrder?: Record<string, never> | null;
+    };
+    OrganizationMetaDto: {
+      id: string;
+      name: string;
+    };
+    AnimalMetaDto: {
+      id: string;
+      name: string;
+      /** @enum {string} */
+      status: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      shared: boolean;
+      organization?: components['schemas']['OrganizationMetaDto'] | null;
+    };
+    GetRecordResponseDto: {
+      id: string;
+      animalId: string;
+      /**
+       * Format: date-time
+       * @description Record date
+       */
+      date: string;
+      content?: Record<string, never> | null;
+      healthNote?: Record<string, never> | null;
+      images: components['schemas']['FosterRecordImageDto'][];
+      animal: components['schemas']['AnimalMetaDto'];
+    };
+    FosterRecordDtoOut: {
+      id: string;
+      animalId: string;
+      /**
+       * Format: date-time
+       * @description Record date
+       */
+      date: string;
+      content?: Record<string, never> | null;
+      healthNote?: Record<string, never> | null;
+      images: components['schemas']['FosterRecordImageDto'][];
+    };
+    ListRecordsResponseDto: {
+      animalId: string;
+      animal: components['schemas']['AnimalMetaDto'];
+      /** @description ISO date from */
+      from: string;
+      /** @description ISO date to */
+      to: string;
+      items: components['schemas']['FosterRecordDtoOut'][];
+    };
+    DeleteAnimalResponseDto: {
+      id: string;
+      /** @enum {number} */
+      deleted: true;
+    };
+    DeleteRecordResponseDto: {
+      animalId: string;
+      id: string;
+      /** @enum {number} */
+      deleted: true;
+    };
+    CreateAnimalDto: {
+      name: string;
+      /** @description Organization id if org-owned */
+      orgId?: string;
+      shared?: boolean;
+      /** @enum {string} */
+      status?: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      /** @enum {string} */
+      type?: 'DOG' | 'CAT';
+      /** @enum {string} */
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE';
+      /** @enum {string} */
+      gender?: 'MALE' | 'FEMALE';
+      breed?: string;
+      /** @description Birth date (ISO string) */
+      birthDate?: string;
+      introduction?: string;
+      remark?: string;
+      emergency?: boolean;
+      emergencyReason?: string;
+      images?: string[];
+      healthTags?: (
+        | 'NEUTERED'
+        | 'VACCINATED'
+        | 'MICROCHIPPED'
+        | 'HEARTWORM_TESTED'
+        | 'DEWORMED'
+        | 'FLEA_TICK_TREATED'
+      )[];
+      personalityTags?: (
+        | 'QUIET'
+        | 'ENERGETIC'
+        | 'INDEPENDENCE'
+        | 'SENSITIVITY'
+        | 'FRIENDLY_WITH_PEOPLE'
+        | 'GOOD_WITH_OTHER_ANIMAL'
+        | 'POTTY_TRAINING_COMPLETION'
+        | 'NO_BITING'
+      )[];
+      environmentTags?: (
+        | 'QUIET_ENVIRONMENT'
+        | 'AVAILABILITY_FOR_WALKS_PLAY'
+        | 'FREQUENT_INTERACTION_WITH_PETS'
+        | 'PRESENCE_OF_OTHER_ANIMAL'
+        | 'WILLINGNESS_FOR_POTTY_TRAINING'
+        | 'PATIENCE_WITH_BARKING_BITING'
+        | 'CARE_FOR_SENSITIVE_OR_FEARFUL_PETS'
+        | 'HOUSEHOLD_WITH_YOUNG_CHILDREN'
+      )[];
+      specialNoteTags?: (
+        | 'SEPARATION_ANXIETY'
+        | 'MEDICATION_REQUIRED'
+        | 'POTTY_ACCIDENTS'
+        | 'AGGRESSION_TOWARD_OTHER_ANIMALS'
+        | 'ONGOING_TREATMENT_OR_RECOVERY'
+        | 'DISABLED_OR_ILL_PETS_ACCEPTED'
+      )[];
+      isFosterCondition?: boolean;
+      currentFosterStartDate?: string;
+      currentFosterEndDate?: string;
+    };
+    UpdateAnimalDto: {
+      name?: string;
+      shared?: boolean;
+      /** @enum {string} */
+      status?: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      /** @enum {string} */
+      type?: 'DOG' | 'CAT';
+      /** @enum {string} */
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE';
+      /** @enum {string} */
+      gender?: 'MALE' | 'FEMALE';
+      breed?: string;
+      /** @description Birth date (ISO string) */
+      birthDate?: string;
+      introduction?: string;
+      remark?: string;
+      emergency?: boolean;
+      emergencyReason?: string;
+      images?: string[];
+      healthTags?: (
+        | 'NEUTERED'
+        | 'VACCINATED'
+        | 'MICROCHIPPED'
+        | 'HEARTWORM_TESTED'
+        | 'DEWORMED'
+        | 'FLEA_TICK_TREATED'
+      )[];
+      personalityTags?: (
+        | 'QUIET'
+        | 'ENERGETIC'
+        | 'INDEPENDENCE'
+        | 'SENSITIVITY'
+        | 'FRIENDLY_WITH_PEOPLE'
+        | 'GOOD_WITH_OTHER_ANIMAL'
+        | 'POTTY_TRAINING_COMPLETION'
+        | 'NO_BITING'
+      )[];
+      environmentTags?: (
+        | 'QUIET_ENVIRONMENT'
+        | 'AVAILABILITY_FOR_WALKS_PLAY'
+        | 'FREQUENT_INTERACTION_WITH_PETS'
+        | 'PRESENCE_OF_OTHER_ANIMAL'
+        | 'WILLINGNESS_FOR_POTTY_TRAINING'
+        | 'PATIENCE_WITH_BARKING_BITING'
+        | 'CARE_FOR_SENSITIVE_OR_FEARFUL_PETS'
+        | 'HOUSEHOLD_WITH_YOUNG_CHILDREN'
+      )[];
+      specialNoteTags?: (
+        | 'SEPARATION_ANXIETY'
+        | 'MEDICATION_REQUIRED'
+        | 'POTTY_ACCIDENTS'
+        | 'AGGRESSION_TOWARD_OTHER_ANIMALS'
+        | 'ONGOING_TREATMENT_OR_RECOVERY'
+        | 'DISABLED_OR_ILL_PETS_ACCEPTED'
+      )[];
+      isFosterCondition?: boolean;
+      currentFosterStartDate?: string;
+      currentFosterEndDate?: string;
+    };
+    CreateRecordDto: {
+      /** @description ISO date (YYYY-MM-DD) */
+      date: string;
+      content?: string;
+      healthNote?: string;
+      images?: string[];
+    };
+    UpdateRecordDto: {
+      /** @description ISO date (YYYY-MM-DD) */
+      date?: string;
+      content?: string;
+      healthNote?: string;
+      images?: string[];
+    };
+    /** @enum {string} */
+    AnimalStatus: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+    OrganizationApplicantDto: {
+      id: string;
+      name: string;
+      email?: Record<string, never> | null;
+      phoneNumber?: Record<string, never> | null;
+      address?: Record<string, never> | null;
+      addressDetail?: Record<string, never> | null;
+      introduction?: Record<string, never> | null;
+    };
+    OrganizationAnimalDto: {
+      id: string;
+      name: string;
+      /** @enum {string|null} */
+      type?: 'DOG' | 'CAT' | null;
+      /** @enum {string|null} */
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | null;
+      /** @enum {string|null} */
+      gender?: 'MALE' | 'FEMALE' | null;
+      breed?: Record<string, never> | null;
+      birthDate?: Record<string, never> | null;
+      status: components['schemas']['AnimalStatus'];
+      imageUrl?: Record<string, never> | null;
+      isEmergency: boolean;
+      applicants: components['schemas']['OrganizationApplicantDto'][];
+      healthTags: (
+        | 'NEUTERED'
+        | 'VACCINATED'
+        | 'MICROCHIPPED'
+        | 'HEARTWORM_TESTED'
+        | 'DEWORMED'
+        | 'FLEA_TICK_TREATED'
+      )[];
+      personalityTags: (
+        | 'QUIET'
+        | 'ENERGETIC'
+        | 'INDEPENDENCE'
+        | 'SENSITIVITY'
+        | 'FRIENDLY_WITH_PEOPLE'
+        | 'GOOD_WITH_OTHER_ANIMAL'
+        | 'POTTY_TRAINING_COMPLETION'
+        | 'NO_BITING'
+      )[];
+      environmentTags: (
+        | 'QUIET_ENVIRONMENT'
+        | 'AVAILABILITY_FOR_WALKS_PLAY'
+        | 'FREQUENT_INTERACTION_WITH_PETS'
+        | 'PRESENCE_OF_OTHER_ANIMAL'
+        | 'WILLINGNESS_FOR_POTTY_TRAINING'
+        | 'PATIENCE_WITH_BARKING_BITING'
+        | 'CARE_FOR_SENSITIVE_OR_FEARFUL_PETS'
+        | 'HOUSEHOLD_WITH_YOUNG_CHILDREN'
+      )[];
+      fosterApplyNumber: number;
+    };
+    OrganizationAnimalListResponseDto: {
+      items: components['schemas']['OrganizationAnimalDto'][];
+    };
+    OrganizationFosterRecordDto: {
+      id: string;
+      content?: Record<string, never> | null;
+      healthNote?: Record<string, never> | null;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+      images: string[];
+    };
+    OrganizationAnimalDetailDto: {
+      id: string;
+      name: string;
+      /** @enum {string|null} */
+      type?: 'DOG' | 'CAT' | null;
+      /** @enum {string|null} */
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | null;
+      /** @enum {string|null} */
+      gender?: 'MALE' | 'FEMALE' | null;
+      breed?: Record<string, never> | null;
+      birthDate?: Record<string, never> | null;
+      status: components['schemas']['AnimalStatus'];
+      imageUrl?: Record<string, never> | null;
+      isEmergency: boolean;
+      applicants: components['schemas']['OrganizationApplicantDto'][];
+      healthTags: (
+        | 'NEUTERED'
+        | 'VACCINATED'
+        | 'MICROCHIPPED'
+        | 'HEARTWORM_TESTED'
+        | 'DEWORMED'
+        | 'FLEA_TICK_TREATED'
+      )[];
+      personalityTags: (
+        | 'QUIET'
+        | 'ENERGETIC'
+        | 'INDEPENDENCE'
+        | 'SENSITIVITY'
+        | 'FRIENDLY_WITH_PEOPLE'
+        | 'GOOD_WITH_OTHER_ANIMAL'
+        | 'POTTY_TRAINING_COMPLETION'
+        | 'NO_BITING'
+      )[];
+      environmentTags: (
+        | 'QUIET_ENVIRONMENT'
+        | 'AVAILABILITY_FOR_WALKS_PLAY'
+        | 'FREQUENT_INTERACTION_WITH_PETS'
+        | 'PRESENCE_OF_OTHER_ANIMAL'
+        | 'WILLINGNESS_FOR_POTTY_TRAINING'
+        | 'PATIENCE_WITH_BARKING_BITING'
+        | 'CARE_FOR_SENSITIVE_OR_FEARFUL_PETS'
+        | 'HOUSEHOLD_WITH_YOUNG_CHILDREN'
+      )[];
+      fosterApplyNumber: number;
+      introduction?: Record<string, never> | null;
+      remark?: Record<string, never> | null;
+      images: string[];
+      emergencyReason?: Record<string, never> | null;
+      currentFosterStartDate?: Record<string, never> | null;
+      currentFosterEndDate?: Record<string, never> | null;
+      specialNoteTags: (
+        | 'SEPARATION_ANXIETY'
+        | 'MEDICATION_REQUIRED'
+        | 'POTTY_ACCIDENTS'
+        | 'AGGRESSION_TOWARD_OTHER_ANIMALS'
+        | 'ONGOING_TREATMENT_OR_RECOVERY'
+        | 'DISABLED_OR_ILL_PETS_ACCEPTED'
+      )[];
+      organization?: components['schemas']['OrganizationMetaDto'] | null;
+      fosterRecords: components['schemas']['OrganizationFosterRecordDto'][];
+    };
+    CreateReportDto: {
+      /** @enum {string} */
+      targetType: 'POST' | 'COMMENT';
+      targetId: string;
+      reason: string;
+    };
+    ReportDto: {
+      id: string;
+      /** @enum {string} */
+      targetType: 'POST' | 'COMMENT';
+      targetId: string;
+      reason: string;
+      reporterId: string;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    PublicFosterOrganizationDto: {
+      id: string;
+      name: string;
+      address?: Record<string, never>;
+      addressDetail?: Record<string, never>;
+      phoneNumber?: Record<string, never>;
+      donationBankName?: Record<string, never>;
+      donationAccountNumber?: Record<string, never>;
+      donationAccountHolder?: Record<string, never>;
+    };
+    PublicFosterAnimalListItemDto: {
+      id: string;
+      name: string;
+      /** @enum {string|null} */
+      type?: 'DOG' | 'CAT' | null;
+      /** @enum {string|null} */
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | null;
+      /** @enum {string|null} */
+      gender?: 'MALE' | 'FEMALE' | null;
+      breed?: Record<string, never> | null;
+      birthDate?: Record<string, never> | null;
+      /** @enum {string} */
+      status: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      shared: boolean;
+      mainImageUrl?: Record<string, never> | null;
+      isEmergency: boolean;
+      euthanasiaDate?: Record<string, never> | null;
+      isFosterCondition: boolean;
+      emergencyReason?: Record<string, never> | null;
+      organization?:
+        | components['schemas']['PublicFosterOrganizationDto']
+        | null;
+      healthTags: (
+        | 'NEUTERED'
+        | 'VACCINATED'
+        | 'MICROCHIPPED'
+        | 'HEARTWORM_TESTED'
+        | 'DEWORMED'
+        | 'FLEA_TICK_TREATED'
+      )[];
+      personalityTags: (
+        | 'QUIET'
+        | 'ENERGETIC'
+        | 'INDEPENDENCE'
+        | 'SENSITIVITY'
+        | 'FRIENDLY_WITH_PEOPLE'
+        | 'GOOD_WITH_OTHER_ANIMAL'
+        | 'POTTY_TRAINING_COMPLETION'
+        | 'NO_BITING'
+      )[];
+      environmentTags: (
+        | 'QUIET_ENVIRONMENT'
+        | 'AVAILABILITY_FOR_WALKS_PLAY'
+        | 'FREQUENT_INTERACTION_WITH_PETS'
+        | 'PRESENCE_OF_OTHER_ANIMAL'
+        | 'WILLINGNESS_FOR_POTTY_TRAINING'
+        | 'PATIENCE_WITH_BARKING_BITING'
+        | 'CARE_FOR_SENSITIVE_OR_FEARFUL_PETS'
+        | 'HOUSEHOLD_WITH_YOUNG_CHILDREN'
+      )[];
+      fosterDays: number;
+    };
+    PublicFosterAnimalListResponseDto: {
+      items: components['schemas']['PublicFosterAnimalListItemDto'][];
+    };
+    PublicFosterAnimalDetailDto: {
+      id: string;
+      name: string;
+      /** @enum {string|null} */
+      type?: 'DOG' | 'CAT' | null;
+      /** @enum {string|null} */
+      size?: 'SMALL' | 'MEDIUM' | 'LARGE' | null;
+      /** @enum {string|null} */
+      gender?: 'MALE' | 'FEMALE' | null;
+      breed?: Record<string, never> | null;
+      birthDate?: Record<string, never> | null;
+      /** @enum {string} */
+      status: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      shared: boolean;
+      mainImageUrl?: Record<string, never> | null;
+      isEmergency: boolean;
+      euthanasiaDate?: Record<string, never> | null;
+      isFosterCondition: boolean;
+      emergencyReason?: Record<string, never> | null;
+      organization?:
+        | components['schemas']['PublicFosterOrganizationDto']
+        | null;
+      healthTags: (
+        | 'NEUTERED'
+        | 'VACCINATED'
+        | 'MICROCHIPPED'
+        | 'HEARTWORM_TESTED'
+        | 'DEWORMED'
+        | 'FLEA_TICK_TREATED'
+      )[];
+      personalityTags: (
+        | 'QUIET'
+        | 'ENERGETIC'
+        | 'INDEPENDENCE'
+        | 'SENSITIVITY'
+        | 'FRIENDLY_WITH_PEOPLE'
+        | 'GOOD_WITH_OTHER_ANIMAL'
+        | 'POTTY_TRAINING_COMPLETION'
+        | 'NO_BITING'
+      )[];
+      environmentTags: (
+        | 'QUIET_ENVIRONMENT'
+        | 'AVAILABILITY_FOR_WALKS_PLAY'
+        | 'FREQUENT_INTERACTION_WITH_PETS'
+        | 'PRESENCE_OF_OTHER_ANIMAL'
+        | 'WILLINGNESS_FOR_POTTY_TRAINING'
+        | 'PATIENCE_WITH_BARKING_BITING'
+        | 'CARE_FOR_SENSITIVE_OR_FEARFUL_PETS'
+        | 'HOUSEHOLD_WITH_YOUNG_CHILDREN'
+      )[];
+      introduction?: Record<string, never> | null;
+      remark?: Record<string, never> | null;
+      images: string[];
+      specialNoteTags: (
+        | 'SEPARATION_ANXIETY'
+        | 'MEDICATION_REQUIRED'
+        | 'POTTY_ACCIDENTS'
+        | 'AGGRESSION_TOWARD_OTHER_ANIMALS'
+        | 'ONGOING_TREATMENT_OR_RECOVERY'
+        | 'DISABLED_OR_ILL_PETS_ACCEPTED'
+      )[];
+      currentFosterStartDate?: Record<string, never> | null;
+      currentFosterEndDate?: Record<string, never> | null;
+    };
+    PublicRecordAnimalDto: {
+      id: string;
+      name: string;
+      /** @enum {string|null} */
+      type?: 'DOG' | 'CAT' | null;
+      breed?: string | null;
+      birthDate?: string | null;
+      /** @enum {string|null} */
+      gender?: 'MALE' | 'FEMALE' | null;
+      images: string[];
+      fosterDuration: number;
+      state: components['schemas']['AnimalStatus'];
+      matchId: string;
+    };
+    PublicRecordListResponseDto: {
+      items: components['schemas']['PublicRecordAnimalDto'][];
+    };
+    PublicRecordOrganizationDto: {
+      id: string;
+      name: string;
+      phoneNumber?: string | null;
+      zipcode?: string | null;
+      address?: string | null;
+      addressDetail?: string | null;
+      email?: string | null;
+    };
+    PublicRecordAnimalInfoDto: {
+      name: string;
+      /** @enum {string|null} */
+      type?: 'DOG' | 'CAT' | null;
+      breed?: string | null;
+      birthDate?: string | null;
+      /** @enum {string|null} */
+      gender?: 'MALE' | 'FEMALE' | null;
+      introduction?: string | null;
+      remark?: string | null;
+      images: string[];
+      currentFosterStartDate?: string | null;
+      currentFosterEndDate?: string | null;
+    };
+    PublicRecordInfoDto: {
+      id: string;
+      state: components['schemas']['AnimalStatus'];
+      createdAt: string;
+      organization?:
+        | components['schemas']['PublicRecordOrganizationDto']
+        | null;
+      animal: components['schemas']['PublicRecordAnimalInfoDto'];
+    };
+    PublicRecordEntryDto: {
+      id: string;
+      content?: string | null;
+      healthNote?: string | null;
+      createdAt: string;
+      updatedAt: string;
+      images: string[];
+    };
+    PublicRecordDetailDto: {
+      id: string;
+      info: components['schemas']['PublicRecordInfoDto'];
+      records: components['schemas']['PublicRecordEntryDto'][];
+    };
+    PublicNoticeListItemDto: {
+      id: string;
+      title: string;
+      type?: Record<string, never> | null;
+      isFixed: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      attachments: number;
+    };
+    PublicNoticeListResponseDto: {
+      items: components['schemas']['PublicNoticeListItemDto'][];
+    };
+    PublicNoticeDetailDto: {
+      id: string;
+      title: string;
+      type?: Record<string, never> | null;
+      isFixed: boolean;
+      /** Format: date-time */
+      createdAt: string;
+      content: string;
+      attachmentFiles: string[];
+    };
+    UserProfileDto: {
+      id: string;
+      name: Record<string, never> | null;
+      email: Record<string, never> | null;
+      phoneNumber: Record<string, never> | null;
+      zipcode: Record<string, never> | null;
+      address: Record<string, never> | null;
+      addressDetail: Record<string, never> | null;
+      introduction: Record<string, never> | null;
+      isEligibleForFoster: boolean;
+    };
+    UserNotificationSettingDto: {
+      commentEmail: boolean;
+      fosterAnimalInfoEmail: boolean;
+      fosterAnimalInfoKakao: boolean;
+      marketingEmail: boolean;
+      marketingKakao: boolean;
+    };
+    UpdateUserProfileDto: {
+      name?: Record<string, never> | null;
+      email?: Record<string, never> | null;
+      phoneNumber?: Record<string, never> | null;
+      zipcode?: Record<string, never> | null;
+      address?: Record<string, never> | null;
+      addressDetail?: Record<string, never> | null;
+      introduction?: Record<string, never> | null;
+    };
+    UpdateUserNotificationSettingDto: {
+      commentEmail?: boolean;
+      fosterAnimalInfoEmail?: boolean;
+      fosterAnimalInfoKakao?: boolean;
+      marketingEmail?: boolean;
+      marketingKakao?: boolean;
+    };
+    UserPostItemDto: {
+      id: string;
+      title: string;
+      content: string;
+      views: number;
+      commentCount: number;
+      /** Format: date-time */
+      createdAt: string;
+      /** Format: date-time */
+      updatedAt: string;
+    };
+    UserCommentPostSummaryDto: {
+      id: string;
+      title: string;
+    };
+    UserCommentItemDto: {
+      id: string;
+      postId: string;
+      content: string;
+      /** Format: date-time */
+      createdAt: string;
+      likes: number;
+      post: components['schemas']['UserCommentPostSummaryDto'] | null;
+    };
+    CreateImageUploadDto: {
+      /**
+       * @description 업로드를 구분하기 위한 경로 (예: animals, community/posts)
+       * @example animals
+       */
+      scope: string;
+      /**
+       * @description 원본 파일 이름
+       * @example dog.png
+       */
+      fileName: string;
+      /**
+       * @description 파일 MIME 타입
+       * @example image/png
+       */
+      contentType: string;
+      /**
+       * @description 파일 크기 (Byte)
+       * @example 1024
+       */
+      fileSize: number;
+    };
+  };
+  responses: never;
+  parameters: never;
+  requestBodies: never;
+  headers: never;
+  pathItems: never;
 }
 export type $defs = Record<string, never>;
 export interface operations {
-    AppController_getHello: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  AppController_getHello: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    "AppController_getHealth[0]": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+        content?: never;
+      };
     };
-    "AppController_getHealth[1]": {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  'AppController_getHealth[0]': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    AppController_getStageHealth: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                stage: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+        content?: never;
+      };
     };
-    AuthController_kakaoLogin: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["KakaoAuthDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AuthTokenPairDto"];
-                };
-            };
-        };
+  };
+  'AppController_getHealth[1]': {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    AuthController_refresh: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["RefreshDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AuthTokenPairDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    AuthController_logout: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LogoutResponseDto"];
-                };
-            };
-        };
+  };
+  AppController_getStageHealth: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        stage: string;
+      };
+      cookie?: never;
     };
-    CommunityController_listPosts: {
-        parameters: {
-            query?: {
-                /** @description Cursor (post id) for pagination */
-                cursor?: string;
-                /** @description Page size (1-50) */
-                limit?: number;
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostListResponseDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    CommunityController_createPost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreatePostDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostListItemDto"];
-                };
-            };
-        };
+  };
+  AuthController_kakaoLogin: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CommunityController_getPost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostDetailDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['KakaoAuthDto'];
+      };
     };
-    CommunityController_deletePost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
+        content: {
+          'application/json': components['schemas']['AuthTokenPairDto'];
         };
+      };
     };
-    CommunityController_updatePost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdatePostDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PostListItemDto"];
-                };
-            };
-        };
+  };
+  AuthController_refresh: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CommunityController_bookmark: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BookmarkResponseDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['RefreshDto'];
+      };
     };
-    CommunityController_unbookmark: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["BookmarkResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['AuthTokenPairDto'];
         };
+      };
     };
-    CommunityController_likePost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LikePostResponseDto"];
-                };
-            };
-        };
+  };
+  AuthController_logout: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CommunityController_unlikePost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LikePostResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['LogoutResponseDto'];
         };
+      };
     };
-    CommunityController_incrementPostView: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CommunityController_listPosts: {
+    parameters: {
+      query?: {
+        /** @description Cursor (post id) for pagination */
+        cursor?: string;
+        /** @description Page size (1-50) */
+        limit?: number;
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CommunityController_listComments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListCommentsResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['PostListResponseDto'];
         };
+      };
     };
-    CommunityController_createComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateCommentDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CommentListItemDto"];
-                };
-            };
-        };
+  };
+  CommunityController_createPost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
     };
-    CommunityController_deleteCommentFromPost: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                postId: string;
-                commentId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteCommentResponseDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreatePostDto'];
+      };
     };
-    CommunityController_updateComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                postId: string;
-                commentId: string;
-            };
-            cookie?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateCommentDto"];
-            };
+        content: {
+          'application/json': components['schemas']['PostListItemDto'];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["CommentListItemDto"];
-                };
-            };
-        };
+      };
     };
-    CommunityController_deleteComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                commentId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteCommentResponseDto"];
-                };
-            };
-        };
+  };
+  CommunityController_getPost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    CommunityController_likeComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                commentId: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LikeCommentResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['PostDetailDto'];
         };
+      };
     };
-    CommunityController_unlikeComment: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                commentId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["LikeCommentResponseDto"];
-                };
-            };
-        };
+  };
+  CommunityController_deletePost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    FosterController_listAnimals: {
-        parameters: {
-            query?: {
-                /** @description Filter by animal status */
-                status?: "WAITING" | "IN_PROGRESS" | "COMPLETED";
-            };
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListAnimalsResponseDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    FosterController_createAnimal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateAnimalDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AnimalListItemDto"];
-                };
-            };
-        };
+  };
+  CommunityController_updatePost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    FosterController_listSharedAnimals: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListAnimalsResponseDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdatePostDto'];
+      };
     };
-    FosterController_deleteAnimal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteAnimalResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['PostListItemDto'];
         };
+      };
     };
-    FosterController_updateAnimal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateAnimalDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["AnimalListItemDto"];
-                };
-            };
-        };
+  };
+  CommunityController_bookmark: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    FosterController_listRecords: {
-        parameters: {
-            query?: {
-                /** @description Start date (ISO). Defaults to 6 months before today. */
-                from?: string;
-                /** @description End date (ISO). Defaults to 6 months after today. */
-                to?: string;
-            };
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListRecordsResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['BookmarkResponseDto'];
         };
+      };
     };
-    FosterController_createRecord: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateRecordDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FosterRecordDtoOut"];
-                };
-            };
-        };
+  };
+  CommunityController_unbookmark: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    FosterController_getRecord: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                recordId: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["GetRecordResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['BookmarkResponseDto'];
         };
+      };
     };
-    FosterController_deleteRecord: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                recordId: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["DeleteRecordResponseDto"];
-                };
-            };
-        };
+  };
+  CommunityController_likePost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    FosterController_updateRecord: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-                recordId: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateRecordDto"];
-            };
+        content: {
+          'application/json': components['schemas']['LikePostResponseDto'];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["FosterRecordDtoOut"];
-                };
-            };
-        };
+      };
     };
-    FosterController_listWaitingAnimals: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ListAnimalsResponseDto"];
-                };
-            };
-        };
+  };
+  CommunityController_unlikePost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    OrganizationController_listAnimals: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["OrganizationAnimalListResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['LikePostResponseDto'];
         };
+      };
     };
-    OrganizationController_getAnimal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["OrganizationAnimalDetailDto"];
-                };
-            };
-        };
+  };
+  CommunityController_incrementPostView: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    ReportsController_create: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateReportDto"];
-            };
-        };
-        responses: {
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["ReportDto"];
-                };
-            };
-        };
+        content?: never;
+      };
     };
-    PublicFosterController_listAnimals: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PublicFosterAnimalListResponseDto"];
-                };
-            };
-        };
+  };
+  CommunityController_listComments: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    PublicFosterController_getAnimal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PublicFosterAnimalDetailDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['ListCommentsResponseDto'];
         };
+      };
     };
-    PublicFosterRecordsController_listAnimals: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PublicRecordListResponseDto"];
-                };
-            };
-        };
+  };
+  CommunityController_createComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
     };
-    PublicFosterRecordsController_getAnimal: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PublicRecordDetailDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateCommentDto'];
+      };
     };
-    PublicNoticeController_list: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PublicNoticeListResponseDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['CommentListItemDto'];
         };
+      };
     };
-    PublicNoticeController_get: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path: {
-                id: string;
-            };
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["PublicNoticeDetailDto"];
-                };
-            };
-        };
+  };
+  CommunityController_deleteCommentFromPost: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        postId: string;
+        commentId: string;
+      };
+      cookie?: never;
     };
-    UsersController_getProfile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserProfileDto"];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['DeleteCommentResponseDto'];
         };
+      };
     };
-    UsersController_updateProfile: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserProfileDto"];
-            };
-        };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserProfileDto"];
-                };
-            };
-        };
+  };
+  CommunityController_updateComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        postId: string;
+        commentId: string;
+      };
+      cookie?: never;
     };
-    UsersController_getNotificationSetting: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserNotificationSettingDto"];
-                };
-            };
-        };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateCommentDto'];
+      };
     };
-    UsersController_updateNotificationSetting: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["UpdateUserNotificationSettingDto"];
-            };
+        content: {
+          'application/json': components['schemas']['CommentListItemDto'];
         };
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserNotificationSettingDto"];
-                };
-            };
-        };
+      };
     };
-    UsersController_deleteAccount: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            204: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content?: never;
-            };
-        };
+  };
+  CommunityController_deleteComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        commentId: string;
+      };
+      cookie?: never;
     };
-    UsersController_listMyPosts: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserPostItemDto"][];
-                };
-            };
+        content: {
+          'application/json': components['schemas']['DeleteCommentResponseDto'];
         };
+      };
     };
-    UsersController_listMyComments: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
-        };
-        requestBody?: never;
-        responses: {
-            200: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": components["schemas"]["UserCommentItemDto"][];
-                };
-            };
-        };
+  };
+  CommunityController_likeComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        commentId: string;
+      };
+      cookie?: never;
     };
-    UploadsController_createImageUpload: {
-        parameters: {
-            query?: never;
-            header?: never;
-            path?: never;
-            cookie?: never;
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
         };
-        requestBody: {
-            content: {
-                "application/json": components["schemas"]["CreateImageUploadDto"];
-            };
+        content: {
+          'application/json': components['schemas']['LikeCommentResponseDto'];
         };
-        responses: {
-            /** @description 업로드 URL과 공개 URL을 반환합니다. */
-            201: {
-                headers: {
-                    [name: string]: unknown;
-                };
-                content: {
-                    "application/json": {
-                        uploadUrl?: string;
-                        publicUrl?: string;
-                        key?: string;
-                        expiresIn?: number;
-                        contentType?: string;
-                        /** @enum {string} */
-                        method?: "POST" | "PUT";
-                        fields?: {
-                            [key: string]: string;
-                        };
-                        headers?: {
-                            [key: string]: string;
-                        };
-                    };
-                };
-            };
-        };
+      };
     };
+  };
+  CommunityController_unlikeComment: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        commentId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['LikeCommentResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_listAnimals: {
+    parameters: {
+      query?: {
+        /** @description Filter by animal status */
+        status?: 'WAITING' | 'IN_PROGRESS' | 'COMPLETED';
+      };
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListAnimalsResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_createAnimal: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateAnimalDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['AnimalListItemDto'];
+        };
+      };
+    };
+  };
+  FosterController_listSharedAnimals: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListAnimalsResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_deleteAnimal: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DeleteAnimalResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_updateAnimal: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateAnimalDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['AnimalListItemDto'];
+        };
+      };
+    };
+  };
+  FosterController_listRecords: {
+    parameters: {
+      query?: {
+        /** @description Start date (ISO). Defaults to 6 months before today. */
+        from?: string;
+        /** @description End date (ISO). Defaults to 6 months after today. */
+        to?: string;
+      };
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListRecordsResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_createRecord: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateRecordDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FosterRecordDtoOut'];
+        };
+      };
+    };
+  };
+  FosterController_getRecord: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+        recordId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['GetRecordResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_deleteRecord: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+        recordId: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['DeleteRecordResponseDto'];
+        };
+      };
+    };
+  };
+  FosterController_updateRecord: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+        recordId: string;
+      };
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateRecordDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['FosterRecordDtoOut'];
+        };
+      };
+    };
+  };
+  FosterController_listWaitingAnimals: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ListAnimalsResponseDto'];
+        };
+      };
+    };
+  };
+  OrganizationController_listAnimals: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['OrganizationAnimalListResponseDto'];
+        };
+      };
+    };
+  };
+  OrganizationController_getAnimal: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['OrganizationAnimalDetailDto'];
+        };
+      };
+    };
+  };
+  ReportsController_create: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateReportDto'];
+      };
+    };
+    responses: {
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['ReportDto'];
+        };
+      };
+    };
+  };
+  PublicFosterController_listAnimals: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublicFosterAnimalListResponseDto'];
+        };
+      };
+    };
+  };
+  PublicFosterController_getAnimal: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublicFosterAnimalDetailDto'];
+        };
+      };
+    };
+  };
+  PublicFosterRecordsController_listAnimals: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublicRecordListResponseDto'];
+        };
+      };
+    };
+  };
+  PublicFosterRecordsController_getAnimal: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublicRecordDetailDto'];
+        };
+      };
+    };
+  };
+  PublicNoticeController_list: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublicNoticeListResponseDto'];
+        };
+      };
+    };
+  };
+  PublicNoticeController_get: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path: {
+        id: string;
+      };
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['PublicNoticeDetailDto'];
+        };
+      };
+    };
+  };
+  UsersController_getProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserProfileDto'];
+        };
+      };
+    };
+  };
+  UsersController_updateProfile: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateUserProfileDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserProfileDto'];
+        };
+      };
+    };
+  };
+  UsersController_getNotificationSetting: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserNotificationSettingDto'];
+        };
+      };
+    };
+  };
+  UsersController_updateNotificationSetting: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['UpdateUserNotificationSettingDto'];
+      };
+    };
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserNotificationSettingDto'];
+        };
+      };
+    };
+  };
+  UsersController_deleteAccount: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      204: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content?: never;
+      };
+    };
+  };
+  UsersController_listMyPosts: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserPostItemDto'][];
+        };
+      };
+    };
+  };
+  UsersController_listMyComments: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody?: never;
+    responses: {
+      200: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': components['schemas']['UserCommentItemDto'][];
+        };
+      };
+    };
+  };
+  UploadsController_createImageUpload: {
+    parameters: {
+      query?: never;
+      header?: never;
+      path?: never;
+      cookie?: never;
+    };
+    requestBody: {
+      content: {
+        'application/json': components['schemas']['CreateImageUploadDto'];
+      };
+    };
+    responses: {
+      /** @description 업로드 URL과 공개 URL을 반환합니다. */
+      201: {
+        headers: {
+          [name: string]: unknown;
+        };
+        content: {
+          'application/json': {
+            uploadUrl?: string;
+            publicUrl?: string;
+            key?: string;
+            expiresIn?: number;
+            contentType?: string;
+            /** @enum {string} */
+            method?: 'POST' | 'PUT';
+            fields?: {
+              [key: string]: string;
+            };
+            headers?: {
+              [key: string]: string;
+            };
+          };
+        };
+      };
+    };
+  };
 }

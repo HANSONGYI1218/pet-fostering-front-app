@@ -4,7 +4,7 @@ import { Paperclip } from 'lucide-react';
 import type { NoticeListItem } from '@/entities/notice/notice-api';
 import { Badge } from '@/shared/ui/badge';
 import { NOTICE_TYPE_LABEL_KO } from '@/shared/constants/enum';
-import { getDDay } from '@/shared/lib/utils';
+import { cn, getDDay } from '@/shared/lib/utils';
 
 export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
   const isNew =
@@ -15,7 +15,12 @@ export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
   return (
     <Link href={`/notice/${notice?.id}`}>
       <div
-        className={`flex w-full cursor-pointer flex-col justify-between gap-2 border-b p-4 md:flex-row md:gap-6 md:px-10 md:py-6 ${notice?.isFixed ? 'border-white bg-[#D0EFE0] hover:bg-[#D0EFE0]/80' : 'bg-white hover:bg-[#D0EFE0]/10'}`}
+        className={cn(
+          'flex w-full cursor-pointer flex-col justify-between gap-2 border-b p-4 md:flex-row md:gap-6 md:px-10 md:py-6',
+          notice?.isFixed
+            ? 'border-white bg-[#D0EFE0] hover:bg-[#D0EFE0]/80'
+            : 'bg-white hover:bg-[#D0EFE0]/10',
+        )}
       >
         <div className="flex flex-1 flex-col gap-3 md:flex-row md:gap-14">
           <Badge
@@ -26,7 +31,9 @@ export default function NoticeTile({ notice }: { notice: NoticeListItem }) {
               ? '중요'
               : notice?.type && NOTICE_TYPE_LABEL_KO[notice.type]}
           </Badge>
-          <span className={`flex gap-3 ${notice?.isFixed && 'font-semibold'}`}>
+          <span
+            className={cn('flex gap-3', notice?.isFixed && 'font-semibold')}
+          >
             {notice?.title}
             {isNew && (
               <span className="-translate-y-1 text-sm font-bold text-[#00592d]">

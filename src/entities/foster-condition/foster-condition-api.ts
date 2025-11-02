@@ -3,7 +3,7 @@ import {
   AnimalAge,
   AnimalPeriod,
   AnimalSpecialNote,
-} from '../animal-condition/animal-condition';
+} from '@/entities/animal-condition/animal-condition';
 import { FosterEnvironment } from './foster-condition';
 
 export type FosterExperienceItem = {

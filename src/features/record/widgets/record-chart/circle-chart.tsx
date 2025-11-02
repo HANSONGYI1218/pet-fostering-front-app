@@ -86,10 +86,10 @@ export default function CircleChart({
         </ChartContainer>
       </CardContent>
       <CardFooter className="flex-col gap-2 text-sm">
-        <div className="flex items-center leading-none font-medium">
-          총 {totalDay}일 중{' '}
-          <span className="ml-1 text-base font-bold">{value}</span>일 임보를
-          했어요.
+        <div className="flex items-center gap-1 leading-none font-medium">
+          <span>총 {totalDay}일 중</span>
+          <span className="text-base font-bold">{value}</span>
+          <span>일 임보를 했어요.</span>
         </div>
       </CardFooter>
     </Card>

@@ -7,7 +7,7 @@ import {
   fosterTotalDuration,
   toDate,
 } from '@/shared/lib/utils';
-import { FosterRecord } from '@/entities/foster-record/foster-record';
+import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import CircleChart from './circle-chart';
 
 const monthNames = [
@@ -40,11 +40,11 @@ function getMonthsBetween(start: Date, end: Date) {
 export default function ChartContainer({
   start_date,
   end_date,
-  foster_records,
+  fosterRecords,
 }: {
   start_date: Date | string | number;
   end_date: Date | string | number;
-  foster_records: FosterRecord[];
+  fosterRecords: FosterRecord[];
 }) {
   const startDateObj = toDate(start_date);
   const endDateObj = toDate(end_date);
@@ -54,7 +54,7 @@ export default function ChartContainer({
   const preceedingDay = fosterDuration(startDateObj);
 
   const chartData = months.map((month) => {
-    const count = foster_records.filter((record) => {
+    const count = fosterRecords.filter((record) => {
       const recMonth = toDate(record.created_at).getMonth();
       const monthIndex = monthNames.indexOf(month); // months 배열에 해당하는 인덱스
       return recMonth === monthIndex;
@@ -82,7 +82,7 @@ export default function ChartContainer({
           start_date={startDateObj}
           end_date={endDateObj}
           totalDay={totalDay}
-          value={foster_records.length}
+          value={fosterRecords.length}
         />
       </div>
       <div className="flex w-full flex-col gap-2">

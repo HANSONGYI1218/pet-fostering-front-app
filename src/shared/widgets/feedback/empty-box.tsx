@@ -1,3 +1,4 @@
+import { cn } from '@/shared/lib/utils';
 import { Card } from '@/shared/ui/card';
 import Image from 'next/image';
 
@@ -10,7 +11,10 @@ export default function EmptyBox({
 }) {
   return (
     <Card
-      className={`w-full cursor-default items-center justify-center ${className} `}
+      className={cn(
+        'w-full cursor-default items-center justify-center',
+        className,
+      )}
     >
       <Image
         src="/images/white-dog1.png"

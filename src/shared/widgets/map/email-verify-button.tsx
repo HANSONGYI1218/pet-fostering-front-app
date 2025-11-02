@@ -35,7 +35,7 @@ export default function EmailVerifyButton({
   return (
     <Button
       type="button"
-      variant={'outline_black'}
+      variant="outline_black"
       className="flex h-9 w-24 gap-2"
       disabled={!email}
       onClick={() => {

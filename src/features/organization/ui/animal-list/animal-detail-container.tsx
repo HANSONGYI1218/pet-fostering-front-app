@@ -18,12 +18,13 @@ import { Check, Pencil, Trash2 } from 'lucide-react';
 import { Badge } from '@/shared/ui/badge';
 import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
 import {
+  cn,
   formatAnimalAge,
   fosterRemaingDuration,
   fosterTotalDuration,
 } from '@/shared/lib/utils';
 import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
-import { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
+import type { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
 import { useState, useCallback } from 'react';
 import ChartContainer from '@/features/record/widgets/record-chart/chart-container';
 import { format } from 'date-fns';
@@ -45,6 +46,14 @@ import {
   AlertDialogTitle,
   AlertDialogTrigger,
 } from '@/shared/ui/alert-dialog';
+
+const formatFosterPeriod = (start?: Date | null, end?: Date | null): string =>
+  [
+    start ? format(start, 'yyyy.MM.dd') : null,
+    end ? format(end, 'yyyy.MM.dd') : null,
+  ]
+    .filter(Boolean)
+    .join(' - ');
 
 export default function AnimalDetailContainer({
   animal,
@@ -83,7 +92,7 @@ export default function AnimalDetailContainer({
     }
   }, [animal.id, queryClient, router]);
 
-  const total_address = `${animal?.organization?.address} ${animal?.organization?.address_detail}`;
+  const totalAddress = `${animal?.organization?.address} ${animal?.organization?.address_detail}`;
 
   const healthData = [
     AnimalHealth.VACCINATED,
@@ -150,7 +159,7 @@ export default function AnimalDetailContainer({
     },
     {
       title: '주소',
-      data: total_address,
+      data: totalAddress,
     },
   ];
 
@@ -159,28 +168,34 @@ export default function AnimalDetailContainer({
       <div className="flex w-full items-center justify-between">
         <div className="flex items-center rounded-full bg-white p-2">
           <Button
-            variant={'secondary'}
+            variant="secondary"
             onClick={() => {
               if (currentPage !== 0) {
                 setCurrentPage(0);
               }
             }}
-            className={`h-10 rounded-full font-semibold text-[#00592d] hover:bg-[D0EFE0] ${currentPage === 0 ? 'bg-[#D0EFE0]' : ''}`}
+            className={cn(
+              'h-10 rounded-full font-semibold text-[#00592d] hover:bg-[D0EFE0]',
+              currentPage === 0 ? 'bg-[#D0EFE0]' : undefined,
+            )}
           >
             임보 기록
           </Button>
           <Button
-            variant={'secondary'}
+            variant="secondary"
             onClick={() => {
               if (currentPage !== 1) {
                 setCurrentPage(1);
               }
             }}
-            className={`h-10 rounded-full font-semibold text-[#00592d] hover:bg-[D0EFE0] ${currentPage === 1 ? 'bg-[#D0EFE0]' : ''}`}
+            className={cn(
+              'h-10 rounded-full font-semibold text-[#00592d] hover:bg-[D0EFE0]',
+              currentPage === 1 ? 'bg-[#D0EFE0]' : undefined,
+            )}
           >
             상세 정보
           </Button>
-        </div>{' '}
+        </div>
         <div className="flex items-center gap-2">
           <AnimalCreateDialog
             mode="edit"
@@ -190,7 +205,7 @@ export default function AnimalDetailContainer({
             trigger={
               <Button
                 variant="outline_black"
-                className={`h-10 ${currentPage === 0 ? 'flex' : 'hidden'}`}
+                className={cn('h-10', currentPage === 0 ? 'flex' : 'hidden')}
               >
                 <Pencil />
                 정보 수정하기
@@ -201,7 +216,7 @@ export default function AnimalDetailContainer({
             <AlertDialogTrigger asChild>
               <Button
                 variant="destructive"
-                className={`h-10 ${currentPage === 0 ? 'flex' : 'hidden'}`}
+                className={cn('h-10', currentPage === 0 ? 'flex' : 'hidden')}
                 disabled={isDeleting}
               >
                 <Trash2 />
@@ -259,25 +274,22 @@ export default function AnimalDetailContainer({
                         fill="#00592D"
                       />
                     </svg>
-                    임보기간 :{' '}
-                    {animal?.current_foster_start_date &&
-                      format(
-                        animal?.current_foster_start_date,
-                        'yyyy.MM.dd',
-                      )}{' '}
-                    -{' '}
-                    {animal?.current_foster_end_date &&
-                      format(animal?.current_foster_end_date, 'yyyy.MM.dd')}
+                    <span>임보기간 :</span>
+                    <span>
+                      {formatFosterPeriod(
+                        animal?.current_foster_start_date ?? null,
+                        animal?.current_foster_end_date ?? null,
+                      )}
+                    </span>
                   </div>
                   <Badge>
-                    총{' '}
                     {animal?.current_foster_start_date &&
-                      animal?.current_foster_end_date &&
-                      fosterTotalDuration(
-                        animal?.current_foster_start_date,
-                        animal?.current_foster_end_date,
-                      )}
-                    일
+                    animal?.current_foster_end_date
+                      ? `총 ${fosterTotalDuration(
+                          animal?.current_foster_start_date,
+                          animal?.current_foster_end_date,
+                        )}일`
+                      : '총 기간 정보 없음'}
                   </Badge>
                 </div>
                 <div className="flex items-center gap-2 text-xl font-semibold">
@@ -306,14 +318,18 @@ export default function AnimalDetailContainer({
                       </clipPath>
                     </defs>
                   </svg>
-                  남은기간 :{' '}
-                  {animal?.current_foster_end_date &&
-                    fosterRemaingDuration(animal?.current_foster_end_date)}
-                  일
+                  <span>남은기간 :</span>
+                  <span>
+                    {animal?.current_foster_end_date
+                      ? `${fosterRemaingDuration(
+                          animal?.current_foster_end_date,
+                        )}일`
+                      : '정보 없음'}
+                  </span>
                 </div>
               </div>
             </div>
-            <Badge variant={'destructive'} className="h-8 px-3 text-base">
+            <Badge variant="destructive" className="h-8 px-3 text-base">
               임시보호 상세
             </Badge>
           </div>
@@ -415,14 +431,10 @@ export default function AnimalDetailContainer({
                       </span>
                     </div>
                     <span>
-                      {animal?.current_foster_start_date &&
-                        format(
-                          animal?.current_foster_start_date,
-                          'yyyy.MM.dd',
-                        )}{' '}
-                      -{' '}
-                      {animal?.current_foster_end_date &&
-                        format(animal?.current_foster_end_date, 'yyyy.MM.dd')}
+                      {formatFosterPeriod(
+                        animal?.current_foster_start_date ?? null,
+                        animal?.current_foster_end_date ?? null,
+                      )}
                     </span>
                   </div>
                   <div className="flex flex-col gap-2">
@@ -437,7 +449,7 @@ export default function AnimalDetailContainer({
                         (personality, index) => (
                           <Badge
                             key={index}
-                            variant={'default'}
+                            variant="default"
                             className="h-9 px-4 text-base font-normal"
                           >
                             {ANIMAL_PERSONALITY_LABEL_KO[personality]}
@@ -475,7 +487,7 @@ export default function AnimalDetailContainer({
                       return (
                         <Badge
                           key={index}
-                          variant={'secondary'}
+                          variant="secondary"
                           className="h-9 px-4 text-base font-normal"
                         >
                           {ANIMAL_ENVIRONMENT_LABEL_KO[environment]}
@@ -499,7 +511,7 @@ export default function AnimalDetailContainer({
                       return (
                         <Badge
                           key={index}
-                          variant={'destructive'}
+                          variant="destructive"
                           className="h-9 px-4 text-base font-normal"
                         >
                           {ANIMAL_SPECIAL_NOTE_LABEL_KO[note]}
@@ -577,7 +589,7 @@ export default function AnimalDetailContainer({
             <ChartContainer
               start_date={animal?.current_foster_start_date}
               end_date={animal?.current_foster_end_date}
-              foster_records={animal?.foster_records}
+              fosterRecords={animal?.foster_records}
             />
           </div>
           <div className="flex w-full gap-6">

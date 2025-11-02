@@ -3,7 +3,7 @@ import {
   ANIMAL_TYPE_LABEL_KO,
 } from '@/shared/constants/enum';
 import { Card } from '@/shared/ui/card';
-import { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
+import type { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 import { Badge } from '@/shared/ui/badge';
 import { Ellipsis, Pencil, Share2 } from 'lucide-react';
 import { Popover } from '@/shared/ui/popover';
@@ -53,7 +53,7 @@ export default function AnimalTile({
         <div className="flex flex-col px-6">
           <div className="flex w-full border-b py-4">
             <Badge
-              variant={'outline_green'}
+              variant="outline_green"
               className="flex h-9 gap-1 rounded-lg border-2 px-4 font-semibold"
             >
               임보기간

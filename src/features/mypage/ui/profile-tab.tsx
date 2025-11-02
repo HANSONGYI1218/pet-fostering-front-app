@@ -28,11 +28,11 @@ import type {
   UpdateUserProfilePayload,
   UserProfileItem,
 } from '@/entities/user/user-api';
-import { MypageStep } from '../lib/mypage-steps';
+import { MypageStep } from '@/features/mypage/lib/mypage-steps';
 import { Badge } from '@/shared/ui/badge';
 import EmailVerifyButton from '@/shared/widgets/map/email-verify-button';
 import PhoneNumberVerifyPopup from '@/shared/widgets/map/phone-number-verify-popup';
-import { createLimitedOnChange } from '@/shared/lib/utils';
+import { cn, createLimitedOnChange } from '@/shared/lib/utils';
 
 const ProfileFormSchema = z.object({
   name: z.string().optional(),
@@ -255,12 +255,12 @@ export default function ProfileTab({
   return (
     <div className="flex w-full flex-col gap-10">
       <Card className="cursor-default gap-2">
-        <h1 className="text-xl font-semibold">
-          임시보호자{' '}
+        <h1 className="flex items-center gap-1 text-xl font-semibold">
+          <span>임시보호자</span>
           <span className={isEligible ? 'text-[#00592d]' : 'text-[#FF5F57]'}>
             {isEligible ? '등록' : '미등록'}
-          </span>{' '}
-          상태입니다.
+          </span>
+          <span>상태입니다.</span>
         </h1>
         <div className="flex w-full items-center justify-between">
           <span className="text-neutral-700">
@@ -269,9 +269,9 @@ export default function ProfileTab({
               : '임시보호자로 등록해야만 보호동물 신청이 가능합니다.'}
           </span>
           <Button
-            variant={'link'}
+            variant="link"
             onClick={handleTabChange}
-            className={`gap-1 text-sm ${isEligible ? 'hidden' : 'flex'}`}
+            className={cn('gap-1 text-sm', isEligible ? 'hidden' : 'flex')}
           >
             등록하기 <ChevronRight />
           </Button>
@@ -290,7 +290,10 @@ export default function ProfileTab({
                 setIsInfoEdited(false);
               }}
               disabled={isSaving}
-              className={`text-neutral-700 ${isInfoEdited ? 'flex' : 'hidden'}`}
+              className={cn(
+                'text-neutral-700',
+                isInfoEdited ? 'flex' : 'hidden',
+              )}
             >
               취소
             </Button>
@@ -325,7 +328,7 @@ export default function ProfileTab({
               </div>
               <hr className="w-full" />
               <div className="flex items-start gap-2">
-                <Label className={`w-24 text-base font-medium`}>주소</Label>
+                <Label className="w-24 text-base font-medium">주소</Label>
                 <div className="flex w-full flex-1 flex-col gap-2">
                   <div className="flex w-full gap-1">
                     <FormField
@@ -333,7 +336,10 @@ export default function ProfileTab({
                       name="address"
                       render={({ field }) => (
                         <FormItem
-                          className={`flex ${isInfoEdited ? 'w-full flex-1' : 'w-fit'}`}
+                          className={cn(
+                            'flex',
+                            isInfoEdited ? 'w-full flex-1' : 'w-fit',
+                          )}
                         >
                           <FormControl>
                             {isInfoEdited ? (
@@ -345,7 +351,11 @@ export default function ProfileTab({
                               />
                             ) : (
                               <span
-                                className={`${profile?.address ? 'text-neutral-800' : 'text-red-500'}`}
+                                className={
+                                  profile?.address
+                                    ? 'text-neutral-800'
+                                    : 'text-red-500'
+                                }
                               >
                                 {profile?.address
                                   ? field.value
@@ -369,7 +379,7 @@ export default function ProfileTab({
                     control={form.control}
                     name="addressDetail"
                     render={({ field }) => (
-                      <FormItem className={`flex w-full`}>
+                      <FormItem className="flex w-full">
                         <FormControl>
                           {isInfoEdited ? (
                             <Input
@@ -406,7 +416,7 @@ export default function ProfileTab({
                     <div className="flex w-full items-center gap-3">
                       <FormLabel>나의 소개</FormLabel>
                       <Badge
-                        variant={'default'}
+                        variant="default"
                         className="text-sm text-[#00592d]"
                       >
                         매칭률 Up!
@@ -424,7 +434,12 @@ export default function ProfileTab({
                         />
                       ) : (
                         <span
-                          className={`flex-1 whitespace-pre-wrap ${profile?.introduction ? 'text-neutral-800' : 'text-red-500'}`}
+                          className={cn(
+                            'flex-1 whitespace-pre-wrap',
+                            profile?.introduction
+                              ? 'text-neutral-800'
+                              : 'text-red-500',
+                          )}
                         >
                           {profile?.introduction
                             ? field.value
@@ -453,7 +468,10 @@ export default function ProfileTab({
                 setIsAuthEdited(false);
               }}
               disabled={isSaving}
-              className={`text-neutral-700 ${isAuthEdited ? 'flex' : 'hidden'}`}
+              className={cn(
+                'text-neutral-700',
+                isAuthEdited ? 'flex' : 'hidden',
+              )}
             >
               취소
             </Button>
@@ -503,7 +521,11 @@ export default function ProfileTab({
                             />
                           ) : (
                             <span
-                              className={`${profile?.email ? 'text-neutral-800' : 'text-red-500'}`}
+                              className={
+                                profile?.email
+                                  ? 'text-neutral-800'
+                                  : 'text-red-500'
+                              }
                             >
                               {profile?.email
                                 ? field.value
@@ -517,7 +539,13 @@ export default function ProfileTab({
                             />
                           )}
                           <span
-                            className={`text-sm ${emailVerify === VerifyType.ACCESS ? 'text-green-500' : 'text-red-500'} ${emailVerify === VerifyType.WAITING && 'hidden'}`}
+                            className={cn(
+                              'text-sm',
+                              emailVerify === VerifyType.ACCESS
+                                ? 'text-green-500'
+                                : 'text-red-500',
+                              emailVerify === VerifyType.WAITING && 'hidden',
+                            )}
                           >
                             {getVerifyMessage(emailVerify, '이메일')}
                           </span>
@@ -553,7 +581,11 @@ export default function ProfileTab({
                             />
                           ) : (
                             <span
-                              className={`${profile?.phoneNumber ? 'text-neutral-800' : 'text-red-500'}`}
+                              className={
+                                profile?.phoneNumber
+                                  ? 'text-neutral-800'
+                                  : 'text-red-500'
+                              }
                             >
                               {profile?.phoneNumber
                                 ? field.value
@@ -568,7 +600,14 @@ export default function ProfileTab({
                           )}
                         </div>
                         <span
-                          className={`text-sm ${emailVerify === VerifyType.ACCESS ? 'text-green-500' : 'text-red-500'} ${emailVerify === VerifyType.WAITING && 'hidden'}`}
+                          className={cn(
+                            'text-sm',
+                            phoneNumberVerify === VerifyType.ACCESS
+                              ? 'text-green-500'
+                              : 'text-red-500',
+                            phoneNumberVerify === VerifyType.WAITING &&
+                              'hidden',
+                          )}
                         >
                           {getVerifyMessage(phoneNumberVerify, '전화번호')}
                         </span>
