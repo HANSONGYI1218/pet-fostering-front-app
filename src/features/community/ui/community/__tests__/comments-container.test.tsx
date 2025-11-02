@@ -7,8 +7,12 @@ import CommentsContainer from '../comments-container';
 import type { CommentItem } from '@/entities/comment/comment-api';
 
 const sessionMocks = vi.hoisted(() => ({
-  resolveStoredAccessTokenMock: vi.fn<() => string | null>(),
   resolveStoredAuthClaimsMock: vi.fn(),
+}));
+
+const authTokenMocks = vi.hoisted(() => ({
+  useAccessToken: vi.fn<() => string | null>(() => 'token-1'),
+  ensureAccessToken: vi.fn<() => string | null>(() => 'token-1'),
 }));
 
 const communityApiMocks = vi.hoisted(() => ({
@@ -24,10 +28,14 @@ vi.mock('@/lib/auth/session', async () => {
 
   return {
     ...actual,
-    resolveStoredAccessToken: sessionMocks.resolveStoredAccessTokenMock,
     resolveStoredAuthClaims: sessionMocks.resolveStoredAuthClaimsMock,
   };
 });
+
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  useAccessToken: authTokenMocks.useAccessToken,
+  ensureAccessToken: authTokenMocks.ensureAccessToken,
+}));
 
 vi.mock('../../api/community', async () => {
   const actual = await vi.importActual<typeof import('../../api/community')>(
@@ -67,14 +75,16 @@ const baseComment: CommentItem = {
 
 describe('CommentsContainer', () => {
   beforeEach(async () => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReset();
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
     sessionMocks.resolveStoredAuthClaimsMock.mockReset();
     sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
       userId: 'author-1',
       displayName: '작성자',
       avatarUrl: null,
     });
+    authTokenMocks.useAccessToken.mockReset();
+    authTokenMocks.useAccessToken.mockReturnValue('token-1');
+    authTokenMocks.ensureAccessToken.mockReset();
+    authTokenMocks.ensureAccessToken.mockReturnValue('token-1');
     communityApiMocks.createComment.mockReset();
     communityApiMocks.createComment.mockResolvedValue(undefined);
     communityApiMocks.fetchCommunityComments.mockReset();

@@ -1,4 +1,5 @@
 import { resolveEndpoint } from '@/shared/api/config';
+import { apiFetch } from '@/shared/api/http';
 import { toDate } from '@/shared/lib/utils';
 import { NoticeType } from '@/entities/notice/notice';
 import type {
@@ -69,7 +70,13 @@ export const mapNoticeDetail = (dto: NoticeDetailDto): NoticeDetailItem => ({
 
 export const fetchNoticeList = async (): Promise<NoticeListItem[]> => {
   const endpoint = resolveEndpoint('/public/notices');
-  const response = await fetch(endpoint, { cache: 'no-store' });
+  const response = await apiFetch(endpoint, {
+    headers: {
+      Accept: 'application/json',
+    },
+    cache: 'no-store',
+    auth: 'none',
+  });
 
   if (!response.ok) {
     throw createResponseError('공지 목록', response);
@@ -84,7 +91,13 @@ export const fetchNoticeDetail = async (
   id: string,
 ): Promise<NoticeDetailItem> => {
   const endpoint = resolveEndpoint(`/public/notices/${id}`);
-  const response = await fetch(endpoint, { cache: 'no-store' });
+  const response = await apiFetch(endpoint, {
+    headers: {
+      Accept: 'application/json',
+    },
+    cache: 'no-store',
+    auth: 'none',
+  });
 
   if (!response.ok) {
     throw createResponseError('공지 상세', response);

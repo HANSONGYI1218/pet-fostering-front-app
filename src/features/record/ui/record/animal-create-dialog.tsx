@@ -31,7 +31,7 @@ import {
 } from '@/entities/animal/animal';
 import type { AnimalUpsertPayload } from '@/entities/animal/animal-api';
 import { Card } from '@/shared/ui/card';
-import { ChangeEvent, useState, useEffect, useMemo } from 'react';
+import { ChangeEvent, useEffect, useMemo, useState } from 'react';
 import Image from 'next/image';
 import { Calendar } from '@/shared/ui/calendar';
 import { Popover, PopoverContent, PopoverTrigger } from '@/shared/ui/popover';
@@ -45,7 +45,10 @@ import {
   ANIMAL_TYPE_LABEL_KO,
 } from '@/shared/constants/enum';
 import { Textarea } from '@/shared/ui/textarea';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import {
+  ensureAccessToken,
+  useAccessToken,
+} from '@/shared/lib/auth/access-token.client';
 import { toast } from 'sonner';
 import { createAnimal, updateAnimal } from '@/features/foster/api/foster';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
@@ -88,6 +91,7 @@ const AnimalCreateformSchema = z.object({
 });
 
 export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
+  const token = useAccessToken();
   const defaultAnimalValues = useMemo(
     () => ({
       name: animal?.name ?? '',
@@ -129,7 +133,6 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
   const params = useParams();
   const animalId = params?.id as string;
 
-  const [token, setToken] = useState<string | null>(null);
   const [isLoading, setIsLoading] = useState(false);
   const [open, setOpen] = useState(false);
 
@@ -139,9 +142,11 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
     setOpen(false);
   };
 
+  const ensureToken = () => ensureAccessToken();
+
   const onSubmit = async (_values: z.infer<typeof AnimalCreateformSchema>) => {
+    const token = ensureToken();
     if (!token) {
-      toast('로그인 후 이용해 주세요.');
       return;
     }
 
@@ -196,9 +201,11 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen && !token) {
-      toast('로그인 후 이용해 주세요.');
-      return;
+    if (nextOpen) {
+      const token = ensureToken();
+      if (!token) {
+        return;
+      }
     }
 
     if (!nextOpen) {
@@ -208,10 +215,6 @@ export function AniamlCreateDialog({ animal }: { animal?: AniamlProps }) {
 
     setOpen(nextOpen);
   };
-
-  useEffect(() => {
-    setToken(resolveStoredAccessToken());
-  }, []);
 
   useEffect(() => {
     clear();

@@ -1,4 +1,5 @@
 import { resolveEndpoint } from '@/shared/api/config';
+import { fetchJson } from '@/shared/api/http';
 import type { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 import type {
   FosterMatchInfo,
@@ -13,7 +14,6 @@ import {
 } from '@/entities/animal/animal';
 import { toDate } from '@/shared/lib/utils';
 import { logError } from '@/shared/lib/logging';
-import { userHeaders } from '@/features/mypage/api/user';
 import { fosterAnimalDetailPageRevalid } from './redirect';
 
 import type { components } from '@/shared/api/generated/pet-schema';
@@ -134,14 +134,12 @@ export const fetchRecordAnimals = async (
 ): Promise<FosterRecordAnimalItem[]> => {
   try {
     const endpoint = resolveEndpoint('/public/foster/records/animals');
-    const response = await fetch(endpoint, {
-      headers: userHeaders(token),
+    const response = await fetchJson(endpoint, {
       cache: 'no-store',
+      token,
+      auth: token ? 'optional' : 'none',
+      errorMessage: '기록 동물 목록 요청 실패',
     });
-
-    if (!response.ok) {
-      throw new Error(`기록 동물 목록 요청 실패: ${response.status}`);
-    }
 
     const result: PublicRecordListResponseDto = await response.json();
     return result.items.map(mapRecordAnimal);
@@ -163,14 +161,11 @@ export const fetchRecordDetail = async (
 ): Promise<{ info: FosterMatchInfo; records: FosterRecord[] }> => {
   try {
     const endpoint = resolveEndpoint(`/public/foster/records/animals/${id}`);
-    const response = await fetch(endpoint, {
-      // headers: userHeaders(token),
+    const response = await fetchJson(endpoint, {
       cache: 'no-store',
+      auth: 'none',
+      errorMessage: '기록 상세 요청 실패',
     });
-
-    if (!response.ok) {
-      throw new Error(`기록 상세 요청 실패: ${response.status}`);
-    }
 
     const result: PublicRecordDetailDto = await response.json();
 
@@ -190,21 +185,16 @@ export const createRecord = async (
   id: string,
   payload: RecordUpsertPayload,
 ) => {
-  const response = await fetch(
-    resolveEndpoint(`/foster/animals/${id}/records`),
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...userHeaders(token),
-      },
-      body: JSON.stringify(payload),
+  await fetchJson(resolveEndpoint(`/foster/animals/${id}/records`), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
-
-  if (!response.ok) {
-    throw new Error(`보호동물 돌봄기록 생성 요청 실패: ${response.status}`);
-  }
+    body: JSON.stringify(payload),
+    token,
+    auth: 'required',
+    errorMessage: '보호동물 돌봄기록 생성 요청 실패',
+  });
   fosterAnimalDetailPageRevalid({ animalId: id });
 };
 
@@ -214,21 +204,19 @@ export const updateRecord = async (
   recordId: string,
   payload: RecordUpsertPayload,
 ) => {
-  const response = await fetch(
+  await fetchJson(
     resolveEndpoint(`/foster/animals/${id}/records/${recordId}`),
     {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        ...userHeaders(token),
       },
       body: JSON.stringify(payload),
+      token,
+      auth: 'required',
+      errorMessage: '보호동물 돌봄기록 업데이트 요청 실패',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`보호동물 돌봄기록 업데이트 요청 실패: ${response.status}`);
-  }
 
   fosterAnimalDetailPageRevalid({ animalId: id });
 };

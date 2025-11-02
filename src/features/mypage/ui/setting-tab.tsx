@@ -32,10 +32,8 @@ import {
   fetchMyNotificationSetting,
   updateMyNotificationSetting,
 } from '@/features/mypage/api/user';
-import {
-  clearStoredAuthTokens,
-  resolveStoredAccessToken,
-} from '@/lib/auth/session';
+import { clearStoredAuthTokens } from '@/lib/auth/session';
+import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 import type {
   UpdateUserNotificationSettingPayload,
   UserNotificationSettingItem,
@@ -96,10 +94,11 @@ export default function SettingTab({
 
   const onSubmit = useCallback(
     async (values: SettingFormValues) => {
-      const token = resolveStoredAccessToken();
+      const token = ensureAccessToken({
+        toastMessage: '로그인이 필요합니다. 다시 로그인해주세요.',
+      });
 
       if (!token) {
-        toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
         return;
       }
 
@@ -126,10 +125,11 @@ export default function SettingTab({
   );
 
   const handleAccountDelete = useCallback(async () => {
-    const token = resolveStoredAccessToken();
+    const token = ensureAccessToken({
+      toastMessage: '로그인이 필요합니다. 다시 로그인해주세요.',
+    });
 
     if (!token) {
-      toast.error('로그인이 필요합니다. 다시 로그인해주세요.');
       return;
     }
 

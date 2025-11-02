@@ -17,6 +17,7 @@ import type {
 } from '@/entities/animal/animal-api';
 import type { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
 import { resolveEndpoint } from '@/shared/api/config';
+import { fetchJson } from '@/shared/api/http';
 import { toDate } from '@/shared/lib/utils';
 import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import { logError } from '@/shared/lib/logging';
@@ -124,14 +125,11 @@ export const fetchOrganizationAnimals = async (): Promise<
   OrganizationAnimalListItem[]
 > => {
   try {
-    const response = await fetch(resolveEndpoint('/organization/animals'), {
+    const response = await fetchJson(resolveEndpoint('/organization/animals'), {
       cache: 'no-store',
-      headers: { Accept: 'application/json' },
+      auth: 'none',
+      errorMessage: '조직 동물 목록 요청 실패',
     });
-
-    if (!response.ok) {
-      throw new Error(`조직 동물 목록 요청 실패: ${response.status}`);
-    }
 
     const payload =
       (await response.json()) as OrganizationAnimalListResponseDto;
@@ -223,18 +221,14 @@ const mapOrganizationDetail = (
 export const fetchOrganizationAnimalDetail = async (
   id: string,
 ): Promise<OrganizationAnimalDetailItem> => {
-  const response = await fetch(resolveEndpoint(`/organization/animals/${id}`), {
-    cache: 'no-store',
-    headers: { Accept: 'application/json' },
-  });
-
-  if (!response.ok) {
-    const error = new Error(
-      `조직 동물 상세 요청 실패: ${response.status}`,
-    ) as Error & { status?: number };
-    error.status = response.status;
-    throw error;
-  }
+  const response = await fetchJson(
+    resolveEndpoint(`/organization/animals/${id}`),
+    {
+      cache: 'no-store',
+      auth: 'none',
+      errorMessage: '조직 동물 상세 요청 실패',
+    },
+  );
 
   const payload = (await response.json()) as OrganizationAnimalDetailDto;
 

@@ -89,6 +89,19 @@ export default [
           ],
         },
       ],
+      'no-restricted-imports': [
+        'error',
+        {
+          paths: [
+            {
+              name: '@/lib/auth/session',
+              importNames: ['resolveStoredAccessToken'],
+              message:
+                '공용 액세스 토큰 유틸을 사용해주세요: @/shared/lib/auth/access-token.client',
+            },
+          ],
+        },
+      ],
       'prettier/prettier': ['warn', { endOfLine: 'auto' }],
       'no-console': 'warn',
       'no-underscore-dangle': 'off',

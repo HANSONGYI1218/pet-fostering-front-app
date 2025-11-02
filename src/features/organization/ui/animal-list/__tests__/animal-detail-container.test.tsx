@@ -17,8 +17,8 @@ vi.mock('@tanstack/react-query', () => ({
   }),
 }));
 
-vi.mock('@/lib/auth/session', () => ({
-  resolveStoredAccessToken: vi.fn(() => 'token'),
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  ensureAccessToken: vi.fn(() => 'token'),
 }));
 
 vi.mock('sonner', () => {

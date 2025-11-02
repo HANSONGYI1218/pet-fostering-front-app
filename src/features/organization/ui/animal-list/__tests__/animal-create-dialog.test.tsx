@@ -11,8 +11,8 @@ const toastMock = vi.hoisted(() => {
   return toastFn;
 });
 
-const sessionMocks = vi.hoisted(() => ({
-  resolveStoredAccessToken: vi.fn<() => string | null>(),
+const authTokenMocks = vi.hoisted(() => ({
+  ensureAccessToken: vi.fn<() => string | null>(() => 'token'),
 }));
 
 const fosterApiMocks = vi.hoisted(() => ({
@@ -23,17 +23,9 @@ vi.mock('sonner', () => ({
   toast: toastMock,
 }));
 
-vi.mock('@/lib/auth/session', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/lib/auth/session')>(
-      '@/lib/auth/session',
-    );
-
-  return {
-    ...actual,
-    resolveStoredAccessToken: sessionMocks.resolveStoredAccessToken,
-  };
-});
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  ensureAccessToken: authTokenMocks.ensureAccessToken,
+}));
 
 vi.mock('@/features/organization/api/foster-admin', async () => {
   const actual = await vi.importActual<
@@ -59,7 +51,7 @@ describe('AnimalCreateDialog', () => {
       createdAt: new Date().toISOString(),
       updatedAt: new Date().toISOString(),
     });
-    sessionMocks.resolveStoredAccessToken.mockReturnValue(null);
+    authTokenMocks.ensureAccessToken.mockReturnValue(null);
     toastMock.mockClear();
     toastMock.success.mockClear();
     toastMock.error.mockClear();

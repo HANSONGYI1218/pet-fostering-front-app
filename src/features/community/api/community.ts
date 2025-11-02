@@ -6,7 +6,7 @@ import type {
 import type { PostUpsertPayload, PostItem } from '@/entities/post/post-api';
 import { toDate } from '@/shared/lib/utils';
 import { resolveEndpoint } from '@/shared/api/config';
-import { userHeaders } from '@/features/mypage/api/user';
+import { apiFetch } from '@/shared/api/http';
 import { communityDetailPageRevalid, communityPageRevalid } from './redirect';
 
 type PostCountDto = {
@@ -105,14 +105,43 @@ export const mapPostListItems = (dto: PostListResponseDto): PostItem[] =>
     updated_at: item.updatedAt ? toDate(item.updatedAt) : undefined,
   }));
 
-const communityHeaders = (token?: string): Record<string, string> => {
-  const headers: Record<string, string> = {};
+const requestJson = async (
+  url: string,
+  {
+    method,
+    body,
+    cache,
+    token,
+    auth,
+    headers,
+    errorMessage,
+  }: {
+    method?: string;
+    body?: BodyInit | null;
+    cache?: RequestCache;
+    token?: string;
+    auth: 'none' | 'optional' | 'required';
+    headers?: Record<string, string>;
+    errorMessage: string;
+  },
+) => {
+  const response = await apiFetch(url, {
+    method,
+    body,
+    cache,
+    token,
+    auth,
+    headers: {
+      Accept: 'application/json',
+      ...(headers ?? {}),
+    },
+  });
 
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
+  if (!response.ok) {
+    throw new Error(`${errorMessage}: ${response.status}`);
   }
 
-  return headers;
+  return response;
 };
 
 const buildQueryString = ({ limit, cursor }: CommunityListParams) => {
@@ -141,17 +170,12 @@ export const fetchCommunityPosts = async (
   const query = buildQueryString(params);
   const endpoint = resolveEndpoint(`/community/posts${query}`);
 
-  const response = await fetch(endpoint, {
-    headers: {
-      Accept: 'application/json',
-      ...communityHeaders(params.token),
-    },
+  const response = await requestJson(endpoint, {
     cache: 'no-store',
+    token: params.token,
+    auth: params.token ? 'optional' : 'none',
+    errorMessage: '커뮤니티 게시글 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`커뮤니티 게시글 요청 실패: ${response.status}`);
-  }
 
   const result: PostListResponseDto = await response.json();
 
@@ -223,17 +247,12 @@ export const mapCommunityComments = (
 export const fetchCommunityPost = async (id: string, token?: string) => {
   const endpoint = resolveEndpoint(`/community/posts/${id}`);
 
-  const response = await fetch(endpoint, {
-    headers: {
-      Accept: 'application/json',
-      ...communityHeaders(token),
-    },
+  const response = await requestJson(endpoint, {
     cache: 'no-store',
+    token,
+    auth: token ? 'optional' : 'none',
+    errorMessage: '커뮤니티 게시글 상세 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`커뮤니티 게시글 상세 요청 실패: ${response.status}`);
-  }
 
   const dto = (await response.json()) as CommunityPostDto;
 
@@ -246,17 +265,12 @@ export const fetchCommunityComments = async (
 ) => {
   const endpoint = resolveEndpoint(`/community/posts/${postId}/comments`);
 
-  const response = await fetch(endpoint, {
-    headers: {
-      Accept: 'application/json',
-      ...communityHeaders(token),
-    },
+  const response = await requestJson(endpoint, {
     cache: 'no-store',
+    token,
+    auth: token ? 'optional' : 'none',
+    errorMessage: '커뮤니티 댓글 목록 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`커뮤니티 댓글 목록 요청 실패: ${response.status}`);
-  }
 
   const payload = (await response.json()) as
     | CommunityCommentDto[]
@@ -271,18 +285,16 @@ export const createPost = async (
   token: string | undefined,
   payload: PostUpsertPayload,
 ) => {
-  const response = await fetch(resolveEndpoint(`/community/posts`), {
+  await requestJson(resolveEndpoint(`/community/posts`), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...userHeaders(token),
     },
     body: JSON.stringify(payload),
+    token,
+    auth: 'required',
+    errorMessage: '게시글 생성 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`게시글 생성 요청 실패: ${response.status}`);
-  }
 
   communityPageRevalid();
 };
@@ -292,93 +304,69 @@ export const updatePost = async (
   postId: string,
   payload: PostUpsertPayload,
 ) => {
-  const response = await fetch(resolveEndpoint(`/community/posts/${postId}`), {
+  await requestJson(resolveEndpoint(`/community/posts/${postId}`), {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      ...userHeaders(token),
     },
     body: JSON.stringify(payload),
+    token,
+    auth: 'required',
+    errorMessage: '게시물 업데이트 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`게시물 업데이트 요청 실패: ${response.status}`);
-  }
 
   communityDetailPageRevalid({ postId });
 };
 
 export const deletePost = async (token: string | undefined, id: string) => {
-  const response = await fetch(resolveEndpoint(`/community/posts/${id}`), {
+  await requestJson(resolveEndpoint(`/community/posts/${id}`), {
     method: 'DELETE',
-    headers: userHeaders(token),
+    token,
+    auth: 'required',
+    errorMessage: '게시물 삭제 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`게시물 삭제 요청 실패: ${response.status}`);
-  }
 };
 
 export const createCommentLike = async (
   token: string | undefined,
   commentId: string,
 ) => {
-  const response = await fetch(
-    resolveEndpoint(`/community/comments/${commentId}/likes`),
-    {
-      method: 'POST',
-      headers: userHeaders(token),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`댓글 좋아요 요청 실패: ${response.status}`);
-  }
+  await requestJson(resolveEndpoint(`/community/comments/${commentId}/likes`), {
+    method: 'POST',
+    token,
+    auth: 'required',
+    errorMessage: '댓글 좋아요 요청 실패',
+  });
 };
 
 export const deleteCommentLike = async (
   token: string | undefined,
   commentId: string,
 ) => {
-  const response = await fetch(
-    resolveEndpoint(`/community/comments/${commentId}/likes`),
-    {
-      method: 'DELETE',
-      headers: userHeaders(token),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`댓글 좋아요 취소 요청 실패: ${response.status}`);
-  }
+  await requestJson(resolveEndpoint(`/community/comments/${commentId}/likes`), {
+    method: 'DELETE',
+    token,
+    auth: 'required',
+    errorMessage: '댓글 좋아요 취소 요청 실패',
+  });
 };
 
 export const createBookmark = async (token: string | undefined, id: string) => {
-  const response = await fetch(
-    resolveEndpoint(`/community/posts/${id}/bookmarks`),
-    {
-      method: 'POST',
-      headers: userHeaders(token),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`게시글 북마크 생성 요청 실패: ${response.status}`);
-  }
+  await requestJson(resolveEndpoint(`/community/posts/${id}/bookmarks`), {
+    method: 'POST',
+    token,
+    auth: 'required',
+    errorMessage: '게시글 북마크 생성 요청 실패',
+  });
 };
 
 export const deleteBookmark = async (token: string | undefined, id: string) => {
-  const response = await fetch(
-    resolveEndpoint(`/community/posts/${id}/bookmarks`),
-    {
-      method: 'DELETE',
-      headers: userHeaders(token),
-    },
-  );
-
-  if (!response.ok) {
-    throw new Error(`게시글 북마크 취소 요청 실패: ${response.status}`);
-  }
+  await requestJson(resolveEndpoint(`/community/posts/${id}/bookmarks`), {
+    method: 'DELETE',
+    token,
+    auth: 'required',
+    errorMessage: '게시글 북마크 취소 요청 실패',
+  });
 };
 
 export const createComment = async (
@@ -386,21 +374,16 @@ export const createComment = async (
   id: string,
   payload: UpsertCommentPayload,
 ) => {
-  const response = await fetch(
-    resolveEndpoint(`/community/posts/${id}/comments`),
-    {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/json',
-        ...userHeaders(token),
-      },
-      body: JSON.stringify(payload),
+  await requestJson(resolveEndpoint(`/community/posts/${id}/comments`), {
+    method: 'POST',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
-
-  if (!response.ok) {
-    throw new Error(`댓글 생성 요청 실패: ${response.status}`);
-  }
+    body: JSON.stringify(payload),
+    token,
+    auth: 'required',
+    errorMessage: '댓글 생성 요청 실패',
+  });
 
   communityDetailPageRevalid({ postId: id });
 };
@@ -411,21 +394,19 @@ export const updateComment = async (
   commentId: string,
   payload: UpsertCommentPayload,
 ) => {
-  const response = await fetch(
+  await requestJson(
     resolveEndpoint(`/community/posts/${postId}/comments/${commentId}`),
     {
       method: 'PATCH',
       headers: {
         'Content-Type': 'application/json',
-        ...userHeaders(token),
       },
       body: JSON.stringify(payload),
+      token,
+      auth: 'required',
+      errorMessage: '댓글 업데이트 요청 실패',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`댓글 업데이트 요청 실패: ${response.status}`);
-  }
 
   communityDetailPageRevalid({ postId });
 };
@@ -435,17 +416,15 @@ export const deleteComment = async (
   postId: string,
   commentId: string,
 ) => {
-  const response = await fetch(
+  await requestJson(
     resolveEndpoint(`/community/posts/${postId}/comments/${commentId}`),
     {
       method: 'DELETE',
-      headers: userHeaders(token),
+      token,
+      auth: 'required',
+      errorMessage: '댓글 삭제 요청 실패',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`댓글 삭제 요청 실패: ${response.status}`);
-  }
 
   communityDetailPageRevalid({ postId });
 };
@@ -460,17 +439,15 @@ export const createPostLike = async (
   token: string | undefined,
   id: string,
 ): Promise<PostLikeResponseDto> => {
-  const response = await fetch(
+  const response = await requestJson(
     resolveEndpoint(`/community/posts/${id}/likes`),
     {
       method: 'POST',
-      headers: userHeaders(token),
+      token,
+      auth: 'required',
+      errorMessage: '게시물 좋아요 요청 실패',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`게시물 좋아요 요청 실패: ${response.status}`);
-  }
 
   const payload = (await response.json()) as PostLikeResponseDto;
   return payload;
@@ -480,32 +457,27 @@ export const deletePostLike = async (
   token: string | undefined,
   id: string,
 ): Promise<PostLikeResponseDto> => {
-  const response = await fetch(
+  const response = await requestJson(
     resolveEndpoint(`/community/posts/${id}/likes`),
     {
       method: 'DELETE',
-      headers: userHeaders(token),
+      token,
+      auth: 'required',
+      errorMessage: '게시물 좋아요 취소 요청 실패',
     },
   );
-
-  if (!response.ok) {
-    throw new Error(`게시물 좋아요 취소 요청 실패: ${response.status}`);
-  }
 
   const payload = (await response.json()) as PostLikeResponseDto;
   return payload;
 };
 
 export const updatePostView = async (id: string) => {
-  const response = await fetch(
-    resolveEndpoint(`/community/posts/${id}/views`),
-    {
-      method: 'PATCH',
-      headers: { 'Content-Type': 'application/json' },
+  await requestJson(resolveEndpoint(`/community/posts/${id}/views`), {
+    method: 'PATCH',
+    headers: {
+      'Content-Type': 'application/json',
     },
-  );
-
-  if (!response.ok) {
-    throw new Error(`게시물 뷰 증가 요청 실패: ${response.status}`);
-  }
+    auth: 'none',
+    errorMessage: '게시물 뷰 증가 요청 실패',
+  });
 };

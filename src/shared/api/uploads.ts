@@ -1,4 +1,4 @@
-import { resolveEndpoint } from './config';
+import { apiFetch } from './http';
 
 type PresignPayload = {
   scope: string;
@@ -13,7 +13,9 @@ type PresignResponse = {
   key: string;
   expiresIn: number;
   contentType: string;
-  fields: Record<string, string>;
+  method?: 'POST' | 'PUT';
+  fields?: Record<string, string>;
+  headers?: Record<string, string>;
 };
 
 type UploadImagesParams = {
@@ -34,21 +36,41 @@ const ensureSuccessfulResponse = async (
 };
 
 const requestPresignedUrl = async (
-  token: string,
   payload: PresignPayload,
+  token?: string,
 ): Promise<PresignResponse> => {
-  const response = await fetch(resolveEndpoint('/uploads/images'), {
+  const response = await apiFetch('/uploads/images', {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      Authorization: `Bearer ${token}`,
     },
     body: JSON.stringify(payload),
+    auth: 'required',
+    token,
   });
 
   await ensureSuccessfulResponse(response, '이미지 업로드 URL 요청');
   return response.json() as Promise<PresignResponse>;
 };
+
+function toMethod(presigned: PresignResponse): 'POST' | 'PUT' {
+  if (presigned.method === 'POST' || presigned.method === 'PUT') {
+    return presigned.method;
+  }
+  const hasFields = Object.keys(presigned.fields ?? {}).length > 0;
+  return hasFields ? 'POST' : 'PUT';
+}
+
+function withContentType(
+  headers: Record<string, string> | undefined,
+  contentType: string,
+): Record<string, string> {
+  const base = { ...(headers ?? {}) };
+  const hasContentType = Object.keys(base).some(
+    (key) => key.toLowerCase() === 'content-type',
+  );
+  return hasContentType ? base : { ...base, 'Content-Type': contentType };
+}
 
 export const uploadImages = async ({
   token,
@@ -62,27 +84,40 @@ export const uploadImages = async ({
   const results: string[] = [];
 
   for (const file of files) {
-    const presigned = await requestPresignedUrl(token, {
-      scope,
-      fileName: file.name,
-      contentType: file.type,
-      fileSize: file.size,
-    });
+    const presigned = await requestPresignedUrl(
+      {
+        scope,
+        fileName: file.name,
+        contentType: file.type,
+        fileSize: file.size,
+      },
+      token,
+    );
 
-    const formData = new FormData();
-    Object.entries(presigned.fields).forEach(([field, value]) => {
-      formData.append(field, value);
-    });
-    formData.append('file', file);
-
-    const uploadResponse = await fetch(presigned.uploadUrl, {
-      method: 'POST',
-      body: formData,
-    });
+    const method = toMethod(presigned);
+    const uploadResponse =
+      method === 'POST'
+        ? await fetch(presigned.uploadUrl, {
+            method: 'POST',
+            body: (() => {
+              const formData = new FormData();
+              Object.entries(presigned.fields ?? {}).forEach(
+                ([field, value]) => {
+                  formData.append(field, value);
+                },
+              );
+              formData.append('file', file);
+              return formData;
+            })(),
+          })
+        : await fetch(presigned.uploadUrl, {
+            method: 'PUT',
+            headers: withContentType(presigned.headers, presigned.contentType),
+            body: file,
+          });
 
     await ensureSuccessfulResponse(uploadResponse, '이미지 업로드');
     results.push(presigned.publicUrl);
   }
-
   return results;
 };

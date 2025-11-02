@@ -10,7 +10,7 @@ import {
 } from '@/features/record/context/record-provider';
 import { FosterRecord } from '@/entities/foster-record/foster-record';
 import { WholeDateArray } from '../tr';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 
 const fosterApiMocks = vi.hoisted(() => ({
   create: vi.fn(),
@@ -33,8 +33,8 @@ const uploadStoreMocks = vi.hoisted(() => ({
   >(),
 }));
 
-vi.mock('@/lib/auth/session', () => ({
-  resolveStoredAccessToken: vi.fn(() => 'token'),
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  ensureAccessToken: vi.fn(() => 'token'),
 }));
 
 vi.mock('sonner', () => {
@@ -72,7 +72,7 @@ describe('CalendarDialogForm', () => {
     fosterApiMocks.create.mockReset();
     fosterApiMocks.update.mockReset();
     fosterApiMocks.remove.mockReset();
-    vi.mocked(resolveStoredAccessToken).mockReturnValue('token');
+    vi.mocked(ensureAccessToken).mockReturnValue('token');
     uploadStoreMocks.addFiles.mockReset();
     uploadStoreMocks.addFiles.mockImplementation((_files, current = []) => [
       ...current,

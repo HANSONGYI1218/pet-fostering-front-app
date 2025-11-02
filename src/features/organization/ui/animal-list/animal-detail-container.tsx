@@ -30,7 +30,7 @@ import { format } from 'date-fns';
 import RecordFiltered from './record-filtered';
 import { useRouter } from 'next/navigation';
 import { useQueryClient } from '@tanstack/react-query';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 import { toast } from 'sonner';
 import { deleteOrganizationAnimal } from '@/features/organization/api/foster-admin';
 import { ORGANIZATION_ANIMALS_QUERY_KEY } from './hooks/use-organization-animals';
@@ -57,10 +57,9 @@ export default function AnimalDetailContainer({
   const [isDeleting, setIsDeleting] = useState(false);
 
   const handleDelete = useCallback(async () => {
-    const token = resolveStoredAccessToken();
+    const token = ensureAccessToken();
 
     if (!token) {
-      toast('로그인이 필요합니다.');
       return;
     }
 

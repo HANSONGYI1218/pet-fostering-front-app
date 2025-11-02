@@ -67,10 +67,10 @@ describe('foster-admin api', () => {
     expect(mockFetch).toHaveBeenCalledTimes(1);
     const [, options] = mockFetch.mock.calls[0]!;
     expect(options?.method).toBe('POST');
-    expect(options?.headers).toMatchObject({
-      Authorization: 'Bearer token',
-      'Content-Type': 'application/json',
-    });
+    expect(options?.headers).toBeInstanceOf(Headers);
+    const headers = options?.headers as Headers;
+    expect(headers.get('Authorization')).toBe('Bearer token');
+    expect(headers.get('Content-Type')).toBe('application/json');
     expect(JSON.parse(String(options?.body))).toMatchObject({
       name: '두부',
       orgId: 'org-1',
@@ -119,7 +119,9 @@ describe('foster-admin api', () => {
     const [url, options] = mockFetch.mock.calls[0]!;
     expect(url).toContain('/foster/animals/animal-1');
     expect(options?.method).toBe('DELETE');
-    expect(options?.headers).toMatchObject({ Authorization: 'Bearer token' });
+    expect(options?.headers).toBeInstanceOf(Headers);
+    const headers = options?.headers as Headers;
+    expect(headers.get('Authorization')).toBe('Bearer token');
   });
 
   it('createOrganizationFosterRecord serializes record payload', async () => {

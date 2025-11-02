@@ -13,8 +13,12 @@ vi.mock('next/navigation', () => ({
 }));
 
 const sessionMocks = vi.hoisted(() => ({
-  resolveStoredAccessTokenMock: vi.fn<() => string | null | undefined>(),
   resolveStoredAuthClaimsMock: vi.fn(),
+}));
+
+const authTokenMocks = vi.hoisted(() => ({
+  useAccessToken: vi.fn<() => string | null | undefined>(() => 'token-1'),
+  ensureAccessToken: vi.fn<() => string | null>(() => 'token-1'),
 }));
 
 vi.mock('@/lib/auth/session', async () => {
@@ -25,10 +29,14 @@ vi.mock('@/lib/auth/session', async () => {
 
   return {
     ...actual,
-    resolveStoredAccessToken: sessionMocks.resolveStoredAccessTokenMock,
     resolveStoredAuthClaims: sessionMocks.resolveStoredAuthClaimsMock,
   };
 });
+
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  useAccessToken: authTokenMocks.useAccessToken,
+  ensureAccessToken: authTokenMocks.ensureAccessToken,
+}));
 
 const samplePost: PostItem = {
   id: '1',
@@ -45,8 +53,11 @@ const samplePost: PostItem = {
 
 describe('CommunityPost', () => {
   beforeEach(() => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReset();
     sessionMocks.resolveStoredAuthClaimsMock.mockReset();
+    authTokenMocks.useAccessToken.mockReset();
+    authTokenMocks.useAccessToken.mockReturnValue('token-1');
+    authTokenMocks.ensureAccessToken.mockReset();
+    authTokenMocks.ensureAccessToken.mockReturnValue('token-1');
     sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
       userId: 'user-1',
       displayName: '테스터',
@@ -55,7 +66,6 @@ describe('CommunityPost', () => {
   });
 
   it('content가 없더라도 렌더링 에러가 발생하지 않는다', () => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
     const incompletePost = {
       ...samplePost,
       content: undefined,
@@ -65,7 +75,7 @@ describe('CommunityPost', () => {
   });
 
   it('HTML 줄바꿈 태그를 줄 단위 텍스트로 렌더링한다', () => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
+    authTokenMocks.useAccessToken.mockReturnValue('token-1');
     render(<CommunityPost post={samplePost} />);
 
     // contentContainer가 없으면 null 반환, 있어야 text 검사
@@ -90,7 +100,8 @@ describe('CommunityPost', () => {
   });
 
   it('로그인하지 않은 경우에도 게시글 내용을 표시한다', async () => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue(null);
+    authTokenMocks.useAccessToken.mockReturnValue(null);
+    authTokenMocks.ensureAccessToken.mockReturnValue(null);
     sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue(null);
 
     render(<CommunityPost post={samplePost} />);
@@ -111,7 +122,8 @@ describe('CommunityPost', () => {
     });
     vi.stubGlobal('fetch', fetchMock);
     const user = userEvent.setup();
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
+    authTokenMocks.useAccessToken.mockReturnValue('token-1');
+    authTokenMocks.ensureAccessToken.mockReturnValue('token-1');
     sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
       userId: 'author-1',
       displayName: '작성자',

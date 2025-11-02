@@ -1,4 +1,4 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
+import { describe, expect, it, vi } from 'vitest';
 
 import { uploadImages } from '../uploads';
 
@@ -56,6 +56,47 @@ describe('uploadImages', () => {
     expect(entries).toContainEqual(['Content-Type', 'image/png']);
     const fileEntry = entries.find(([name]) => name === 'file');
     expect(fileEntry?.[1]).toBe(file);
+
+    expect(result).toEqual(['https://cdn.example.com/file.png']);
+  });
+
+  it('presigned PUT을 이용해 이미지를 업로드한다', async () => {
+    const fetchMock = vi
+      .spyOn(global, 'fetch')
+      .mockResolvedValueOnce(
+        new Response(
+          JSON.stringify({
+            uploadUrl:
+              'https://s3.example.com/animals/file.png?X-Amz-Date=20250101T000000Z',
+            publicUrl: 'https://cdn.example.com/file.png',
+            key: 'animals/file.png',
+            expiresIn: 120,
+            contentType: 'image/png',
+            method: 'PUT',
+            headers: {
+              'Content-Type': 'image/png',
+            },
+          }),
+          { status: 200, headers: { 'Content-Type': 'application/json' } },
+        ),
+      )
+      .mockResolvedValueOnce(new Response(null, { status: 200 }));
+
+    const file = new File(['data'], 'pet.png', { type: 'image/png' });
+
+    const result = await uploadImages({
+      token: 'token',
+      scope: 'animals',
+      files: [file],
+    });
+
+    expect(fetchMock).toHaveBeenCalledTimes(2);
+    const [, uploadInit] = fetchMock.mock.calls[1];
+    expect(uploadInit?.method).toBe('PUT');
+    expect(uploadInit?.body).toBe(file);
+    expect(uploadInit?.headers).toMatchObject({
+      'Content-Type': 'image/png',
+    });
 
     expect(result).toEqual(['https://cdn.example.com/file.png']);
   });

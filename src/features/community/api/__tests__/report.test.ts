@@ -1,30 +1,22 @@
-import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 import { createReport } from '../report';
+
+const apiFetchMock = vi.hoisted(() =>
+  vi.fn<(input: string, init?: Record<string, unknown>) => Promise<Response>>(),
+);
 
 vi.mock('@/shared/api/config', () => ({
   resolveEndpoint: (path: string) => path,
 }));
 
-vi.mock('@/features/mypage/api/user', () => ({
-  userHeaders: (token?: string) =>
-    token
-      ? {
-          Authorization: `Bearer ${token}`,
-        }
-      : {},
+vi.mock('@/shared/api/http', () => ({
+  apiFetch: apiFetchMock,
 }));
 
 describe('community report api', () => {
-  const fetchMock = vi.fn();
-
   beforeEach(() => {
-    fetchMock.mockReset();
-    vi.stubGlobal('fetch', fetchMock);
-  });
-
-  afterEach(() => {
-    vi.unstubAllGlobals();
+    apiFetchMock.mockReset();
   });
 
   it('정상 응답이면 신고 정보를 반환한다', async () => {
@@ -43,28 +35,30 @@ describe('community report api', () => {
       updatedAt: '2024-06-01T00:00:00.000Z',
     };
 
-    fetchMock.mockResolvedValue({
+    apiFetchMock.mockResolvedValue({
       ok: true,
       json: async () => response,
-    });
+    } as Response);
 
     await expect(createReport('token-1', payload)).resolves.toEqual(response);
 
-    expect(fetchMock).toHaveBeenCalledWith('/reports', {
+    expect(apiFetchMock).toHaveBeenCalledWith('/reports', {
       method: 'POST',
-      headers: expect.objectContaining({
+      headers: {
+        Accept: 'application/json',
         'Content-Type': 'application/json',
-        Authorization: 'Bearer token-1',
-      }),
+      },
+      auth: 'required',
+      token: 'token-1',
       body: JSON.stringify(payload),
     });
   });
 
   it('응답이 실패하면 명확한 오류를 던진다', async () => {
-    fetchMock.mockResolvedValue({
+    apiFetchMock.mockResolvedValue({
       ok: false,
       status: 400,
-    });
+    } as Response);
 
     await expect(
       createReport('token-2', {
@@ -83,6 +77,6 @@ describe('community report api', () => {
         reason: '광고성 게시글',
       }),
     ).rejects.toThrow('로그인이 필요합니다.');
-    expect(fetchMock).not.toHaveBeenCalled();
+    expect(apiFetchMock).not.toHaveBeenCalled();
   });
 });

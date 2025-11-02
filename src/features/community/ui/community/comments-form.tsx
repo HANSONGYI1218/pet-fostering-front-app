@@ -14,8 +14,11 @@ import { z } from 'zod';
 import { Textarea } from '@/shared/ui/textarea';
 import { Button } from '@/shared/ui/button';
 import { toast } from 'sonner';
-import { useEffect, useState } from 'react';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { useState } from 'react';
+import {
+  ensureAccessToken,
+  useAccessToken,
+} from '@/shared/lib/auth/access-token.client';
 import NeedLoginBadge from '@/shared/widgets/feedback/need-login-badge';
 import { updateComment, createComment } from '../../api/community';
 
@@ -60,7 +63,7 @@ export default function CommentsForm({
   heightClassName,
   onClose,
 }: CommentsFormProps) {
-  const [token, setToken] = useState<string | null>(null);
+  const token = useAccessToken();
   const [isLoading, setIsLoading] = useState(false);
   const form = useForm<CommentsFormValues>({
     resolver: zodResolver(CommentsFormSchema),
@@ -70,15 +73,9 @@ export default function CommentsForm({
   });
   const mode = draft?.mode ?? 'create';
 
-  // 브라우저에서만 access token 읽기
-  useEffect(() => {
-    const stored = resolveStoredAccessToken();
-    setToken(stored);
-  }, []);
-
   const handleSubmit = async (_values: CommentsFormValues) => {
-    if (!token) {
-      toast('로그인 후 이용해 주세요.');
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
       return;
     }
     if (!postId) {
@@ -92,9 +89,9 @@ export default function CommentsForm({
 
     try {
       if (draft?.id) {
-        await updateComment(token, postId, draft.id, payload);
+        await updateComment(activeToken, postId, draft.id, payload);
       } else {
-        await createComment(token, postId, payload);
+        await createComment(activeToken, postId, payload);
       }
 
       toast(resolveToastMessage(mode));

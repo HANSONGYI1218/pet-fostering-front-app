@@ -37,10 +37,11 @@ import { Textarea } from '@/shared/ui/textarea';
 import RetryButton from '@/shared/widgets/feedback/retry-button';
 import type { PostItem } from '@/entities/post/post-api';
 import { toDate, handleCopyLink } from '@/shared/lib/utils';
+import { resolveStoredAuthClaims } from '@/lib/auth/session';
 import {
-  resolveStoredAccessToken,
-  resolveStoredAuthClaims,
-} from '@/lib/auth/session';
+  ensureAccessToken,
+  useAccessToken,
+} from '@/shared/lib/auth/access-token.client';
 import PostFormDialog from './post-form-dialog';
 import { toast } from 'sonner';
 import {
@@ -62,7 +63,7 @@ export default function CommunityPost({
 }) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
-  const [token, setToken] = useState<string | null | undefined>(undefined);
+  const token = useAccessToken();
 
   const resolvedPost = post ?? null;
   const initialBookmark = useMemo(
@@ -77,12 +78,6 @@ export default function CommunityPost({
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [isReportLoading, setIsReportLoading] = useState(false);
-
-  // 브라우저에서만 access token 읽기
-  useEffect(() => {
-    const stored = resolveStoredAccessToken();
-    setToken(stored ?? null);
-  }, []);
 
   useEffect(() => {
     setPostLikeCnt(post?.likes ?? 0);
@@ -112,17 +107,17 @@ export default function CommunityPost({
       return;
     }
 
-    if (!token) {
-      toast('로그인 후 이용해주세요.');
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
       return;
     }
 
     try {
       if (isBookmarked) {
-        await deleteBookmark(token, resolvedPost.id);
+        await deleteBookmark(activeToken, resolvedPost.id);
         setIsBookmarked(false);
       } else {
-        await createBookmark(token, resolvedPost.id);
+        await createBookmark(activeToken, resolvedPost.id);
         setIsBookmarked(true);
       }
     } catch (error) {
@@ -135,24 +130,25 @@ export default function CommunityPost({
       return toast('다시 한번 새로고침 해주세요.');
     }
 
-    if (token) {
-      try {
-        const response = isPostLike
-          ? await deletePostLike(token, post.id)
-          : await createPostLike(token, post.id);
-        setIsPostLike(response.liked);
-        setPostLikeCnt(response.likeCount);
-      } catch (error) {
-        logError('게시물 업데이트 실패', error);
-      }
-    } else {
-      toast('로그인 후 이용해주세요.');
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
+      return;
+    }
+
+    try {
+      const response = isPostLike
+        ? await deletePostLike(activeToken, post.id)
+        : await createPostLike(activeToken, post.id);
+      setIsPostLike(response.liked);
+      setPostLikeCnt(response.likeCount);
+    } catch (error) {
+      logError('게시물 업데이트 실패', error);
     }
   };
 
   const handleDeletePost = async () => {
-    if (!token) {
-      toast('로그인 후 이용해 주세요.');
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
       return;
     }
 
@@ -163,7 +159,7 @@ export default function CommunityPost({
 
     try {
       await new Promise((resolve) => setTimeout(resolve, 400));
-      await deletePost(token, post.id);
+      await deletePost(activeToken, post.id);
       toast('게시글을 삭제했어요.');
       setOpen(false);
     } catch {
@@ -179,8 +175,8 @@ export default function CommunityPost({
       return;
     }
 
-    if (!token) {
-      toast('로그인 후 이용해 주세요.');
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
       return;
     }
 
@@ -192,7 +188,7 @@ export default function CommunityPost({
     setIsReportLoading(true);
 
     try {
-      await createReport(token ?? undefined, {
+      await createReport(activeToken ?? undefined, {
         targetType: 'POST',
         targetId: resolvedPost.id,
         reason: reportReason.trim(),

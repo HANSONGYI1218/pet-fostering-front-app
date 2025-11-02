@@ -72,7 +72,7 @@ import {
 import Chip from '@/shared/widgets/form/chip';
 import { useEmergencyReasonReset } from './hooks/use-emergency-reason-reset';
 import { useQueryClient } from '@tanstack/react-query';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 import { toast } from 'sonner';
 import {
   createOrganizationAnimal,
@@ -256,10 +256,8 @@ export function AnimalCreateDialog({
   }, [clear, defaultValues, form]);
 
   async function onSubmit(values: z.infer<typeof AnimalCreateformSchema>) {
-    const token = resolveStoredAccessToken();
-
+    const token = ensureAccessToken();
     if (!token) {
-      toast('로그인이 필요합니다.');
       return;
     }
 
@@ -336,9 +334,8 @@ export function AnimalCreateDialog({
           return;
         }
         if (next) {
-          const token = resolveStoredAccessToken();
+          const token = ensureAccessToken();
           if (!token) {
-            toast('로그인이 필요합니다.');
             return;
           }
           resetForm();

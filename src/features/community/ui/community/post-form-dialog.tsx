@@ -26,9 +26,9 @@ import { Card } from '@/shared/ui/card';
 import Image from 'next/image';
 import { Textarea } from '@/shared/ui/textarea';
 import { Button } from '@/shared/ui/button';
-import { ChangeEvent, ReactElement, useEffect, useMemo, useState } from 'react';
+import { ChangeEvent, ReactElement, useMemo, useState } from 'react';
 import { PostItem } from '@/entities/post/post-api';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 import { toast } from 'sonner';
 import { createPost, updatePost } from '../../api/community';
 import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
@@ -52,7 +52,6 @@ type PostFormDialogProps = {
 };
 
 export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
-  const [token, setToken] = useState<string | null>(null);
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const { addFiles, removeFile, clear, resolve } = useImageUploadStore({
@@ -88,9 +87,11 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
     setOpen(false);
   };
 
+  const ensureToken = () => ensureAccessToken();
+
   const handleSubmit = async (_values: PostFormValues) => {
+    const token = ensureToken();
     if (!token) {
-      toast('로그인 후 이용해 주세요.');
       return;
     }
 
@@ -136,9 +137,11 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
   };
 
   const handleOpenChange = (nextOpen: boolean) => {
-    if (nextOpen && !token) {
-      toast('로그인 후 이용해 주세요.');
-      return;
+    if (nextOpen) {
+      const token = ensureToken();
+      if (!token) {
+        return;
+      }
     }
     setOpen(nextOpen);
   };
@@ -165,10 +168,6 @@ export default function PostFormDialog({ post, trigger }: PostFormDialogProps) {
     if (!images) return;
     fieldOnChange(removeFile(target, images));
   };
-
-  useEffect(() => {
-    setToken(resolveStoredAccessToken());
-  }, []);
 
   return (
     <Dialog open={open} onOpenChange={handleOpenChange}>

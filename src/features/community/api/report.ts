@@ -1,5 +1,5 @@
 import { resolveEndpoint } from '@/shared/api/config';
-import { userHeaders } from '@/features/mypage/api/user';
+import { apiFetch } from '@/shared/api/http';
 
 export type ReportTargetType = 'POST' | 'COMMENT';
 
@@ -27,13 +27,15 @@ export const createReport = async (
     throw new Error('로그인이 필요합니다.');
   }
 
-  const response = await fetch(resolveEndpoint('/reports'), {
+  const response = await apiFetch(resolveEndpoint('/reports'), {
     method: 'POST',
     headers: {
+      Accept: 'application/json',
       'Content-Type': 'application/json',
-      ...userHeaders(token),
     },
     body: JSON.stringify(payload),
+    auth: 'required',
+    token,
   });
 
   if (!response.ok) {

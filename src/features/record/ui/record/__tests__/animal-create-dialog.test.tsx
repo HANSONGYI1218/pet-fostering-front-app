@@ -20,8 +20,8 @@ vi.mock('sonner', () => ({
   toast: vi.fn(),
 }));
 
-vi.mock('@/lib/auth/session', () => ({
-  resolveStoredAccessToken: vi.fn(() => 'token'),
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  ensureAccessToken: vi.fn(() => 'token'),
 }));
 
 vi.mock('@/features/foster/api/foster', () => ({

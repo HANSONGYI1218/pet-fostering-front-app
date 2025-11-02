@@ -2,7 +2,8 @@ import type { ReactNode } from 'react';
 import { render } from '@testing-library/react';
 import { beforeEach, describe, expect, it, vi } from 'vitest';
 
-let recordedAriaState: { hasProp: boolean; value: string | undefined } | null = null;
+let recordedAriaState: { hasProp: boolean; value: string | undefined } | null =
+  null;
 
 vi.mock('@radix-ui/react-dialog', async () => {
   const React = await import('react');
@@ -14,23 +15,38 @@ vi.mock('@radix-ui/react-dialog', async () => {
   const Root = ({ children }: BaseProps) => <>{children}</>;
   const Trigger = ({ children }: BaseProps) => <>{children}</>;
   const Portal = ({ children }: BaseProps) => <>{children}</>;
-  const Overlay = forwardRef<HTMLDivElement, DivProps>(({ children, ...props }, ref) => (
-    <div {...props} ref={ref}>
-      {children}
-    </div>
-  ));
+  const Overlay = forwardRef<HTMLDivElement, DivProps>(function MockOverlay(
+    { children, ...props },
+    ref,
+  ) {
+    return (
+      <div {...props} ref={ref}>
+        {children}
+      </div>
+    );
+  });
 
-  const Content = forwardRef<HTMLDivElement, DivProps>(({ children, ...props }, ref) => {
-    const hasProp = Object.prototype.hasOwnProperty.call(props, 'aria-describedby');
-    const describedBy = hasProp ? (props['aria-describedby'] as string | undefined) : undefined;
-
-    const { ['aria-describedby']: _ignored, ...rest } = props;
+  const Content = forwardRef<HTMLDivElement, DivProps>(function MockContent(
+    { children, ...props },
+    ref,
+  ) {
+    const { ['aria-describedby']: ariaDescribedBy, ...rest } = props;
+    const hasProp = Object.prototype.hasOwnProperty.call(
+      props,
+      'aria-describedby',
+    );
+    const describedBy = hasProp
+      ? (ariaDescribedBy as string | undefined)
+      : undefined;
 
     recordedAriaState = { hasProp, value: describedBy };
 
-    const describedByProps = hasProp && describedBy === undefined
-      ? {}
-      : { 'aria-describedby': hasProp ? describedBy : 'mock-generated-id' };
+    const describedByProps =
+      hasProp && describedBy === undefined
+        ? {}
+        : {
+            'aria-describedby': hasProp ? describedBy : 'mock-generated-id',
+          };
 
     return (
       <div role="dialog" {...rest} {...describedByProps} ref={ref}>
@@ -41,7 +57,9 @@ vi.mock('@radix-ui/react-dialog', async () => {
 
   const Title = ({ children }: BaseProps) => <h2>{children}</h2>;
   const Description = ({ children }: BaseProps) => <p>{children}</p>;
-  const Close = ({ children }: BaseProps) => <button type="button">{children}</button>;
+  const Close = ({ children }: BaseProps) => (
+    <button type="button">{children}</button>
+  );
 
   return {
     __esModule: true,

@@ -8,6 +8,7 @@ import type {
   FosterListAnimalItem,
 } from '@/entities/animal/animal-api';
 import { resolveEndpoint } from '@/shared/api/config';
+import { apiFetch } from '@/shared/api/http';
 import { logError } from '@/shared/lib/logging';
 
 const toMainListItem = (item: FosterListAnimalItem): AnimalListItem => ({
@@ -34,7 +35,13 @@ export const fetchAnimalLists = async ({
       endpoint.searchParams.set('limit', String(limit));
     }
 
-    const response = await fetch(endpoint.toString(), { cache: 'no-store' });
+    const response = await apiFetch(endpoint.toString(), {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+      auth: 'none',
+    });
 
     if (!response.ok) {
       throw new Error(`보호동물 목록 요청 실패: ${response.status}`);

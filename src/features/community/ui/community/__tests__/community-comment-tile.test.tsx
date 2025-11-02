@@ -14,8 +14,12 @@ vi.mock('sonner', () => ({
 }));
 
 const sessionMocks = vi.hoisted(() => ({
-  resolveStoredAccessTokenMock: vi.fn<() => string | null>(),
   resolveStoredAuthClaimsMock: vi.fn(),
+}));
+
+const authTokenMocks = vi.hoisted(() => ({
+  useAccessToken: vi.fn<() => string | null>(() => 'token-1'),
+  ensureAccessToken: vi.fn<() => string | null>(() => 'token-1'),
 }));
 
 const communityApiMocks = vi.hoisted(() => ({
@@ -32,10 +36,14 @@ vi.mock('@/lib/auth/session', async () => {
 
   return {
     ...actual,
-    resolveStoredAccessToken: sessionMocks.resolveStoredAccessTokenMock,
     resolveStoredAuthClaims: sessionMocks.resolveStoredAuthClaimsMock,
   };
 });
+
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  useAccessToken: authTokenMocks.useAccessToken,
+  ensureAccessToken: authTokenMocks.ensureAccessToken,
+}));
 
 vi.mock('../../api/community', async () => {
   const actual = await vi.importActual<typeof import('../../api/community')>(
@@ -77,14 +85,16 @@ const baseComment: CommentItem = {
 
 describe('CommunityCommentTile', () => {
   beforeEach(async () => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReset();
     sessionMocks.resolveStoredAuthClaimsMock.mockReset();
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
     sessionMocks.resolveStoredAuthClaimsMock.mockReturnValue({
       userId: 'author-1',
       displayName: '작성자',
       avatarUrl: null,
     });
+    authTokenMocks.useAccessToken.mockReset();
+    authTokenMocks.useAccessToken.mockReturnValue('token-1');
+    authTokenMocks.ensureAccessToken.mockReset();
+    authTokenMocks.ensureAccessToken.mockReturnValue('token-1');
     communityApiMocks.deleteComment.mockReset();
     communityApiMocks.deleteComment.mockResolvedValue(undefined);
     communityApiMocks.createCommentLike.mockResolvedValue(undefined);
@@ -102,7 +112,7 @@ describe('CommunityCommentTile', () => {
     );
 
     await waitFor(() =>
-      expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
+      expect(authTokenMocks.useAccessToken).toHaveBeenCalled(),
     );
 
     const menuTrigger = screen.getByRole('menuitem', { name: '댓글 옵션' });
@@ -143,7 +153,7 @@ describe('CommunityCommentTile', () => {
     render(<CommunityCommentTile comment={reply} onSelectComment={vi.fn()} />);
 
     await waitFor(() =>
-      expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
+      expect(authTokenMocks.useAccessToken).toHaveBeenCalled(),
     );
 
     const menuTrigger = screen.getByRole('menuitem', { name: '댓글 옵션' });

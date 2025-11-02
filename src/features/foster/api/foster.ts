@@ -13,8 +13,8 @@ import type {
 import { toDate } from '@/shared/lib/utils';
 
 import { resolveEndpoint } from '@/shared/api/config';
+import { fetchJson } from '@/shared/api/http';
 import { logError } from '@/shared/lib/logging';
-import { userHeaders } from '@/features/mypage/api/user';
 import { fosterAnimalListRevalid } from './redirect';
 import { fosterAnimalDetailPageRevalid } from '@/features/record/api/redirect';
 
@@ -195,11 +195,11 @@ const mapDetail = (
 export const fetchFosterAnimals = async (): Promise<FosterListAnimalItem[]> => {
   try {
     const endpoint = resolveEndpoint('/public/foster/animals');
-    const response = await fetch(endpoint, { cache: 'no-store' });
-
-    if (!response.ok) {
-      throw new Error(`임보 동물 목록 요청 실패: ${response.status}`);
-    }
+    const response = await fetchJson(endpoint, {
+      cache: 'no-store',
+      auth: 'none',
+      errorMessage: '임보 동물 목록 요청 실패',
+    });
 
     const result: PublicFosterAnimalListResponseDto = await response.json();
 
@@ -221,11 +221,11 @@ export const fetchFosterAnimalDetail = async (
 ): Promise<FosterAnimalDetailItem> => {
   try {
     const endpoint = resolveEndpoint(`/public/foster/animals/${id}`);
-    const response = await fetch(endpoint, { cache: 'no-store' });
-
-    if (!response.ok) {
-      throw new Error(`임보 동물 상세 요청 실패: ${response.status}`);
-    }
+    const response = await fetchJson(endpoint, {
+      cache: 'no-store',
+      auth: 'none',
+      errorMessage: '임보 동물 상세 요청 실패',
+    });
 
     const result: PublicFosterAnimalDetailDto = await response.json();
 
@@ -246,18 +246,16 @@ export const createAnimal = async (
   token: string | undefined,
   payload: AnimalUpsertPayload,
 ) => {
-  const response = await fetch(resolveEndpoint(`/foster/animals`), {
+  await fetchJson(resolveEndpoint(`/foster/animals`), {
     method: 'POST',
     headers: {
       'Content-Type': 'application/json',
-      ...userHeaders(token),
     },
     body: JSON.stringify(toAnimalDtoPayload(payload)),
+    auth: 'required',
+    token,
+    errorMessage: '보호동물 생성 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`보호동물 생성 요청 실패: ${response.status}`);
-  }
   fosterAnimalListRevalid();
 };
 
@@ -266,18 +264,16 @@ export const updateAnimal = async (
   id: string,
   payload: AnimalUpsertPayload,
 ) => {
-  const response = await fetch(resolveEndpoint(`/foster/animals/${id}`), {
+  await fetchJson(resolveEndpoint(`/foster/animals/${id}`), {
     method: 'PATCH',
     headers: {
       'Content-Type': 'application/json',
-      ...userHeaders(token),
     },
     body: JSON.stringify(toAnimalDtoPayload(payload)),
+    auth: 'required',
+    token,
+    errorMessage: '보호동물 업데이트 요청 실패',
   });
-
-  if (!response.ok) {
-    throw new Error(`보호동물 업데이트 요청 실패: ${response.status}`);
-  }
   fosterAnimalDetailPageRevalid({ animalId: id });
 };
 

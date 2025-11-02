@@ -2549,7 +2549,14 @@ export interface operations {
             key?: string;
             expiresIn?: number;
             contentType?: string;
-            fields?: Record<string, string>;
+            /** @enum {string} */
+            method?: 'POST' | 'PUT';
+            fields?: {
+              [key: string]: string;
+            };
+            headers?: {
+              [key: string]: string;
+            };
           };
         };
       };

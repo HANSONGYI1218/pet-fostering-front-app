@@ -1,5 +1,5 @@
 import { toDate } from '@/shared/lib/utils';
-import { resolveEndpoint } from '@/shared/api/config';
+import { apiFetch } from '@/shared/api/http';
 import type { CommentItemByUserId } from '@/entities/comment/comment-api';
 import type { PostItemByUserId } from '@/entities/post/post-api';
 import type {
@@ -8,18 +8,6 @@ import type {
   UserNotificationSettingItem,
   UserProfileItem,
 } from '@/entities/user/user-api';
-
-export const userHeaders = (token?: string): Record<string, string> => {
-  const headers: Record<string, string> = {
-    Accept: 'application/json',
-  };
-
-  if (token) {
-    headers.Authorization = `Bearer ${token}`;
-  }
-
-  return headers;
-};
 
 export const expectOk = async (response: Response) => {
   if (!response.ok) {
@@ -128,9 +116,13 @@ export const mapUserComments = (
 
 export const fetchMyProfile = async (token?: string) => {
   const response = await expectOk(
-    await fetch(resolveEndpoint('/users/me/profile'), {
-      headers: userHeaders(token),
+    await apiFetch('/users/me/profile', {
+      headers: {
+        Accept: 'application/json',
+      },
       cache: 'no-store',
+      auth: 'required',
+      token,
     }),
   );
 
@@ -141,9 +133,13 @@ export const fetchMyProfile = async (token?: string) => {
 
 export const fetchMyNotificationSetting = async (token?: string) => {
   const response = await expectOk(
-    await fetch(resolveEndpoint('/users/me/notification-settings'), {
-      headers: userHeaders(token),
+    await apiFetch('/users/me/notification-settings', {
+      headers: {
+        Accept: 'application/json',
+      },
       cache: 'no-store',
+      auth: 'required',
+      token,
     }),
   );
 
@@ -154,9 +150,13 @@ export const fetchMyNotificationSetting = async (token?: string) => {
 
 export const fetchMyPosts = async (token?: string) => {
   const response = await expectOk(
-    await fetch(resolveEndpoint('/users/me/posts'), {
-      headers: userHeaders(token),
+    await apiFetch('/users/me/posts', {
+      headers: {
+        Accept: 'application/json',
+      },
       cache: 'no-store',
+      auth: 'required',
+      token,
     }),
   );
 
@@ -167,9 +167,13 @@ export const fetchMyPosts = async (token?: string) => {
 
 export const fetchMyComments = async (token?: string) => {
   const response = await expectOk(
-    await fetch(resolveEndpoint('/users/me/comments'), {
-      headers: userHeaders(token),
+    await apiFetch('/users/me/comments', {
+      headers: {
+        Accept: 'application/json',
+      },
       cache: 'no-store',
+      auth: 'required',
+      token,
     }),
   );
 
@@ -183,13 +187,15 @@ export const updateMyProfile = async (
   payload: UpdateUserProfilePayload,
 ) => {
   const response = await expectOk(
-    await fetch(resolveEndpoint('/users/me/profile'), {
+    await apiFetch('/users/me/profile', {
       method: 'PATCH',
       headers: {
-        ...userHeaders(token),
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
+      auth: 'required',
+      token,
     }),
   );
 
@@ -203,13 +209,15 @@ export const updateMyNotificationSetting = async (
   payload: UpdateUserNotificationSettingPayload,
 ) => {
   const response = await expectOk(
-    await fetch(resolveEndpoint('/users/me/notification-settings'), {
+    await apiFetch('/users/me/notification-settings', {
       method: 'PATCH',
       headers: {
-        ...userHeaders(token),
+        Accept: 'application/json',
         'Content-Type': 'application/json',
       },
       body: JSON.stringify(payload),
+      auth: 'required',
+      token,
     }),
   );
 
@@ -220,9 +228,10 @@ export const updateMyNotificationSetting = async (
 
 export const deleteMyAccount = async (token: string | undefined) => {
   await expectOk(
-    await fetch(resolveEndpoint('/users/me'), {
+    await apiFetch('/users/me', {
       method: 'DELETE',
-      headers: userHeaders(token),
+      auth: 'required',
+      token,
     }),
   );
 };

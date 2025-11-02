@@ -10,8 +10,9 @@ vi.mock('sonner', () => ({
   toast: vi.fn(),
 }));
 
-const sessionMocks = vi.hoisted(() => ({
-  resolveStoredAccessTokenMock: vi.fn<() => string | null>(),
+const authTokenMocks = vi.hoisted(() => ({
+  useAccessToken: vi.fn<() => string | null>(() => 'token-1'),
+  ensureAccessToken: vi.fn<() => string | null>(() => 'token-1'),
 }));
 
 const communityApiMocks = vi.hoisted(() => ({
@@ -20,17 +21,10 @@ const communityApiMocks = vi.hoisted(() => ({
   fetchCommunityComments: vi.fn(),
 }));
 
-vi.mock('@/lib/auth/session', async () => {
-  const actual =
-    await vi.importActual<typeof import('@/lib/auth/session')>(
-      '@/lib/auth/session',
-    );
-
-  return {
-    ...actual,
-    resolveStoredAccessToken: sessionMocks.resolveStoredAccessTokenMock,
-  };
-});
+vi.mock('@/shared/lib/auth/access-token.client', () => ({
+  useAccessToken: authTokenMocks.useAccessToken,
+  ensureAccessToken: authTokenMocks.ensureAccessToken,
+}));
 
 vi.mock('@/features/community/api/community', async () => {
   const actual = await vi.importActual<
@@ -85,8 +79,10 @@ const sampleComment: CommentItem = {
 
 describe('CommentsForm', () => {
   beforeEach(async () => {
-    sessionMocks.resolveStoredAccessTokenMock.mockReset();
-    sessionMocks.resolveStoredAccessTokenMock.mockReturnValue('token-1');
+    authTokenMocks.useAccessToken.mockReset();
+    authTokenMocks.useAccessToken.mockReturnValue('token-1');
+    authTokenMocks.ensureAccessToken.mockReset();
+    authTokenMocks.ensureAccessToken.mockReturnValue('token-1');
     communityApiMocks.createComment.mockReset();
     communityApiMocks.updateComment.mockReset();
     communityApiMocks.fetchCommunityComments.mockReset();
@@ -106,7 +102,7 @@ describe('CommentsForm', () => {
     render(<CommentsForm postId="post-1" draft={{ mode: 'create' }} />);
 
     await waitFor(() =>
-      expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
+      expect(authTokenMocks.useAccessToken).toHaveBeenCalled(),
     );
 
     const textarea = await screen.findByPlaceholderText('댓글을 남겨주세요.');
@@ -151,7 +147,7 @@ describe('CommentsForm', () => {
     );
 
     await waitFor(() =>
-      expect(sessionMocks.resolveStoredAccessTokenMock).toHaveBeenCalled(),
+      expect(authTokenMocks.useAccessToken).toHaveBeenCalled(),
     );
     const textarea = await screen.findByPlaceholderText('댓글을 남겨주세요.');
     await user.clear(textarea);

@@ -26,10 +26,11 @@ import { Badge } from '@/shared/ui/badge';
 import { Button } from '@/shared/ui/button';
 import { Textarea } from '@/shared/ui/textarea';
 import { toast } from 'sonner';
+import { resolveStoredAuthClaims } from '@/lib/auth/session';
 import {
-  resolveStoredAccessToken,
-  resolveStoredAuthClaims,
-} from '@/lib/auth/session';
+  ensureAccessToken,
+  useAccessToken,
+} from '@/shared/lib/auth/access-token.client';
 import { CommentItem, ReplyCommentItem } from '@/entities/comment/comment-api';
 import { toDate } from '@/shared/lib/utils';
 import CommentsForm from './comments-form';
@@ -57,12 +58,11 @@ export default function CommunityCommentTile({
 }: CommunityCommentTileProps) {
   const claims = resolveStoredAuthClaims();
   const userId = claims?.userId;
-  const [token, setToken] = useState<string | null>(null);
+  const token = useAccessToken();
   const [open, setOpen] = useState(false);
   const [isLoading, setIsLoading] = useState(false);
   const [isCommentLike, setIsCommentLike] = useState(comment?.liked ?? false);
   const [commentLikeCnt, setCommentLikeCnt] = useState(comment?.likes ?? 0);
-  const [isOwner, setIsOwner] = useState<boolean>(false);
   const [isReportOpen, setIsReportOpen] = useState(false);
   const [reportReason, setReportReason] = useState('');
   const [isReportLoading, setIsReportLoading] = useState(false);
@@ -70,12 +70,7 @@ export default function CommunityCommentTile({
   const isEditing =
     selectedComment?.type === 'edit' && selectedComment.id === comment.id;
 
-  useEffect(() => {
-    const stored = resolveStoredAccessToken();
-    setToken(stored ?? null);
-    const isOwnerResult = userId ? userId === comment?.user?.id : false;
-    setIsOwner(isOwnerResult);
-  }, [comment?.user?.id, userId]);
+  const isOwner = Boolean(userId && userId === comment?.user?.id);
 
   useEffect(() => {
     setIsCommentLike(comment?.liked ?? false);
@@ -119,14 +114,14 @@ export default function CommunityCommentTile({
 
     setIsLoading(true);
 
-    if (!token) {
-      toast('로그인 후 이용해 주세요.');
+    const activeToken = ensureAccessToken({ silent: false });
+    if (!activeToken) {
       setIsLoading(false);
       return;
     }
 
     try {
-      await deleteComment(token, comment.post_id, comment.id);
+      await deleteComment(activeToken, comment.post_id, comment.id);
 
       toast('댓글을 삭제했어요.');
       setOpen(false);
@@ -143,22 +138,23 @@ export default function CommunityCommentTile({
       return toast('다시 한번 새로고침 해주세요.');
     }
 
-    if (token) {
-      try {
-        if (isCommentLike) {
-          await deleteCommentLike(token, comment.id);
-          setIsCommentLike(false);
-          setCommentLikeCnt((prev) => prev - 1);
-        } else {
-          await createCommentLike(token, comment.id);
-          setIsCommentLike(true);
-          setCommentLikeCnt((prev) => prev + 1);
-        }
-      } catch (error) {
-        logError('댓글 업데이트 실패', error);
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
+      return;
+    }
+
+    try {
+      if (isCommentLike) {
+        await deleteCommentLike(activeToken, comment.id);
+        setIsCommentLike(false);
+        setCommentLikeCnt((prev) => prev - 1);
+      } else {
+        await createCommentLike(activeToken, comment.id);
+        setIsCommentLike(true);
+        setCommentLikeCnt((prev) => prev + 1);
       }
-    } else {
-      toast('로그인 후 이용해주세요.');
+    } catch (error) {
+      logError('댓글 업데이트 실패', error);
     }
   };
 
@@ -167,8 +163,8 @@ export default function CommunityCommentTile({
       return toast('다시 한번 새로고침 해주세요.');
     }
 
-    if (!token) {
-      toast('로그인 후 이용해 주세요.');
+    const activeToken = ensureAccessToken();
+    if (!activeToken) {
       return;
     }
 
@@ -180,7 +176,7 @@ export default function CommunityCommentTile({
     setIsReportLoading(true);
 
     try {
-      await createReport(token ?? undefined, {
+      await createReport(activeToken ?? undefined, {
         targetType: 'COMMENT',
         targetId: comment.id,
         reason: reportReason.trim(),

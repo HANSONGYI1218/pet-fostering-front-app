@@ -6,7 +6,7 @@ import { ImageOff, Loader2, Plus, Trash2 } from 'lucide-react';
 import { useForm } from 'react-hook-form';
 import Image from 'next/image';
 import type { ChangeEvent } from 'react';
-import { useCallback, useEffect, useMemo, useState, useId } from 'react';
+import { useEffect, useMemo, useState, useId } from 'react';
 import { z } from 'zod';
 import { zodResolver } from '@hookform/resolvers/zod';
 import {
@@ -36,7 +36,7 @@ import { Card } from '@/shared/ui/card';
 import { RecordContent } from '@/features/record/widgets/record-content';
 import { RecordHealthNote } from '@/features/record/widgets/record-health-note';
 import { cn, toDate } from '@/shared/lib/utils';
-import { resolveStoredAccessToken } from '@/lib/auth/session';
+import { ensureAccessToken } from '@/shared/lib/auth/access-token.client';
 import { toast } from 'sonner';
 import {
   createOrganizationFosterRecord,
@@ -87,14 +87,6 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
   const [isEdit, setIsEdit] = useState(!currentRecord);
   const [isDeleting, setIsDeleting] = useState(false);
 
-  const ensureToken = useCallback(() => {
-    const next = resolveStoredAccessToken();
-    if (!next) {
-      toast('로그인이 필요합니다.');
-    }
-    return next;
-  }, []);
-
   useEffect(() => {
     setIsEdit(!currentRecord);
   }, [currentRecord]);
@@ -140,7 +132,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
 
   const handleOpenChange = (nextOpen: boolean) => {
     if (nextOpen) {
-      const activeToken = ensureToken();
+      const activeToken = ensureAccessToken();
       if (!activeToken) {
         return;
       }
@@ -161,7 +153,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       return;
     }
 
-    const activeToken = ensureToken();
+    const activeToken = ensureAccessToken();
     if (!activeToken) {
       return;
     }
@@ -199,7 +191,7 @@ const CalendarDialogForm = ({ p, currentMonth, setCurrentMonth }: TdProps) => {
       return;
     }
 
-    const activeToken = ensureToken();
+    const activeToken = ensureAccessToken();
     if (!activeToken) {
       return;
     }

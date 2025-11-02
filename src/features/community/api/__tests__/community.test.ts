@@ -240,14 +240,14 @@ describe('createPost', () => {
     };
     await createPost('token-1', payload);
 
-    expect(fetchMock).toHaveBeenCalledWith('/community/posts', {
-      method: 'POST',
-      headers: expect.objectContaining({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer token-1',
-      }),
-      body: JSON.stringify(payload),
-    });
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, init] = fetchMock.mock.calls[0] ?? [];
+    expect(init?.method).toBe('POST');
+    expect(init?.body).toBe(JSON.stringify(payload));
+    expect(init?.headers).toBeInstanceOf(Headers);
+    const headers = init?.headers as Headers;
+    expect(headers.get('Authorization')).toBe('Bearer token-1');
+    expect(headers.get('Content-Type')).toBe('application/json');
     expect(pageRevalidateSpy).toHaveBeenCalledTimes(1);
   });
 
@@ -287,18 +287,20 @@ describe('updatePost', () => {
       images: ['https://cdn.test/updated.png'],
     });
 
-    expect(fetchMock).toHaveBeenCalledWith('/community/posts/post-1', {
-      method: 'PATCH',
-      headers: expect.objectContaining({
-        'Content-Type': 'application/json',
-        Authorization: 'Bearer token-1',
-      }),
-      body: JSON.stringify({
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, init] = fetchMock.mock.calls[0] ?? [];
+    expect(init?.method).toBe('PATCH');
+    expect(init?.body).toBe(
+      JSON.stringify({
         title: '수정',
         content: '본문',
         images: ['https://cdn.test/updated.png'],
       }),
-    });
+    );
+    expect(init?.headers).toBeInstanceOf(Headers);
+    const headers = init?.headers as Headers;
+    expect(headers.get('Authorization')).toBe('Bearer token-1');
+    expect(headers.get('Content-Type')).toBe('application/json');
     expect(detailRevalidateSpy).toHaveBeenCalledWith({ postId: 'post-1' });
   });
 });
@@ -360,15 +362,12 @@ describe('deleteComment', () => {
 
     await deleteComment('token-1', 'post-1', 'comment-1');
 
-    expect(fetchMock).toHaveBeenCalledWith(
-      '/community/posts/post-1/comments/comment-1',
-      {
-        method: 'DELETE',
-        headers: expect.objectContaining({
-          Authorization: 'Bearer token-1',
-        }),
-      },
-    );
+    expect(fetchMock).toHaveBeenCalledTimes(1);
+    const [, init] = fetchMock.mock.calls[0] ?? [];
+    expect(init?.method).toBe('DELETE');
+    expect(init?.headers).toBeInstanceOf(Headers);
+    const headers = init?.headers as Headers;
+    expect(headers.get('Authorization')).toBe('Bearer token-1');
     expect(detailRevalidateSpy).toHaveBeenCalledWith({ postId: 'post-1' });
   });
 });
