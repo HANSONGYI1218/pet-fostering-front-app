@@ -3,6 +3,7 @@ import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 import { resolveEndpoint } from '@/shared/api/config';
 
 import {
+  ACCESS_TOKEN_EXPIRE_KEY,
   ACCESS_TOKEN_STORAGE_KEY,
   REFRESH_TOKEN_STORAGE_KEY,
   completeKakaoLogin,
@@ -15,8 +16,10 @@ import {
 
 import { clearStoredAuthTokens } from './session';
 import { AUTH_CHANGE_EVENT_NAME, dispatchAuthChangeEvent } from './events';
+import { DEFAULT_MAX_AGE_SECONDS } from './cookie-utils';
 
 const ORIGINAL_ENV = { ...process.env };
+const toBase64 = (value: string) => Buffer.from(value, 'utf-8').toString('base64');
 
 const stubBrowserEnv = () => {
   const cookieJar: string[] = [];
@@ -210,6 +213,82 @@ describe('persistAuthTokens', () => {
         displayName: '퍼디즈',
         avatarUrl: 'https://cdn.kakao/avatar.png',
       }),
+    );
+  });
+
+  it('액세스 토큰 exp 클레임을 만료 시각으로 저장한다', () => {
+    vi.useFakeTimers();
+    const now = new Date('2024-01-01T00:00:00Z');
+    vi.setSystemTime(now);
+
+    const expInSeconds = Math.floor(now.getTime() / 1000) + 900;
+    const payload = {
+      exp: expInSeconds,
+      sub: 'user-1',
+    };
+    const token = [
+      toBase64(JSON.stringify({ alg: 'HS256', typ: 'JWT' })),
+      toBase64(JSON.stringify(payload)),
+      'signature',
+    ].join('.');
+
+    const setItem = vi.fn();
+    const storage = { setItem } as Pick<Storage, 'setItem'>;
+
+    try {
+      persistAuthTokens({
+        storage,
+        tokens: {
+          token,
+          refreshToken: 'refresh',
+          displayName: null,
+          avatarUrl: null,
+        },
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+
+    expect(setItem).toHaveBeenCalledWith(
+      ACCESS_TOKEN_EXPIRE_KEY,
+      String(expInSeconds * 1000),
+    );
+  });
+
+  it('exp가 없으면 기본 만료 시각을 저장한다', () => {
+    vi.useFakeTimers();
+    const now = new Date('2024-01-01T00:00:00Z');
+    vi.setSystemTime(now);
+
+    const payload = {
+      sub: 'user-1',
+    };
+    const token = [
+      toBase64(JSON.stringify({ alg: 'HS256', typ: 'JWT' })),
+      toBase64(JSON.stringify(payload)),
+      'signature',
+    ].join('.');
+
+    const setItem = vi.fn();
+    const storage = { setItem } as Pick<Storage, 'setItem'>;
+
+    try {
+      persistAuthTokens({
+        storage,
+        tokens: {
+          token,
+          refreshToken: 'refresh',
+          displayName: null,
+          avatarUrl: null,
+        },
+      });
+    } finally {
+      vi.useRealTimers();
+    }
+
+    expect(setItem).toHaveBeenCalledWith(
+      ACCESS_TOKEN_EXPIRE_KEY,
+      String(now.getTime() + DEFAULT_MAX_AGE_SECONDS * 1000),
     );
   });
 

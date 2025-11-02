@@ -1,6 +1,7 @@
 import { resolveEndpoint } from '@/shared/api/config';
 import { dispatchAuthChangeEvent } from '@/lib/auth/events';
 import { DEFAULT_MAX_AGE_SECONDS, setBrowserCookie } from './cookie-utils';
+import { extractJwtExpiration } from './jwt';
 import { ensureHttpsUrl } from './url-utils';
 
 const KAKAO_AUTHORIZE_URL = 'https://kauth.kakao.com/oauth/authorize';
@@ -150,11 +151,18 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
   }
 
   const now = Date.now();
-  const expireAt = now + DEFAULT_MAX_AGE_SECONDS * 1000; // 만료 시각(ms)
+  const fallbackExpireAt = now + DEFAULT_MAX_AGE_SECONDS * 1000; // 만료 시각(ms)
   const normalizedTokens: AuthTokenPair = {
     ...tokens,
     avatarUrl: ensureHttpsUrl(tokens.avatarUrl),
   };
+  const tokenExpireAt = extractJwtExpiration(normalizedTokens.token);
+  const expireAt =
+    tokenExpireAt && tokenExpireAt > now ? tokenExpireAt : fallbackExpireAt;
+  const maxAgeSeconds = Math.max(
+    1,
+    Math.floor((expireAt - now) / 1000),
+  );
 
   // localStorage에 저장
   targetStorage.setItem(ACCESS_TOKEN_STORAGE_KEY, normalizedTokens.token);
@@ -175,12 +183,12 @@ export const persistAuthTokens = ({ tokens, storage }: PersistDependencies) => {
   setBrowserCookie(
     ACCESS_TOKEN_STORAGE_KEY,
     normalizedTokens.token,
-    DEFAULT_MAX_AGE_SECONDS,
+    maxAgeSeconds,
   );
   setBrowserCookie(
     REFRESH_TOKEN_STORAGE_KEY,
     normalizedTokens.refreshToken,
-    DEFAULT_MAX_AGE_SECONDS,
+    maxAgeSeconds,
   );
 
   // 로그인 상태 변경 이벤트 발생
