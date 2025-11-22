@@ -109,11 +109,14 @@ export type OrganizationAnimalDetailItem = {
   size: AnimalSize;
   animalStatus: FosterState;
   breed: string;
+  weight: string;
   birth_date: Date;
   gender: AnimalGender;
   images: string[];
   introduction: string;
   remark: string;
+  found_location: string;
+  current_location: string;
   isBookmarked: boolean;
   current_foster_start_date: Date;
   current_foster_end_date: Date;

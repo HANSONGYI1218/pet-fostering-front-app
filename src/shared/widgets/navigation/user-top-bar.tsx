@@ -45,7 +45,7 @@ const NAV_ITEMS = [
   },
 ] as const;
 
-export default function TopBar() {
+export default function UserTopbar() {
   const path = usePathname();
   const router = useRouter();
   const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(false);

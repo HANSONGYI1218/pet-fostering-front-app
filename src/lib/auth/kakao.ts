@@ -33,12 +33,12 @@ export type AuthTokenPair = {
   avatarUrl: string | null;
 };
 
-type PersistDependencies = {
+export type PersistDependencies = {
   tokens: AuthTokenPair;
   storage?: Pick<Storage, 'setItem'>;
 };
 
-type CompleteDependencies = {
+export type CompleteDependencies = {
   code: Maybe<string>;
   exchangeCode?: (deps: ExchangeDependencies) => Promise<AuthTokenPair>;
   persistTokens?: (deps: PersistDependencies) => unknown;

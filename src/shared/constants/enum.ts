@@ -46,7 +46,7 @@ export const ANIMAL_AGE_LABEL_KO: Record<AnimalAge, string> = {
 export const ANIMAL_PERSONALITY_LABEL_KO: Record<AnimalPersonality, string> = {
   [AnimalPersonality.QUIET]: '조용함',
   [AnimalPersonality.ENERGETIC]: '활발함',
-  [AnimalPersonality.INDEPENDENCE]: '독립적임',
+  [AnimalPersonality.INDEPENDENCE]: '독립적',
   [AnimalPersonality.SENSITIVITY]: '예민함',
   [AnimalPersonality.FRIENDLY_WITH_PEOPLE]: '사람 친화적',
   [AnimalPersonality.GOOD_WITH_OTHER_ANIMAL]: '다른 동물 친화적',

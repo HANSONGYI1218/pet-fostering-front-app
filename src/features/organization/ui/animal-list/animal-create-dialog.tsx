@@ -18,7 +18,7 @@ import {
 import { zodResolver } from '@hookform/resolvers/zod';
 import { useForm } from 'react-hook-form';
 import { z } from 'zod';
-import { CalendarIcon, Dot, Plus } from 'lucide-react';
+import { CalendarIcon, Check, ChevronsUpDown, Dot, Plus } from 'lucide-react';
 import { Button } from '@/shared/ui/button';
 import {
   Form,
@@ -82,6 +82,19 @@ import { ORGANIZATION_ANIMALS_QUERY_KEY } from './hooks/use-organization-animals
 import type { OrganizationAnimalDetailItem } from '@/entities/animal/animal-api';
 import { IMAGE_UPLOAD_SCOPE } from '@/shared/lib/image-upload';
 import { useImageUploadStore } from '@/shared/hooks/use-image-upload-store';
+import {
+  Command,
+  CommandEmpty,
+  CommandGroup,
+  CommandInput,
+  CommandItem,
+  CommandList,
+} from '@/shared/ui/command';
+import {
+  catBreeds,
+  dogBreeds,
+  formatDogBreeds,
+} from '@/shared/constants/breed';
 
 const AnimalCreateformSchema = z.object({
   name: z.string().min(1, {
@@ -95,12 +108,26 @@ const AnimalCreateformSchema = z.object({
   breed: z.string().min(1, {
     message: '보호동물의 품종을 작성해 주세요.',
   }),
+  weight: z.string().min(1, {
+    message: '보호동물의 체중을 작성해 주세요.',
+  }),
   introduction: z.string().min(1, {
     message: '보호동물의 소개를 작성해 주세요.',
   }),
-  birth_date: z.date(),
+  birth_date: z
+    .date()
+    .nullable()
+    .refine((val) => val !== null, {
+      message: '보호동물의 생년월일을 선택해 주세요.',
+    }),
   remark: z.string().min(1, {
     message: '보호동물의 특성을 작성해 주세요.',
+  }),
+  found_location: z.string().min(1, {
+    message: '보호동물의 발견장소를 작성해 주세요.',
+  }),
+  current_location: z.string().min(1, {
+    message: '보호동물의 현재거처를 작성해 주세요.',
   }),
   isEmergency: z.boolean(),
   emergency_reason: z.string(),
@@ -127,9 +154,12 @@ const CREATE_DEFAULTS: z.infer<typeof AnimalCreateformSchema> = {
   status: FosterState.IN_PROGRESS,
   images: [],
   breed: '',
-  birth_date: new Date(),
+  weight: '',
+  birth_date: null,
   remark: '',
   introduction: '',
+  found_location: '',
+  current_location: '',
   isEmergency: false,
   emergency_reason: '',
   animal_healths: [] as AnimalHealth[],
@@ -159,11 +189,12 @@ export function AnimalCreateDialog({
         status: animal.animalStatus ?? FosterState.IN_PROGRESS,
         images: animal.images?.slice() ?? [],
         breed: animal.breed ?? '',
-        birth_date: animal.birth_date
-          ? new Date(animal.birth_date)
-          : new Date(),
+        weight: animal.weight ?? '',
+        birth_date: animal.birth_date ? new Date(animal.birth_date) : null,
         introduction: animal.introduction ?? '',
         remark: animal.remark ?? '',
+        found_location: animal.found_location ?? '',
+        current_location: animal.current_location ?? '',
         isEmergency: Boolean(animal.isEmergency),
         emergency_reason: animal.emergency_reason ?? '',
         animal_healths: animal.animal_healths?.slice() ?? [],
@@ -191,10 +222,12 @@ export function AnimalCreateDialog({
     scope: IMAGE_UPLOAD_SCOPE,
     maxCount: MAX_IMAGE_COUNT,
   });
-
+  const [frameworks, setFrameworks] = useState(formatDogBreeds(dogBreeds));
   const [currentPage, setCurrentPage] = useState(0);
   const [open, setOpen] = useState(false);
+  const [popoverOpen, setPopoverOpen] = useState(false);
   const [isSubmitting, setIsSubmitting] = useState(false);
+  const currentType = form.watch('type');
 
   const triggerNode = useMemo(() => {
     if (trigger) {
@@ -213,6 +246,15 @@ export function AnimalCreateDialog({
     clear();
     form.reset(defaultValues);
   }, [clear, defaultValues, form]);
+
+  useEffect(() => {
+    if (currentType === 'DOG') {
+      setFrameworks(formatDogBreeds(dogBreeds));
+    } else {
+      setFrameworks(formatDogBreeds(catBreeds));
+    }
+    form.setValue('breed', '');
+  }, [currentType]);
 
   useEffect(() => {
     if (
@@ -235,7 +277,10 @@ export function AnimalCreateDialog({
     form.watch('breed')?.trim().length > 0 &&
     form.watch('type') &&
     form.watch('size') &&
+    form.watch('weight') &&
     form.watch('remark')?.trim().length > 0 &&
+    form.watch('found_location') &&
+    form.watch('current_location') &&
     form.watch('introduction')?.trim().length > 0;
 
   const isStep2Valid =
@@ -358,86 +403,88 @@ export function AnimalCreateDialog({
                 <FormField
                   control={form.control}
                   name="images"
-                  render={({ field }) => (
-                    <FormItem>
-                      <div className="flex flex-col gap-1">
-                        <FormLabel>프로필 사진</FormLabel>
-                        <span className="text-xs font-normal text-neutral-500">
-                          * 사진은 최대 3장까지 등록 가능합니다.
-                        </span>
-                      </div>
-                      <div className="grid w-full grid-cols-3 gap-2">
-                        {(!field?.value ||
-                          (field?.value &&
-                            field?.value?.length < MAX_IMAGE_COUNT)) && (
-                          <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
-                            <div className="absolute z-10 flex h-full w-full">
-                              <label
-                                htmlFor="additionalImgs"
-                                className="flex w-full cursor-pointer items-center justify-center"
-                              >
-                                <Plus className="h-10 w-10 text-neutral-300" />
-                              </label>
-                              <input
-                                type="file"
-                                id="additionalImgs"
-                                accept="image/*"
-                                multiple
-                                onChange={(
-                                  event: ChangeEvent<HTMLInputElement>,
-                                ) => {
-                                  const { files } = event.target;
-                                  if (!files) return;
+                  render={({ field }) => {
+                    const images = field.value ?? [];
 
-                                  const next = addFiles(
-                                    files,
+                    return (
+                      <FormItem>
+                        <div className="flex flex-col gap-1">
+                          <FormLabel>프로필 사진</FormLabel>
+                          <span className="text-xs font-normal text-neutral-500">
+                            * 사진은 최대 3장까지 등록 가능합니다.
+                          </span>
+                        </div>
+                        <div className="grid w-full grid-cols-3 gap-2">
+                          {images.length < MAX_IMAGE_COUNT && (
+                            <Card className="relative z-0 h-32 items-center justify-center overflow-hidden shadow-none">
+                              <div className="absolute z-10 flex h-full w-full">
+                                <label
+                                  htmlFor="additionalImgs"
+                                  className="flex w-full cursor-pointer items-center justify-center"
+                                >
+                                  <Plus className="h-10 w-10 text-neutral-300" />
+                                </label>
+                                <input
+                                  type="file"
+                                  id="additionalImgs"
+                                  accept="image/*"
+                                  multiple
+                                  onChange={(
+                                    event: ChangeEvent<HTMLInputElement>,
+                                  ) => {
+                                    const { files } = event.target;
+                                    if (!files) return;
+
+                                    const next = addFiles(
+                                      files,
+                                      field.value ?? [],
+                                    );
+                                    field.onChange(next);
+                                    event.target.value = '';
+                                  }}
+                                  className="hidden"
+                                />
+                              </div>
+                            </Card>
+                          )}
+                          {images.filter(Boolean).map((image, index) => (
+                            <Card
+                              className="relative p-0 shadow-none"
+                              key={index}
+                            >
+                              <Button
+                                type="button"
+                                onClick={() => {
+                                  const next = removeFile(
+                                    image,
                                     field.value ?? [],
                                   );
-                                  field.onChange(next);
-                                  event.target.value = '';
-                                }}
-                                className="hidden"
-                              />
-                            </div>
-                          </Card>
-                        )}
-                        {field?.value?.map((image, index) => (
-                          <Card
-                            className="relative p-0 shadow-none"
-                            key={index}
-                          >
-                            <Button
-                              type="button"
-                              onClick={() => {
-                                const next = removeFile(
-                                  image,
-                                  field.value ?? [],
-                                );
 
-                                field.onChange(next);
-                              }}
-                              className="absolute -top-2 -right-2 z-10 flex h-6 w-6 rounded-full bg-neutral-300 p-0"
-                            >
-                              <Plus
-                                className="h-4 w-4 rotate-45 text-white"
-                                strokeWidth={2.5}
-                              />
-                            </Button>
-                            <div className="relative h-32 w-full">
-                              <Image
-                                src={image}
-                                alt={`preview-${index + 1}`}
-                                fill
-                                className="rounded-xl object-cover"
-                                sizes="(min-width: 1024px) 20vw, 100vw"
-                              />
-                            </div>
-                          </Card>
-                        ))}
-                      </div>
-                      <FormMessage />
-                    </FormItem>
-                  )}
+                                  field.onChange(next);
+                                }}
+                                className="absolute -top-2 -right-2 z-10 flex h-6 w-6 rounded-full bg-neutral-300 p-0"
+                              >
+                                <Plus
+                                  className="h-4 w-4 rotate-45 text-white"
+                                  strokeWidth={2.5}
+                                />
+                              </Button>
+                              <div className="relative h-32 w-full">
+                                <Image
+                                  src={image}
+                                  alt={`preview-${index + 1}`}
+                                  fill
+                                  className="rounded-xl object-cover"
+                                  sizes="(min-width: 1024px) 20vw, 100vw"
+                                />
+                              </div>
+                            </Card>
+                          ))}
+                        </div>
+                        <FormMessage />
+                      </FormItem>
+                    );
+                  }}
                 />
                 <FormField
                   control={form.control}
@@ -446,7 +493,7 @@ export function AnimalCreateDialog({
                     <FormItem>
                       <FormLabel>이름</FormLabel>
                       <FormControl>
-                        <Input placeholder="꽃남이" {...field} />
+                        <Input placeholder="꽃남이" {...field} maxLength={20} />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -468,15 +515,11 @@ export function AnimalCreateDialog({
                                 !field.value && 'text-muted-foreground',
                               )}
                             >
-                              {field.value && isValid(new Date(field.value)) ? (
-                                format(new Date(field.value), 'yyyy.MM.dd', {
-                                  locale: ko,
-                                })
-                              ) : (
-                                <span className="text-sm">
-                                  생년월일을 선택해 주세요.
-                                </span>
-                              )}
+                              {field.value
+                                ? format(new Date(field.value), 'yyyy.MM.dd', {
+                                    locale: ko,
+                                  })
+                                : '생년월일을 선택해 주세요.'}
                               <CalendarIcon className="ml-auto h-4 w-4 opacity-50" />
                             </Button>
                           </FormControl>
@@ -485,10 +528,15 @@ export function AnimalCreateDialog({
                           <Calendar
                             locale={ko}
                             mode="single"
-                            selected={field.value}
-                            onSelect={field.onChange}
+                            selected={
+                              field.value ? new Date(field.value) : undefined
+                            }
+                            onSelect={(date) => field.onChange(date)}
                             disabled={(date) =>
                               date > new Date() || date < new Date('1900-01-01')
+                            }
+                            defaultMonth={
+                              field.value ? new Date(field.value) : undefined
                             }
                             captionLayout="dropdown"
                           />
@@ -553,7 +601,89 @@ export function AnimalCreateDialog({
                     <FormItem>
                       <FormLabel>품종</FormLabel>
                       <FormControl>
-                        <Input placeholder="말티즈" {...field} />
+                        <Popover
+                          open={popoverOpen}
+                          onOpenChange={setPopoverOpen}
+                        >
+                          <PopoverTrigger asChild>
+                            <Button
+                              variant="outline"
+                              role="combobox"
+                              aria-expanded={open}
+                              className="w-full justify-between text-sm"
+                            >
+                              {field?.value || '품종을 선택하세요.'}
+                              <ChevronsUpDown className="opacity-50" />
+                            </Button>
+                          </PopoverTrigger>
+                          <PopoverContent align="end" className="w-lg p-0">
+                            <Command>
+                              <CommandInput
+                                placeholder="품종을 선택하세요."
+                                className="h-9"
+                              />
+                              <CommandList>
+                                <CommandEmpty>품종을 선택하세요.</CommandEmpty>
+                                <CommandGroup>
+                                  {frameworks.map((framework) => (
+                                    <CommandItem
+                                      key={framework.value}
+                                      value={framework.value}
+                                      onSelect={(currentValue: any) => {
+                                        field.onChange(
+                                          currentValue === field?.value
+                                            ? ''
+                                            : currentValue,
+                                        );
+                                        setPopoverOpen(false);
+                                      }}
+                                    >
+                                      {framework.label}
+                                      <Check
+                                        className={cn(
+                                          'ml-auto',
+                                          field?.value === framework.value
+                                            ? 'opacity-100'
+                                            : 'opacity-0',
+                                        )}
+                                      />
+                                    </CommandItem>
+                                  ))}
+                                </CommandGroup>
+                              </CommandList>
+                            </Command>
+                          </PopoverContent>
+                        </Popover>
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="weight"
+                  render={({ field }) => (
+                    <FormItem>
+                      <FormLabel>체중</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder="7"
+                          {...field}
+                          maxLength={2}
+                          onChange={(e: any) => {
+                            const newChar = e.nativeEvent.data; // 새로 입력된 문자만
+                            if (!newChar) return; // 지우기 같은 경우는 무시
+                            if (/^\d$/.test(newChar)) {
+                              field.onChange((field.value ?? '') + newChar);
+                            }
+                          }}
+                          onKeyDown={(e) => {
+                            if (e.key === 'Backspace') {
+                              field.onChange((field.value ?? '').slice(0, -1));
+                              e.preventDefault(); // 기본 동작 방지
+                            }
+                          }}
+                        />
                       </FormControl>
                       <FormMessage />
                     </FormItem>
@@ -622,6 +752,40 @@ ex) 꼬리 만지는 걸 싫어함.
 나이가 좀 있어 각별한 관리가 필요함.
 심장병으로인해 매일 약을 챙겨먹어야 함.`}
                           className="min-h-32 resize-none whitespace-pre-wrap disabled:cursor-default disabled:border-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />{' '}
+                <FormField
+                  control={form.control}
+                  name="remark"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>발견장소</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={`도로 한가운데`}
+                          className="disabled:cursor-default disabled:border-none"
+                          {...field}
+                        />
+                      </FormControl>
+                      <FormMessage />
+                    </FormItem>
+                  )}
+                />
+                <FormField
+                  control={form.control}
+                  name="remark"
+                  render={({ field }) => (
+                    <FormItem className="w-full">
+                      <FormLabel>현재거처</FormLabel>
+                      <FormControl>
+                        <Input
+                          placeholder={`사랑 보호소`}
+                          className="disabled:cursor-default disabled:border-none"
                           {...field}
                         />
                       </FormControl>

@@ -38,10 +38,13 @@ type OrganizationAnimalDto = {
   type?: keyof typeof AnimalType | null;
   size?: keyof typeof AnimalSize | null;
   breed?: string | null;
+  weight?: string | null;
   birthDate?: string | null;
   gender?: keyof typeof AnimalGender | null;
   status?: keyof typeof AnimalStatus | null;
   imageUrl?: string | null;
+  found_location?: string | null;
+  current_location?: string | null;
   isEmergency?: boolean | null;
   applicants?: OrganizationApplicantDto[];
   healthTags?: Array<keyof typeof AnimalHealth>;
@@ -170,6 +173,7 @@ const mapOrganizationDetail = (
   type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
   size: dto.size ? AnimalSize[dto.size] : AnimalSize.SMALL,
   breed: dto.breed ?? '',
+  weight: dto.weight ?? '',
   birth_date: dto.birthDate ? toDate(dto.birthDate) : new Date(),
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
   images:
@@ -178,6 +182,8 @@ const mapOrganizationDetail = (
       : ['/images/animal-placeholder.png'],
   introduction: dto.introduction ?? '',
   remark: dto.remark ?? '',
+  found_location: dto.found_location ?? '',
+  current_location: dto.current_location ?? '',
   isBookmarked: false,
   current_foster_start_date: dto.currentFosterStartDate
     ? toDate(dto.currentFosterStartDate)

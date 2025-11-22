@@ -7,8 +7,8 @@ type ValueType = {
 
 const VALUE_ITEMS: ValueType[] = [
   {
-    img: '/icons/main/orgranization.svg',
-    title: '검증된 기관 연결',
+    img: '/icons/main/user.svg',
+    title: '검증된 보호자 연결',
   },
   {
     img: '/icons/main/matching.svg',
