@@ -17,7 +17,7 @@ const DEFAULT_ANIMAL_LIMIT = 10;
 export const metadata = createAppMetadata({
   title: '퍼디즈 | 임시보호 매칭 플랫폼',
   description:
-    '퍼디즈와 함께 임시보호자와 보호소를 빠르게 연결하고 따뜻한 돌봄 여정을 시작하세요.',
+    '퍼디즈로 임시보호자와 보호소를 빠르게 연결하고 임시보호 성공률을 높이세요.',
   path: '/',
 });
 
@@ -62,7 +62,8 @@ export default async function Home() {
             따뜻하게 연결되는 곳
           </h1>
           <span className="border-t border-white pt-10 text-xl text-white lg:text-3xl">
-            퍼디즈와 함께 아이들의 희망이 되어주세요
+            퍼디즈로 임시보호자와 보호소를 빠르게 연결하고
+            <br /> 임시보호 성공률을 높이세요.
           </span>
         </div>
       </section>
@@ -86,7 +87,7 @@ export default async function Home() {
               variant="destructive"
               className="h-12 w-44 rounded-full border-[#15894B] bg-[#15894B] md:w-64"
             >
-              임보 신청하기 <MoveRight />
+              보호동물 등록하기 <MoveRight />
             </Button>
           </Link>
         </div>
@@ -105,12 +106,12 @@ export default async function Home() {
         <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-start gap-6 md:flex-row md:items-end md:gap-12 2xl:flex-col 2xl:items-start">
           <div className="flex w-full flex-col gap-12">
             <h1 className="text-2xl font-bold text-nowrap text-neutral-800 lg:text-4xl">
-              당신의 손길이 필요한 아이들
+              사랑스러운 가정을 만날 수 있도록
             </h1>
             <span className="text-lg lg:text-xl">
-              사랑이 필요한 아이들을 만나보세요.
+              지금 한 걸음 먼저 내딛어주세요.
               <br />
-              작지만 따뜻한 결정이, 한 생명을 구합니다.
+              퍼디즈와의 동행이, 한 생명을 구합니다.
             </span>
           </div>
           <Link href="/foster-list">
@@ -118,7 +119,7 @@ export default async function Home() {
               variant="destructive"
               className="h-12 w-44 rounded-full border-[#15894B] bg-[#15894B] lg:w-64"
             >
-              보호동물 더보기 <MoveRight />
+              임시보호자 관리하기 <MoveRight />
             </Button>
           </Link>
         </div>
@@ -149,10 +150,10 @@ export default async function Home() {
         <div className="mx-auto flex w-full max-w-screen-2xl flex-col items-center justify-between gap-12 lg:gap-32">
           <div className="flex flex-col items-center gap-6">
             <h1 className="text-2xl font-bold text-neutral-800 lg:text-4xl">
-              임시보호는 어떻게 이루어지나요?
+              보호동물은 어떻게 등록하나요?
             </h1>
             <span className="text-center text-base break-keep text-neutral-600 lg:text-lg">
-              더 자세한 내용은 퍼디즈 임보 절차 페이지를 참조하세요.
+              더 자세한 내용은 퍼디즈 임보등록 절차 페이지를 참조하세요.
             </span>
           </div>
           <ProcessContainer />

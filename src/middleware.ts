@@ -5,31 +5,30 @@ import { ACCESS_TOKEN_STORAGE_KEY } from './lib/auth/kakao';
 export function middleware(req: NextRequest) {
   const token = req.cookies.get(ACCESS_TOKEN_STORAGE_KEY)?.value;
 
-  // 토큰 없으면 claims를 undefined 처리
   const claims = token ? parseAuthClaims(token) : undefined;
   const role = claims?.role ?? undefined;
 
   const pathname = req.nextUrl.pathname;
 
-  // ORG_ADMIN은 모든 페이지 접근 가능
-  if (role === 'ORG_ADMIN') {
-    return NextResponse.next();
-  }
+  // 🔥 여기서 딱 한 번만 Response 생성
+  const res = NextResponse.next();
+  res.headers.set('x-pathname', pathname);
 
   // USER 접근 제어
   if (role === 'USER' && pathname.startsWith('/organization')) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  // ADMIN 접근 제어
+  // ORG 접근 제어
   if (
-    role === 'ADMIN' &&
+    role === 'ORG' &&
     ['/foster_list', '/record'].some((p) => pathname.startsWith(p))
   ) {
     return NextResponse.redirect(new URL('/', req.url));
   }
 
-  return NextResponse.next();
+  // 기본
+  return res;
 }
 
 export const config = {

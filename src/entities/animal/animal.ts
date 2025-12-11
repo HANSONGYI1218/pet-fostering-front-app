@@ -31,12 +31,15 @@ export type Animal = {
   size: AnimalSize;
   type: AnimalType;
   breed: string;
+  weight: string;
   birth_date: Date;
   euthanasia_date: Date | null;
   gender: AnimalGender;
   images: string[];
   introduction: string;
   remark: string;
+  found_location: string;
+  current_location: string;
   created_at: Date;
   updated_at: Date;
   current_foster_start_date: Date;
