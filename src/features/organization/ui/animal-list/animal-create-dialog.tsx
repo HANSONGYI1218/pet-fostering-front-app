@@ -254,7 +254,7 @@ export function AnimalCreateDialog({
       setFrameworks(formatDogBreeds(catBreeds));
     }
     form.setValue('breed', '');
-  }, [currentType]);
+  }, [currentType, form]);
 
   useEffect(() => {
     if (
