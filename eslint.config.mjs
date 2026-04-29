@@ -1,12 +1,12 @@
+import { FlatCompat } from '@eslint/eslintrc';
 import { dirname } from 'path';
 import { fileURLToPath } from 'url';
-import { FlatCompat } from '@eslint/eslintrc';
 // ES 모듈에서는 require 대신 import 사용
-import prettierPlugin from 'eslint-plugin-prettier';
 import typescriptPlugin from '@typescript-eslint/eslint-plugin';
 import importPlugin from 'eslint-plugin-import';
-import reactPlugin from 'eslint-plugin-react';
 import jsxA11yPlugin from 'eslint-plugin-jsx-a11y';
+import prettierPlugin from 'eslint-plugin-prettier';
+import reactPlugin from 'eslint-plugin-react';
 
 const __filename = fileURLToPath(import.meta.url);
 const __dirname = dirname(__filename);
@@ -22,6 +22,7 @@ export default [
   // Flat Config 형식에 맞춘 직접 설정
   {
     files: ['**/*.ts', '**/*.tsx'],
+    ignorePatterns: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**'],
     languageOptions: {
       parserOptions: {
         project: './tsconfig.eslint.json',

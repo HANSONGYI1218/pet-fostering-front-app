@@ -1,6 +1,6 @@
-import { beforeEach, describe, expect, it, vi } from 'vitest';
 import { render, screen } from '@testing-library/react';
 import userEvent from '@testing-library/user-event';
+import { beforeEach, describe, expect, it, vi } from 'vitest';
 
 const pushMock = vi.fn();
 const usePathnameMock = vi.fn(() => '/');
@@ -13,20 +13,29 @@ vi.mock('next/navigation', () => ({
 }));
 
 vi.mock('@/lib/auth/use-auth-claims', () => ({
-  useAuthClaims: vi.fn(),
+  useAuthClaims: vi.fn(() => ({
+    claims: null,
+    isAuthenticated: false,
+  })),
 }));
 
-import TopBar from '../top-bar';
 import { useAuthClaims } from '@/lib/auth/use-auth-claims';
+import TopBar from '../top-bar';
 
-const mockUseAuthClaims = useAuthClaims as unknown as vi.Mock;
+const mockUseAuthClaims = vi.mocked(useAuthClaims);
 
 describe('TopBar', () => {
+  let user: ReturnType<typeof userEvent.setup>;
+
   beforeEach(() => {
     vi.clearAllMocks();
     pushMock.mockReset();
+    user = userEvent.setup();
     usePathnameMock.mockReturnValue('/');
-    mockUseAuthClaims.mockReturnValue({ claims: null, isAuthenticated: false });
+    mockUseAuthClaims.mockReturnValue({
+      claims: null,
+      isAuthenticated: false,
+    });
   });
 
   it('비로그인 사용자는 로그인 버튼을 본다', () => {
@@ -52,21 +61,19 @@ describe('TopBar', () => {
       'src',
       expect.stringContaining('https://example.com/avatar.png'),
     );
-    await userEvent.click(screen.getByRole('button', { name: '로그아웃' }));
+    await user.click(screen.getByRole('button', { name: '로그아웃' }));
     expect(pushMock).toHaveBeenCalledWith('/auth/logout/callback');
   });
 
   it('모바일 메뉴를 열고 닫을 수 있다', async () => {
     render(<TopBar />);
 
-    await userEvent.click(screen.getByRole('button', { name: '메뉴 열기' }));
+    await user.click(screen.getByRole('button', { name: '메뉴 열기' }));
     expect(
       screen.getByRole('navigation', { name: '모바일 메뉴' }),
     ).toBeInTheDocument();
 
-    await userEvent.click(
-      screen.getByRole('button', { name: '모바일 메뉴 닫기' }),
-    );
+    await user.click(screen.getByRole('button', { name: '모바일 메뉴 닫기' }));
 
     expect(
       screen.queryByRole('navigation', { name: '모바일 메뉴' }),
