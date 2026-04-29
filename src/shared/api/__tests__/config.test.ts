@@ -17,14 +17,14 @@ describe('getApiBaseUrl', () => {
   });
 
   it('환경 변수가 없으면 기본 URL을 반환한다', () => {
-    expect(getApiBaseUrl()).toBe('http://localhost:3001');
+    expect(getApiBaseUrl()).toBe('http://localhost:3000');
   });
 });
 
 describe('resolveEndpoint', () => {
   it('선행 슬래시를 정규화하고 기본 URL과 결합한다', () => {
     expect(resolveEndpoint('/community/posts')).toBe(
-      'http://localhost:3001/community/posts',
+      'http://localhost:3000/community/posts',
     );
   });
 });

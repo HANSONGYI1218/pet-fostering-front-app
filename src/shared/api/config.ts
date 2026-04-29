@@ -1,5 +1,5 @@
 const PROD_API_BASE_URL = 'https://api.furdiz.com/api';
-const LOCAL_API_BASE_URL = 'http://localhost:3001';
+const LOCAL_API_BASE_URL = 'http://localhost:3000';
 
 const DEFAULT_API_BASE_URL =
   process.env.NODE_ENV === 'production'
