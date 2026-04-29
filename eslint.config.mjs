@@ -22,7 +22,7 @@ export default [
   // Flat Config 형식에 맞춘 직접 설정
   {
     files: ['**/*.ts', '**/*.tsx'],
-    ignorePatterns: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**'],
+    ignores: ['**/*.test.ts', '**/*.test.tsx', '**/__tests__/**'],
     languageOptions: {
       parserOptions: {
         project: './tsconfig.eslint.json',
