@@ -9,14 +9,15 @@ import type {
   AnimalUpsertPayload,
   FosterAnimalDetailItem,
   FosterListAnimalItem,
+  MatchedFosterAnimalListItem,
 } from '@/entities/animal/animal-api';
 import { toDate } from '@/shared/lib/utils';
 
+import { fosterAnimalDetailPageRevalid } from '@/features/record/api/redirect';
 import { resolveEndpoint } from '@/shared/api/config';
 import { fetchJson } from '@/shared/api/http';
 import { logError } from '@/shared/lib/logging';
 import { fosterAnimalListRevalid } from './redirect';
-import { fosterAnimalDetailPageRevalid } from '@/features/record/api/redirect';
 
 const toIso = (value?: Date): string | undefined =>
   value instanceof Date ? value.toISOString() : undefined;
@@ -53,6 +54,7 @@ type PublicFosterAnimalBaseDto = {
   type?: keyof typeof AnimalType | null;
   size?: keyof typeof AnimalSize | null;
   gender?: keyof typeof AnimalGender | null;
+  age?: string | null;
   breed?: string | null;
   birthDate?: string | null;
   euthanasiaDate?: string | null;
@@ -72,6 +74,10 @@ export type PublicFosterAnimalListItemDto = PublicFosterAnimalBaseDto & {
   fosterDays: number;
 };
 
+export type MatchedFosterAnimalListItemDto = PublicFosterAnimalListItemDto & {
+  score: number;
+};
+
 type PublicFosterAnimalDetailDto = PublicFosterAnimalBaseDto & {
   introduction?: string | null;
   remark?: string | null;
@@ -84,6 +90,10 @@ type PublicFosterAnimalDetailDto = PublicFosterAnimalBaseDto & {
 
 export type PublicFosterAnimalListResponseDto = {
   items: PublicFosterAnimalListItemDto[];
+};
+
+export type MatchedFosterAnimalListResponseDto = {
+  items: MatchedFosterAnimalListItemDto[];
 };
 
 const mapOrganization = (
@@ -112,6 +122,7 @@ const mapListItem = (
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
   image: dto.mainImageUrl ?? '/images/animal-placeholder.png',
   isBookmarked: false,
+  foster_days: dto.fosterDays,
   euthanasia_date: dto.euthanasiaDate ? toDate(dto.euthanasiaDate) : null,
   animal_healths: dto.healthTags.map(
     (value) => AnimalHealth[value] ?? AnimalHealth.NEUTERED,
@@ -132,6 +143,40 @@ const mapListItem = (
   },
 });
 
+const mapMatchedListItem = (
+  dto: MatchedFosterAnimalListItemDto,
+): MatchedFosterAnimalListItem => ({
+  id: dto.id,
+  name: dto.name,
+  type: dto.type ? AnimalType[dto.type] : AnimalType.DOG,
+  size: dto.size ? AnimalSize[dto.size] : AnimalSize.SMALL,
+  breed: dto.breed ?? '',
+  birth_date: dto.birthDate ? toDate(dto.birthDate) : null,
+  gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
+  image: dto.mainImageUrl ?? '/images/animal-placeholder.png',
+  isBookmarked: false,
+  foster_days: dto.fosterDays,
+  euthanasia_date: dto.euthanasiaDate ? toDate(dto.euthanasiaDate) : null,
+  animal_healths: dto.healthTags.map(
+    (value) => AnimalHealth[value] ?? AnimalHealth.NEUTERED,
+  ),
+  animal_personalitys: dto.personalityTags.map(
+    (value) => AnimalPersonality[value] ?? AnimalPersonality.QUIET,
+  ),
+  animal_environments: dto.environmentTags.map(
+    (value) => AnimalEnvironment[value] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
+  ),
+  isEmergency: dto.isEmergency,
+  score: dto.score,
+  organization: mapOrganization(dto.organization) ?? {
+    id: '',
+    name: '',
+    address: '',
+    address_detail: '',
+    phone_number: '',
+  },
+});
+
 const mapDetail = (
   dto: PublicFosterAnimalDetailDto,
 ): FosterAnimalDetailItem => ({
@@ -142,8 +187,7 @@ const mapDetail = (
   breed: dto.breed ?? '',
   birth_date: dto.birthDate ? toDate(dto.birthDate) : null,
   gender: dto.gender ? AnimalGender[dto.gender] : AnimalGender.MALE,
-  images:
-    dto.images.length > 0 ? dto.images : ['/images/animal-placeholder.png'],
+  images: [dto.mainImageUrl ?? '/images/animal-placeholder.png'],
   introduction: dto.introduction ?? '',
   euthanasia_date: dto.euthanasiaDate ? toDate(dto.euthanasiaDate) : null,
   remark: dto.remark ?? '',
@@ -204,6 +248,36 @@ export const fetchFosterAnimals = async (): Promise<FosterListAnimalItem[]> => {
     const result: PublicFosterAnimalListResponseDto = await response.json();
 
     return result.items.map(mapListItem);
+  } catch (error) {
+    logError('임보 동물 목록을 불러오지 못했습니다.', error);
+    if (error instanceof Error) {
+      throw error;
+    }
+
+    throw new Error(
+      '임보 동물 목록을 불러오는 중 알 수 없는 오류가 발생했습니다.',
+    );
+  }
+};
+
+export const fetchMatchedAnimals = async (
+  token?: string,
+): Promise<MatchedFosterAnimalListItem[]> => {
+  try {
+    const endpoint = resolveEndpoint('/foster/matcher/animals');
+    const response = await fetchJson(endpoint, {
+      headers: {
+        Accept: 'application/json',
+      },
+      cache: 'no-store',
+      auth: 'required',
+      token,
+      errorMessage: '임보 동물 목록 요청 실패',
+    });
+
+    const result: MatchedFosterAnimalListResponseDto = await response.json();
+
+    return result.items.map(mapMatchedListItem);
   } catch (error) {
     logError('임보 동물 목록을 불러오지 못했습니다.', error);
     if (error instanceof Error) {
@@ -277,4 +351,4 @@ export const updateAnimal = async (
   fosterAnimalDetailPageRevalid({ animalId: id });
 };
 
-export { mapListItem as mapFosterListItem, mapDetail as mapFosterDetail };
+export { mapDetail as mapFosterDetail, mapListItem as mapFosterListItem };

@@ -8,12 +8,12 @@ const buildRemotePatterns = () => {
   const patterns = [
     {
       protocol: 'https',
-      hostname: 'images.unsplash.com',
+      hostname: 'storage.googleapis.com',
       pathname: '/**',
     },
     {
       protocol: 'https',
-      hostname: '*.s3.ap-northeast-2.amazonaws.com',
+      hostname: 'i.ytimg.com',
       pathname: '/**',
     },
     {

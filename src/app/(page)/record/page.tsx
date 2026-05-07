@@ -1,7 +1,7 @@
-import AnimalContainer from '@/features/record/ui/record/animal-container';
 import { fetchRecordAnimals } from '@/features/record/api/record';
-import { createAppMetadata } from '@/shared/config/seo';
+import AnimalContainer from '@/features/record/ui/record/animal-container';
 import { resolveServerAccessToken } from '@/lib/auth/server-session';
+import { createAppMetadata } from '@/shared/config/seo';
 
 export const metadata = createAppMetadata({
   title: '임시보호 돌봄 기록 | 퍼디즈',
@@ -12,6 +12,7 @@ export const metadata = createAppMetadata({
 
 export default async function RecordPage() {
   const token = await resolveServerAccessToken();
+
   const animals = token ? await fetchRecordAnimals(token).catch(() => []) : [];
 
   return (

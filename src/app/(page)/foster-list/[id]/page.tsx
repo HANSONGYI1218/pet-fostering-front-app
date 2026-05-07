@@ -1,36 +1,36 @@
-import type { Metadata } from 'next';
-import { cache } from 'react';
-import BackButton from '@/shared/widgets/navigation/back-button';
+import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
+import { fetchFosterAnimalDetail } from '@/features/foster/api/foster';
 import AnimalBookmark from '@/features/foster/ui/foster-list/animal-bookmark';
 import { AnimalCarousel } from '@/features/foster/ui/foster-list/animal-carousel';
-import { Card } from '@/shared/ui/card';
+import ConnectDialog from '@/features/foster/ui/foster-list/connect-dialog';
+import FosterRequestDialog from '@/features/foster/ui/foster-list/foster-request-dialog';
+import { createAppMetadata } from '@/shared/config/seo';
 import {
+  ANIMAL_ENVIRONMENT_LABEL_KO,
   ANIMAL_GENDER_LABEL_KO,
   ANIMAL_HEALTH_LABEL_KO,
   ANIMAL_PERSONALITY_LABEL_KO,
   ANIMAL_SIZE_LABEL_KO,
   ANIMAL_SPECIAL_NOTE_LABEL_KO,
   ANIMAL_TYPE_LABEL_KO,
-  ANIMAL_ENVIRONMENT_LABEL_KO,
 } from '@/shared/constants/enum';
-import { fetchFosterAnimalDetail } from '@/features/foster/api/foster';
-import { Check } from 'lucide-react';
-import ConnectDialog from '@/features/foster/ui/foster-list/connect-dialog';
-import FosterRequestDialog from '@/features/foster/ui/foster-list/foster-request-dialog';
-import { Badge } from '@/shared/ui/badge';
-import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
 import {
   formatAnimalAge,
   fosterTotalDuration,
   getDDay,
 } from '@/shared/lib/utils';
-import { AnimalHealth } from '@/entities/animal-condition/animal-condition';
+import type { AsyncParams } from '@/shared/types/next';
+import { Badge } from '@/shared/ui/badge';
+import { Card } from '@/shared/ui/card';
+import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
+import KakaoMapLoader from '@/shared/widgets/map/kakaomap-loader';
+import BackButton from '@/shared/widgets/navigation/back-button';
 import { format } from 'date-fns';
+import { Check } from 'lucide-react';
+import type { Metadata } from 'next';
 import Image from 'next/image';
 import { notFound } from 'next/navigation';
-import KakaoMapsScript from '@/shared/widgets/map/kakao-maps-script';
-import type { AsyncParams } from '@/shared/types/next';
-import { createAppMetadata } from '@/shared/config/seo';
+import { cache } from 'react';
 
 const formatFosterPeriod = (start?: Date | null, end?: Date | null): string =>
   [

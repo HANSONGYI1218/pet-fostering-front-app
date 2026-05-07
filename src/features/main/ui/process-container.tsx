@@ -1,4 +1,4 @@
-/* eslint-disable @next/next/no-img-element */
+import Image from 'next/image';
 
 type ProcessItem = {
   img: string;
@@ -28,10 +28,12 @@ function ProcessTile({ value }: { value: ProcessItem }) {
   return (
     <div className="flex w-full max-w-[146px] flex-col items-center gap-6 rounded-xl">
       <div className="flex h-32 w-32 items-center justify-center overflow-hidden rounded-full bg-white shadow-lg lg:h-40 lg:w-40">
-        <img
+        <Image
+          width={160}
+          height={160}
           src={value.img}
           alt={value.title}
-          className="h-2/3 w-2/3 object-contain lg:h-auto lg:w-auto"
+          className="object-contain lg:h-auto lg:w-auto"
         />
       </div>
       <h1 className="text-center text-base break-keep text-neutral-800 lg:text-lg">

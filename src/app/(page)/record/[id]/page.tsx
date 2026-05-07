@@ -1,16 +1,16 @@
-import type { Metadata } from 'next';
-import { cache } from 'react';
-import FosterInfoCard from '@/features/record/ui/record/foster-info-tile';
-import RecordContainer from '@/features/record/ui/record/record-container';
 import { AnimalType } from '@/entities/animal/animal';
 import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import type { FosterMatchInfo } from '@/entities/foster-record/foster-record-api';
 import { fetchRecordDetail } from '@/features/record/api/record';
-import { notFound, redirect } from 'next/navigation';
-import BackButton from '@/shared/widgets/navigation/back-button';
-import type { AsyncParams } from '@/shared/types/next';
-import { createAppMetadata } from '@/shared/config/seo';
+import FosterInfoCard from '@/features/record/ui/record/foster-info-tile';
+import RecordContainer from '@/features/record/ui/record/record-container';
 import { resolveServerAccessToken } from '@/lib/auth/server-session';
+import { createAppMetadata } from '@/shared/config/seo';
+import type { AsyncParams } from '@/shared/types/next';
+import BackButton from '@/shared/widgets/navigation/back-button';
+import type { Metadata } from 'next';
+import { notFound, redirect } from 'next/navigation';
+import { cache } from 'react';
 
 export async function generateMetadata({
   params,
@@ -23,10 +23,10 @@ export async function generateMetadata({
   }
 
   try {
-    const getRecordDetail = cache((id: string) => fetchRecordDetail(id, token));
+    const getRecordDetail = cache((id: string) => fetchRecordDetail(id));
     const { info } = await getRecordDetail(id);
     const animalName = info.animal.name;
-    const organizationName = info.organization.name || '보호소';
+    const organizationName = info?.organization?.name || '보호소';
     const primaryImage = info.animal.images?.[0];
 
     return createAppMetadata({
@@ -59,7 +59,7 @@ export default async function RecordDetailPage({
     redirect('/record');
   }
 
-  const { info, records } = await fetchRecordDetail(id, token).catch(
+  const { info, records } = await fetchRecordDetail(id).catch(
     (error: unknown) => {
       if (error instanceof Error && /404/.test(error.message)) {
         notFound();
@@ -68,7 +68,7 @@ export default async function RecordDetailPage({
     },
   );
 
-  const sortedRecords: FosterRecord[] = [...records].sort(
+  const sortedRecords: FosterRecord[] = [...(records ?? [])].sort(
     (a, b) => b.created_at.getTime() - a.created_at.getTime(),
   );
 

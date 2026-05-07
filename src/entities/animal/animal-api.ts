@@ -7,10 +7,10 @@ import {
 import type { FosterApplicant } from '@/entities/foster-apply/foster-apply-api';
 import type { FosterRecord } from '@/entities/foster-record/foster-record';
 import {
-  AnimalType,
   AnimalGender,
-  AnimalStatus,
   AnimalSize,
+  AnimalStatus,
+  AnimalType,
   FosterState,
 } from './animal';
 
@@ -36,11 +36,38 @@ export type FosterListAnimalItem = {
   gender: AnimalGender;
   image: string;
   isBookmarked: boolean;
+  foster_days: number;
   animal_healths: AnimalHealth[];
   animal_personalitys: AnimalPersonality[];
   animal_environments: AnimalEnvironment[];
   isEmergency: boolean;
   euthanasia_date: Date | null;
+  organization: {
+    id: string;
+    name: string;
+    address: string;
+    address_detail: string;
+    phone_number: string;
+  };
+};
+
+export type MatchedFosterAnimalListItem = {
+  id: string;
+  name: string;
+  type: AnimalType;
+  size: AnimalSize;
+  breed: string;
+  birth_date: Date | null;
+  gender: AnimalGender;
+  image: string;
+  isBookmarked: boolean;
+  foster_days: number;
+  animal_healths: AnimalHealth[];
+  animal_personalitys: AnimalPersonality[];
+  animal_environments: AnimalEnvironment[];
+  isEmergency: boolean;
+  euthanasia_date: Date | null;
+  score: number;
   organization: {
     id: string;
     name: string;
@@ -146,6 +173,7 @@ export type AnimalListItem = {
   name: string;
   type: AnimalType;
   breed: string;
+  age: string;
   birth_date: Date | null;
   gender: AnimalGender;
   image: string;

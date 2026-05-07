@@ -1,19 +1,19 @@
-import { resolveEndpoint } from '@/shared/api/config';
-import { fetchJson } from '@/shared/api/http';
+import {
+  AnimalGender,
+  AnimalSize,
+  AnimalStatus,
+  AnimalType,
+} from '@/entities/animal/animal';
 import type { FosterRecordAnimalItem } from '@/entities/animal/animal-api';
 import type {
   FosterMatchInfo,
   FosterRecord,
   RecordUpsertPayload,
 } from '@/entities/foster-record/foster-record-api';
-import {
-  AnimalGender,
-  AnimalType,
-  AnimalStatus,
-  AnimalSize,
-} from '@/entities/animal/animal';
-import { toDate } from '@/shared/lib/utils';
+import { resolveEndpoint } from '@/shared/api/config';
+import { fetchJson } from '@/shared/api/http';
 import { logError } from '@/shared/lib/logging';
+import { toDate } from '@/shared/lib/utils';
 import { fosterAnimalDetailPageRevalid } from './redirect';
 
 import type { components } from '@/shared/api/generated/pet-schema';
@@ -74,16 +74,16 @@ const mapRecordDetail = (
   info: FosterMatchInfo;
   records: FosterRecord[];
 } => {
-  const organization = dto.info.organization;
-  const animal = dto.info.animal;
+  const organization = dto?.info?.organization ?? null;
+  const animal = dto?.info?.animal ?? null;
   const animalSize = coerceAnimalInfoSize(
     (animal as { size?: string | null | undefined })?.size ?? null,
   );
   const mappedInfo: FosterMatchInfo = {
-    id: dto.info.id,
-    state:
-      AnimalStatus[dto.info.state as keyof typeof AnimalStatus] ??
-      AnimalStatus.WAITING,
+    id: dto?.info?.id ?? undefined,
+    state: dto?.info?.state
+      ? AnimalStatus[dto.info.state as keyof typeof AnimalStatus]
+      : AnimalStatus.WAITING,
     organization: {
       id: organization?.id ?? '',
       name: organization?.name ?? '',
@@ -94,36 +94,36 @@ const mapRecordDetail = (
       email: organization?.email ?? '',
     },
     animal: {
-      name: animal.name,
+      name: animal?.name ?? undefined,
       size: animalSize,
-      type: animal.type
+      type: animal?.type
         ? AnimalType[animal.type as keyof typeof AnimalType]
         : AnimalType.DOG,
-      introduction: animal.introduction ?? '',
-      breed: animal.breed ?? '',
-      birth_date: animal.birthDate ? toDate(animal.birthDate) : null,
-      gender: animal.gender
+      introduction: animal?.introduction ?? '',
+      breed: animal?.breed ?? '',
+      birth_date: animal?.birthDate ? toDate(animal.birthDate) : null,
+      gender: animal?.gender
         ? AnimalGender[animal.gender as keyof typeof AnimalGender]
         : AnimalGender.MALE,
-      remark: animal.remark ?? '',
-      images: animal.images,
-      current_foster_start_date: animal.currentFosterStartDate
+      remark: animal?.remark ?? '',
+      images: animal?.images,
+      current_foster_start_date: animal?.currentFosterStartDate
         ? toDate(animal.currentFosterStartDate)
         : null,
-      current_foster_end_date: animal.currentFosterEndDate
+      current_foster_end_date: animal?.currentFosterEndDate
         ? toDate(animal.currentFosterEndDate)
         : null,
     },
-    created_at: toDate(dto.info.createdAt),
+    created_at: dto?.info?.createdAt ? toDate(dto.info.createdAt) : new Date(),
   };
 
-  const mappedRecords: FosterRecord[] = dto.records.map((record) => ({
-    id: record.id,
-    images: record.images,
-    content: record.content ?? '',
-    health_note: record.healthNote ?? '',
-    created_at: toDate(record.createdAt),
-    updated_at: toDate(record.updatedAt),
+  const mappedRecords: FosterRecord[] = dto?.records?.map((record) => ({
+    id: record?.id ?? undefined,
+    images: record?.images ?? [],
+    content: record?.content ?? '',
+    health_note: record?.healthNote ?? '',
+    created_at: toDate(record?.createdAt),
+    updated_at: toDate(record?.updatedAt),
   }));
 
   return { info: mappedInfo, records: mappedRecords };
@@ -133,11 +133,11 @@ export const fetchRecordAnimals = async (
   token: string | undefined,
 ): Promise<FosterRecordAnimalItem[]> => {
   try {
-    const endpoint = resolveEndpoint('/public/foster/records/animals');
+    const endpoint = resolveEndpoint(`/public/foster/user/animals`);
     const response = await fetchJson(endpoint, {
       cache: 'no-store',
       token,
-      auth: token ? 'optional' : 'none',
+      auth: 'required',
       errorMessage: '기록 동물 목록 요청 실패',
     });
 
@@ -157,7 +157,6 @@ export const fetchRecordAnimals = async (
 
 export const fetchRecordDetail = async (
   id: string,
-  _token: string | undefined,
 ): Promise<{ info: FosterMatchInfo; records: FosterRecord[] }> => {
   try {
     const endpoint = resolveEndpoint(`/public/foster/records/animals/${id}`);
@@ -168,6 +167,7 @@ export const fetchRecordDetail = async (
     });
 
     const result: PublicRecordDetailDto = await response.json();
+    console.log('fetchRecordDetail result', result);
 
     return mapRecordDetail(result);
   } catch (error) {

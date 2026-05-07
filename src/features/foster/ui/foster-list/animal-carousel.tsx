@@ -1,5 +1,6 @@
 'use client';
 
+import { cn } from '@/shared/lib/utils';
 import { Card } from '@/shared/ui/card';
 import {
   Carousel,
@@ -9,9 +10,8 @@ import {
   CarouselNext,
   CarouselPrevious,
 } from '@/shared/ui/carousel';
-import { cn } from '@/shared/lib/utils';
-import { useState, useEffect } from 'react';
 import Image from 'next/image';
+import { useEffect, useState } from 'react';
 
 export function AnimalCarousel({ images }: { images: string[] }) {
   const [api, setApi] = useState<CarouselApi>();

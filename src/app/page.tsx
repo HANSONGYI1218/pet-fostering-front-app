@@ -1,16 +1,16 @@
-import Link from 'next/link';
-import { Button } from '@/shared/ui/button';
-import Image from 'next/image';
-import { MoveRight } from 'lucide-react';
 import type { AnimalListItem } from '@/entities/animal/animal-api';
 import { fetchAnimalLists } from '@/features/main/api/animal';
-import { logError } from '@/shared/lib/logging';
-import AnimalTile from '@/features/main/ui/animal-tile';
 import { dummyAnimals } from '@/features/main/api/dummy';
-import ValueContainer from '@/features/main/ui/value-container';
+import AnimalTile from '@/features/main/ui/animal-tile';
 import ProcessContainer from '@/features/main/ui/process-container';
 import SnsContainer from '@/features/main/ui/sns-container';
+import ValueContainer from '@/features/main/ui/value-container';
 import { createAppMetadata } from '@/shared/config/seo';
+import { logError } from '@/shared/lib/logging';
+import { Button } from '@/shared/ui/button';
+import { MoveRight } from 'lucide-react';
+import Image from 'next/image';
+import Link from 'next/link';
 
 const DEFAULT_ANIMAL_LIMIT = 10;
 
@@ -158,8 +158,8 @@ export default async function Home() {
           <ProcessContainer />
         </div>
       </section>
-      <section className="relative flex w-full flex-col justify-center xl:flex-row">
-        <div className="relative flex h-[656px] w-full flex-col gap-12 bg-[#FFEFF2] px-6 py-20 brightness-95 md:p-20">
+      <section className="relative flex h-[656px] w-full flex-col justify-center xl:flex-row">
+        <div className="relative flex h-full w-full flex-col gap-12 bg-[#FFEFF2] px-6 py-20 brightness-95 md:p-20">
           <div className="flex w-full gap-3 text-2xl font-bold lg:text-4xl">
             <h1 className="text-[#FF5F4D]">CONNECT WITH</h1>
             <h1 className="text-neutral-800">FURDDY</h1>

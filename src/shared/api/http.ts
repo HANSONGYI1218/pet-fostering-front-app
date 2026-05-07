@@ -1,5 +1,5 @@
-import { resolveEndpoint } from './config';
 import { readAccessToken } from '@/shared/lib/auth/access-token';
+import { resolveEndpoint } from './config';
 
 type AuthMode = 'none' | 'optional' | 'required';
 

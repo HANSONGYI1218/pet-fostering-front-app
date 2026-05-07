@@ -1,8 +1,8 @@
 import {
   AnimalGender,
-  AnimalType,
-  AnimalStatus,
   AnimalSize,
+  AnimalStatus,
+  AnimalType,
 } from '@/entities/animal/animal';
 import type { FosterRecord } from './foster-record';
 

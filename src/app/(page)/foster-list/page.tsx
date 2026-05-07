@@ -1,8 +1,12 @@
+import {
+  fetchFosterAnimals,
+  fetchMatchedAnimals,
+} from '@/features/foster/api/foster';
 import FosterContainer from '@/features/foster/ui/foster-list/foster-container';
-import { fetchFosterAnimals } from '@/features/foster/api/foster';
+import MatchedAnimalContainer from '@/features/foster/ui/foster-list/matched-container';
+import { createAppMetadata } from '@/shared/config/seo';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
-import { createAppMetadata } from '@/shared/config/seo';
 
 export const metadata = createAppMetadata({
   title: '임시보호 동물 목록 | 퍼디즈',
@@ -14,6 +18,7 @@ export const metadata = createAppMetadata({
 export default async function FosterListPage() {
   try {
     const animals = await fetchFosterAnimals();
+    const matchedAnimals = await fetchMatchedAnimals();
 
     return (
       <main className="bg-background min-h-screen">
@@ -28,6 +33,9 @@ export default async function FosterListPage() {
               </CardDescription>
             </CardHeader>
           </Card>
+          {matchedAnimals && matchedAnimals.length > 0 && (
+            <MatchedAnimalContainer animals={matchedAnimals} />
+          )}
           <FosterContainer animals={animals} />
         </section>
       </main>
