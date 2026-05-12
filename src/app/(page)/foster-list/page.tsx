@@ -4,6 +4,7 @@ import {
 } from '@/features/foster/api/foster';
 import FosterContainer from '@/features/foster/ui/foster-list/foster-container';
 import MatchedAnimalContainer from '@/features/foster/ui/foster-list/matched-container';
+import { resolveServerAccessToken } from '@/lib/auth/server-session';
 import { createAppMetadata } from '@/shared/config/seo';
 import { Card, CardDescription, CardHeader, CardTitle } from '@/shared/ui/card';
 import FetchErrorBox from '@/shared/widgets/feedback/fetch-error-box';
@@ -18,10 +19,30 @@ export const metadata = createAppMetadata({
 export default async function FosterListPage() {
   try {
     const animals = await fetchFosterAnimals();
-    const matchedAnimals = await fetchMatchedAnimals();
+    const token = await resolveServerAccessToken();
+    const matchedAnimals = token
+      ? await fetchMatchedAnimals(token).catch(() => [])
+      : [];
+
+    console.log('Matched Animals:', matchedAnimals[0]); // 매칭된 동물 데이터 확인
 
     return (
       <main className="bg-background min-h-screen">
+        <section className="mx-auto flex w-full flex-col bg-neutral-100 px-6 py-16">
+          <Card className="cursor-default border-none bg-transparent p-0 shadow-none">
+            <CardHeader className="gap-3 px-0">
+              <CardTitle className="text-2xl font-bold md:text-4xl">
+                알맞춤 매칭!
+              </CardTitle>
+              <CardDescription className="text-muted-foreground text-base md:text-lg">
+                나의 조건과 맞는 보호동물을 확인해보세요!
+              </CardDescription>
+            </CardHeader>
+          </Card>
+          {matchedAnimals && matchedAnimals.length > 0 && (
+            <MatchedAnimalContainer animals={matchedAnimals} />
+          )}
+        </section>
         <section className="mx-auto flex w-full max-w-screen-xl flex-col gap-6 px-6 py-16 md:gap-12">
           <Card className="cursor-default border-none bg-transparent p-0 shadow-none">
             <CardHeader className="gap-3 px-0">
@@ -33,9 +54,7 @@ export default async function FosterListPage() {
               </CardDescription>
             </CardHeader>
           </Card>
-          {matchedAnimals && matchedAnimals.length > 0 && (
-            <MatchedAnimalContainer animals={matchedAnimals} />
-          )}
+
           <FosterContainer animals={animals} />
         </section>
       </main>

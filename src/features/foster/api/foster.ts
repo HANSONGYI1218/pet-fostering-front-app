@@ -75,7 +75,7 @@ export type PublicFosterAnimalListItemDto = PublicFosterAnimalBaseDto & {
 };
 
 export type MatchedFosterAnimalListItemDto = PublicFosterAnimalListItemDto & {
-  score: number;
+  matcherScore: number;
 };
 
 type PublicFosterAnimalDetailDto = PublicFosterAnimalBaseDto & {
@@ -167,7 +167,7 @@ const mapMatchedListItem = (
     (value) => AnimalEnvironment[value] ?? AnimalEnvironment.QUIET_ENVIRONMENT,
   ),
   isEmergency: dto.isEmergency,
-  score: dto.score,
+  score: dto.matcherScore,
   organization: mapOrganization(dto.organization) ?? {
     id: '',
     name: '',

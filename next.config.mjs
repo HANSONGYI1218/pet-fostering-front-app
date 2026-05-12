@@ -4,24 +4,24 @@ const parseHosts = (rawHosts) =>
     .map((value) => value.trim())
     .filter(Boolean);
 
+const hostnames = [
+  'storage.googleapis.com',
+  'i.*',
+  'cdn.*',
+  'www.google.com',
+  'prd-main-cdn.aboutpet.co.kr',
+  'encrypted-tbn0.gstatic.com',
+  '*.cloudfront.net',
+  'mblogthumb-phinf.pstatic.net',
+  'images.*',
+];
+
 const buildRemotePatterns = () => {
-  const patterns = [
-    {
-      protocol: 'https',
-      hostname: 'storage.googleapis.com',
-      pathname: '/**',
-    },
-    {
-      protocol: 'https',
-      hostname: 'i.ytimg.com',
-      pathname: '/**',
-    },
-    {
-      protocol: 'https',
-      hostname: '*.cloudfront.net',
-      pathname: '/**',
-    },
-  ];
+  const patterns = hostnames.map((hostname) => ({
+    protocol: 'https',
+    hostname,
+    pathname: '/**',
+  }));
 
   const additionalHosts = parseHosts(process.env.NEXT_PUBLIC_IMAGE_HOSTS ?? '');
 

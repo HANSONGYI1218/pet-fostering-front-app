@@ -133,7 +133,7 @@ export const fetchRecordAnimals = async (
   token: string | undefined,
 ): Promise<FosterRecordAnimalItem[]> => {
   try {
-    const endpoint = resolveEndpoint(`/public/foster/user/animals`);
+    const endpoint = resolveEndpoint(`/foster/user/animals`);
     const response = await fetchJson(endpoint, {
       cache: 'no-store',
       token,
