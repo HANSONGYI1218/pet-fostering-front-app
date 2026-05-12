@@ -173,7 +173,6 @@ export type AnimalListItem = {
   name: string;
   type: AnimalType;
   breed: string;
-  age: string;
   birth_date: Date | null;
   gender: AnimalGender;
   image: string;

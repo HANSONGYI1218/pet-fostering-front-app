@@ -28,6 +28,7 @@ const buildListItem = (
   animal_personalitys: [AnimalPersonality.GOOD_WITH_OTHER_ANIMAL],
   animal_environments: [AnimalEnvironment.QUIET_ENVIRONMENT],
   euthanasia_date: new Date('2025-10-21'),
+  foster_days: 24,
   isEmergency: true,
   organization: {
     id: 'org-dummy',
